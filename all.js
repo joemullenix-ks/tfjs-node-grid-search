@@ -72,13 +72,13 @@ const AXES = [];
 // 					new Progression(Progression.TYPE_EXPONENTIAL, 1.5)));
 
 AXES.push(new Axis(	Axis.TYPE_LAYERS,
-					0,		// boundsBegin
-					5,		// boundsEnd
-					new Progression(Progression.TYPE_LINEAR, 2)));
+					2,		// boundsBegin
+					0,		// boundsEnd
+					new Progression(Progression.TYPE_LINEAR, 1)));
 
 AXES.push(new Axis(	Axis.TYPE_NEURONS,
-					0,		// boundsBegin
-					3,		// boundsEnd
+					100,	// boundsBegin
+					50,		// boundsEnd
 					new Progression(Progression.TYPE_FIBONACCI)));
 
 const AXIS_SET = new AxisSet(AXES);
@@ -95,7 +95,6 @@ const AXIS_SET = new AxisSet(AXES);
 const MODEL_STATICS = new ModelStatics(	AXIS_SET,
 										{
 											hiddenLayers: 2,
-											//KEEP: during early dev
 											neuronsPerHiddenLayer: 3
 										});
 
@@ -104,5 +103,3 @@ const SESSION_DATA = new SessionData([0], ['a']);
 const GRID = new Grid(AXIS_SET, MODEL_STATICS, SESSION_DATA);
 
 GRID.Run();
-
-let pauser = 1;
