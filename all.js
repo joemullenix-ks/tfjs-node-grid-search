@@ -16,6 +16,7 @@ const { AxisSet }			= require('./lib/AxisSet');
 const { Grid }				= require('./lib/Grid');
 const { ModelStatics }		= require('./lib/ModelStatics');
 const { Progression }		= require('./lib/Progression');
+const { SessionData }		= require('./lib/SessionData');
 
 
 /*
@@ -64,14 +65,20 @@ const { Progression }		= require('./lib/Progression');
 
 const AXES = [];
 
+//KEEP: during early dev
+// AXES.push(new Axis(	Axis.TYPE_LAYERS,
+// 					0,		// boundsBegin
+// 					100,		// boundsEnd
+// 					new Progression(Progression.TYPE_EXPONENTIAL, 1.5)));
+
 AXES.push(new Axis(	Axis.TYPE_LAYERS,
-					1,		// boundsBegin
-					6,		// boundsEnd
+					2,		// boundsBegin
+					0,		// boundsEnd
 					new Progression(Progression.TYPE_LINEAR, 1)));
 
 AXES.push(new Axis(	Axis.TYPE_NEURONS,
-					5,		// boundsBegin
-					300,	// boundsEnd
+					100,	// boundsBegin
+					50,		// boundsEnd
 					new Progression(Progression.TYPE_FIBONACCI)));
 
 const AXIS_SET = new AxisSet(AXES);
@@ -91,6 +98,8 @@ const MODEL_STATICS = new ModelStatics(	AXIS_SET,
 											neuronsPerHiddenLayer: 3
 										});
 
-const GRID = new Grid(AXIS_SET, MODEL_STATICS);
+const SESSION_DATA = new SessionData([0], ['a']);
 
-let pauser = 1;
+const GRID = new Grid(AXIS_SET, MODEL_STATICS, SESSION_DATA);
+
+GRID.Run();
