@@ -8,7 +8,6 @@
 //	C:\Users\joeku\OneDrive\_junk\ks\territoriaTFNodeFFS\node_modules\@tensorflow\tfjs-node\lib\napi-v6\tfjs_binding.node
 
 
-const SIMPLE_STATISTICS		= require('simple-statistics');
 const TENSOR_FLOW			= require('@tensorflow/tfjs');
 
 const { Axis }				= require('./lib/Axis');
