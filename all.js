@@ -92,8 +92,7 @@ const AXIS_SET = new AxisSet(AXES);
 //		The user supplies a callback. We invoke the callback each iteration, passing the current value for each
 //		dynamic param (i.e. those with axes). The user then assembles and returns a model.
 
-const MODEL_STATICS = new ModelStatics(	TENSOR_FLOW,
-										AXIS_SET,
+const MODEL_STATICS = new ModelStatics(	AXIS_SET,
 										{
 											hiddenLayers: 2,
 											neuronsPerHiddenLayer: 3
@@ -113,8 +112,7 @@ const PROOF_PERCENTAGE = RAW_INPUTS.length < 1000
 const TOTAL_INPUT_NEURONS = 15;
 const TOTAL_OUTPUT_NEURONS = 5;
 
-const SESSION_DATA = new SessionData(	TENSOR_FLOW,
-										PROOF_PERCENTAGE,
+const SESSION_DATA = new SessionData(	PROOF_PERCENTAGE,
 										RAW_INPUTS,
 										RAW_TARGETS,
 										TOTAL_INPUT_NEURONS,
@@ -122,6 +120,6 @@ const SESSION_DATA = new SessionData(	TENSOR_FLOW,
 
 
 
-const GRID = new Grid(TENSOR_FLOW, AXIS_SET, MODEL_STATICS, SESSION_DATA);
+const GRID = new Grid(AXIS_SET, MODEL_STATICS, SESSION_DATA);
 
 GRID.Run();
