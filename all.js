@@ -3,6 +3,7 @@
 
 const { Axis }				= require('./lib/Axis');
 const { AxisSet }			= require('./lib/AxisSet');
+const { FileIO }			= require('./lib/FileIO');
 const { Grid }				= require('./lib/Grid');
 const { ModelStatics }		= require('./lib/ModelStatics');
 const { Progression }		= require('./lib/Progression');
@@ -23,15 +24,10 @@ const { SessionData }		= require('./lib/SessionData');
 		abort and retry all runs that don't hit that baseline opening
 */
 
-const GO = async () => {
+
+const MAIN = async () => {
 
 	const AXES = [];
-
-//KEEP: during early dev
-// 	AXES.push(new Axis(	Axis.TYPE_LAYERS,
-// 						0,		// boundsBegin
-// 						100,	// boundsEnd
-// 						new Progression(Progression.TYPE_EXPONENTIAL, 1.5)));
 
 	AXES.push(new Axis(	Axis.TYPE_LAYERS,
 						0,		// boundsBegin
@@ -46,7 +42,7 @@ const GO = async () => {
 	const AXIS_SET = new AxisSet(AXES);
 
 //NOTE: Usage options:
-//	OPTION A: We create the models.
+//	OPTION A: We create the models (as shown in this example).
 //		The user instantiates and passes in a ModelStatics. They may supply a value for each non-dyanmic param (i.e.
 //		those without an axis), or accept the default where applicable.
 //
@@ -60,41 +56,22 @@ const GO = async () => {
 												neuronsPerHiddenLayer: 3
 											});
 
-
-//vvvv	TODO: obviously this moves into an IO lib
-const FS_PROMISES = require('fs/promises');
-
-const READ_DATA_FILE = async (path, result) => {
-	console.assert(typeof path === 'string');
-	console.assert(path !== '');
-	console.assert(typeof result === 'object');
-
-	try {
-		result.data = await FS_PROMISES.readFile(path, 'utf8');
-		return;
-	}
-	catch (err) {
-		throw new Error('Filed to read file: ' + path + '; ' + err);
-	}
-};
-//^^^^^
-
-
+//TODO: TDB, but this will very likely become a method of a top-level controller, e.g. TFJSGridSearch.js.
 	const FETCH_DATA = async (pathInputs, pathTargets) => {
 		const FILE_RESULT =	{};
 
-		await READ_DATA_FILE(pathInputs, FILE_RESULT);
+		await FileIO.ReadDataFile(pathInputs, FILE_RESULT);
 
 		const RAW_INPUTS = JSON.parse(FILE_RESULT.data);
 
-		await READ_DATA_FILE(pathTargets, FILE_RESULT);
+		await FileIO.ReadDataFile(pathTargets, FILE_RESULT);
 
 		const RAW_TARGETS = JSON.parse(FILE_RESULT.data);
 
 		return {inputs: RAW_INPUTS, targets: RAW_TARGETS};
 	};
 
-	//TODO: Support these as launch params.
+//TODO: Support these as launch params.
 	const DATA_FILEPATH_INPUTS = 'data_inputs.txt';
 	const DATA_FILEPATH_TARGETS = 'data_targets.txt';
 
@@ -135,4 +112,4 @@ const READ_DATA_FILE = async (path, result) => {
 	console.log('eol');
 };
 
-GO();
+MAIN();
