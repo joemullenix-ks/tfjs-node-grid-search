@@ -7,7 +7,7 @@
     "lib": "lib"
   },
   "dependencies": {
-    "@tensorflow/tfjs": "^2.7.0",
+    "@tensorflow/tfjs-node": "^2.7.0",
     "simple-statistics": "^7.3.1"
   },
   "devDependencies": {},
