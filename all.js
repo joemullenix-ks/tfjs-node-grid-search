@@ -61,76 +61,53 @@ const GO = async () => {
 											});
 
 
-//vvvv
-const FS = require('fs');
-const FS_PROMISES = FS.promises;
+//vvvv	TODO: obviously this moves into an IO lib
+const FS_PROMISES = require('fs/promises');
 
+const READ_DATA_FILE = async (path, result) => {
+	console.assert(typeof path === 'string');
+	console.assert(path !== '');
+	console.assert(typeof result === 'object');
 
-//TODO: Support these as launch params.
-const DATA_FILEPATH_INPUTS = 'data_inputs.txt';
-const DATA_FILEPATH_TARGETS = 'data_targets.txt';
-
-// let textInputs = '';
-let textTargets = '';
-
-const FILE_RESULT =	{
-						data: null
-					};
-
-
-		ok this mess is finally working. go go go
-
-
-const READ_DATA_FILE = async (path) => {
-// async function ReadSlowly(path) {
 	try {
-		// await FS_PROMISES.readFile(
-		FILE_RESULT.data = await FS_PROMISES.readFile(path);/*,
-													(readError, data) => {
-														if (readError !== null) {
-															throw new Error('readError: ' + readError);
-														}
-
-														FILE_RESULT.data = data;
-													});
-*/
-		return
+		result.data = await FS_PROMISES.readFile(path, 'utf8');
+		return;
 	}
 	catch (err) {
-		throw new Error('Filed to read file: ' + path + ';' + err);
+		throw new Error('Filed to read file: ' + path + '; ' + err);
 	}
 };
-
-console.log('PRE read file');
-await READ_DATA_FILE(DATA_FILEPATH_INPUTS);
-console.log('post read file');
-return;
-
-
-const RAW_INPUTS = '';
-
-const RAW_TARGETS = '';
 //^^^^^
 
 
-	//KEEP: Tensor test sandbox:
-	// const TENSOR_FLOW = require('@tensorflow/tfjs');
-	// 		const D_TENSORIZED_ARRAY = TENSOR_FLOW.tidy(() => { return TENSOR_FLOW.tensor(RAW_INPUTS, [5, 1]); });
+	const FETCH_DATA = async (pathInputs, pathTargets) => {
+		const FILE_RESULT =	{};
+
+		await READ_DATA_FILE(pathInputs, FILE_RESULT);
+
+		const RAW_INPUTS = JSON.parse(FILE_RESULT.data);
+
+		await READ_DATA_FILE(pathTargets, FILE_RESULT);
+
+		const RAW_TARGETS = JSON.parse(FILE_RESULT.data);
+
+		return {inputs: RAW_INPUTS, targets: RAW_TARGETS};
+	};
+
+	//TODO: Support these as launch params.
+	const DATA_FILEPATH_INPUTS = 'data_inputs.txt';
+	const DATA_FILEPATH_TARGETS = 'data_targets.txt';
+
+	const DATA_PACKAGE = await FETCH_DATA(DATA_FILEPATH_INPUTS, DATA_FILEPATH_TARGETS);
 
 	// set aside 100 or 10% of cases, whichever is less, for post-training generalization tests
-	const PROOF_PERCENTAGE = RAW_INPUTS.length < 1000
+	const PROOF_PERCENTAGE = DATA_PACKAGE.inputs.length < 1000
 								? 0.1
-								: (100 / RAW_INPUTS.length);
-
-/*doom
-//TEMP: debugging these, and sick of looking them up
-RAW_INPUTS.map((x, i) => console.log('IN', i, x));
-RAW_TARGETS.map((x, i) => console.log('TG', i, x));
-*/
+								: (100 / DATA_PACKAGE.inputs.length);
 
 	const SESSION_DATA = new SessionData(	PROOF_PERCENTAGE,
-											RAW_INPUTS,
-											RAW_TARGETS,
+											DATA_PACKAGE.inputs,
+											DATA_PACKAGE.targets,
 											true);						// useDefaultStandardization
 /*KEEP: Standardization via callbacks:
 											(rawInputs) => {			// callbackStandardize
