@@ -8,6 +8,7 @@ const { Grid }				= require('./lib/Grid');
 const { ModelStatics }		= require('./lib/ModelStatics');
 const { Progression }		= require('./lib/Progression');
 const { SessionData }		= require('./lib/SessionData');
+const { Utils }				= require('./lib/Utils');
 
 
 /*
@@ -106,23 +107,36 @@ const MAIN = async () => {
 */
 
 
-	const REPORT_BATCH = (duration) => {
-		console.log('Reporting batch', duration);
+	const REPORT_BATCH = (duration, batch, logs) => {
+		console.log('Batch report', duration, Utils.WriteDurationReport(duration));
+
+/*KEEP: We'll likely create an example for this
+		if (batch % 1000 !== 0) {
+			return;
+		}
+
+		let textOut = ''
+
+		for (let k in logs) {
+			textOut += k + ' ' + logs[k].toFixed(5) + ', ';
+		}
+
+		console.log(textOut);
+
+		//KEEP: WTF this doesn't work no idea
+		// console.log('batch: ' + batch
+		// 			+ ', loss: ' + logs.loss.toFixed(5)
+		// 			+ ', acc: ' + logs.acc.toFixed(5)
+		// 			+ ', mse: ' + loss.mse.toFixed(5) );
+*/
 	}
 
 	const REPORT_EPOCH = (duration) => {
-		console.log('Reporting epoch', duration);
+		console.log('Epoch report', duration, Utils.WriteDurationReport(duration));
 	}
 
-	const REPORT_ITERATION = (predictions, proofInputs, proofTargets) => {
-		console.log('Reporting iteration'
-					+ '; predictions: ' + predictions.length
-					+ ', proofInputs: ' + proofInputs.length
-					+ ', proofTargets: ' + proofTargets.length);
-return;
-
-//vvvv
-		// get an unstandardized clone of the proof cases (again, for the human-friendly report)
+	const REPORT_ITERATION = (duration, predictions, proofInputs, proofTargets) => {
+		console.log('Iteration report', duration, Utils.WriteDurationReport(duration));
 
 		let totalCorrect = 0;
 
@@ -141,17 +155,17 @@ return;
 					: a.toFixed(3)); // every third entry is UINT; others are UNIT SCALAR
 		};
 
-		for (let i = 0; i < PROOF_TARGETS.length; ++i) {
+		for (let i = 0; i < proofTargets.length; ++i) {
 			let delta = 0.0;
 			let missReport = '';
 			let pass = false;
 
-			const PREDICTED_INDEX = Utils.ArrayFindIndexOfHighestValue(PREDICTIONS[i]);
+			const PREDICTED_INDEX = Utils.ArrayFindIndexOfHighestValue(predictions[i]);
 
 			let foundOneHot = false;
 
-			for (let p = 0; p < PROOF_TARGETS[i].length; ++p) {
-				if (PROOF_TARGETS[i][p] !== 1) {
+			for (let p = 0; p < proofTargets[i].length; ++p) {
+				if (proofTargets[i][p] !== 1) {
 					// not the one-hot
 					continue;
 				}
@@ -160,7 +174,7 @@ return;
 
 				// this is the one-hot, i.e. we expect its prediction to be ~1.0, and thus the rest ~0.0 (inherent to softmax)
 
-				delta = PROOF_TARGETS[i][p] - PREDICTIONS[i][p];
+				delta = proofTargets[i][p] - predictions[i][p];
 
 				sumDelta += Math.abs(delta);
 
@@ -174,15 +188,15 @@ return;
 				}
 
 				missReport = 'pass: ' + (pass ? 'T' : 'f')
-							+ '; labels: ' + PROOF_TARGETS[i].toString()
-							+ '; prediction: ' + PREDICTIONS[i].map(x => x.toFixed(2)).toString()
+							+ '; labels: ' + proofTargets[i].toString()
+							+ '; prediction: ' + predictions[i].map(x => x.toFixed(2)).toString()
 							+ '; delta: ' + delta.toFixed(5);
 
 				break;
 			}
 
 			if (!foundOneHot) {
-				throw new Error('One hot not found; invalid target data[' + i + ']: ' + PROOF_TARGETS[i]);
+				throw new Error('One hot not found; invalid target data[' + i + ']: ' + proofTargets[i]);
 			}
 
 			RESULTS_TO_SORT.push(	{
@@ -192,12 +206,13 @@ return;
 									});
 		}
 
-		const TOTAL_CHECKED = PROOF_TARGETS.length;
+		const TOTAL_CHECKED = proofTargets.length;
 
 		const TOTAL_INCORRECT = TOTAL_CHECKED - totalCorrect;
 
 		console.log('SCORE', (100 * totalCorrect / TOTAL_CHECKED).toFixed(2) + '%');
 
+/*KEEP: All good stuff, but too spammy for now; will move into a generalized reporting modules.
 		console.log(totalCorrect + '/' + TOTAL_CHECKED, '(' + TOTAL_INCORRECT + ' incorrect)');
 
 		console.log('AVE. MISS DELTA', (TOTAL_INCORRECT === 0
@@ -217,10 +232,10 @@ return;
 			return parseFloat(a.delta) - parseFloat(b.delta);
 		});
 
-		for (let i = 0; i < PROOF_TARGETS.length; ++i) {
-			console.log(i + '/' + PROOF_TARGETS.length + ' | ' + RESULTS_TO_SORT[i].report);
+		for (let i = 0; i < proofTargets.length; ++i) {
+			console.log(i + '/' + proofTargets.length + ' | ' + RESULTS_TO_SORT[i].report);
 		}
-//^^^^
+*/
 	};
 
 
