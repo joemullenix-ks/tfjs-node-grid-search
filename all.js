@@ -8,6 +8,7 @@ const { Grid }				= require('./lib/Grid');
 const { ModelStatics }		= require('./lib/ModelStatics');
 const { Progression }		= require('./lib/Progression');
 const { SessionData }		= require('./lib/SessionData');
+const { Utils }				= require('./lib/Utils');
 
 
 /*
@@ -16,7 +17,7 @@ const { SessionData }		= require('./lib/SessionData');
 
 	ITERATIONS PER RUN ooo baby
 
-	LAYER SIZE DECAY (left to right)
+	LAYER SIZE DECAY/GROW (left to right)
 
 	SMART START !! skip unlucky weight rolls
 		for a given config, run five times for 1 epoch;
@@ -30,13 +31,13 @@ const MAIN = async () => {
 	const AXES = [];
 
 	AXES.push(new Axis(	Axis.TYPE_LAYERS,
-						0,		// boundsBegin
-						5,		// boundsEnd
+						1,		// boundsBegin
+						2,		// boundsEnd
 						new Progression(Progression.TYPE_LINEAR, 1)));
 
 	AXES.push(new Axis(	Axis.TYPE_NEURONS,
 						2,		// boundsBegin
-						50,		// boundsEnd
+						3,		// boundsEnd
 						new Progression(Progression.TYPE_FIBONACCI)));
 
 	const AXIS_SET = new AxisSet(AXES);
@@ -105,7 +106,125 @@ const MAIN = async () => {
 											null);						// callbackUnstandardize
 */
 
-	const GRID = new Grid(AXIS_SET, MODEL_STATICS, SESSION_DATA);
+
+	const REPORT_BATCH = (duration, batch, logs) => {
+		console.log('Batch report', duration, Utils.WriteDurationReport(duration));
+	}
+
+	const REPORT_EPOCH = (duration, epoch, logs, epochStats) => {
+		console.log('Epoch report', duration, Utils.WriteDurationReport(duration));
+	}
+
+	const REPORT_ITERATION = (duration, predictions, proofInputs, proofTargets) => {
+		console.log('Iteration report', duration, Utils.WriteDurationReport(duration));
+
+		let totalCorrect = 0;
+
+		const REPORTING_DECIMALS = 2;
+
+		let sumDelta = 0.0;
+
+		let sumMissDelta = 0.0;
+
+		const RESULTS_TO_SORT = [];
+
+//TODO: This is custom; actually the whole process is! Lift it out into a callback.
+		const WRITE_INPUTS_ENTRY = (a, b, c) => {
+			return (b % 3 === 0
+					? (a < 10 ? '0' : '') + a
+					: a.toFixed(3)); // every third entry is UINT; others are UNIT SCALAR
+		};
+
+		for (let i = 0; i < proofTargets.length; ++i) {
+			let delta = 0.0;
+			let missReport = '';
+			let pass = false;
+
+			const PREDICTED_INDEX = Utils.ArrayFindIndexOfHighestValue(predictions[i]);
+
+			let foundOneHot = false;
+
+			for (let p = 0; p < proofTargets[i].length; ++p) {
+				if (proofTargets[i][p] !== 1) {
+					// not the one-hot
+					continue;
+				}
+
+				foundOneHot = true;
+
+				// this is the one-hot, i.e. we expect its prediction to be ~1.0, and thus the rest ~0.0 (inherent to softmax)
+
+				delta = proofTargets[i][p] - predictions[i][p];
+
+				sumDelta += Math.abs(delta);
+
+				if (p === PREDICTED_INDEX) {
+					pass = true;
+
+					++totalCorrect;
+				}
+				else {
+					sumMissDelta += Math.abs(delta);
+				}
+
+				missReport = 'pass: ' + (pass ? 'T' : 'f')
+							+ '; labels: ' + proofTargets[i].toString()
+							+ '; prediction: ' + predictions[i].map(x => x.toFixed(2)).toString()
+							+ '; delta: ' + delta.toFixed(5);
+
+				break;
+			}
+
+			if (!foundOneHot) {
+				throw new Error('One hot not found; invalid target data[' + i + ']: ' + proofTargets[i]);
+			}
+
+			RESULTS_TO_SORT.push(	{
+										pass: pass,
+										delta: Math.abs(delta),
+										report: missReport
+									});
+		}
+
+		const TOTAL_CHECKED = proofTargets.length;
+
+		const TOTAL_INCORRECT = TOTAL_CHECKED - totalCorrect;
+
+		console.log('SCORE', (100 * totalCorrect / TOTAL_CHECKED).toFixed(2) + '%');
+
+/*KEEP: All good stuff, but too spammy for now; will move into a generalized reporting modules.
+		console.log(totalCorrect + '/' + TOTAL_CHECKED, '(' + TOTAL_INCORRECT + ' incorrect)');
+
+		console.log('AVE. MISS DELTA', (TOTAL_INCORRECT === 0
+										? 'zero incorrect' // custom text in lieu of div-by-zero
+										: (sumMissDelta / TOTAL_INCORRECT).toFixed(6)));
+
+		console.log('AVE. DELTA', (sumDelta / TOTAL_CHECKED).toFixed(6));
+
+		console.log('AVE. HIT DELTA', totalCorrect === 0
+										? 'zero correct' // custom text in lieu of div-by-zero
+										: ((sumDelta - sumMissDelta) / totalCorrect).toFixed(6));
+
+		console.log('PROOF CASE DETAILS');
+
+		// sort by cumulative miss-delta, closest first
+		RESULTS_TO_SORT.sort((a, b) => {
+			return parseFloat(a.delta) - parseFloat(b.delta);
+		});
+
+		for (let i = 0; i < proofTargets.length; ++i) {
+			console.log(i + '/' + proofTargets.length + ' | ' + RESULTS_TO_SORT[i].report);
+		}
+*/
+	};
+
+
+	const GRID = new Grid(	AXIS_SET,
+							MODEL_STATICS,
+							SESSION_DATA,
+							REPORT_ITERATION);
+							// REPORT_EPOCH);
+							// REPORT_BATCH);
 
 	await GRID.Run();
 
