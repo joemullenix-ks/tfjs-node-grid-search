@@ -109,29 +109,9 @@ const MAIN = async () => {
 
 	const REPORT_BATCH = (duration, batch, logs) => {
 		console.log('Batch report', duration, Utils.WriteDurationReport(duration));
-
-/*KEEP: We'll likely create an example for this
-		if (batch % 1000 !== 0) {
-			return;
-		}
-
-		let textOut = ''
-
-		for (let k in logs) {
-			textOut += k + ' ' + logs[k].toFixed(5) + ', ';
-		}
-
-		console.log(textOut);
-
-		//KEEP: WTF this doesn't work no idea
-		// console.log('batch: ' + batch
-		// 			+ ', loss: ' + logs.loss.toFixed(5)
-		// 			+ ', acc: ' + logs.acc.toFixed(5)
-		// 			+ ', mse: ' + loss.mse.toFixed(5) );
-*/
 	}
 
-	const REPORT_EPOCH = (duration) => {
+	const REPORT_EPOCH = (duration, epoch, logs, epochStats) => {
 		console.log('Epoch report', duration, Utils.WriteDurationReport(duration));
 	}
 
