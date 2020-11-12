@@ -107,6 +107,21 @@ const MAIN = async () => {
 */
 
 
+	const EVALUATE_PREDICTION = (target, prediction) => {
+//NOTE: This is written for a multi-class (one-hot), classification network.
+//
+//TODO: Write example for regression, multi-label classification, etc...
+
+		const TARGETTED_INDEX = Utils.ArrayFindIndexOfHighestValue(target);
+
+		const PREDICTED_INDEX = Utils.ArrayFindIndexOfHighestValue(prediction);
+
+		return	{
+					correct: TARGETTED_INDEX === PREDICTED_INDEX,
+					delta: 1 - prediction[PREDICTED_INDEX]
+				};
+	}
+
 	const REPORT_BATCH = (duration, batch, logs) => {
 		console.log('Batch report', duration, Utils.WriteDurationReport(duration));
 	}
@@ -135,7 +150,7 @@ const MAIN = async () => {
 					: a.toFixed(3)); // every third entry is UINT; others are UNIT SCALAR
 		};
 
-		for (let i = 0; i < proofTargets.length; ++i) {
+		for (let i = 0; i < predictions.length; ++i) {
 			let delta = 0.0;
 			let missReport = '';
 			let pass = false;
@@ -222,7 +237,8 @@ const MAIN = async () => {
 	const GRID = new Grid(	AXIS_SET,
 							MODEL_STATICS,
 							SESSION_DATA,
-							REPORT_ITERATION);
+							EVALUATE_PREDICTION);
+							// REPORT_ITERATION);
 							// REPORT_EPOCH);
 							// REPORT_BATCH);
 
