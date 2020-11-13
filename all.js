@@ -36,8 +36,8 @@ const MAIN = async () => {
 						new Progression(Progression.TYPE_LINEAR, 1)));
 
 	AXES.push(new Axis(	Axis.TYPE_NEURONS,
-						2,		// boundsBegin
-						3,		// boundsEnd
+						3,//15,		// boundsBegin
+						5,//45,	// boundsEnd
 						new Progression(Progression.TYPE_FIBONACCI)));
 
 	const AXIS_SET = new AxisSet(AXES);
