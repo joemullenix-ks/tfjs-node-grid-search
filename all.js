@@ -57,7 +57,8 @@ const MAIN = async () => {
 												neuronsPerHiddenLayer: 3
 											});
 
-//TODO: TDB, but this will very likely become a method of a top-level controller, e.g. TFJSGridSearch.js.
+//TODO: TBD, but this will very likely become a method of a top-level controller, e.g. TFJSGridSearch.js.
+//		At the very least the IO needs try/catch
 	const FETCH_DATA = async (pathInputs, pathTargets) => {
 		const FILE_RESULT =	{};
 
@@ -233,16 +234,23 @@ const MAIN = async () => {
 */
 	};
 
+	try {
+		const GRID = new Grid(	AXIS_SET,
+								MODEL_STATICS,
+								SESSION_DATA,
+								EVALUATE_PREDICTION,
+								{
+									writeResultsToPath: ''
+								});
+								// REPORT_ITERATION);
+								// REPORT_EPOCH);
+								// REPORT_BATCH);
 
-	const GRID = new Grid(	AXIS_SET,
-							MODEL_STATICS,
-							SESSION_DATA,
-							EVALUATE_PREDICTION);
-							// REPORT_ITERATION);
-							// REPORT_EPOCH);
-							// REPORT_BATCH);
-
-	await GRID.Run();
+		await GRID.Run();
+	}
+	catch (e) {
+		console.log(e);
+	}
 
 	console.log('\n' + 'eol');
 };
