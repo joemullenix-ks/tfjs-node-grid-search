@@ -244,7 +244,7 @@ const MAIN = async () => {
 
 	await GRID.Run();
 
-	console.log('eol');
+	console.log('\n' + 'eol');
 };
 
 MAIN();
