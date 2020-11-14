@@ -43,14 +43,15 @@ const MAIN = async () => {
 
 	AXES.push(new Axis(	Axis.TYPE_LAYERS,
 						1,		// boundsBegin
-						3,		// boundsEnd
+						2,		// boundsEnd
 						new Progression(Progression.TYPE_LINEAR, 1)));
 
+/*
 	AXES.push(new Axis(	Axis.TYPE_NEURONS,
 						5,		// boundsBegin
 						75,		// boundsEnd
 						new Progression(Progression.TYPE_LINEAR, 5)));
-						// new Progression(Progression.TYPE_FIBONACCI)));
+*/
 
 
 	const AXIS_SET = new AxisSet(AXES);
@@ -253,7 +254,8 @@ const MAIN = async () => {
 								SESSION_DATA,
 								EVALUATE_PREDICTION,
 								{
-									writeResultsToPath: 'C:\\_scratch\\wipeit'
+									repetitions: 2,
+									writeResultsToDirectory: '' // ex: "c:\\my tensorflow project\\grid search results"
 								});
 								// REPORT_ITERATION);
 								// REPORT_EPOCH);
