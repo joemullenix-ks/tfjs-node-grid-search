@@ -12,6 +12,17 @@ const { Utils }				= require('./lib/Utils');
 
 
 /*
+>> TODOS !!!!!!!!!
+	Multiple iterations
+	Lots more model params to support as axes
+	Run custom models via callback
+	Write the friggin model/weight files (if we can get around that bug)
+	Smart-start
+	Do a BASIC auto-abort on overfit and stuck
+		eventually give user options/callbacks that drive that
+	Then project upgrades; Lint, TS, Travis, JSDOC, public Git, NPM
+
+
 >> IDEAS !!!!!!!!!
 	FORK/SPAWN brother! simulrun
 
@@ -32,13 +43,15 @@ const MAIN = async () => {
 
 	AXES.push(new Axis(	Axis.TYPE_LAYERS,
 						1,		// boundsBegin
-						2,		// boundsEnd
+						3,		// boundsEnd
 						new Progression(Progression.TYPE_LINEAR, 1)));
 
 	AXES.push(new Axis(	Axis.TYPE_NEURONS,
-						3,//15,		// boundsBegin
-						5,//45,	// boundsEnd
-						new Progression(Progression.TYPE_FIBONACCI)));
+						5,		// boundsBegin
+						75,		// boundsEnd
+						new Progression(Progression.TYPE_LINEAR, 5)));
+						// new Progression(Progression.TYPE_FIBONACCI)));
+
 
 	const AXIS_SET = new AxisSet(AXES);
 
@@ -57,7 +70,8 @@ const MAIN = async () => {
 												neuronsPerHiddenLayer: 3
 											});
 
-//TODO: TDB, but this will very likely become a method of a top-level controller, e.g. TFJSGridSearch.js.
+//TODO: TBD, but this will very likely become a method of a top-level controller, e.g. TFJSGridSearch.js.
+//		At the very least the IO needs try/catch
 	const FETCH_DATA = async (pathInputs, pathTargets) => {
 		const FILE_RESULT =	{};
 
@@ -233,16 +247,23 @@ const MAIN = async () => {
 */
 	};
 
+	try {
+		const GRID = new Grid(	AXIS_SET,
+								MODEL_STATICS,
+								SESSION_DATA,
+								EVALUATE_PREDICTION,
+								{
+									writeResultsToPath: 'C:\\_scratch\\wipeit'
+								});
+								// REPORT_ITERATION);
+								// REPORT_EPOCH);
+								// REPORT_BATCH);
 
-	const GRID = new Grid(	AXIS_SET,
-							MODEL_STATICS,
-							SESSION_DATA,
-							EVALUATE_PREDICTION);
-							// REPORT_ITERATION);
-							// REPORT_EPOCH);
-							// REPORT_BATCH);
-
-	await GRID.Run();
+		await GRID.Run();
+	}
+	catch (e) {
+		console.log(e);
+	}
 
 	console.log('\n' + 'eol');
 };
