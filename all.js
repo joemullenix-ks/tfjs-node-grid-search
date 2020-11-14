@@ -32,12 +32,12 @@ const MAIN = async () => {
 
 	AXES.push(new Axis(	Axis.TYPE_LAYERS,
 						1,		// boundsBegin
-						5,		// boundsEnd
+						2,//5,		// boundsEnd
 						new Progression(Progression.TYPE_LINEAR, 1)));
 
 	AXES.push(new Axis(	Axis.TYPE_NEURONS,
-						5,//15,		// boundsBegin
-						90,//45,	// boundsEnd
+						2,//15,		// boundsBegin
+						3,//45,	// boundsEnd
 						new Progression(Progression.TYPE_FIBONACCI)));
 
 
