@@ -41,17 +41,17 @@ const MAIN = async () => {
 
 	const AXES = [];
 
+/*
 	AXES.push(new Axis(	Axis.TYPE_LAYERS,
 						1,		// boundsBegin
 						2,		// boundsEnd
 						new Progression(Progression.TYPE_LINEAR, 1)));
-
-/*
-	AXES.push(new Axis(	Axis.TYPE_NEURONS,
-						5,		// boundsBegin
-						75,		// boundsEnd
-						new Progression(Progression.TYPE_LINEAR, 5)));
 */
+
+	AXES.push(new Axis(	Axis.TYPE_NEURONS,
+						15,		// boundsBegin
+						45,		// boundsEnd
+						new Progression(Progression.TYPE_LINEAR, 15)));
 
 
 	const AXIS_SET = new AxisSet(AXES);
@@ -67,7 +67,7 @@ const MAIN = async () => {
 
 	const MODEL_STATICS = new ModelStatics(	AXIS_SET,
 											{
-												hiddenLayers: 2,
+												hiddenLayers: 1,
 												neuronsPerHiddenLayer: 3
 											});
 
@@ -254,7 +254,7 @@ const MAIN = async () => {
 								SESSION_DATA,
 								EVALUATE_PREDICTION,
 								{
-									repetitions: 2,
+									repetitions: 10,
 									writeResultsToDirectory: '' // ex: "c:\\my tensorflow project\\grid search results"
 								});
 								// REPORT_ITERATION);
