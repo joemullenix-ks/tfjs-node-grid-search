@@ -13,10 +13,11 @@ const { Utils }				= require('./lib/Utils');
 
 /*
 >> TODOS !!!!!!!!!
+	Multiple iterations
 	Lots more model params to support as axes
 	Run custom models via callback
-	Multiple iterations and smart-start
 	Write the friggin model/weight files (if we can get around that bug)
+	Smart-start
 	Do a BASIC auto-abort on overfit and stuck
 		eventually give user options/callbacks that drive that
 	Then project upgrades; Lint, TS, Travis, JSDOC, public Git, NPM
