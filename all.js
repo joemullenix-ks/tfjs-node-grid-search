@@ -12,6 +12,16 @@ const { Utils }				= require('./lib/Utils');
 
 
 /*
+>> TODOS !!!!!!!!!
+	Lots more model params to support as axes
+	Run custom models via callback
+	Multiple iterations and smart-start
+	Write the friggin model/weight files (if we can get around that bug)
+	Do a BASIC auto-abort on overfit and stuck
+		eventually give user options/callbacks that drive that
+	Then project upgrades; Lint, TS, Travis, JSDOC, public Git, NPM
+
+
 >> IDEAS !!!!!!!!!
 	FORK/SPAWN brother! simulrun
 
@@ -32,13 +42,14 @@ const MAIN = async () => {
 
 	AXES.push(new Axis(	Axis.TYPE_LAYERS,
 						1,		// boundsBegin
-						2,//5,		// boundsEnd
+						3,		// boundsEnd
 						new Progression(Progression.TYPE_LINEAR, 1)));
 
 	AXES.push(new Axis(	Axis.TYPE_NEURONS,
-						2,//15,		// boundsBegin
-						3,//45,	// boundsEnd
-						new Progression(Progression.TYPE_FIBONACCI)));
+						5,		// boundsBegin
+						75,		// boundsEnd
+						new Progression(Progression.TYPE_LINEAR, 5)));
+						// new Progression(Progression.TYPE_FIBONACCI)));
 
 
 	const AXIS_SET = new AxisSet(AXES);
@@ -241,7 +252,7 @@ const MAIN = async () => {
 								SESSION_DATA,
 								EVALUATE_PREDICTION,
 								{
-									writeResultsToPath: ''
+									writeResultsToPath: 'C:\\_scratch\\wipeit'
 								});
 								// REPORT_ITERATION);
 								// REPORT_EPOCH);
