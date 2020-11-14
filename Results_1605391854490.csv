@@ -1,0 +1,5 @@
+iteration,repetition,score,neuronsPerHiddenLayer,activationHidden,activationInput,activationOutput,dropoutEnabled1stHidden,dropoutEnabled2ndHidden,dropoutRate,batchSize,validationSplit,epochs,standardizeInput,hiddenLayers,deltaCorrect,deltaIncorrect,totalCorrect,totalCases
+0,0,0.64,3,relu,relu,softmax,false,false,0.05,25,0.25,50,true,1,24.801537454128265,18.09207046031952,64,100
+0,1,0.64,3,relu,relu,softmax,false,false,0.05,25,0.25,50,true,1,24.171409994363785,17.38610365986824,64,100
+1,0,0.64,3,relu,relu,softmax,false,false,0.05,25,0.25,50,true,2,23.666089326143265,17.862612143158913,64,100
+1,1,0.61,3,relu,relu,softmax,false,false,0.05,25,0.25,50,true,2,22.911861658096313,22.53932186961174,61,100
