@@ -51,9 +51,9 @@ const MAIN = async () => {
 	const AXES = [];
 
 	AXES.push(new Axis(	Axis.TYPE_BATCH_SIZE,
-						4,		// boundsBegin
-						16,		// boundsEnd
-						new Progression(Progression.TYPE_LINEAR, 2)));
+						1,		// boundsBegin
+						20,		// boundsEnd
+						new Progression(Progression.TYPE_LINEAR, 3)));
 
 	// AXES.push(new Axis(	Axis.TYPE_EPOCHS,
 	// 					10,		// boundsBegin
@@ -280,7 +280,7 @@ const MAIN = async () => {
 								SESSION_DATA,
 								EVALUATE_PREDICTION,
 								{
-									repetitions: 5,
+									repetitions: 3,
 									writeResultsToDirectory: 'c:/_scratch/wipeit' // ex: "c:\\my tensorflow project\\grid search results"
 
 								});
