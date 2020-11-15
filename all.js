@@ -13,7 +13,6 @@ const { Utils }				= require('./lib/Utils');
 
 /*
 >> TODOS !!!!!!!!!
-	Multiple iterations
 	Lots more model params to support as axes
 	Run custom models via callback
 	Write the friggin model/weight files (if we can get around that bug)
@@ -254,8 +253,9 @@ const MAIN = async () => {
 								SESSION_DATA,
 								EVALUATE_PREDICTION,
 								{
-									repetitions: 10,
-									writeResultsToDirectory: '' // ex: "c:\\my tensorflow project\\grid search results"
+									repetitions: 1,
+									writeResultsToDirectory: 'c:/_scratch/wipeit' // ex: "c:\\my tensorflow project\\grid search results"
+
 								});
 								// REPORT_ITERATION);
 								// REPORT_EPOCH);
