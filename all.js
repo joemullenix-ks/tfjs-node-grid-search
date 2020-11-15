@@ -51,9 +51,9 @@ const MAIN = async () => {
 	const AXES = [];
 
 	AXES.push(new Axis(	Axis.TYPE_BATCH_SIZE,
-						20,		// boundsBegin
-						25,		// boundsEnd
-						new Progression(Progression.TYPE_EXPONENTIAL, 2)));
+						5,		// boundsBegin
+						30,		// boundsEnd
+						new Progression(Progression.TYPE_LINEAR, 5)));
 
 	// AXES.push(new Axis(	Axis.TYPE_EPOCHS,
 	// 					10,		// boundsBegin
@@ -65,10 +65,10 @@ const MAIN = async () => {
 	// 					2,		// boundsEnd
 	// 					new Progression(Progression.TYPE_LINEAR, 1)));
 
-	// AXES.push(new Axis(	Axis.TYPE_NEURONS,
-	// 					15,		// boundsBegin
-	// 					45,		// boundsEnd
-	// 					new Progression(Progression.TYPE_LINEAR, 15)));
+	AXES.push(new Axis(	Axis.TYPE_NEURONS,
+						10,		// boundsBegin
+						20,		// boundsEnd
+						new Progression(Progression.TYPE_LINEAR, 1)));
 
 /*SOON
 	AXES.push(new Axis(	Axis.TYPE_VALIDATION_SPLIT,
@@ -90,11 +90,11 @@ const MAIN = async () => {
 
 	const MODEL_STATICS = new ModelStatics(	AXIS_SET,
 											{
-												batchSize: 10,
-												epochs: 20,
+												// batchSize: 10,
+												epochs: 50,
 												hiddenLayers: 1,
 												neuronsPerHiddenLayer: 15,
-												validationSplit: 0.25
+												// validationSplit: 0.25
 											});
 
 //TODO: TBD, but this will very likely become a method of a top-level controller, e.g. TFJSGridSearch.js.
@@ -280,7 +280,7 @@ const MAIN = async () => {
 								SESSION_DATA,
 								EVALUATE_PREDICTION,
 								{
-									repetitions: 3,
+									repetitions: 5,
 									writeResultsToDirectory: 'c:/_scratch/wipeit' // ex: "c:\\my tensorflow project\\grid search results"
 
 								});
