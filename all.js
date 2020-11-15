@@ -40,18 +40,22 @@ const MAIN = async () => {
 
 	const AXES = [];
 
+	AXES.push(new Axis(	Axis.TYPE_EPOCHS,
+						10,		// boundsBegin
+						50,		// boundsEnd
+						new Progression(Progression.TYPE_LINEAR, 5)));
+
 /*
 	AXES.push(new Axis(	Axis.TYPE_LAYERS,
 						1,		// boundsBegin
 						2,		// boundsEnd
 						new Progression(Progression.TYPE_LINEAR, 1)));
-*/
 
 	AXES.push(new Axis(	Axis.TYPE_NEURONS,
 						15,		// boundsBegin
 						45,		// boundsEnd
 						new Progression(Progression.TYPE_LINEAR, 15)));
-
+*/
 
 	const AXIS_SET = new AxisSet(AXES);
 
@@ -66,8 +70,9 @@ const MAIN = async () => {
 
 	const MODEL_STATICS = new ModelStatics(	AXIS_SET,
 											{
+												epochs: 100,
 												hiddenLayers: 1,
-												neuronsPerHiddenLayer: 3
+												neuronsPerHiddenLayer: 15
 											});
 
 //TODO: TBD, but this will very likely become a method of a top-level controller, e.g. TFJSGridSearch.js.
