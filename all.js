@@ -6,23 +6,17 @@ const { AxisSet }			= require('./lib/AxisSet');
 const { FileIO }			= require('./lib/FileIO');
 const { Grid }				= require('./lib/Grid');
 const { ModelStatics }		= require('./lib/ModelStatics');
-const { Progression }		= require('./lib/Progression');
+const { ExponentialProgression } = require('./lib/progression/ExponentialProgression');
+const { FibonacciProgression } = require('./lib/progression/FibonacciProgression');
+// const { Progression }		= require('./lib/Progression');
+const { LinearProgression } = require('./lib/progression/LinearProgression');
 const { SessionData }		= require('./lib/SessionData');
 const { Utils }				= require('./lib/Utils');
 
 
 /*
 >> TODOS !!!!!!!!!
-	Lots more model params to support as axes
-		x epochs
-		x batch size
-		val split
-			x disallow zero and one (breaks validation (...turns it off)); TODO: eventually support non-validated runs
-			add math to ensure reasonable bounds, e.g. 0.000001 passes, but leaves zero cases (i think)
-			report at start of epoch
-			write float progressions
-
-	Add duration to iteration report
+	~ Lots more model params to support as axes
 	Run custom models via callback
 	Separate the concept of pass (repetition of iteration) and iteration (grid cell)
 	Write the friggin model/weight files (if we can get around that bug)
@@ -50,30 +44,34 @@ const MAIN = async () => {
 
 	const AXES = [];
 
-	// AXES.push(new Axis(	Axis.TYPE_BATCH_SIZE,
-	// 					1,		// boundsBegin
-	// 					20,		// boundsEnd
-	// 					new Progression(Progression.TYPE_LINEAR, 3, null, true)));
+/*
+	AXES.push(new Axis(	Axis.TYPE_BATCH_SIZE,
+						1,		// boundsBegin
+						50,		// boundsEnd
+						new ExponentialProgression(1.5, 0.5)));
+*/
 
-	// AXES.push(new Axis(	Axis.TYPE_EPOCHS,
-	// 					10,		// boundsBegin
-	// 					20,		// boundsEnd
-	// 					new Progression(Progression.TYPE_LINEAR, 5, null, true)));
+	AXES.push(new Axis(	Axis.TYPE_EPOCHS,
+						10,		// boundsBegin
+						100,		// boundsEnd
+						new FibonacciProgression(4)));
 
-	// AXES.push(new Axis(	Axis.TYPE_LAYERS,
-	// 					1,		// boundsBegin
-	// 					2,		// boundsEnd
-	// 					new Progression(Progression.TYPE_LINEAR, 1, null, true)));
+/*
+	AXES.push(new Axis(	Axis.TYPE_LAYERS,
+						0,		// boundsBegin
+						1,		// boundsEnd
+						new LinearProgression(3)));
 
 	AXES.push(new Axis(	Axis.TYPE_NEURONS,
 						10,		// boundsBegin
 						20,		// boundsEnd
-						new Progression(Progression.TYPE_LINEAR, 1, null, true)));
+						new Progression(Progression.TYPE_LINEAR, 5, null, true)));
 
-	// AXES.push(new Axis(	Axis.TYPE_VALIDATION_SPLIT,
-	// 					0.1,		// boundsBegin
-	// 					0.3,		// boundsEnd
-	// 					new Progression(Progression.TYPE_LINEAR, 0.05, null, false)));
+	AXES.push(new Axis(	Axis.TYPE_VALIDATION_SPLIT,
+						0.1,		// boundsBegin
+						0.4,		// boundsEnd
+						new Progression(Progression.TYPE_LINEAR, 0.15, null, false)));
+*/
 
 	const AXIS_SET = new AxisSet(AXES);
 
@@ -278,7 +276,7 @@ const MAIN = async () => {
 								SESSION_DATA,
 								EVALUATE_PREDICTION,
 								{
-									repetitions: 3,
+									repetitions: 1,
 									writeResultsToDirectory: 'c:/_scratch/wipeit' // ex: "c:\\my tensorflow project\\grid search results"
 
 								});
