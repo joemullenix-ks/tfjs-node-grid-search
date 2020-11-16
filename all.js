@@ -1,17 +1,16 @@
 'use strict';
 
 
-const { Axis }				= require('./lib/Axis');
-const { AxisSet }			= require('./lib/AxisSet');
-const { FileIO }			= require('./lib/FileIO');
-const { Grid }				= require('./lib/Grid');
-const { ModelStatics }		= require('./lib/ModelStatics');
-const { ExponentialProgression } = require('./lib/progression/ExponentialProgression');
-const { FibonacciProgression } = require('./lib/progression/FibonacciProgression');
-// const { Progression }		= require('./lib/Progression');
-const { LinearProgression } = require('./lib/progression/LinearProgression');
-const { SessionData }		= require('./lib/SessionData');
-const { Utils }				= require('./lib/Utils');
+const { Axis }						= require('./lib/Axis');
+const { AxisSet }					= require('./lib/AxisSet');
+const { FileIO }					= require('./lib/FileIO');
+const { Grid }						= require('./lib/Grid');
+const { ModelStatics }				= require('./lib/ModelStatics');
+const { ExponentialProgression }	= require('./lib/progression/ExponentialProgression');
+const { FibonacciProgression }		= require('./lib/progression/FibonacciProgression');
+const { LinearProgression } 		= require('./lib/progression/LinearProgression');
+const { SessionData }				= require('./lib/SessionData');
+const { Utils }						= require('./lib/Utils');
 
 
 /*
@@ -53,7 +52,7 @@ const MAIN = async () => {
 
 	AXES.push(new Axis(	Axis.TYPE_EPOCHS,
 						10,		// boundsBegin
-						100,		// boundsEnd
+						20,		// boundsEnd
 						new FibonacciProgression(4)));
 
 /*
@@ -84,10 +83,10 @@ const MAIN = async () => {
 //		The user supplies a callback. We invoke the callback each iteration, passing the current value for each
 //		dynamic param (i.e. those with axes). The user then assembles and returns a model.
 
-	const MODEL_STATICS = new ModelStatics(	AXIS_SET,
+	const MODEL_STATICS = new ModelStatics(	//AXIS_SET,
 											{
 												// batchSize: 10,
-												epochs: 10,
+												// epochs: 10,
 												hiddenLayers: 1,
 												neuronsPerHiddenLayer: 15,
 												// validationSplit: 0.25
@@ -276,7 +275,7 @@ const MAIN = async () => {
 								SESSION_DATA,
 								EVALUATE_PREDICTION,
 								{
-									repetitions: 1,
+									repetitions: 2,
 									writeResultsToDirectory: 'c:/_scratch/wipeit' // ex: "c:\\my tensorflow project\\grid search results"
 
 								});
