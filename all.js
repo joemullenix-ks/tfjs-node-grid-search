@@ -52,7 +52,7 @@ const MAIN = async () => {
 
 	AXES.push(new Axis(	Axis.TYPE_EPOCHS,
 						10,		// boundsBegin
-						40,		// boundsEnd
+						20,		// boundsEnd
 						new FibonacciProgression(4)));
 
 /*
