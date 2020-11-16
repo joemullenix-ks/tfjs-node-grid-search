@@ -50,32 +50,30 @@ const MAIN = async () => {
 
 	const AXES = [];
 
-	AXES.push(new Axis(	Axis.TYPE_BATCH_SIZE,
-						1,		// boundsBegin
-						20,		// boundsEnd
-						new Progression(Progression.TYPE_LINEAR, 3)));
+	// AXES.push(new Axis(	Axis.TYPE_BATCH_SIZE,
+	// 					1,		// boundsBegin
+	// 					20,		// boundsEnd
+	// 					new Progression(Progression.TYPE_LINEAR, 3, null, true)));
 
 	// AXES.push(new Axis(	Axis.TYPE_EPOCHS,
 	// 					10,		// boundsBegin
 	// 					20,		// boundsEnd
-	// 					new Progression(Progression.TYPE_LINEAR, 5)));
+	// 					new Progression(Progression.TYPE_LINEAR, 5, null, true)));
 
 	// AXES.push(new Axis(	Axis.TYPE_LAYERS,
 	// 					1,		// boundsBegin
 	// 					2,		// boundsEnd
-	// 					new Progression(Progression.TYPE_LINEAR, 1)));
+	// 					new Progression(Progression.TYPE_LINEAR, 1, null, true)));
 
-	// AXES.push(new Axis(	Axis.TYPE_NEURONS,
-	// 					10,		// boundsBegin
-	// 					20,		// boundsEnd
-	// 					new Progression(Progression.TYPE_LINEAR, 1)));
+	AXES.push(new Axis(	Axis.TYPE_NEURONS,
+						10,		// boundsBegin
+						20,		// boundsEnd
+						new Progression(Progression.TYPE_LINEAR, 1, null, true)));
 
-/*SOON
-	AXES.push(new Axis(	Axis.TYPE_VALIDATION_SPLIT,
-						0.2,		// boundsBegin
-						0.8,		// boundsEnd
-						new Progression(Progression.TYPE_EXPONENTIAL, 2)));
-*/
+	// AXES.push(new Axis(	Axis.TYPE_VALIDATION_SPLIT,
+	// 					0.1,		// boundsBegin
+	// 					0.3,		// boundsEnd
+	// 					new Progression(Progression.TYPE_LINEAR, 0.05, null, false)));
 
 	const AXIS_SET = new AxisSet(AXES);
 
