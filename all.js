@@ -43,6 +43,7 @@ const MAIN = async () => {
 
 	const AXES = [];
 
+/*
 	AXES.push(new Axis(	Axis.TYPE_BATCH_SIZE,
 						100,	// boundsBegin
 						10,		// boundsEnd
@@ -57,17 +58,24 @@ const MAIN = async () => {
 						0,		// boundsBegin
 						1,		// boundsEnd
 						new LinearProgression(3)));
+*/
 
+	AXES.push(new Axis(	Axis.TYPE_LEARN_RATE,
+						0.00001,	// boundsBegin
+						0.2,		// boundsEnd
+						new ExponentialProgression(2, 0.0001)));
+
+/*
 	AXES.push(new Axis(	Axis.TYPE_NEURONS,
 						10,		// boundsBegin
 						20,		// boundsEnd
 						new LinearProgression(5)));
 
 	AXES.push(new Axis(	Axis.TYPE_VALIDATION_SPLIT,
-						0.1,		// boundsBegin
-						0.8,		// boundsEnd
+						0.1,	// boundsBegin
+						0.8,	// boundsEnd
 						new ExponentialProgression(1.5, 0.25)));
-
+*/
 
 	const AXIS_SET = new AxisSet(AXES);
 
@@ -82,10 +90,10 @@ const MAIN = async () => {
 
 	const MODEL_STATICS = new ModelStatics(	{
 												batchSize: 10,
-												// epochs: 10,
+												epochs: 10,
 												hiddenLayers: 1,
 												neuronsPerHiddenLayer: 15,
-												// validationSplit: 0.25
+												validationSplit: 0.25
 											});
 
 //TODO: TBD, but this will very likely become a method of a top-level controller, e.g. TFJSGridSearch.js.
@@ -271,7 +279,7 @@ const MAIN = async () => {
 								SESSION_DATA,
 								EVALUATE_PREDICTION,
 								{
-									repetitions: 2,
+									repetitions: 4,
 									writeResultsToDirectory: 'c:/_scratch/wipeit' // ex: "c:\\my tensorflow project\\grid search results"
 
 								});
