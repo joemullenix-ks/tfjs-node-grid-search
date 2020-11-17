@@ -43,19 +43,16 @@ const MAIN = async () => {
 
 	const AXES = [];
 
-/*
 	AXES.push(new Axis(	Axis.TYPE_BATCH_SIZE,
-						1,		// boundsBegin
-						50,		// boundsEnd
-						new ExponentialProgression(1.5, 0.5)));
-*/
+						100,	// boundsBegin
+						10,		// boundsEnd
+						new ExponentialProgression(4, 1)));
 
 	AXES.push(new Axis(	Axis.TYPE_EPOCHS,
 						10,		// boundsBegin
 						20,		// boundsEnd
 						new FibonacciProgression(4)));
 
-/*
 	AXES.push(new Axis(	Axis.TYPE_LAYERS,
 						0,		// boundsBegin
 						1,		// boundsEnd
@@ -64,13 +61,13 @@ const MAIN = async () => {
 	AXES.push(new Axis(	Axis.TYPE_NEURONS,
 						10,		// boundsBegin
 						20,		// boundsEnd
-						new Progression(Progression.TYPE_LINEAR, 5, null, true)));
+						new LinearProgression(5)));
 
 	AXES.push(new Axis(	Axis.TYPE_VALIDATION_SPLIT,
 						0.1,		// boundsBegin
-						0.4,		// boundsEnd
-						new Progression(Progression.TYPE_LINEAR, 0.15, null, false)));
-*/
+						0.8,		// boundsEnd
+						new ExponentialProgression(1.5, 0.25)));
+
 
 	const AXIS_SET = new AxisSet(AXES);
 
@@ -83,9 +80,8 @@ const MAIN = async () => {
 //		The user supplies a callback. We invoke the callback each iteration, passing the current value for each
 //		dynamic param (i.e. those with axes). The user then assembles and returns a model.
 
-	const MODEL_STATICS = new ModelStatics(	//AXIS_SET,
-											{
-												// batchSize: 10,
+	const MODEL_STATICS = new ModelStatics(	{
+												batchSize: 10,
 												// epochs: 10,
 												hiddenLayers: 1,
 												neuronsPerHiddenLayer: 15,
