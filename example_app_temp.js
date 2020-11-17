@@ -17,37 +17,39 @@ const MAIN = async () => {
 
 	const AXES = [];
 
-	AXES.push(new Axis(	Axis.TYPE_BATCH_SIZE,
-						5,		// boundsBegin
-						10,		// boundsEnd
-						new LinearProgression(5)));
-
 /*
+	AXES.push(new Axis(	Axis.TYPE_BATCH_SIZE,
+						100,	// boundsBegin
+						10,		// boundsEnd
+						new ExponentialProgression(4, 1)));
+
 	AXES.push(new Axis(	Axis.TYPE_EPOCHS,
 						10,		// boundsBegin
 						20,		// boundsEnd
 						new FibonacciProgression(4)));
-*/
 
 	AXES.push(new Axis(	Axis.TYPE_LAYERS,
 						0,		// boundsBegin
 						1,		// boundsEnd
-						new LinearProgression(1)));
+						new LinearProgression(3)));
+*/
 
 	AXES.push(new Axis(	Axis.TYPE_LEARN_RATE,
-						0.0001,	// boundsBegin
-						0.002,		// boundsEnd
-						new ExponentialProgression(2, 0.01)));
+						0.00001,	// boundsBegin
+						0.2,		// boundsEnd
+						new ExponentialProgression(2, 0.0001)));
 
+/*
 	AXES.push(new Axis(	Axis.TYPE_NEURONS,
 						10,		// boundsBegin
-						30,		// boundsEnd
-						new FibonacciProgression(0)));
+						20,		// boundsEnd
+						new LinearProgression(5)));
 
 	AXES.push(new Axis(	Axis.TYPE_VALIDATION_SPLIT,
 						0.1,	// boundsBegin
-						0.3,	// boundsEnd
-						new LinearProgression(0.2)));
+						0.8,	// boundsEnd
+						new ExponentialProgression(1.5, 0.25)));
+*/
 
 	const AXIS_SET = new AxisSet(AXES);
 
@@ -90,15 +92,34 @@ const MAIN = async () => {
 
 	const DATA_PACKAGE = await FETCH_DATA(DATA_FILEPATH_INPUTS, DATA_FILEPATH_TARGETS);
 
-	// set aside 500 or 10% of cases, whichever is less, for post-training generalization tests
+	// set aside 100 or 10% of cases, whichever is less, for post-training generalization tests
 	const PROOF_PERCENTAGE = DATA_PACKAGE.inputs.length < 1000
 								? 0.1
-								: (500 / DATA_PACKAGE.inputs.length);
+								: (100 / DATA_PACKAGE.inputs.length);
 
 	const SESSION_DATA = new SessionData(	PROOF_PERCENTAGE,
 											DATA_PACKAGE.inputs,
 											DATA_PACKAGE.targets,
 											true);						// useDefaultStandardization
+/*KEEP: Standardization via callbacks:
+											(rawInputs) => {			// callbackStandardize
+//NOTE: This example walks nested arrays, modifying each feature value.
+// 												const RECURSIVELY_MODIFY_FEATURES = (a) => {
+// 													a.forEach((value, index, array) => {
+// 														if (Array.isArray(value)) {
+// 															RECURSIVELY_STANDARDIZE_FEATURES(value);
+// 															return;
+// 														}
+//
+// 														array[index] /= 2; // feature modifications happen here
+// 													});
+// 												};
+//
+// 												RECURSIVELY_MODIFY_FEATURES(rawInputs);
+											},
+											null);						// callbackUnstandardize
+*/
+
 
 	const EVALUATE_PREDICTION = (target, prediction) => {
 //NOTE: This is written for a multi-class (one-hot), classification network.
@@ -125,6 +146,105 @@ const MAIN = async () => {
 
 	const REPORT_ITERATION = (duration, predictions, proofInputs, proofTargets) => {
 		console.log('Iteration report', duration, Utils.WriteDurationReport(duration));
+
+		let totalCorrect = 0;
+
+		const REPORTING_DECIMALS = 2;
+
+		let sumDelta = 0.0;
+
+		let sumMissDelta = 0.0;
+
+		const RESULTS_TO_SORT = [];
+
+//TODO: This is custom; actually the whole process is! Lift it out into a callback.
+		const WRITE_INPUTS_ENTRY = (a, b, c) => {
+			return (b % 3 === 0
+					? (a < 10 ? '0' : '') + a
+					: a.toFixed(3)); // every third entry is UINT; others are UNIT SCALAR
+		};
+
+		for (let i = 0; i < predictions.length; ++i) {
+			let delta = 0.0;
+			let missReport = '';
+			let pass = false;
+
+			const PREDICTED_INDEX = Utils.ArrayFindIndexOfHighestValue(predictions[i]);
+
+			let foundOneHot = false;
+
+			for (let p = 0; p < proofTargets[i].length; ++p) {
+				if (proofTargets[i][p] !== 1) {
+					// not the one-hot
+					continue;
+				}
+
+				foundOneHot = true;
+
+				// this is the one-hot, i.e. we expect its prediction to be ~1.0, and thus the rest ~0.0 (inherent to softmax)
+
+				delta = proofTargets[i][p] - predictions[i][p];
+
+				sumDelta += Math.abs(delta);
+
+				if (p === PREDICTED_INDEX) {
+					pass = true;
+
+					++totalCorrect;
+				}
+				else {
+					sumMissDelta += Math.abs(delta);
+				}
+
+				missReport = 'pass: ' + (pass ? 'T' : 'f')
+							+ '; labels: ' + proofTargets[i].toString()
+							+ '; prediction: ' + predictions[i].map(x => x.toFixed(2)).toString()
+							+ '; delta: ' + delta.toFixed(5);
+
+				break;
+			}
+
+			if (!foundOneHot) {
+				throw new Error('One hot not found; invalid target data[' + i + ']: ' + proofTargets[i]);
+			}
+
+			RESULTS_TO_SORT.push(	{
+										pass: pass,
+										delta: Math.abs(delta),
+										report: missReport
+									});
+		}
+
+		const TOTAL_CHECKED = proofTargets.length;
+
+		const TOTAL_INCORRECT = TOTAL_CHECKED - totalCorrect;
+
+		console.log('SCORE', (100 * totalCorrect / TOTAL_CHECKED).toFixed(2) + '%');
+
+/*KEEP: All good stuff, but too spammy for now; will move into a generalized reporting modules.
+		console.log(totalCorrect + '/' + TOTAL_CHECKED, '(' + TOTAL_INCORRECT + ' incorrect)');
+
+		console.log('AVE. MISS DELTA', (TOTAL_INCORRECT === 0
+										? 'zero incorrect' // custom text in lieu of div-by-zero
+										: (sumMissDelta / TOTAL_INCORRECT).toFixed(6)));
+
+		console.log('AVE. DELTA', (sumDelta / TOTAL_CHECKED).toFixed(6));
+
+		console.log('AVE. HIT DELTA', totalCorrect === 0
+										? 'zero correct' // custom text in lieu of div-by-zero
+										: ((sumDelta - sumMissDelta) / totalCorrect).toFixed(6));
+
+		console.log('PROOF CASE DETAILS');
+
+		// sort by cumulative miss-delta, closest first
+		RESULTS_TO_SORT.sort((a, b) => {
+			return parseFloat(a.delta) - parseFloat(b.delta);
+		});
+
+		for (let i = 0; i < proofTargets.length; ++i) {
+			console.log(i + '/' + proofTargets.length + ' | ' + RESULTS_TO_SORT[i].report);
+		}
+*/
 	};
 
 	try {
@@ -133,10 +253,8 @@ const MAIN = async () => {
 								SESSION_DATA,
 								EVALUATE_PREDICTION,
 								{
-									epochStatsDepth: 3,
-									repetitions: 2,
-									validationSetSizeMin: 1000,
-									writeResultsToDirectory: '' // ex: "c:/my tensorflow project/grid search results"
+									repetitions: 4,
+									writeResultsToDirectory: 'c:/_scratch/wipeit' // ex: "c:\\my tensorflow project\\grid search results"
 								});
 								// REPORT_ITERATION);
 								// REPORT_EPOCH);
