@@ -41,6 +41,8 @@ class Grid {
 		console.assert(sessionData instanceof SessionData);
 		console.assert(typeof callbackEvaluatePrediction === 'function');
 
+		console.log('\n' + 'Instantiating Grid...');
+
 		// this class performs validation of optionsPOD and its contents
 		this._gridOptions = new GridOptions(optionsPOD);
 
@@ -224,6 +226,7 @@ class Grid {
 
 			const RESULT = {};
 
+//TODO: Move this into FileIO as soon as TS is stable.
 			const PRODUCE_FILENAME = () => {
 				const TIMESTAMP = (new Date()).toLocaleString();
 				const FILTERED = TIMESTAMP.replace(/[^a-z0-9]/gi, '_');
@@ -232,7 +235,9 @@ class Grid {
 				return 'Results_' + LOWERED + '.csv';
 			};
 
-			await FileIO.WriteResultsFile(	PRODUCE_FILENAME(),
+			const FILENAME = PRODUCE_FILENAME();
+
+			await FileIO.WriteResultsFile(	FILENAME,
 											this._gridOptions.writeResultsToDirectory,
 											this._gridRunStats.WriteCSV(),
 											RESULT);

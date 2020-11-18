@@ -7,11 +7,20 @@
 		{
 			"type": "node",
 			"request": "launch",
-			"name": "Launch Program",
+			"name": "Launch JS",
 			"skipFiles": [
 				"<node_internals>/**"
 			],
-			"program": "${workspaceFolder}\\all.js"
+			"program": "${workspaceFolder}\\src\\all.js"
+		},
+		{
+			"type": "node",
+			"request": "launch",
+			"name": "Launch TypeScript",
+			"skipFiles": [
+				"<node_internals>/**"
+			],
+			"program": "${workspaceFolder}\\built\\all.js"
 		}
 	]
 }
