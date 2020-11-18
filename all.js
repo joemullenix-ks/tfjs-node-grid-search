@@ -27,7 +27,6 @@ const MAIN = async () => {
 						10,		// boundsBegin
 						20,		// boundsEnd
 						new FibonacciProgression(4)));
-*/
 
 	AXES.push(new Axis(	Axis.TYPE_LAYERS,
 						0,		// boundsBegin
@@ -48,6 +47,7 @@ const MAIN = async () => {
 						0.1,	// boundsBegin
 						0.3,	// boundsEnd
 						new LinearProgression(0.2)));
+*/
 
 	const AXIS_SET = new AxisSet(AXES);
 
