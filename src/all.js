@@ -134,7 +134,7 @@ const MAIN = async () => {
 								EVALUATE_PREDICTION,
 								{
 									epochStatsDepth: 3,
-									repetitions: 2,
+									repetitions: 1,
 									validationSetSizeMin: 1000,
 									writeResultsToDirectory: '' // ex: "c:/my tensorflow project/grid search results"
 								});
