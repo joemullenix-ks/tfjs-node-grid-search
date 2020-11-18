@@ -150,7 +150,7 @@ var Grid = /** @class */ (function () {
     };
     Grid.prototype.Run = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var TOTAL_ITERATIONS, TOTAL_PASSES, pass, i, DYNAMIC_PARAMS, STATIC_PARAMS, MODEL_PARAMS, r, MODEL, ITERATION_DURATION, MODEL_TEST_STATS, ITERATION_RESULT, GRID_TIME_END, GRID_DURATION, FileIO, RESULT, PRODUCE_FILENAME, FILENAME;
+            var TOTAL_ITERATIONS, TOTAL_PASSES, pass, i, DYNAMIC_PARAMS, STATIC_PARAMS, MODEL_PARAMS, r, MODEL, ITERATION_DURATION, MODEL_TEST_STATS, ITERATION_RESULT, GRID_TIME_END, GRID_DURATION, FileIO, RESULT, FILENAME;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -207,13 +207,7 @@ var Grid = /** @class */ (function () {
                         if (!(typeof this._gridOptions.writeResultsToDirectory === 'string')) return [3 /*break*/, 9];
                         FileIO = require('./FileIO').FileIO;
                         RESULT = {};
-                        PRODUCE_FILENAME = function () {
-                            var TIMESTAMP = (new Date()).toLocaleString();
-                            var FILTERED = TIMESTAMP.replace(/[^a-z0-9]/gi, '_');
-                            var LOWERED = FILTERED.toLowerCase();
-                            return 'Results_' + LOWERED + '.csv';
-                        };
-                        FILENAME = PRODUCE_FILENAME();
+                        FILENAME = FileIO.ProduceResultsFilename();
                         return [4 /*yield*/, FileIO.WriteResultsFile(FILENAME, this._gridOptions.writeResultsToDirectory, this._gridRunStats.WriteCSV(), RESULT)];
                     case 8:
                         _a.sent();

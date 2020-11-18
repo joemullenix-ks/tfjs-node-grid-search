@@ -7,6 +7,14 @@ const SLASH = require('slash');
 
 
 const FILE_IO = {
+	ProduceResultsFilename: () => {
+		const TIMESTAMP = (new Date()).toLocaleString();
+		const FILTERED = TIMESTAMP.replace(/[^a-z0-9]/gi, '_');
+		const LOWERED = FILTERED.toLowerCase();
+
+		return 'Results_' + LOWERED + '.csv';
+	},
+
 	ReadDataFile: async (path, result) => {
 		console.assert(typeof path === 'string');
 		console.assert(path !== '');

@@ -1,5 +1,12 @@
 'use strict';
 
+import { EpochStats } from './lib/EpochStats';
+import { FileReadResult } from './lib/FileReadResult';
+//KEEP: This is giving me 'not a module'. Is that because it's an Object, rather than a class? We'll see.
+// import { Utils } from './lib/Utils';
+
+import { TFInputsArray } from './ts_types/custom';
+
 
 const { Axis }						= require('./lib/Axis');
 const { AxisSet }					= require('./lib/AxisSet');
@@ -12,7 +19,6 @@ const { LinearProgression } 		= require('./lib/progression/LinearProgression');
 const { SessionData }				= require('./lib/SessionData');
 const { Utils }						= require('./lib/Utils');
 
-
 const MAIN = async () => {
 
 	const AXES = [];
@@ -22,22 +28,24 @@ const MAIN = async () => {
 						10,		// boundsEnd
 						new LinearProgression(5)));
 
-/*
 	AXES.push(new Axis(	Axis.TYPE_EPOCHS,
 						10,		// boundsBegin
 						20,		// boundsEnd
 						new FibonacciProgression(4)));
 
+/*
 	AXES.push(new Axis(	Axis.TYPE_LAYERS,
 						0,		// boundsBegin
 						1,		// boundsEnd
 						new LinearProgression(1)));
+*/
 
 	AXES.push(new Axis(	Axis.TYPE_LEARN_RATE,
 						0.0001,	// boundsBegin
 						0.002,		// boundsEnd
 						new ExponentialProgression(2, 0.01)));
 
+/*
 	AXES.push(new Axis(	Axis.TYPE_NEURONS,
 						10,		// boundsBegin
 						30,		// boundsEnd
@@ -70,8 +78,8 @@ const MAIN = async () => {
 
 //TODO: TBD, but this will very likely become a method of a top-level controller, e.g. TFJSGridSearch.js.
 //		At the very least the IO needs try/catch
-	const FETCH_DATA = async (pathInputs, pathTargets) => {
-		const FILE_RESULT =	{};
+	const FETCH_DATA = async (pathInputs: string, pathTargets: string) => {
+		const FILE_RESULT =	new FileReadResult();
 
 		await FileIO.ReadDataFile(pathInputs, FILE_RESULT);
 
@@ -100,7 +108,7 @@ const MAIN = async () => {
 											DATA_PACKAGE.targets,
 											true);						// useDefaultStandardization
 
-	const EVALUATE_PREDICTION = (target, prediction) => {
+	const EVALUATE_PREDICTION = (target: Array<number>, prediction: Array<number>) => {
 //NOTE: This is written for a multi-class (one-hot), classification network.
 //
 //TODO: Write example for regression, multi-label classification, etc...
@@ -115,16 +123,40 @@ const MAIN = async () => {
 				};
 	}
 
-	const REPORT_BATCH = (duration, batch, logs) => {
-		console.log('Batch report', duration, Utils.WriteDurationReport(duration));
+//[[TF ANY]]
+	const REPORT_BATCH = (duration: number, batch: any, logs: any) => {
+		Math.random() < 0.00001 && console.log('Batch report', duration, batch, logs, Utils.WriteDurationReport(duration));
 	}
 
-	const REPORT_EPOCH = (duration, epoch, logs, epochStats) => {
-		console.log('Epoch report', duration, Utils.WriteDurationReport(duration));
+//[[TF ANY]]
+	const REPORT_EPOCH = (duration: number, epoch: number, logs: any, epochStats: typeof EpochStats) => {
+		Math.random() < 0.00001 && console.log('Epoch report', duration, epoch, logs, epochStats, Utils.WriteDurationReport(duration));
 	}
 
-	const REPORT_ITERATION = (duration, predictions, proofInputs, proofTargets) => {
-		console.log('Iteration report', duration, Utils.WriteDurationReport(duration));
+
+// //vv TODO: File this away ... somewhere. Likely a new types file. Maaaybe SessionData.
+
+// // WEEEEEEEEEEEEEEE!, but I don't see another way
+// type ArrayOrder2 = Array<Array<number>>;
+// type ArrayOrder3 = Array<Array<Array<number>>>;
+// type ArrayOrder4 = Array<Array<Array<Array<number>>>>;
+// type ArrayOrder5 = Array<Array<Array<Array<Array<number>>>>>;
+// type ArrayOrder6 = Array<Array<Array<Array<Array<Array<number>>>>>>;
+
+// type TFInputsArray = ArrayOrder2 | ArrayOrder3 | ArrayOrder4 | ArrayOrder5 | ArrayOrder6;
+// //^^
+
+
+	const REPORT_ITERATION = (	duration: number,
+								predictions: Array<number>,
+								proofInputs: TFInputsArray,
+								proofTargets: Array<number>) => {
+		console.log('Iteration report',
+					duration,
+					predictions,
+					proofInputs,
+					proofTargets,
+					Utils.WriteDurationReport(duration));
 	};
 
 	try {
@@ -137,10 +169,10 @@ const MAIN = async () => {
 									repetitions: 1,
 									validationSetSizeMin: 1000,
 									writeResultsToDirectory: '' // ex: "c:/my tensorflow project/grid search results"
-								});
-								// REPORT_ITERATION);
-								// REPORT_EPOCH);
-								// REPORT_BATCH);
+								},
+								REPORT_ITERATION,
+								REPORT_EPOCH,
+								REPORT_BATCH);
 
 		await GRID.Run();
 	}

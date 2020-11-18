@@ -5,8 +5,10 @@
 
 
 const UTILS = {
-	ArrayCalculateAverage: (array) => {
-		console.assert(Array.isArray(array));
+	ArrayCalculateAverage: (array: Array<number>): number => {
+		if (array.length === 0) {
+			throw new Error('Cannot calculate average. Array is empty.');
+		}
 
 //PERF: This can be done more efficiently w/ a little math. Don't walk the whole set. Instead, discount a running average (which
 //		we'll keep separately and pass in), by (droppedSample / total), then add (newSample / total).
@@ -16,8 +18,7 @@ const UTILS = {
 		return SUM / array.length;
 	},
 
-	ArrayFindIndexOfHighestValue: (values) => {
-		console.assert(Array.isArray(values));
+	ArrayFindIndexOfHighestValue: (values: Array<number>): number => {
 		console.assert(values.length > 0);
 
 		let indexOfHighest = 0;
@@ -36,11 +37,7 @@ const UTILS = {
 		return indexOfHighest;
 	},
 
-	CheckNonNegativeInteger: (x) => {
-		if (typeof x !== 'number') {
-			return false;
-		}
-
+	CheckNonNegativeInteger: (x: number): boolean => {
 		if (x < 0) {
 			return false;
 		}
@@ -52,11 +49,7 @@ const UTILS = {
 		return true;
 	},
 
-	CheckFloat0to1Exclusive: (x) => {
-		if (typeof x !== 'number') {
-			return false;
-		}
-
+	CheckFloat0to1Exclusive: (x: number): boolean => {
 		if (x <= 0) {
 			return false;
 		}
@@ -68,7 +61,7 @@ const UTILS = {
 		return true;
 	},
 
-	CheckPositiveInteger: (x) => {
+	CheckPositiveInteger: (x: number): boolean => {
 		if (!UTILS.CheckNonNegativeInteger(x)) {
 			return false;
 		}
@@ -80,10 +73,8 @@ const UTILS = {
 		return true;
 	},
 
-	QueueRotate: (queue, newSample, count) => {
-		console.assert(Array.isArray(queue));
-		console.assert(typeof count === 'number');
-		console.assert(count > 0);
+	QueueRotate: (queue: Array<number>, newSample: number, count: number): void => {
+		console.assert(count >= 1);
 
 		queue.push(newSample);
 
@@ -94,8 +85,8 @@ const UTILS = {
 		queue.shift();
 	},
 
-	ValidateTextForCSV: (x) => {
-		// allows any input (that's the point; we cast to string)
+	ValidateTextForCSV: (x: any): void => {
+		// allows all input types (that's the point; we cast to string, just as a CSV-write would)
 
 		const AS_STRING = x.toString();
 
@@ -106,13 +97,15 @@ const UTILS = {
 		throw new Error('Value contains comma or newline (which interferes with CSV): ' + x + ', ' + AS_STRING);
 	},
 
-	WriteDurationReport: (durationMS) => {
-		console.assert(typeof durationMS === 'number');
+	WriteDurationReport: (durationMS: number): string => {
 		console.assert(durationMS >= 0);
-		console.assert(durationMS === Math.floor(durationMS)); //NOTE: A bit aggressive, I suppose; drop as needed.
 
 //TODO: (low-pri) Bring in time-reporting from the f lib, which has smart duration-category picking.
-		return (durationMS / 60 / 1000).toFixed(2) + ' min'
+		return Math.floor(durationMS) + ' ms'
+				+ ' / '
+				+ (durationMS / 1000).toFixed(2) + ' sec'
+				+ ' / '
+				+ (durationMS / 60 / 1000).toFixed(2) + ' min'
 				+ ' / '
 				+ (durationMS / 60 / 60 / 1000).toFixed(1) + ' hr';
 	}

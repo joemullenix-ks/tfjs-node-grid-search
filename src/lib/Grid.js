@@ -226,16 +226,7 @@ class Grid {
 
 			const RESULT = {};
 
-//TODO: Move this into FileIO as soon as TS is stable.
-			const PRODUCE_FILENAME = () => {
-				const TIMESTAMP = (new Date()).toLocaleString();
-				const FILTERED = TIMESTAMP.replace(/[^a-z0-9]/gi, '_');
-				const LOWERED = FILTERED.toLowerCase();
-
-				return 'Results_' + LOWERED + '.csv';
-			};
-
-			const FILENAME = PRODUCE_FILENAME();
+			const FILENAME = FileIO.ProduceResultsFilename();
 
 			await FileIO.WriteResultsFile(	FILENAME,
 											this._gridOptions.writeResultsToDirectory,

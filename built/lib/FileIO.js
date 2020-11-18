@@ -39,6 +39,12 @@ var FS_PROMISES = require('fs/promises');
 var PATH_LIB = require('path');
 var SLASH = require('slash');
 var FILE_IO = {
+    ProduceResultsFilename: function () {
+        var TIMESTAMP = (new Date()).toLocaleString();
+        var FILTERED = TIMESTAMP.replace(/[^a-z0-9]/gi, '_');
+        var LOWERED = FILTERED.toLowerCase();
+        return 'Results_' + LOWERED + '.csv';
+    },
     ReadDataFile: function (path, result) { return __awaiter(void 0, void 0, void 0, function () {
         var _a, err_1;
         return __generator(this, function (_b) {

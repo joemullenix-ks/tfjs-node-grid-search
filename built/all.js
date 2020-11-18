@@ -35,6 +35,8 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+Object.defineProperty(exports, "__esModule", { value: true });
+var FileReadResult_1 = require("./lib/FileReadResult");
 var Axis = require('./lib/Axis').Axis;
 var AxisSet = require('./lib/AxisSet').AxisSet;
 var FileIO = require('./lib/FileIO').FileIO;
@@ -54,6 +56,18 @@ var MAIN = function () { return __awaiter(void 0, void 0, void 0, function () {
                 AXES.push(new Axis(Axis.TYPE_BATCH_SIZE, 5, // boundsBegin
                 10, // boundsEnd
                 new LinearProgression(5)));
+                AXES.push(new Axis(Axis.TYPE_EPOCHS, 10, // boundsBegin
+                20, // boundsEnd
+                new FibonacciProgression(4)));
+                /*
+                    AXES.push(new Axis(	Axis.TYPE_LAYERS,
+                                        0,		// boundsBegin
+                                        1,		// boundsEnd
+                                        new LinearProgression(1)));
+                */
+                AXES.push(new Axis(Axis.TYPE_LEARN_RATE, 0.0001, // boundsBegin
+                0.002, // boundsEnd
+                new ExponentialProgression(2, 0.01)));
                 AXIS_SET = new AxisSet(AXES);
                 MODEL_STATICS = new ModelStatics({
                     batchSize: 10,
@@ -67,7 +81,7 @@ var MAIN = function () { return __awaiter(void 0, void 0, void 0, function () {
                     return __generator(this, function (_a) {
                         switch (_a.label) {
                             case 0:
-                                FILE_RESULT = {};
+                                FILE_RESULT = new FileReadResult_1.FileReadResult();
                                 return [4 /*yield*/, FileIO.ReadDataFile(pathInputs, FILE_RESULT)];
                             case 1:
                                 _a.sent();
@@ -101,13 +115,13 @@ var MAIN = function () { return __awaiter(void 0, void 0, void 0, function () {
                     };
                 };
                 REPORT_BATCH = function (duration, batch, logs) {
-                    console.log('Batch report', duration, Utils.WriteDurationReport(duration));
+                    Math.random() < 0.00001 && console.log('Batch report', duration, batch, logs, Utils.WriteDurationReport(duration));
                 };
                 REPORT_EPOCH = function (duration, epoch, logs, epochStats) {
-                    console.log('Epoch report', duration, Utils.WriteDurationReport(duration));
+                    Math.random() < 0.00001 && console.log('Epoch report', duration, epoch, logs, epochStats, Utils.WriteDurationReport(duration));
                 };
                 REPORT_ITERATION = function (duration, predictions, proofInputs, proofTargets) {
-                    console.log('Iteration report', duration, Utils.WriteDurationReport(duration));
+                    console.log('Iteration report', duration, predictions, proofInputs, proofTargets, Utils.WriteDurationReport(duration));
                 };
                 _a.label = 2;
             case 2:
@@ -117,15 +131,9 @@ var MAIN = function () { return __awaiter(void 0, void 0, void 0, function () {
                     repetitions: 1,
                     validationSetSizeMin: 1000,
                     writeResultsToDirectory: '' // ex: "c:/my tensorflow project/grid search results"
-                });
-                // REPORT_ITERATION);
-                // REPORT_EPOCH);
-                // REPORT_BATCH);
+                }, REPORT_ITERATION, REPORT_EPOCH, REPORT_BATCH);
                 return [4 /*yield*/, GRID.Run()];
             case 3:
-                // REPORT_ITERATION);
-                // REPORT_EPOCH);
-                // REPORT_BATCH);
                 _a.sent();
                 return [3 /*break*/, 5];
             case 4:
