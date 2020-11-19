@@ -8,8 +8,6 @@
 //NOTE: Confirmed that this file exists. However, building w/ tfjs-node reports module not found:
 //	<project>\node_modules\@tensorflow\tfjs-node\lib\napi-v6
 //	<project>\node_modules\@tensorflow\tfjs-node\lib\napi-v6\tfjs_binding.node
-
-
 const TENSOR_FLOW = require('@tensorflow/tfjs');
 
 
@@ -27,64 +25,36 @@ const { SessionData }			= require('./SessionData');
 const { Utils }					= require('./Utils');
 
 
+import * as Types from '../ts_types/Grid';
+
+
 class Grid {
-	constructor(axisSet,
-				modelStatics,
-				sessionData,
-				callbackEvaluatePrediction,
-				optionsPOD,
-				callbackReportIteration,
-				callbackReportEpoch,
-				callbackReportBatch) {
-		console.assert(axisSet instanceof AxisSet);
-		console.assert(modelStatics instanceof ModelStatics);
-		console.assert(sessionData instanceof SessionData);
-		console.assert(typeof callbackEvaluatePrediction === 'function');
+	_axisSetTraverser: typeof AxisSetTraverser;
+	_epochStats: typeof EpochStats;
+	_gridRunStats: typeof GridRunStats;
+	_timeStartBatch: bigint = BigInt(0);
+	_timeStartEpoch: bigint = BigInt(0);
+	_timeStartGrid: bigint = BigInt(0);
+	_timeStartIteration: bigint = BigInt(0);
+
+	constructor(axisSet: typeof AxisSet,
+				private _modelStatics: typeof ModelStatics,
+				private _sessionData: typeof SessionData,
+				private _callbackEvaluatePrediction: Types.CallbackEvaluatePrediction,
+				private _gridOptions: typeof GridOptions,
+				private _callbackReportIteration?: Types.CallbackReportIteration,
+				private _callbackReportEpoch?: Types.CallbackReportEpoch,
+				private _callbackReportBatch?: Types.CallbackReportBatch) {
 
 		console.log('\n' + 'Instantiating Grid...');
 
-		// this class performs validation of optionsPOD and its contents
-		this._gridOptions = new GridOptions(optionsPOD);
-
-		if (callbackReportIteration !== undefined && callbackReportIteration !== null) {
-			console.assert(typeof callbackReportIteration === 'function');
-
-			this._callbackReportIteration = callbackReportIteration;
-		}
-
-		if (callbackReportEpoch !== undefined && callbackReportEpoch !== null) {
-			console.assert(typeof callbackReportEpoch === 'function');
-
-			this._callbackReportEpoch = callbackReportEpoch;
-		}
-
-		if (callbackReportBatch !== undefined && callbackReportBatch !== null) {
-			console.assert(typeof callbackReportBatch === 'function');
-
-			this._callbackReportBatch = callbackReportBatch;
-		}
-
-		this._callbackEvaluatePrediction = callbackEvaluatePrediction;
-		this._modelStatics = modelStatics;
-		this._sessionData = sessionData;
-
 		this._axisSetTraverser = new AxisSetTraverser(axisSet);
-
-		this._epochStats = null;
-		this._gridRunStats = null;
-
-		this._timeStartBatch = 0;
-		this._timeStartEpoch = 0;
-		this._timeStartGrid = 0;
-		this._timeStartIteration = 0;
 
 		// prune (and warn about) any model params that are pre-empted by a dynamic axis
 		this.ResolveModelDefinition();
 	}
 
-	CreateModel(modelParams) {
-		console.assert(modelParams instanceof ModelParams);
-
+	CreateModel(modelParams: typeof ModelParams) {
 		const TOTAL_INPUT_NEURONS = this._sessionData.totalInputNeurons;
 		const TOTAL_OUTPUT_NEURONS = this._sessionData.totalOutputNeurons;
 
@@ -161,7 +131,7 @@ class Grid {
 
 		let pass = 0;
 
-		this._timeStartGrid = Date.now();
+		this._timeStartGrid = BigInt(Date.now());
 
 		for (let i = 0; !this._axisSetTraverser.traversed; ++i) {
 			const DYNAMIC_PARAMS = this._axisSetTraverser.CreateIterationParams();
@@ -234,7 +204,7 @@ class Grid {
 											RESULT);
 
 //TODO: Look into Node's os/platform library. Gotta be a way to pull the appropriate slashes.
-//		...and on the same pass, lookup the root directory.
+//		...and on the same pass, lookup and print the root directory.
 			console.log('\n'
 						+ 'Results file written as '
 						+ (this._gridOptions.writeResultsToDirectory === ''
@@ -251,18 +221,15 @@ class Grid {
 //			  to consider when it comes to complex axes like activator-schedules.
 
 		// ensure the static and dynamic model parameters have no overlap, by stripping any dupes from the statics
-		this._axisSetTraverser.ExamineAxisNames((axisKey) => {
+		this._axisSetTraverser.ExamineAxisNames((axisKey: string) => {
 			this._modelStatics.AttemptStripParam(axisKey);
 		});
 	}
 
-	TestModel(model, modelParams, duration) {
-		console.assert(model instanceof TENSOR_FLOW.Sequential); //TODO: This might be too strict; consider the lower-level TF LayersModel
+//TODO: This model type might be too strict. Consider the lower-level TF LayersModel.
+	TestModel(model: typeof TENSOR_FLOW.Sequential, modelParams: typeof ModelParams, duration: bigint) {
 		console.assert(model.built);
-		console.assert(modelParams instanceof ModelParams);
-		console.assert(typeof duration === 'number');
 		console.assert(duration >= 0);
-		console.assert(Math.floor(duration) === duration);
 
 		console.log('Testing...');
 

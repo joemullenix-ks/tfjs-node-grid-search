@@ -35,6 +35,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+Object.defineProperty(exports, "__esModule", { value: true });
 //BUG: This require() crashes (logged as https://github.com/tensorflow/tfjs/issues/4052):
 //
 //	const TENSOR_FLOW = require('@tensorflow/tfjs-node');
@@ -56,41 +57,24 @@ var ModelTestStats = require('./ModelTestStats').ModelTestStats;
 var SessionData = require('./SessionData').SessionData;
 var Utils = require('./Utils').Utils;
 var Grid = /** @class */ (function () {
-    function Grid(axisSet, modelStatics, sessionData, callbackEvaluatePrediction, optionsPOD, callbackReportIteration, callbackReportEpoch, callbackReportBatch) {
-        console.assert(axisSet instanceof AxisSet);
-        console.assert(modelStatics instanceof ModelStatics);
-        console.assert(sessionData instanceof SessionData);
-        console.assert(typeof callbackEvaluatePrediction === 'function');
+    function Grid(axisSet, _modelStatics, _sessionData, _callbackEvaluatePrediction, _gridOptions, _callbackReportIteration, _callbackReportEpoch, _callbackReportBatch) {
+        this._modelStatics = _modelStatics;
+        this._sessionData = _sessionData;
+        this._callbackEvaluatePrediction = _callbackEvaluatePrediction;
+        this._gridOptions = _gridOptions;
+        this._callbackReportIteration = _callbackReportIteration;
+        this._callbackReportEpoch = _callbackReportEpoch;
+        this._callbackReportBatch = _callbackReportBatch;
+        this._timeStartBatch = BigInt(0);
+        this._timeStartEpoch = BigInt(0);
+        this._timeStartGrid = BigInt(0);
+        this._timeStartIteration = BigInt(0);
         console.log('\n' + 'Instantiating Grid...');
-        // this class performs validation of optionsPOD and its contents
-        this._gridOptions = new GridOptions(optionsPOD);
-        if (callbackReportIteration !== undefined && callbackReportIteration !== null) {
-            console.assert(typeof callbackReportIteration === 'function');
-            this._callbackReportIteration = callbackReportIteration;
-        }
-        if (callbackReportEpoch !== undefined && callbackReportEpoch !== null) {
-            console.assert(typeof callbackReportEpoch === 'function');
-            this._callbackReportEpoch = callbackReportEpoch;
-        }
-        if (callbackReportBatch !== undefined && callbackReportBatch !== null) {
-            console.assert(typeof callbackReportBatch === 'function');
-            this._callbackReportBatch = callbackReportBatch;
-        }
-        this._callbackEvaluatePrediction = callbackEvaluatePrediction;
-        this._modelStatics = modelStatics;
-        this._sessionData = sessionData;
         this._axisSetTraverser = new AxisSetTraverser(axisSet);
-        this._epochStats = null;
-        this._gridRunStats = null;
-        this._timeStartBatch = 0;
-        this._timeStartEpoch = 0;
-        this._timeStartGrid = 0;
-        this._timeStartIteration = 0;
         // prune (and warn about) any model params that are pre-empted by a dynamic axis
         this.ResolveModelDefinition();
     }
     Grid.prototype.CreateModel = function (modelParams) {
-        console.assert(modelParams instanceof ModelParams);
         var TOTAL_INPUT_NEURONS = this._sessionData.totalInputNeurons;
         var TOTAL_OUTPUT_NEURONS = this._sessionData.totalOutputNeurons;
         var TOTAL_HIDDEN_LAYERS = modelParams.GetParam(Axis.TYPE_NAME_LAYERS);
@@ -158,7 +142,7 @@ var Grid = /** @class */ (function () {
                         TOTAL_ITERATIONS = this._axisSetTraverser.totalIterations;
                         TOTAL_PASSES = TOTAL_ITERATIONS * this._gridOptions.repetitions;
                         pass = 0;
-                        this._timeStartGrid = Date.now();
+                        this._timeStartGrid = BigInt(Date.now());
                         i = 0;
                         _a.label = 1;
                     case 1:
@@ -212,7 +196,7 @@ var Grid = /** @class */ (function () {
                     case 8:
                         _a.sent();
                         //TODO: Look into Node's os/platform library. Gotta be a way to pull the appropriate slashes.
-                        //		...and on the same pass, lookup the root directory.
+                        //		...and on the same pass, lookup and print the root directory.
                         console.log('\n'
                             + 'Results file written as '
                             + (this._gridOptions.writeResultsToDirectory === ''
@@ -236,13 +220,10 @@ var Grid = /** @class */ (function () {
             _this._modelStatics.AttemptStripParam(axisKey);
         });
     };
+    //TODO: This model type might be too strict. Consider the lower-level TF LayersModel.
     Grid.prototype.TestModel = function (model, modelParams, duration) {
-        console.assert(model instanceof TENSOR_FLOW.Sequential); //TODO: This might be too strict; consider the lower-level TF LayersModel
         console.assert(model.built);
-        console.assert(modelParams instanceof ModelParams);
-        console.assert(typeof duration === 'number');
         console.assert(duration >= 0);
-        console.assert(Math.floor(duration) === duration);
         console.log('Testing...');
         // run the unseen data through this trained model
         var PREDICTIONS_TENSOR = model.predict(this._sessionData.proofInputsTensor, {
@@ -369,3 +350,4 @@ var Grid = /** @class */ (function () {
 }());
 Object.freeze(Grid);
 exports.Grid = Grid;
+//# sourceMappingURL=Grid.js.map

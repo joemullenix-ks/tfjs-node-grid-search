@@ -30,3 +30,4 @@ var LinearProgression = /** @class */ (function (_super) {
 }(Progression));
 Object.freeze(LinearProgression);
 exports.LinearProgression = LinearProgression;
+//# sourceMappingURL=LinearProgression.js.map

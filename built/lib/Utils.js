@@ -1,4 +1,6 @@
 'use strict';
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.Utils = void 0;
 //TODO: Merge these into the F lib, once that's integrated.
 var UTILS = {
     ArrayCalculateAverage: function (array) {
@@ -69,14 +71,15 @@ var UTILS = {
     WriteDurationReport: function (durationMS) {
         console.assert(durationMS >= 0);
         //TODO: (low-pri) Bring in time-reporting from the f lib, which has smart duration-category picking.
-        return Math.floor(durationMS) + ' ms'
+        return durationMS + ' ms'
             + ' / '
-            + (durationMS / 1000).toFixed(2) + ' sec'
+            + (Number(durationMS) / 1000).toFixed(2) + ' sec'
             + ' / '
-            + (durationMS / 60 / 1000).toFixed(2) + ' min'
+            + (Number(durationMS) / 60 / 1000).toFixed(2) + ' min'
             + ' / '
-            + (durationMS / 60 / 60 / 1000).toFixed(1) + ' hr';
+            + (Number(durationMS) / 60 / 60 / 1000).toFixed(1) + ' hr';
     }
 };
-Object.freeze(UTILS);
 exports.Utils = UTILS;
+Object.freeze(UTILS);
+//# sourceMappingURL=Utils.js.map

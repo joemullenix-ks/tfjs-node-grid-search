@@ -36,7 +36,13 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var FileReadResult_1 = require("./lib/FileReadResult");
+//TODO: Once the TS conversion is complete, do a full pass on 'number', subbing in 'bigint' as needed.
+//		The first step is to move our TS target to 'ES2020+' (or whatever it is these days).
+//		Then we can initialize like this:
+//			const TIME: bigint = 0n;
+//
+//		...as opposed to this:
+//			const TIME: bigint = BigInt(0);
 var Axis = require('./lib/Axis').Axis;
 var AxisSet = require('./lib/AxisSet').AxisSet;
 var FileIO = require('./lib/FileIO').FileIO;
@@ -46,9 +52,12 @@ var ExponentialProgression = require('./lib/progression/ExponentialProgression')
 var FibonacciProgression = require('./lib/progression/FibonacciProgression').FibonacciProgression;
 var LinearProgression = require('./lib/progression/LinearProgression').LinearProgression;
 var SessionData = require('./lib/SessionData').SessionData;
-var Utils = require('./lib/Utils').Utils;
+// import { EpochStats } from './lib/EpochStats';
+var FileReadResult_1 = require("./lib/FileReadResult");
+var GridOptions_1 = require("./lib/GridOptions");
+var Utils_1 = require("./lib/Utils");
 var MAIN = function () { return __awaiter(void 0, void 0, void 0, function () {
-    var AXES, AXIS_SET, MODEL_STATICS, FETCH_DATA, DATA_FILEPATH_INPUTS, DATA_FILEPATH_TARGETS, DATA_PACKAGE, PROOF_PERCENTAGE, SESSION_DATA, EVALUATE_PREDICTION, REPORT_BATCH, REPORT_EPOCH, REPORT_ITERATION, GRID, e_1;
+    var AXES, AXIS_SET, MODEL_STATICS, GRID_OPTIONS, FETCH_DATA, DATA_FILEPATH_INPUTS, DATA_FILEPATH_TARGETS, DATA_PACKAGE, PROOF_PERCENTAGE, SESSION_DATA, EVALUATE_PREDICTION, REPORT_BATCH, REPORT_EPOCH, REPORT_ITERATION, GRID, e_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -75,6 +84,12 @@ var MAIN = function () { return __awaiter(void 0, void 0, void 0, function () {
                     hiddenLayers: 1,
                     neuronsPerHiddenLayer: 15,
                     validationSplit: 0.25
+                });
+                GRID_OPTIONS = new GridOptions_1.GridOptions({
+                    epochStatsDepth: 3,
+                    repetitions: 1,
+                    validationSetSizeMin: 1000,
+                    writeResultsToDirectory: '' // ex: "c:/my tensorflow project/grid search results"
                 });
                 FETCH_DATA = function (pathInputs, pathTargets) { return __awaiter(void 0, void 0, void 0, function () {
                     var FILE_RESULT, RAW_INPUTS, RAW_TARGETS;
@@ -104,34 +119,29 @@ var MAIN = function () { return __awaiter(void 0, void 0, void 0, function () {
                     : (500 / DATA_PACKAGE.inputs.length);
                 SESSION_DATA = new SessionData(PROOF_PERCENTAGE, DATA_PACKAGE.inputs, DATA_PACKAGE.targets, true);
                 EVALUATE_PREDICTION = function (target, prediction) {
+                    var TARGETTED_INDEX = Utils_1.Utils.ArrayFindIndexOfHighestValue(target);
+                    var PREDICTED_INDEX = Utils_1.Utils.ArrayFindIndexOfHighestValue(prediction);
                     //NOTE: This is written for a multi-class (one-hot), classification network.
                     //
                     //TODO: Write example for regression, multi-label classification, etc...
-                    var TARGETTED_INDEX = Utils.ArrayFindIndexOfHighestValue(target);
-                    var PREDICTED_INDEX = Utils.ArrayFindIndexOfHighestValue(prediction);
                     return {
                         correct: TARGETTED_INDEX === PREDICTED_INDEX,
                         delta: 1 - prediction[PREDICTED_INDEX]
                     };
                 };
                 REPORT_BATCH = function (duration, batch, logs) {
-                    Math.random() < 0.00001 && console.log('Batch report', duration, batch, logs, Utils.WriteDurationReport(duration));
+                    console.log('Batch report', duration, batch, logs, Utils_1.Utils.WriteDurationReport(duration));
                 };
                 REPORT_EPOCH = function (duration, epoch, logs, epochStats) {
-                    Math.random() < 0.00001 && console.log('Epoch report', duration, epoch, logs, epochStats, Utils.WriteDurationReport(duration));
+                    console.log('Epoch report', duration, epoch, logs, epochStats, Utils_1.Utils.WriteDurationReport(duration));
                 };
                 REPORT_ITERATION = function (duration, predictions, proofInputs, proofTargets) {
-                    console.log('Iteration report', duration, predictions, proofInputs, proofTargets, Utils.WriteDurationReport(duration));
+                    console.log('Iteration report', duration, predictions, proofInputs, proofTargets, Utils_1.Utils.WriteDurationReport(duration));
                 };
                 _a.label = 2;
             case 2:
                 _a.trys.push([2, 4, , 5]);
-                GRID = new Grid(AXIS_SET, MODEL_STATICS, SESSION_DATA, EVALUATE_PREDICTION, {
-                    epochStatsDepth: 3,
-                    repetitions: 1,
-                    validationSetSizeMin: 1000,
-                    writeResultsToDirectory: '' // ex: "c:/my tensorflow project/grid search results"
-                }, REPORT_ITERATION, REPORT_EPOCH, REPORT_BATCH);
+                GRID = new Grid(AXIS_SET, MODEL_STATICS, SESSION_DATA, EVALUATE_PREDICTION, GRID_OPTIONS, REPORT_ITERATION, REPORT_EPOCH, REPORT_BATCH);
                 return [4 /*yield*/, GRID.Run()];
             case 3:
                 _a.sent();
@@ -147,3 +157,4 @@ var MAIN = function () { return __awaiter(void 0, void 0, void 0, function () {
     });
 }); };
 MAIN();
+//# sourceMappingURL=all.js.map

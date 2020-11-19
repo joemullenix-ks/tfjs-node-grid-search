@@ -237,3 +237,4 @@ Axis.AttemptValidateProgression = function (key, progression, failureMessage) {
 };
 Object.freeze(Axis);
 exports.Axis = Axis;
+//# sourceMappingURL=Axis.js.map

@@ -86,3 +86,4 @@ var FIND_NEAREST_FIBONACCI_NUMBER = function (n, x, y) {
 var APPROXIMATE_FIBONACCI_RATIO = 0.6180339850;
 Object.freeze(FibonacciProgression);
 exports.FibonacciProgression = FibonacciProgression;
+//# sourceMappingURL=FibonacciProgression.js.map

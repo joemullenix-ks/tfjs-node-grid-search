@@ -47,3 +47,4 @@ var ExponentialProgression = /** @class */ (function (_super) {
 }(Progression));
 Object.freeze(ExponentialProgression);
 exports.ExponentialProgression = ExponentialProgression;
+//# sourceMappingURL=ExponentialProgression.js.map

@@ -1,22 +1,19 @@
 'use strict';
-//DOOM: ENTIRE FILE IS DEV ONLY AND TEMPORARY
-/*
-import { FileReadResult } from './lib/FileReadResult';
-
-
-const { Utils } = require('./lib/Utils');
-*/
-function CheckInteger(x) {
-    // if (typeof x !== 'number') {
-    // 	return false;
-    // }
-    if (x !== Math.floor(x)) {
-        return false;
-    }
-    return true;
-}
-var USER_OBJECT = {
-    arbitraryField: 5
+var GET_THOSE_BEANS = function (flavor) {
+    console.log('got those ' + flavor + ' beans!');
 };
-var RESULT_USER_OBJ = CheckInteger(USER_OBJECT.arbitraryField);
-console.log('RESULT_USER_OBJ', RESULT_USER_OBJ);
+var Taco = /** @class */ (function () {
+    function Taco(total, callbackGetBeans) {
+        console.log('init ' + total + ' tacos, eh');
+        this._callbackGetBeans = callbackGetBeans;
+        if (this._callbackGetBeans !== undefined) {
+            this._callbackGetBeans('pork');
+            return;
+        }
+        console.log('WHAT! (no beans)');
+    }
+    return Taco;
+}());
+var TACO_A = new Taco(15, GET_THOSE_BEANS);
+var TACO_B = new Taco(2);
+//# sourceMappingURL=ts_sandbox.js.map

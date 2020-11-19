@@ -94,3 +94,4 @@ var ModelStatics = /** @class */ (function () {
 }());
 Object.freeze(ModelStatics);
 exports.ModelStatics = ModelStatics;
+//# sourceMappingURL=ModelStatics.js.map

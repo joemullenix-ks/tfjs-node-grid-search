@@ -1,18 +1,20 @@
 'use strict';
 
 
-const { Utils } = require('./Utils');
+import { Utils } from './Utils';
+
+
+//NOTE: TODO: Should this be lifted out into a d.ts file?
+//			  If so, should it go into custom (which should be "_common" or "Common" or such as)
+type StringKeyedSimpleObject = { [key: string]: string | number | boolean; };
+// export type StringKeyedSimpleObject = { [key: string]: string | number | boolean; };
 
 
 class ModelParams {
-	constructor(dynamicParams, staticParams) {
-		console.assert(typeof dynamicParams === 'object');
-		console.assert(typeof staticParams === 'object');
+	private _mergedParams: StringKeyedSimpleObject = {};
 
-		// store these off separately, for convenience later (they're small)
-		this._dynamicParams = dynamicParams;
-		this._staticParams = staticParams;
-
+	constructor(private _dynamicParams: StringKeyedSimpleObject,
+				private _staticParams: StringKeyedSimpleObject) {
 		// start off with a (shallow) clone of the statics...
 		this._mergedParams = Object.assign({}, this._staticParams);
 
@@ -26,8 +28,7 @@ class ModelParams {
 		}
 	}
 
-	GetParam(key) {
-		console.assert(typeof key === 'string');
+	GetParam(key: string) {
 		console.assert(key !== '');
 
 		if (this._mergedParams[key] !== undefined) {
@@ -77,4 +78,4 @@ class ModelParams {
 
 Object.freeze(ModelParams);
 
-exports.ModelParams = ModelParams;
+export { ModelParams };

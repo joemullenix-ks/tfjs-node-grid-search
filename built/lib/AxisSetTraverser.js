@@ -87,3 +87,4 @@ var AxisSetTraverser = /** @class */ (function () {
 }());
 Object.freeze(AxisSetTraverser);
 exports.AxisSetTraverser = AxisSetTraverser;
+//# sourceMappingURL=AxisSetTraverser.js.map

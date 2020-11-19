@@ -117,3 +117,4 @@ var REPORTING_DIGITS_SLOPE = 6;
 var REPORTING_DIGITS_STAT = 4;
 Object.freeze(EpochStats);
 exports.EpochStats = EpochStats;
+//# sourceMappingURL=EpochStats.js.map

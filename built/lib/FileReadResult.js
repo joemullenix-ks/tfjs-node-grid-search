@@ -1,4 +1,6 @@
 'use strict';
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.FileReadResult = void 0;
 var FileReadResult = /** @class */ (function () {
     function FileReadResult() {
         this._data = '';
@@ -6,7 +8,6 @@ var FileReadResult = /** @class */ (function () {
     Object.defineProperty(FileReadResult.prototype, "data", {
         get: function () { return this._data; },
         set: function (data) {
-            console.assert(typeof data === 'string');
             console.assert(data !== '');
             this._data = data;
         },
@@ -15,5 +16,6 @@ var FileReadResult = /** @class */ (function () {
     });
     return FileReadResult;
 }());
-Object.freeze(FileReadResult);
 exports.FileReadResult = FileReadResult;
+Object.freeze(FileReadResult);
+//# sourceMappingURL=FileReadResult.js.map

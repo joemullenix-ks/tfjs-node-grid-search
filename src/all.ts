@@ -1,11 +1,13 @@
 'use strict';
 
-import { EpochStats } from './lib/EpochStats';
-import { FileReadResult } from './lib/FileReadResult';
-//KEEP: This is giving me 'not a module'. Is that because it's an Object, rather than a class? We'll see.
-// import { Utils } from './lib/Utils';
 
-import { TFInputsArray } from './ts_types/custom';
+//TODO: Once the TS conversion is complete, do a full pass on 'number', subbing in 'bigint' as needed.
+//		The first step is to move our TS target to 'ES2020+' (or whatever it is these days).
+//		Then we can initialize like this:
+//			const TIME: bigint = 0n;
+//
+//		...as opposed to this:
+//			const TIME: bigint = BigInt(0);
 
 
 const { Axis }						= require('./lib/Axis');
@@ -17,9 +19,22 @@ const { ExponentialProgression }	= require('./lib/progression/ExponentialProgres
 const { FibonacciProgression }		= require('./lib/progression/FibonacciProgression');
 const { LinearProgression } 		= require('./lib/progression/LinearProgression');
 const { SessionData }				= require('./lib/SessionData');
-const { Utils }						= require('./lib/Utils');
+
+
+import * as GridTypes from './ts_types/Grid';
+
+
+// import { EpochStats } from './lib/EpochStats';
+import { FileReadResult } from './lib/FileReadResult';
+import { GridOptions } from './lib/GridOptions';
+import { Utils } from './lib/Utils';
+
 
 const MAIN = async () => {
+
+	// First, we define the axes for our grid search (the supported axes are enumerated in Axis).
+	// For each axis, we set a begin and end boundary, which are inclusive. We also create a progression
+	// across that range, i.e. the values at which we'll stop to train and test a model.
 
 	const AXES = [];
 
@@ -59,12 +74,14 @@ const MAIN = async () => {
 
 	const AXIS_SET = new AxisSet(AXES);
 
+	// Next, we define the static parameters. That is, those params that never change during our grid search.
+
 //NOTE: Usage options:
 //	OPTION A: We create the models (as shown in this example).
 //		The user instantiates and passes in a ModelStatics. They may supply a value for each non-dyanmic param (i.e.
 //		those without an axis), or accept the default where applicable.
 //
-//	OPTION B: The user creates the models.
+//	OPTION B: The user creates the models (coming soon).
 //		The user supplies a callback. We invoke the callback each iteration, passing the current value for each
 //		dynamic param (i.e. those with axes). The user then assembles and returns a model.
 
@@ -75,6 +92,19 @@ const MAIN = async () => {
 												neuronsPerHiddenLayer: 15,
 												validationSplit: 0.25
 											});
+
+	// Next, we setup options that will govern the Grid itself, as well as the search process.
+
+	const GRID_OPTIONS = new GridOptions(	{
+												epochStatsDepth: 3,
+												repetitions: 1,
+												validationSetSizeMin: 1000,
+												writeResultsToDirectory: '' // ex: "c:/my tensorflow project/grid search results"
+											});
+
+	// Now we load and configure the data set. A fresh copy of this data will be used to train and test each
+	// 'iteration' of the grid search (i.e. each unique combination of dynamic params).
+
 
 //TODO: TBD, but this will very likely become a method of a top-level controller, e.g. TFJSGridSearch.js.
 //		At the very least the IO needs try/catch
@@ -108,14 +138,18 @@ const MAIN = async () => {
 											DATA_PACKAGE.targets,
 											true);						// useDefaultStandardization
 
-	const EVALUATE_PREDICTION = (target: Array<number>, prediction: Array<number>) => {
-//NOTE: This is written for a multi-class (one-hot), classification network.
-//
-//TODO: Write example for regression, multi-label classification, etc...
-
+	// This callback is used by the Grid during generalization testing. After training, the Grid makes a
+	// prediction for each proof case. It calls this function, passing the prediction, as well as the targets.
+	// If the prediction is acceptable, set the return object's "correct" property to true.
+	// An optional "delta" is also available, which takes a value representing the accuracy of the prediction.
+	const EVALUATE_PREDICTION: GridTypes.CallbackEvaluatePrediction = (target, prediction) => {
 		const TARGETTED_INDEX = Utils.ArrayFindIndexOfHighestValue(target);
 
 		const PREDICTED_INDEX = Utils.ArrayFindIndexOfHighestValue(prediction);
+
+//NOTE: This is written for a multi-class (one-hot), classification network.
+//
+//TODO: Write example for regression, multi-label classification, etc...
 
 		return	{
 					correct: TARGETTED_INDEX === PREDICTED_INDEX,
@@ -123,34 +157,22 @@ const MAIN = async () => {
 				};
 	}
 
-//[[TF ANY]]
-	const REPORT_BATCH = (duration: number, batch: any, logs: any) => {
-		Math.random() < 0.00001 && console.log('Batch report', duration, batch, logs, Utils.WriteDurationReport(duration));
+	// The three remaining callbacks are optional, for tracking statistics during the grid search.
+	// If supplied, the Grid will call these with various useful bits of information throughout the search.
+	// If no epoch callback is received, Grid will report loss and accuracy values during training.
+
+	const REPORT_BATCH: GridTypes.CallbackReportBatch = (duration, batch, logs) => {
+		console.log('Batch report', duration, batch, logs, Utils.WriteDurationReport(duration));
 	}
 
-//[[TF ANY]]
-	const REPORT_EPOCH = (duration: number, epoch: number, logs: any, epochStats: typeof EpochStats) => {
-		Math.random() < 0.00001 && console.log('Epoch report', duration, epoch, logs, epochStats, Utils.WriteDurationReport(duration));
+	const REPORT_EPOCH: GridTypes.CallbackReportEpoch = (duration, epoch, logs, epochStats) => {
+		console.log('Epoch report', duration, epoch, logs, epochStats, Utils.WriteDurationReport(duration));
 	}
 
-
-// //vv TODO: File this away ... somewhere. Likely a new types file. Maaaybe SessionData.
-
-// // WEEEEEEEEEEEEEEE!, but I don't see another way
-// type ArrayOrder2 = Array<Array<number>>;
-// type ArrayOrder3 = Array<Array<Array<number>>>;
-// type ArrayOrder4 = Array<Array<Array<Array<number>>>>;
-// type ArrayOrder5 = Array<Array<Array<Array<Array<number>>>>>;
-// type ArrayOrder6 = Array<Array<Array<Array<Array<Array<number>>>>>>;
-
-// type TFInputsArray = ArrayOrder2 | ArrayOrder3 | ArrayOrder4 | ArrayOrder5 | ArrayOrder6;
-// //^^
-
-
-	const REPORT_ITERATION = (	duration: number,
-								predictions: Array<number>,
-								proofInputs: TFInputsArray,
-								proofTargets: Array<number>) => {
+	const REPORT_ITERATION: GridTypes.CallbackReportIteration = (	duration,
+																	predictions,
+																	proofInputs,
+																	proofTargets) => {
 		console.log('Iteration report',
 					duration,
 					predictions,
@@ -159,17 +181,14 @@ const MAIN = async () => {
 					Utils.WriteDurationReport(duration));
 	};
 
+	// We're now ready to create the Grid, and run the search!
+
 	try {
 		const GRID = new Grid(	AXIS_SET,
 								MODEL_STATICS,
 								SESSION_DATA,
 								EVALUATE_PREDICTION,
-								{
-									epochStatsDepth: 3,
-									repetitions: 1,
-									validationSetSizeMin: 1000,
-									writeResultsToDirectory: '' // ex: "c:/my tensorflow project/grid search results"
-								},
+								GRID_OPTIONS,
 								REPORT_ITERATION,
 								REPORT_EPOCH,
 								REPORT_BATCH);

@@ -1,12 +1,13 @@
 'use strict';
-var Utils = require('./Utils').Utils;
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.ModelParams = void 0;
+var Utils_1 = require("./Utils");
+// export type StringKeyedSimpleObject = { [key: string]: string | number | boolean; };
 var ModelParams = /** @class */ (function () {
-    function ModelParams(dynamicParams, staticParams) {
-        console.assert(typeof dynamicParams === 'object');
-        console.assert(typeof staticParams === 'object');
-        // store these off separately, for convenience later (they're small)
-        this._dynamicParams = dynamicParams;
-        this._staticParams = staticParams;
+    function ModelParams(_dynamicParams, _staticParams) {
+        this._dynamicParams = _dynamicParams;
+        this._staticParams = _staticParams;
+        this._mergedParams = {};
         // start off with a (shallow) clone of the statics...
         this._mergedParams = Object.assign({}, this._staticParams);
         // ...then merge in the dynamics, throwing in the event of a collision
@@ -18,7 +19,6 @@ var ModelParams = /** @class */ (function () {
         }
     }
     ModelParams.prototype.GetParam = function (key) {
-        console.assert(typeof key === 'string');
         console.assert(key !== '');
         if (this._mergedParams[key] !== undefined) {
             return this._mergedParams[key];
@@ -43,7 +43,7 @@ var ModelParams = /** @class */ (function () {
             //		I'm keeping it because that initial validation is not done w/ CSV writes in mind. It's much more focused
             //		on proper uint/bool/string.
             //		Redundancy is good, but if our file writes become perceptibly slower, this can go.
-            Utils.ValidateTextForCSV(this._mergedParams[k]);
+            Utils_1.Utils.ValidateTextForCSV(this._mergedParams[k]);
             textOut += this._mergedParams[k] + ',';
         }
         // drop the trailing comma
@@ -52,5 +52,6 @@ var ModelParams = /** @class */ (function () {
     };
     return ModelParams;
 }());
-Object.freeze(ModelParams);
 exports.ModelParams = ModelParams;
+Object.freeze(ModelParams);
+//# sourceMappingURL=ModelParams.js.map
