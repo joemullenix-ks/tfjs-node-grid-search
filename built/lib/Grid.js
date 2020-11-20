@@ -64,24 +64,22 @@ exports.Grid = void 0;
 //	<project>\node_modules\@tensorflow\tfjs-node\lib\napi-v6
 //	<project>\node_modules\@tensorflow\tfjs-node\lib\napi-v6\tfjs_binding.node
 var TENSOR_FLOW = require('@tensorflow/tfjs');
-var AxisSet = require('./AxisSet').AxisSet;
-var AxisSetTraverser = require('./AxisSetTraverser').AxisSetTraverser;
-var EpochStats = require('./EpochStats').EpochStats;
-var GridOptions = require('./GridOptions').GridOptions;
-var GridRunStats = require('./GridRunStats').GridRunStats;
-var IterationResult = require('./IterationResult').IterationResult;
-var ModelParams = require('./ModelParams').ModelParams;
-var ModelStatics = require('./ModelStatics').ModelStatics;
-var ModelTestStats = require('./ModelTestStats').ModelTestStats;
 var SessionData = require('./SessionData').SessionData;
-var Utils = require('./Utils').Utils;
 var Axis = __importStar(require("./Axis"));
+var AxisSetTraverser_1 = require("./AxisSetTraverser");
+var EpochStats = __importStar(require("./EpochStats"));
+var GridOptions_1 = require("./GridOptions");
+var GridRunStats_1 = require("./GridRunStats");
+var IterationResult_1 = require("./IterationResult");
+var ModelParams_1 = require("./ModelParams");
+var ModelTestStats_1 = require("./ModelTestStats");
+var Utils_1 = require("./Utils");
 var Grid = /** @class */ (function () {
-    function Grid(axisSet, _modelStatics, _sessionData, _callbackEvaluatePrediction, _gridOptions, _callbackReportIteration, _callbackReportEpoch, _callbackReportBatch) {
+    function Grid(axisSet, _modelStatics, _sessionData, _callbackEvaluatePrediction, _userGridOptions, _callbackReportIteration, _callbackReportEpoch, _callbackReportBatch) {
         this._modelStatics = _modelStatics;
         this._sessionData = _sessionData;
         this._callbackEvaluatePrediction = _callbackEvaluatePrediction;
-        this._gridOptions = _gridOptions;
+        this._userGridOptions = _userGridOptions;
         this._callbackReportIteration = _callbackReportIteration;
         this._callbackReportEpoch = _callbackReportEpoch;
         this._callbackReportBatch = _callbackReportBatch;
@@ -90,25 +88,28 @@ var Grid = /** @class */ (function () {
         this._timeStartGrid = 0;
         this._timeStartIteration = 0;
         console.log('\n' + 'Instantiating Grid...');
-        // if the user doesn't provide an options block, we'll setup defaults
-        if (!this._gridOptions) {
-            this._gridOptions = new GridOptions();
+        // take the user's options block, if supplied, otherwise setup defaults
+        if (!this._userGridOptions) {
+            this._gridOptions = new GridOptions_1.GridOptions();
         }
-        this._axisSetTraverser = new AxisSetTraverser(axisSet);
+        else {
+            this._gridOptions = this._userGridOptions;
+        }
+        this._axisSetTraverser = new AxisSetTraverser_1.AxisSetTraverser(axisSet);
         // prune (and warn about) any model params that are pre-empted by a dynamic axis
         this.ResolveModelDefinition();
     }
     Grid.prototype.CreateModel = function (modelParams) {
         var TOTAL_INPUT_NEURONS = this._sessionData.totalInputNeurons;
         var TOTAL_OUTPUT_NEURONS = this._sessionData.totalOutputNeurons;
-        var TOTAL_HIDDEN_LAYERS = modelParams.GetParam("hiddenLayers" /* LAYERS */);
+        var TOTAL_HIDDEN_LAYERS = modelParams.GetNumericParam("hiddenLayers" /* LAYERS */);
         var TF_MODEL = TENSOR_FLOW.sequential();
         if (TOTAL_HIDDEN_LAYERS === 0) {
             // this network goes directly from input to output, e.g. single layer perceptron
             TF_MODEL.add(TENSOR_FLOW.layers.dense({
                 inputShape: [TOTAL_INPUT_NEURONS],
                 units: TOTAL_OUTPUT_NEURONS,
-                activation: modelParams.GetParam('activationOutput'),
+                activation: modelParams.GetTextParam('activationOutput'),
                 useBias: true,
                 kernelInitializer: this._modelStatics.GenerateInitializerKernel(),
                 biasInitializer: this._modelStatics.GenerateInitializerBias()
@@ -118,8 +119,8 @@ var Grid = /** @class */ (function () {
             // add the first hidden layer, which takes the inputs (TF has no discrete 'input layer')
             TF_MODEL.add(TENSOR_FLOW.layers.dense({
                 inputShape: [TOTAL_INPUT_NEURONS],
-                units: modelParams.GetParam("neuronsPerHiddenLayer" /* NEURONS */),
-                activation: modelParams.GetParam('activationInput'),
+                units: modelParams.GetNumericParam("neuronsPerHiddenLayer" /* NEURONS */),
+                activation: modelParams.GetTextParam('activationInput'),
                 useBias: true,
                 kernelInitializer: this._modelStatics.GenerateInitializerKernel(),
                 biasInitializer: this._modelStatics.GenerateInitializerBias()
@@ -127,8 +128,8 @@ var Grid = /** @class */ (function () {
             // add the remaining hidden layers; one-based, because of the built-in input layer
             for (var i = 1; i < TOTAL_HIDDEN_LAYERS; ++i) {
                 TF_MODEL.add(TENSOR_FLOW.layers.dense({
-                    units: modelParams.GetParam("neuronsPerHiddenLayer" /* NEURONS */),
-                    activation: modelParams.GetParam('activationHidden'),
+                    units: modelParams.GetNumericParam("neuronsPerHiddenLayer" /* NEURONS */),
+                    activation: modelParams.GetTextParam('activationHidden'),
                     useBias: true,
                     kernelInitializer: this._modelStatics.GenerateInitializerKernel(),
                     biasInitializer: this._modelStatics.GenerateInitializerBias()
@@ -136,35 +137,39 @@ var Grid = /** @class */ (function () {
             }
             TF_MODEL.add(TENSOR_FLOW.layers.dense({
                 units: TOTAL_OUTPUT_NEURONS,
-                activation: modelParams.GetParam('activationOutput'),
+                activation: modelParams.GetTextParam('activationOutput'),
                 useBias: true,
                 biasInitializer: this._modelStatics.GenerateInitializerBias()
             }));
         }
         //TODO: Print these, but only under a verbocity setting (way too spammy)
         //		TF_MODEL.summary();
+        var LEARNING_RATE = modelParams.GetNumericParam("learnRate" /* LEARN_RATE */);
         // compile the model, which prepares it for training
         TF_MODEL.compile({
-            optimizer: this._modelStatics.GenerateOptimizer(modelParams.GetParam("learnRate" /* LEARN_RATE */)),
+            optimizer: this._modelStatics.GenerateOptimizer(LEARNING_RATE),
             loss: this._modelStatics.GenerateLossFunction(),
             metrics: 'accuracy'
         });
         return TF_MODEL;
     };
     Grid.prototype.ResetEpochStats = function () {
+        console.assert(this._gridOptions.GetOption('epochStatsDepth') !== undefined);
         //NOTE: This is currently only used by the reporting callback. It's contents, however, will be critical to tracking
         //		overfit and stuck situations, as well as things like Smart Start(tm) (restarting unlucky iterations).
-        this._epochStats = new EpochStats(this._gridOptions.epochStatsDepth);
+        var EPOCH_STATS_DEPTH = Number(this._gridOptions.GetOption('epochStatsDepth'));
+        this._epochStats = new EpochStats.EpochStats(EPOCH_STATS_DEPTH);
     };
     Grid.prototype.Run = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var TOTAL_ITERATIONS, TOTAL_PASSES, pass, i, DYNAMIC_PARAMS, STATIC_PARAMS, MODEL_PARAMS, r, MODEL, ITERATION_DURATION, MODEL_TEST_STATS, ITERATION_RESULT, GRID_TIME_END, GRID_DURATION, FileIO, RESULT, FILENAME;
+            var GRID_RUN_STATS, TOTAL_ITERATIONS, TOTAL_REPETITIONS, TOTAL_PASSES, pass, i, DYNAMIC_PARAMS, STATIC_PARAMS, MODEL_PARAMS, r, MODEL, ITERATION_DURATION, MODEL_TEST_STATS, ITERATION_RESULT, GRID_TIME_END, GRID_DURATION, WRITE_RESULTS_OPTION, FileIO, RESULT, FILENAME;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        this._gridRunStats = new GridRunStats();
+                        GRID_RUN_STATS = new GridRunStats_1.GridRunStats();
                         TOTAL_ITERATIONS = this._axisSetTraverser.totalIterations;
-                        TOTAL_PASSES = TOTAL_ITERATIONS * this._gridOptions.repetitions;
+                        TOTAL_REPETITIONS = Number(this._gridOptions.GetOption('repetitions'));
+                        TOTAL_PASSES = TOTAL_ITERATIONS * TOTAL_REPETITIONS;
                         pass = 0;
                         this._timeStartGrid = Date.now();
                         i = 0;
@@ -173,15 +178,15 @@ var Grid = /** @class */ (function () {
                         if (!!this._axisSetTraverser.traversed) return [3 /*break*/, 7];
                         DYNAMIC_PARAMS = this._axisSetTraverser.CreateIterationParams();
                         STATIC_PARAMS = this._modelStatics.ShallowCloneParams();
-                        MODEL_PARAMS = new ModelParams(DYNAMIC_PARAMS, STATIC_PARAMS);
+                        MODEL_PARAMS = new ModelParams_1.ModelParams(DYNAMIC_PARAMS, STATIC_PARAMS);
                         r = 0;
                         _a.label = 2;
                     case 2:
-                        if (!(r < this._gridOptions.repetitions)) return [3 /*break*/, 5];
+                        if (!(r < TOTAL_REPETITIONS)) return [3 /*break*/, 5];
                         console.log('________________________________________________________________');
                         console.log('Pass ' + (1 + pass) + '/' + TOTAL_PASSES
                             + ' (Iteration ' + (1 + i) + '/' + TOTAL_ITERATIONS
-                            + ', Repetition ' + (1 + r) + '/' + this._gridOptions.repetitions + ')'
+                            + ', Repetition ' + (1 + r) + '/' + TOTAL_REPETITIONS + ')'
                             + '\n' + this._axisSetTraverser.WriteReport(false)); // non-compact report
                         ++pass;
                         this._timeStartIteration = Date.now();
@@ -194,8 +199,8 @@ var Grid = /** @class */ (function () {
                         _a.sent();
                         ITERATION_DURATION = Date.now() - this._timeStartIteration;
                         MODEL_TEST_STATS = this.TestModel(MODEL, MODEL_PARAMS, ITERATION_DURATION);
-                        ITERATION_RESULT = new IterationResult(i, this._axisSetTraverser.LookupIterationDescriptor(i), this._epochStats, MODEL_PARAMS, MODEL_TEST_STATS, r, ITERATION_DURATION);
-                        this._gridRunStats.AddIterationResult(ITERATION_RESULT);
+                        ITERATION_RESULT = new IterationResult_1.IterationResult(i, this._axisSetTraverser.LookupIterationDescriptor(i), this._epochStats, MODEL_PARAMS, MODEL_TEST_STATS, r, ITERATION_DURATION);
+                        GRID_RUN_STATS.AddIterationResult(ITERATION_RESULT);
                         _a.label = 4;
                     case 4:
                         ++r;
@@ -209,23 +214,24 @@ var Grid = /** @class */ (function () {
                     case 7:
                         GRID_TIME_END = Date.now();
                         GRID_DURATION = GRID_TIME_END - this._timeStartGrid;
-                        console.log('\n' + '<< GRID SEARCH COMPLETE >>', '\n', '\n' + 'started @ ' + (new Date(this._timeStartGrid)).toLocaleString(), '\n' + '  ended @ ' + (new Date(GRID_TIME_END)).toLocaleString(), '\n' + 'duration: ' + Utils.WriteDurationReport(GRID_DURATION), '\n');
+                        console.log('\n' + '<< GRID SEARCH COMPLETE >>', '\n', '\n' + 'started @ ' + (new Date(this._timeStartGrid)).toLocaleString(), '\n' + '  ended @ ' + (new Date(GRID_TIME_END)).toLocaleString(), '\n' + 'duration: ' + Utils_1.Utils.WriteDurationReport(GRID_DURATION), '\n');
                         console.log('Results (sorted by score)');
-                        console.log(this._gridRunStats.WriteReport(true));
-                        if (!(typeof this._gridOptions.writeResultsToDirectory === 'string')) return [3 /*break*/, 9];
+                        console.log(GRID_RUN_STATS.WriteReport(true));
+                        WRITE_RESULTS_OPTION = this._gridOptions.GetOption('writeResultsToDirectory');
+                        if (!(typeof WRITE_RESULTS_OPTION === 'string')) return [3 /*break*/, 9];
                         FileIO = require('./FileIO').FileIO;
                         RESULT = {};
                         FILENAME = FileIO.ProduceResultsFilename();
-                        return [4 /*yield*/, FileIO.WriteResultsFile(FILENAME, this._gridOptions.writeResultsToDirectory, this._gridRunStats.WriteCSV(), RESULT)];
+                        return [4 /*yield*/, FileIO.WriteResultsFile(FILENAME, WRITE_RESULTS_OPTION, GRID_RUN_STATS.WriteCSV(), RESULT)];
                     case 8:
                         _a.sent();
                         //TODO: Look into Node's os/platform library. Gotta be a way to pull the appropriate slashes.
                         //		...and on the same pass, lookup and print the root directory.
                         console.log('\n'
                             + 'Results file written as '
-                            + (this._gridOptions.writeResultsToDirectory === ''
+                            + (WRITE_RESULTS_OPTION === ''
                                 ? './'
-                                : this._gridOptions.writeResultsToDirectory + '/')
+                                : WRITE_RESULTS_OPTION + '/')
                             + FILENAME);
                         _a.label = 9;
                     case 9: return [2 /*return*/];
@@ -251,7 +257,7 @@ var Grid = /** @class */ (function () {
         console.log('Testing...');
         // run the unseen data through this trained model
         var PREDICTIONS_TENSOR = model.predict(this._sessionData.proofInputsTensor, {
-            batchSize: modelParams.GetParam("batchSize" /* BATCH_SIZE */),
+            batchSize: modelParams.GetNumericParam("batchSize" /* BATCH_SIZE */),
             //NOTE: 'verbose' is not implemented as of TF 2.7.0. The documentation is wrong, but it's noted in the lib (see model.ts).
             verbose: false
         });
@@ -278,7 +284,7 @@ var Grid = /** @class */ (function () {
                 aggregateDeltaIncorrect += EVALUATION.delta;
             }
         }
-        var MODEL_TEST_STATS = new ModelTestStats(aggregateDeltaCorrect, aggregateDeltaIncorrect, totalCorrect, PREDICTIONS.length);
+        var MODEL_TEST_STATS = new ModelTestStats_1.ModelTestStats(aggregateDeltaCorrect, aggregateDeltaIncorrect, totalCorrect, PREDICTIONS.length);
         console.log('Test complete. Score: ' + (100 * MODEL_TEST_STATS.CalculateScore()).toFixed(3) + '%');
         return MODEL_TEST_STATS;
     };
@@ -293,26 +299,26 @@ var Grid = /** @class */ (function () {
                         console.assert(model.built);
                         this.ResetEpochStats();
                         TOTAL_CASES = this._sessionData.totalTrainingCases;
-                        TOTAL_VALIDATION_CASES = Math.ceil(TOTAL_CASES * modelParams.GetParam("validationSplit" /* VALIDATION_SPLIT */));
+                        TOTAL_VALIDATION_CASES = Math.ceil(TOTAL_CASES * modelParams.GetNumericParam("validationSplit" /* VALIDATION_SPLIT */));
                         TOTAL_TRAINING_CASES = TOTAL_CASES - TOTAL_VALIDATION_CASES;
-                        if (TOTAL_VALIDATION_CASES <= this._gridOptions.validationSetSizeMin) {
+                        if (TOTAL_VALIDATION_CASES <= this._gridOptions.GetOption('validationSetSizeMin')) {
                             console.warn('Validation split is extremely low, and may not produce useful results.');
                         }
-                        if (TOTAL_TRAINING_CASES <= this._gridOptions.validationSetSizeMin) {
+                        if (TOTAL_TRAINING_CASES <= this._gridOptions.GetOption('validationSetSizeMin')) {
                             console.warn('Validation split is extremely high, and may not produce useful results.');
                         }
-                        TOTAL_EPOCHS = modelParams.GetParam("epochs" /* EPOCHS */);
+                        TOTAL_EPOCHS = modelParams.GetNumericParam("epochs" /* EPOCHS */);
                         console.log('Training with ' + TOTAL_CASES + ' cases ('
                             + TOTAL_TRAINING_CASES + ' train, '
                             + TOTAL_VALIDATION_CASES + ' validate) '
                             + 'for ' + TOTAL_EPOCHS + ' epochs...');
                         return [4 /*yield*/, model.fit(this._sessionData.trainingInputsTensor, this._sessionData.trainingTargetsTensor, {
-                                batchSize: modelParams.GetParam("batchSize" /* BATCH_SIZE */),
+                                batchSize: modelParams.GetNumericParam("batchSize" /* BATCH_SIZE */),
                                 epochs: TOTAL_EPOCHS,
                                 shuffle: true,
                                 verbose: 2,
                                 //NOTE: Validation is only performed if we provide this "validationSplit" arg. It's necessary to track overfit and stuck.
-                                validationSplit: modelParams.GetParam("validationSplit" /* VALIDATION_SPLIT */),
+                                validationSplit: modelParams.GetNumericParam("validationSplit" /* VALIDATION_SPLIT */),
                                 callbacks: {
                                     //NOTE: These events are available, as of TF 2.7.0:
                                     // 								onTrainBegin: (logs) => { console.log('onTrainBegin', logs); },
@@ -344,7 +350,7 @@ var Grid = /** @class */ (function () {
                                             return;
                                         }
                                         if (epoch === 0) {
-                                            console.log(EpochStats.ReportGuide);
+                                            console.log(EpochStats.REPORT_HEADER);
                                         }
                                         console.log((1 + epoch) + '/' + TOTAL_EPOCHS, _this._epochStats.WriteReport());
                                     }

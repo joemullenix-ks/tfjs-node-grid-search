@@ -4,21 +4,30 @@
 const SIMPLE_STATISTICS = require('simple-statistics');
 
 
-const { Utils } = require('./Utils');
+import { Utils } from './Utils';
 
 
 class EpochStats {
-	constructor(trailDepth) {
-		console.assert(typeof trailDepth === 'number');
-		console.assert(trailDepth > 0);
-		console.assert(Math.floor(trailDepth) === trailDepth);
+	private _samplesAccuracy: Array<number> = [];
+	private _samplesLoss: Array<number> = [];
+	private _samplesValidationAccuracy: Array<number> = [];
+	private _samplesValidationLoss: Array<number> = [];
+	private _averageAccuracy: number = 0;
+	private _averageLoss: number = 0;
+	private _averageLossDelta: number = 0;
+	private _averageValidationAccuracy: number = 0;
+	private _averageValidationLoss: number = 0;
 
-		this._trailDepth = trailDepth;
+//NOTE: These come from simple-statistics(tm), so we'll have to find their types, or define an override.
+//[[TF ANY]]
+	private _lineAccuracy: any;
+	private _lineLoss: any;
+	private _lineValidationAccuracy: any;
+	private _lineValidationLoss: any;
 
-		this._samplesAccuracy = [];
-		this._samplesLoss = [];
-		this._samplesValidationAccuracy = [];
-		this._samplesValidationLoss = [];
+	constructor(private _trailDepth: number) {
+		console.assert(this._trailDepth > 0);
+		console.assert(Math.floor(this._trailDepth) === this._trailDepth);
 	}
 
 	get averageAccuracy() { return this._averageAccuracy; }
@@ -30,8 +39,8 @@ class EpochStats {
 	get lineValidationAccuracy() { return this._lineValidationAccuracy; }
 	get lineValidationLoss() { return this._lineValidationLoss; }
 
-	Update(epoch, logs) {
-		console.assert(typeof epoch === 'number');
+//[[TF ANY]]
+	Update(epoch: number, logs: any) {
 		console.assert(epoch >= 0);
 		console.assert(Math.floor(epoch) === epoch);
 		console.assert(typeof logs === 'object');
@@ -95,7 +104,7 @@ class EpochStats {
 
 
 //NOTE: This must be kept in sync with the text written by WriteReport().
-EpochStats.ReportGuide =  'EPOCH '
+const REPORT_HEADER =  'EPOCH '
 						+ 'LOSS(VALIDATION) '
 						+ 'Δ L-V DELTA, '
 						+ 'm LOSS-SLOPE(VALIDATION)'
@@ -110,4 +119,4 @@ const REPORTING_DIGITS_STAT = 4;
 
 Object.freeze(EpochStats);
 
-exports.EpochStats = EpochStats;
+export { EpochStats, REPORT_HEADER };

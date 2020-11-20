@@ -2,14 +2,14 @@
 
 
 class FailureMessage {
+	private _text: string = '';
+
 	constructor() {
-		this._text = '';
 	}
 
 	get text() { return this._text; }
 
-	set text(text) {
-		console.assert(typeof text === 'string');
+	set text(text: string) {
 		console.assert(text !== '');
 
 		this._text = text;
@@ -19,4 +19,4 @@ class FailureMessage {
 
 Object.freeze(FailureMessage);
 
-exports.FailureMessage = FailureMessage;
+export { FailureMessage };

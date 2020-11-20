@@ -103,21 +103,6 @@ class Axis {
 		return REPORT_TEXT;
 	}
 
-	static LookupTypeName(x: number) {
-		switch (x) {
-			case Types.BATCH_SIZE:			return Names.BATCH_SIZE;
-			case Types.EPOCHS:				return Names.EPOCHS;
-			case Types.LAYERS:				return Names.LAYERS;
-			case Types.LEARN_RATE:			return Names.LEARN_RATE;
-			case Types.NEURONS:				return Names.NEURONS;
-			case Types.VALIDATION_SPLIT:	return Names.VALIDATION_SPLIT;
-
-			default: {
-				throw new Error('invalid enum index: ' + x + '/' + Types._TOTAL);
-			}
-		}
-	}
-
 	static AttemptValidateParameter(key: string, value: number, failureMessage: typeof FailureMessage) {
 
 //NOTE: It's important to gracefully handle bad inputs here, with explanations and recommendations in the failure text.
@@ -209,6 +194,21 @@ class Axis {
 
 		return false;
 	}
+
+	static LookupTypeName(x: number) {
+		switch (x) {
+			case Types.BATCH_SIZE:			return Names.BATCH_SIZE;
+			case Types.EPOCHS:				return Names.EPOCHS;
+			case Types.LAYERS:				return Names.LAYERS;
+			case Types.LEARN_RATE:			return Names.LEARN_RATE;
+			case Types.NEURONS:				return Names.NEURONS;
+			case Types.VALIDATION_SPLIT:	return Names.VALIDATION_SPLIT;
+
+			default: {
+				throw new Error('invalid enum index: ' + x + '/' + Types._TOTAL);
+			}
+		}
+	}
 }
 
 
@@ -222,9 +222,9 @@ interface AxisDef {
 */
 
 //NOTE: TODO: This is wrong, I'm just not clear on the solution at the moment; need to finish the TS conversion.
-//			  Obviously we should have three separate enums that represent one class of information.
-//  		  Either we'll have an interface that each instance of Axis takes as a constructor param.
-//			  Or, and I think more likely, we'll treat Axis as a base (probably abstract), then derive
+//			  Obviously we should not have three separate enums that represent one class of information.
+//  		  Either we'll have an interface that each instance of Axis takes as a constructor param,
+//			  or, and I think more likely, we'll treat Axis as a base (probably abstract), then derive
 //			  children for each axis (BatchSizeAxis, EpochsAxis, etc...).
 //			  More to come!
 

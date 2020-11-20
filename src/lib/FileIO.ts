@@ -6,8 +6,12 @@ const PATH_LIB = require('path');
 const SLASH = require('slash');
 
 
+import { FileIOResult } from './FileIOResult';
+
+
 const FILE_IO = {
 	ProduceResultsFilename: () => {
+//TODO: hard-coder; both the regex and the filename prefix & suffix.
 		const TIMESTAMP = (new Date()).toLocaleString();
 		const FILTERED = TIMESTAMP.replace(/[^a-z0-9]/gi, '_');
 		const LOWERED = FILTERED.toLowerCase();
@@ -15,10 +19,8 @@ const FILE_IO = {
 		return 'Results_' + LOWERED + '.csv';
 	},
 
-	ReadDataFile: async (path, result) => {
-		console.assert(typeof path === 'string');
+	ReadDataFile: async (path: string, result: FileIOResult) => {
 		console.assert(path !== '');
-		console.assert(typeof result === 'object');
 
 		try {
 			result.data = await FS_PROMISES.readFile(path, 'utf8');
@@ -29,12 +31,11 @@ const FILE_IO = {
 		}
 	},
 
-	WriteResultsFile: async (fileName, directory, dataToWrite, result) => {
-		console.assert(typeof fileName === 'string');
+	WriteResultsFile: async (	fileName: string,
+								directory: string,
+								dataToWrite: string,
+								result: FileIOResult) => {
 		console.assert(fileName !== '');
-		console.assert(typeof directory === 'string');
-		console.assert(typeof dataToWrite === 'string');
-		console.assert(typeof result === 'object');
 
 		const WRITE_PATH = PATH_LIB.join(directory, fileName);
 
@@ -50,7 +51,13 @@ const FILE_IO = {
 							WRITE_PATH,
 							dataToWrite,
 							'utf8',
-							(err) => {
+//NOTE: This is nether TF nor any, technically, but it still needs to be confirmed. I picked "Error" out of
+//		the wind.
+//TODO: Come to think of it, I don't even believe this ever tripped, during testing. Seems like the
+//		catch block was the only point-of-failure ... so confirm!
+//
+//[[TF ANY]]
+							(err: Error) => {
 //NOTE: It seems that this doesn't get called, at least not for successful writes. The outer try/catch works,
 //		however. It catches bad-path and bad-content. Maybe it precludes this? Unsure, but it's not hurting
 //		anything, so it stays.
@@ -72,4 +79,4 @@ const FILE_IO = {
 
 Object.freeze(FILE_IO);
 
-exports.FileIO = FILE_IO;
+export {FILE_IO};

@@ -1,6 +1,9 @@
 'use strict';
 
 
+import { TFInputsArray } from '../ts_types/Grid';
+
+
 const TENSOR_FLOW = require('@tensorflow/tfjs');
 
 
@@ -17,13 +20,27 @@ const TENSOR_FLOW = require('@tensorflow/tfjs');
 
 
 class SessionData {
-	constructor(proofPercentage,
-				rawInputs,
-				rawTargets,
-				useDefaultStandardization,
-				callbackStandardize,
-				callbackUnstandardize) {
-		console.assert(typeof proofPercentage === 'number');
+	// _rawInputsProof: TFInputsArray;
+	_rawInputsProof: Array<any> = [];
+	_rawInputsTraining: TFInputsArray;
+//[[TF ANY]]
+	_proofInputsTensor: any;
+	_proofTargets: TFInputsArray;
+//[[TF ANY]]
+	_proofTargetsTensor: any;
+	_totalInputNeurons: number = 0;
+	_totalOutputNeurons: number = 0;
+	_totalTrainingCases: number = 0;
+//[[TF ANY]]
+	_trainingInputsTensor: any;
+	_trainingTargetsTensor: any;
+
+	constructor(proofPercentage: number,
+				rawInputs: TFInputsArray,
+				rawTargets: TFInputsArray,
+				private _useDefaultStandardization: boolean,
+				private _callbackStandardize?: (unstandardizedInputs: TFInputsArray) => void,
+				private _callbackUnstandardize?: (standardizedInputs: TFInputsArray) => void) {
 		console.assert(proofPercentage > 0.0);
 		console.assert(proofPercentage < 1.0);
 
@@ -45,7 +62,7 @@ class SessionData {
 		this._rawInputsTraining = JSON.parse(JSON.stringify(rawInputs));
 
 //NOTE: This call validates and sets the callback members, as needed.
-		this.SetupStandardization(useDefaultStandardization, callbackStandardize, callbackUnstandardize);
+		this.SetupStandardization();
 
 //NOTE: TODO: We don't standardize targets, yet, although that will be desired for regression networks. When we make that
 //			  change, support it with a default and optional callbacks.
@@ -75,20 +92,33 @@ class SessionData {
 			throw new Error('The provided proofPercentage is too high. 100% of cases moved from the training set.');
 		}
 
-		const PROOF_INPUTS = [];
-		const PROOF_TARGETS = [];
+//NOTE: This is NOT TensorFlow's any, here! I can't get TS to accept operations on these, yet.
+//		For some reason it sees TFInputsArray as including undefined; makes no sense.
+//TODO: First place to look is at the FETCH_DATA() values coming in. I think that's still untyped.
+//
+//[[TF ANY]]
+		// const PROOF_INPUTS: TFInputsArray = [];
+		// const PROOF_TARGETS: TFInputsArray = [];
+		const PROOF_INPUTS: Array<any> = [];
+		const PROOF_TARGETS: Array<any> = [];
 
 		// we also carry a copy of the proof subset, in its original, unstandardized form
 
-//NOTE: These are migrated from _rawInputsTraining, so that afterward the standardized and raw collections match,
+//NOTE: Cases are migrated from _rawInputsTraining, so that afterward the standardized and raw collections match,
 //		i.e. both of these are true:
 //			PROOF_INPUTS.length === _rawInputsProof.length
 //			rawInputs.length === _rawInputsTraining.length
-		this._rawInputsProof = [];
+
+		// this._rawInputsProof = [];
 
 		for (let i = 0; i < PROOF_COUNT; ++i) {
-			PROOF_INPUTS.push(rawInputs.shift());
-			PROOF_TARGETS.push(rawTargets.shift());
+			const RAW_I = rawInputs.shift();
+			const RAW_T = rawTargets.shift();
+
+			// PROOF_INPUTS.push(rawInputs.shift());
+			// PROOF_TARGETS.push(rawTargets.shift());
+			PROOF_INPUTS.push(RAW_I);
+			PROOF_TARGETS.push(RAW_T);
 
 			this._rawInputsProof.push(this._rawInputsTraining.shift());
 		}
@@ -116,94 +146,75 @@ class SessionData {
 	get trainingInputsTensor() { return this._trainingInputsTensor; }
 	get trainingTargetsTensor() { return this._trainingTargetsTensor; }
 
-	SetupStandardization(useDefaultStandardization, callbackStandardize, callbackUnstandardize) {
-		console.assert(typeof useDefaultStandardization === 'boolean');
-
-		this._useDefaultStandardization = useDefaultStandardization;
-
-		const STANDARDIZE_CALLBACK_RECEIVED = callbackStandardize !== null && callbackStandardize !== undefined;
-		const UNSTANDARDIZE_CALLBACK_RECEIVED = callbackUnstandardize !== null && callbackUnstandardize !== undefined;
-
-		if (!STANDARDIZE_CALLBACK_RECEIVED) {
-			if (!UNSTANDARDIZE_CALLBACK_RECEIVED) {
+	SetupStandardization() {
+		if (!this._callbackStandardize) {
+			if (!this._callbackUnstandardize) {
 				// no callbacks; useDefaultStandardization will drive the behavior
 				return;
 			}
 
-			throw new Error('Invalid standardization callbacks; received "callbackUnstandardize" but not "callbackUnstandardize".');
+			throw new Error('Invalid standardization callbacks; received "callbackUnstandardize" but not "callbackStandardize".');
 		}
 
-		console.assert(typeof callbackStandardize === 'function');
-
-		// if the arguments indicate both standardization techniques (stock and custom), we use custom; the user's callback(s)
+		// if the arguments indicate both standardization techniques (stock and custom), we use custom, i.e. the user's callback(s)
 		if (this._useDefaultStandardization) {
 			console.warn('Standardization callbacks supplied, so default standardization will be ignored.');
 
 			this._useDefaultStandardization = false;
 		}
-
-		this._callbackStandardize = callbackStandardize;
-
-		if (!UNSTANDARDIZE_CALLBACK_RECEIVED) {
-			return;
-		}
-
-		console.assert(typeof callbackUnstandardize === 'function');
-
-		this._callbackUnstandardize = callbackUnstandardize;
 	}
-}
 
+	static ValidateRawData(raw: TFInputsArray) {
+//NOTE: The top level of 'raw' must be an array, otherwise a lone Number would pass validation. This is no longer
+//		a problem under TypeScript, but it's worth keeping in mind.
 
-SessionData.ValidateRawData = (raw) => {
-	console.assert(Array.isArray(raw)); // the top level must be an array; this check prevents a lone Number from passing
+		let recursionKillswitch = false;
 
-	let recursionKillswitch = false;
-
-	const CHECK_ARRAYS_OF_NUMBERS_RECURSIVELY = (a) => {
-		if (recursionKillswitch) {
-			// this raw data has already failed
-			return false;
-		}
-
-		if (typeof a === 'number') {
-			return true; // PASS as Number
-		}
-
-		if (Array.isArray(a)) {
-			if (a.length > 0) {
-				for (let i = 0; i < a.length; ++i) {
-					if (CHECK_ARRAYS_OF_NUMBERS_RECURSIVELY(a[i])) {
-						continue;
-					}
-
-					console.warn('bad nested value', a[i]);
-
-					recursionKillswitch = true;
-					return false;
-				}
-
-				return true; // PASS as Array
+		const CHECK_ARRAYS_OF_NUMBERS_RECURSIVELY = (a: number | TFInputsArray) => {
+			if (recursionKillswitch) {
+				// this raw data has already failed
+				return false;
 			}
 
-			console.warn('bad empty array', a);
+			if (typeof a === 'number') {
+				return true; // PASS as Number
+			}
+
+			if (Array.isArray(a)) {
+				if (a.length > 0) {
+					for (let i = 0; i < a.length; ++i) {
+						if (CHECK_ARRAYS_OF_NUMBERS_RECURSIVELY(a[i])) {
+							continue;
+						}
+
+						console.warn('bad nested value', a[i]);
+
+						recursionKillswitch = true;
+						return false;
+					}
+
+					return true; // PASS as Array
+				}
+
+				console.warn('bad empty array', a);
+
+				recursionKillswitch = true;
+				return false;
+			}
+
+			console.warn('bad type (requires number or array)', (typeof a));
 
 			recursionKillswitch = true;
 			return false;
+		};
+
+		if (CHECK_ARRAYS_OF_NUMBERS_RECURSIVELY(raw)) {
+			return;
 		}
 
-		console.warn('bad type (requires number or array)', (typeof a));
-
-		recursionKillswitch = true;
-		return false;
+		throw new Error('Invalid raw data. Inputs and targets must be supplied as arrays of numbers, flat or nested.');
 	};
-
-	if (CHECK_ARRAYS_OF_NUMBERS_RECURSIVELY(raw)) {
-		return;
-	}
-
-	throw new Error('Invalid raw data. Inputs and targets must be supplied as arrays of numbers, flat or nested.');
-};
+}
 
 
 //vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
@@ -211,8 +222,7 @@ SessionData.ValidateRawData = (raw) => {
 
 //TODO: This standardization code moves into a separate lib, and/or gets replaced by simple-statistics(tm).
 //		It also has a few generic tensor tools; unsure whether TF or simple-statistics has either, but probably.
-function CountLeafElements(inputData) {
-	console.assert(Array.isArray(inputData));
+function CountLeafElements(inputData: TFInputsArray) {
 	console.assert(inputData.length > 0);
 
 	// find the lowest level of these (potentially) nested arrays
@@ -227,7 +237,9 @@ function CountLeafElements(inputData) {
 	return deepestArray.length;
 }
 
-function FindMean(data) {
+function FindMean(data: Array<number>) {
+	console.assert(data.length > 0);
+
 	let sum = 0;
 
 	for (let i = 0; i < data.length; ++i) {
@@ -239,7 +251,7 @@ function FindMean(data) {
 	return MEAN;
 }
 
-function FindStandardDeviation(data, mean) {
+function FindStandardDeviation(data: Array<number>, mean: number) {
 	// for each sample, subtract the mean and square the result
 	const SQUARED_MEAN_DELTAS = data.map((x) => {return Math.pow(x - mean, 2);});
 
@@ -250,8 +262,7 @@ function FindStandardDeviation(data, mean) {
 	return STDEV;
 }
 
-function StandardizeInputs(inputData) {
-	console.assert(Array.isArray(inputData));
+function StandardizeInputs(inputData: TFInputsArray) {
 	console.assert(inputData.length > 0);
 
 	// find the lowest level of these (potentially) nested arrays
@@ -273,7 +284,7 @@ function StandardizeInputs(inputData) {
 
 	console.log('standardizing ' + tensorDimensions + ' dimension tensor with ' + TOTAL_FEATURES + ' features');
 
-	const FEATURE_VALUE_TABLE = [];
+	const FEATURE_VALUE_TABLE: Array<Array<number>> = [];
 
 	for (let i = 0; i < TOTAL_FEATURES; ++i) {
 		FEATURE_VALUE_TABLE.push([]);
@@ -283,17 +294,14 @@ function StandardizeInputs(inputData) {
 
 //NOTE: TODO: This is actually a basic tensor tool, I'm now realizing. Find a good tensor lib, or start one.
 //			  ...after you check TF's own utils, or course!
-	const RECURSIVELY_TABULATE_FEATURES = (a) => {
-		console.assert(Array.isArray(a));
+	const RECURSIVELY_TABULATE_FEATURES = (a: TFInputsArray) => {
 		console.assert(a.length > 0);
 
-		a.forEach((value, index) => {
+		a.forEach((value: TFInputsArray | number, index: number) => {
 			if (Array.isArray(value)) {
 				RECURSIVELY_TABULATE_FEATURES(value);
 				return;
 			}
-
-			console.assert(typeof value === 'number');
 
 			// we've hit a 'bottom' level array (a leaf node); tabulate its feature values
 			FEATURE_VALUE_TABLE[index].push(value);
@@ -304,9 +312,9 @@ function StandardizeInputs(inputData) {
 
 	// find mean and standard deviation for each feature
 
-	const MEANS = [];
+	const MEANS: Array<number> = [];
 
-	const STANDARD_DEVIATIONS = [];
+	const STANDARD_DEVIATIONS: Array<number> = [];
 
 	for (let i = 0; i < TOTAL_FEATURES; ++i) {
 		const FEATURE_MEAN = FindMean(FEATURE_VALUE_TABLE[i]);
@@ -320,20 +328,42 @@ function StandardizeInputs(inputData) {
 
 	// walk this set of (potentially) nested arrays, adjusting each feature set to mean zero and variance one
 
-	const RECURSIVELY_STANDARDIZE_FEATURES = (a) => {
-		console.assert(Array.isArray(a));
+	const RECURSIVELY_STANDARDIZE_FEATURES = (a: TFInputsArray) => {
 		console.assert(a.length > 0);
 
-		a.forEach((value, index, array) => {
+		a.forEach((value: TFInputsArray | number, index: number, array: TFInputsArray) => {
 			if (Array.isArray(value)) {
 				RECURSIVELY_STANDARDIZE_FEATURES(value);
 				return;
 			}
 
-			console.assert(typeof value === 'number');
-
 			// we've hit a 'bottom' level array (a leaf node)
 
+//NOTE: We use this unnecessary, temporary 'sample' as an extra register. This is purely done because TypeScript
+//		does not like my TFInputsArray type. That type was written to handle nested arrays, but it's causing other
+//		problems, primarily within this file.
+
+			let sample = Number(array[index]);
+
+			// shift left by the mean, to 'center' everything on zero
+			sample -= MEANS[index];
+
+			if (STANDARD_DEVIATIONS[index] === 0) {
+				// this category (feature) has no deviation; all samples equal the mean
+
+				// set the value back into its slot
+				array[index] = sample;
+
+				return;
+			}
+
+			// divide by the standard deviation, so that all categories have a variance of one
+			sample /= STANDARD_DEVIATIONS[index];
+
+			// set the value back into its slot
+			array[index] = sample;
+
+/*KEEP: ...until the above TS issue is resolved. This is the original, and there's nothing wrong with it.
 			// shift left by the mean, to 'center' everything on zero
 			array[index] -= MEANS[index];
 
@@ -344,15 +374,17 @@ function StandardizeInputs(inputData) {
 
 			// divide by the standard deviation, so that all categories have a variance of one
 			array[index] /= STANDARD_DEVIATIONS[index];
+*/
 		});
 	};
 
 	RECURSIVELY_STANDARDIZE_FEATURES(inputData);
 }
 
-function UnstandardizeInputs(inputData) {
-throw new Error('KEEP: but this needs an update before it can be used; see the recursive digs in StandardizeInputs()')
+function UnstandardizeInputs(inputData: TFInputsArray) {
+throw new Error('KEEP: but this needs a rewrite before it can be used; see the recursive digs in StandardizeInputs()')
 
+/*
 //NOTE: TODO: This format assumption is far too limiting. That's why standardization will moved into an optional callback.
 	console.assert(Array.isArray(inputData));
 	console.assert(inputData.length > 0);
@@ -377,6 +409,7 @@ throw new Error('KEEP: but this needs an update before it can be used; see the r
 	}
 
 	return inputData;
+*/
 }
 //^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 //^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -384,4 +417,4 @@ throw new Error('KEEP: but this needs an update before it can be used; see the r
 
 Object.freeze(SessionData);
 
-exports.SessionData = SessionData;
+export { SessionData };

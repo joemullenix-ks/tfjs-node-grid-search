@@ -84,18 +84,12 @@ Values		= 100, 92, 87, 79, [66]
 */
 
 
-class Progression {
-	constructor(integerBased, typeName) { // "integerBased" as opposed to floating point
-		if (this.constructor === Progression) {
-			throw new Error('Progression is pure abstract (cannot be instantiated).');
-		}
+abstract class Progression {
+	protected _value: number;
 
-		console.assert(typeof integerBased === 'boolean');
-		console.assert(typeof typeName === 'string');
-		console.assert(typeName !== '');
-
-		this._integerBased = integerBased;
-		this._typeName = typeName;
+	constructor(private _integerBased: boolean, // "integerBased" as opposed to floating point
+				private _typeName: string) {
+		console.assert(this._typeName !== '');
 
 //NOTE: All progressions begin at zero, because the bounds of the range we traverse are inclusive.
 		this._value = 0;
@@ -105,16 +99,14 @@ class Progression {
 	get typeName() { return this._typeName; }
 	get value() { return this._value; }
 
-	Advance() {
-		throw new Error('Advance() method not implemented by concrete class; type: ' + this._typeName);
-	}
-
 	Reset() {
 		this._value = 0;
 	}
+
+	abstract Advance(): void
 }
 
 
 Object.freeze(Progression);
 
-exports.Progression = Progression;
+export { Progression };

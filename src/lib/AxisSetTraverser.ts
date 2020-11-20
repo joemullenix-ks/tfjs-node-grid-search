@@ -1,15 +1,19 @@
 'use strict';
 
 
-const { AxisSet } = require('./AxisSet');
+import { NumberKeyedStringsObject } from '../ts_types/common';
+
+
+import { AxisSet } from './AxisSet';
 
 
 class AxisSetTraverser {
-	constructor(axisSet) {
-		console.assert(axisSet instanceof AxisSet);
+	private _totalAxes: number = 0;
+	private _traversed: boolean = false;
+	private _iterationDescriptorsByIndex: NumberKeyedStringsObject = {};
+	private _totalIterations: number = 0;
 
-		this._axisSet = axisSet;
-
+	constructor(private _axisSet: AxisSet) {
 		this._totalAxes = this._axisSet.GetTotalAxes(); // cache this; it doesn't change
 
 		this._traversed = false;
@@ -83,23 +87,21 @@ class AxisSetTraverser {
 		return this._axisSet.CreateParams();
 	}
 
-	ExamineAxisNames(callback) {
+	ExamineAxisNames(callback: (axisKey: string) => void) {
 		this._axisSet.Walk((axis) => {
 			callback(axis.typeName);
 		});
 	}
 
-	LookupIterationDescriptor(i) {
-		console.assert(typeof i === 'number');
-
-		if (this._iterationDescriptorsByIndex[i] === undefined) {
-			throw new Error('Attempted to lookup descriptor for unknown iteration: ' + i);
+	LookupIterationDescriptor(index: number) {
+		if (this._iterationDescriptorsByIndex[index] === undefined) {
+			throw new Error('Attempted to lookup descriptor for unknown iteration: ' + index);
 		}
 
-		return this._iterationDescriptorsByIndex[i];
+		return this._iterationDescriptorsByIndex[index];
 	}
 
-	WriteReport(compact) {
+	WriteReport(compact: boolean) {
 		let reportText = '';
 
 		for (let i = 0; i < this._totalAxes; ++i) {
@@ -118,4 +120,4 @@ class AxisSetTraverser {
 
 Object.freeze(AxisSetTraverser);
 
-exports.AxisSetTraverser = AxisSetTraverser;
+export { AxisSetTraverser };

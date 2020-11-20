@@ -1,19 +1,21 @@
 'use strict';
 
 
-const { Progression } = require('../Progression');
+import { Progression } from '../Progression';
 
 
 const PROGRESSION_TYPENAME = 'Exponential';
 
 
 class ExponentialProgression extends Progression {
-	constructor(exponent, scale) {
+//NOTE: These are not constructor-privates because we need to send the constructor's args into super().
+	private _exponent: number = 0;
+	private _scale: number = 0;
+	private _step: number = 0;
+
+	constructor(exponent: number, scale: number) {
 		super(	exponent === Math.floor(exponent) && scale === Math.floor(scale),	// i.e. are these integers?
 				PROGRESSION_TYPENAME);
-
-		console.assert(typeof exponent === 'number');
-		console.assert(typeof scale === 'number');
 
 		// these rules prevent the progression going flat (infinite) or negative (yikes)
 
@@ -49,4 +51,4 @@ class ExponentialProgression extends Progression {
 
 Object.freeze(ExponentialProgression);
 
-exports.ExponentialProgression = ExponentialProgression;
+export { ExponentialProgression };

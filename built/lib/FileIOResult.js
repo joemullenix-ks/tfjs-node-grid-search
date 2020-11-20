@@ -18,4 +18,4 @@ var FileIOResult = /** @class */ (function () {
 }());
 exports.FileIOResult = FileIOResult;
 Object.freeze(FileIOResult);
-//# sourceMappingURL=FileReadResult.js.map
+//# sourceMappingURL=FileIOResult.js.map

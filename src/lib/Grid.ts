@@ -11,48 +11,51 @@
 const TENSOR_FLOW = require('@tensorflow/tfjs');
 
 
-const { AxisSet }				= require('./AxisSet');
-const { AxisSetTraverser }		= require('./AxisSetTraverser');
-const { EpochStats }			= require('./EpochStats');
-const { GridOptions }			= require('./GridOptions');
-const { GridRunStats }			= require('./GridRunStats');
-const { IterationResult }		= require('./IterationResult');
-const { ModelParams }			= require('./ModelParams');
-const { ModelStatics }			= require('./ModelStatics');
-const { ModelTestStats }		= require('./ModelTestStats');
 const { SessionData }			= require('./SessionData');
-const { Utils }					= require('./Utils');
 
 
 import * as Types from '../ts_types/Grid';
 
 
-import * as Axis from './Axis';
+import * as Axis				from './Axis';
+import { AxisSet }				from './AxisSet';
+import { AxisSetTraverser }		from './AxisSetTraverser';
+import * as EpochStats			from './EpochStats';
+import { GridOptions }			from './GridOptions';
+import { GridRunStats }			from './GridRunStats';
+import { IterationResult }		from './IterationResult';
+import { ModelParams }			from './ModelParams';
+import { ModelStatics }			from './ModelStatics';
+import { ModelTestStats }		from './ModelTestStats';
+import { Utils }				from './Utils';
 
 
 class Grid {
-	_axisSetTraverser: typeof AxisSetTraverser;
-	_epochStats: typeof EpochStats;
-	_gridRunStats: typeof GridRunStats;
-	_timeStartBatch: number = 0;
-	_timeStartEpoch: number = 0;
-	_timeStartGrid: number = 0;
-	_timeStartIteration: number = 0;
+	private _axisSetTraverser: AxisSetTraverser;
+	private _epochStats!: EpochStats.EpochStats;
+	private _gridOptions: GridOptions;
+	private _timeStartBatch: number = 0;
+	private _timeStartEpoch: number = 0;
+	private _timeStartGrid: number = 0;
+	private _timeStartIteration: number = 0;
 
-	constructor(axisSet: typeof AxisSet,
-				private _modelStatics: typeof ModelStatics,
+	constructor(axisSet: AxisSet,
+				private _modelStatics: ModelStatics,
 				private _sessionData: typeof SessionData,
 				private _callbackEvaluatePrediction: Types.CallbackEvaluatePrediction,
-				private _gridOptions?: typeof GridOptions,
+				private _userGridOptions?: GridOptions,
 				private _callbackReportIteration?: Types.CallbackReportIteration,
 				private _callbackReportEpoch?: Types.CallbackReportEpoch,
 				private _callbackReportBatch?: Types.CallbackReportBatch) {
 
 		console.log('\n' + 'Instantiating Grid...');
 
-		// if the user doesn't provide an options block, we'll setup defaults
-		if (!this._gridOptions) {
+		// take the user's options block, if supplied, otherwise setup defaults
+		if (!this._userGridOptions) {
 			this._gridOptions = new GridOptions();
+		}
+		else {
+			this._gridOptions = this._userGridOptions;
 		}
 
 		this._axisSetTraverser = new AxisSetTraverser(axisSet);
@@ -61,11 +64,11 @@ class Grid {
 		this.ResolveModelDefinition();
 	}
 
-	CreateModel(modelParams: typeof ModelParams) {
+	CreateModel(modelParams: ModelParams) {
 		const TOTAL_INPUT_NEURONS = this._sessionData.totalInputNeurons;
 		const TOTAL_OUTPUT_NEURONS = this._sessionData.totalOutputNeurons;
 
-		const TOTAL_HIDDEN_LAYERS = modelParams.GetParam(Axis.Names.LAYERS);
+		const TOTAL_HIDDEN_LAYERS = modelParams.GetNumericParam(Axis.Names.LAYERS);
 
 		const TF_MODEL = TENSOR_FLOW.sequential();
 
@@ -74,7 +77,7 @@ class Grid {
 			TF_MODEL.add(TENSOR_FLOW.layers.dense(	{
 														inputShape: [TOTAL_INPUT_NEURONS],
 														units: TOTAL_OUTPUT_NEURONS,
-														activation: modelParams.GetParam('activationOutput'), //HARD-CODER; TODO: Add this as a managed Axis type, or define it ... somewhere.
+														activation: modelParams.GetTextParam('activationOutput'), //HARD-CODER; TODO: Add this as a managed Axis type, or define it ... somewhere.
 														useBias: true,
 														kernelInitializer: this._modelStatics.GenerateInitializerKernel(),
 														biasInitializer: this._modelStatics.GenerateInitializerBias()
@@ -84,8 +87,8 @@ class Grid {
 			// add the first hidden layer, which takes the inputs (TF has no discrete 'input layer')
 			TF_MODEL.add(TENSOR_FLOW.layers.dense(	{
 														inputShape: [TOTAL_INPUT_NEURONS],
-														units: modelParams.GetParam(Axis.Names.NEURONS),
-														activation: modelParams.GetParam('activationInput'), //HARD-CODER; TODO: Add this as a managed Axis.
+														units: modelParams.GetNumericParam(Axis.Names.NEURONS),
+														activation: modelParams.GetTextParam('activationInput'), //HARD-CODER; TODO: Add this as a managed Axis.
 														useBias: true,
 														kernelInitializer: this._modelStatics.GenerateInitializerKernel(),
 														biasInitializer: this._modelStatics.GenerateInitializerBias()
@@ -94,8 +97,8 @@ class Grid {
 			// add the remaining hidden layers; one-based, because of the built-in input layer
 			for (let i = 1; i < TOTAL_HIDDEN_LAYERS; ++i) {
 				TF_MODEL.add(TENSOR_FLOW.layers.dense(	{
-															units: modelParams.GetParam(Axis.Names.NEURONS),
-															activation: modelParams.GetParam('activationHidden'), //HARD-CODER; TODO: Add this as a managed Axis.
+															units: modelParams.GetNumericParam(Axis.Names.NEURONS),
+															activation: modelParams.GetTextParam('activationHidden'), //HARD-CODER; TODO: Add this as a managed Axis.
 															useBias: true,
 															kernelInitializer: this._modelStatics.GenerateInitializerKernel(),
 															biasInitializer: this._modelStatics.GenerateInitializerBias()
@@ -104,7 +107,7 @@ class Grid {
 
 			TF_MODEL.add(TENSOR_FLOW.layers.dense(	{
 														units: TOTAL_OUTPUT_NEURONS,
-														activation: modelParams.GetParam('activationOutput'), //HARD-CODER; TODO: Add this as a managed Axis.
+														activation: modelParams.GetTextParam('activationOutput'), //HARD-CODER; TODO: Add this as a managed Axis.
 														useBias: true,
 														biasInitializer: this._modelStatics.GenerateInitializerBias()
 													}));
@@ -113,9 +116,11 @@ class Grid {
 //TODO: Print these, but only under a verbocity setting (way too spammy)
 //		TF_MODEL.summary();
 
+		const LEARNING_RATE = modelParams.GetNumericParam(Axis.Names.LEARN_RATE);
+
 		// compile the model, which prepares it for training
 		TF_MODEL.compile(	{
-								optimizer: this._modelStatics.GenerateOptimizer(modelParams.GetParam(Axis.Names.LEARN_RATE)),
+								optimizer: this._modelStatics.GenerateOptimizer(LEARNING_RATE),
 								loss: this._modelStatics.GenerateLossFunction(),
 								metrics: 'accuracy'
 							});
@@ -124,17 +129,24 @@ class Grid {
 	}
 
 	ResetEpochStats() {
+		console.assert(this._gridOptions.GetOption('epochStatsDepth') !== undefined);
+
 //NOTE: This is currently only used by the reporting callback. It's contents, however, will be critical to tracking
 //		overfit and stuck situations, as well as things like Smart Start(tm) (restarting unlucky iterations).
-		this._epochStats = new EpochStats(this._gridOptions.epochStatsDepth);
+
+		const EPOCH_STATS_DEPTH = Number(this._gridOptions.GetOption('epochStatsDepth'));
+
+		this._epochStats = new EpochStats.EpochStats(EPOCH_STATS_DEPTH);
 	}
 
 	async Run() {
-		this._gridRunStats = new GridRunStats();
+		const GRID_RUN_STATS = new GridRunStats();
 
 		const TOTAL_ITERATIONS = this._axisSetTraverser.totalIterations;
 
-		const TOTAL_PASSES = TOTAL_ITERATIONS * this._gridOptions.repetitions;
+		const TOTAL_REPETITIONS = Number(this._gridOptions.GetOption('repetitions'));
+
+		const TOTAL_PASSES = TOTAL_ITERATIONS * TOTAL_REPETITIONS;
 
 		let pass = 0;
 
@@ -147,11 +159,11 @@ class Grid {
 
 			const MODEL_PARAMS = new ModelParams(DYNAMIC_PARAMS, STATIC_PARAMS);
 
-			for (let r = 0; r < this._gridOptions.repetitions; ++r) {
+			for (let r = 0; r < TOTAL_REPETITIONS; ++r) {
 				console.log('________________________________________________________________');
 				console.log('Pass ' + (1 + pass) + '/' + TOTAL_PASSES
 							+ ' (Iteration ' + (1 + i) + '/' + TOTAL_ITERATIONS
-							+ ', Repetition ' + (1 + r) + '/' + this._gridOptions.repetitions + ')'
+							+ ', Repetition ' + (1 + r) + '/' + TOTAL_REPETITIONS + ')'
 							+ '\n' + this._axisSetTraverser.WriteReport(false)); // non-compact report
 
 				++pass;
@@ -178,7 +190,7 @@ class Grid {
 																r,
 																ITERATION_DURATION);
 
-				this._gridRunStats.AddIterationResult(ITERATION_RESULT);
+				GRID_RUN_STATS.AddIterationResult(ITERATION_RESULT);
 			}
 
 			this._axisSetTraverser.Advance();
@@ -196,9 +208,11 @@ class Grid {
 					'\n');
 
 		console.log('Results (sorted by score)');
-		console.log(this._gridRunStats.WriteReport(true));
+		console.log(GRID_RUN_STATS.WriteReport(true));
 
-		if (typeof this._gridOptions.writeResultsToDirectory === 'string') {
+		const WRITE_RESULTS_OPTION = this._gridOptions.GetOption('writeResultsToDirectory');
+
+		if (typeof WRITE_RESULTS_OPTION === 'string') {
 			const { FileIO } = require('./FileIO');
 
 			const RESULT = {};
@@ -206,17 +220,17 @@ class Grid {
 			const FILENAME = FileIO.ProduceResultsFilename();
 
 			await FileIO.WriteResultsFile(	FILENAME,
-											this._gridOptions.writeResultsToDirectory,
-											this._gridRunStats.WriteCSV(),
+											WRITE_RESULTS_OPTION,
+											GRID_RUN_STATS.WriteCSV(),
 											RESULT);
 
 //TODO: Look into Node's os/platform library. Gotta be a way to pull the appropriate slashes.
 //		...and on the same pass, lookup and print the root directory.
 			console.log('\n'
 						+ 'Results file written as '
-						+ (this._gridOptions.writeResultsToDirectory === ''
+						+ (WRITE_RESULTS_OPTION === ''
 							? './'
-							: this._gridOptions.writeResultsToDirectory + '/')
+							: WRITE_RESULTS_OPTION + '/')
 						+ FILENAME);
 		}
 	}
@@ -234,7 +248,7 @@ class Grid {
 	}
 
 //TODO: This model type might be too strict. Consider the lower-level TF LayersModel.
-	TestModel(model: typeof TENSOR_FLOW.Sequential, modelParams: typeof ModelParams, duration: number) {
+	TestModel(model: typeof TENSOR_FLOW.Sequential, modelParams: ModelParams, duration: number) {
 		console.assert(model.built);
 		console.assert(duration >= 0);
 
@@ -243,7 +257,7 @@ class Grid {
 		// run the unseen data through this trained model
 		const PREDICTIONS_TENSOR = model.predict(	this._sessionData.proofInputsTensor,
 													{
-														batchSize: modelParams.GetParam(Axis.Names.BATCH_SIZE),
+														batchSize: modelParams.GetNumericParam(Axis.Names.BATCH_SIZE),
 //NOTE: 'verbose' is not implemented as of TF 2.7.0. The documentation is wrong, but it's noted in the lib (see model.ts).
 														verbose: false
 													});
@@ -294,7 +308,7 @@ class Grid {
 	}
 
 //TODO: This model type might be too strict. Consider the lower-level TF LayersModel.
-	async TrainModel(model: typeof TENSOR_FLOW.Sequential, modelParams: typeof ModelParams) {
+	async TrainModel(model: typeof TENSOR_FLOW.Sequential, modelParams: ModelParams) {
 		console.assert(model.built);
 
 		this.ResetEpochStats()
@@ -302,19 +316,19 @@ class Grid {
 		const TOTAL_CASES = this._sessionData.totalTrainingCases;
 
 //NOTE: ceil() is how TF performs this same split, as of v2.7.0.
-		const TOTAL_VALIDATION_CASES = Math.ceil(TOTAL_CASES * modelParams.GetParam(Axis.Names.VALIDATION_SPLIT));
+		const TOTAL_VALIDATION_CASES = Math.ceil(TOTAL_CASES * modelParams.GetNumericParam(Axis.Names.VALIDATION_SPLIT));
 
 		const TOTAL_TRAINING_CASES = TOTAL_CASES - TOTAL_VALIDATION_CASES;
 
-		if (TOTAL_VALIDATION_CASES <= this._gridOptions.validationSetSizeMin) {
+		if (TOTAL_VALIDATION_CASES <= this._gridOptions.GetOption('validationSetSizeMin')) {
 			console.warn('Validation split is extremely low, and may not produce useful results.');
 		}
 
-		if (TOTAL_TRAINING_CASES <= this._gridOptions.validationSetSizeMin) {
+		if (TOTAL_TRAINING_CASES <= this._gridOptions.GetOption('validationSetSizeMin')) {
 			console.warn('Validation split is extremely high, and may not produce useful results.');
 		}
 
-		const TOTAL_EPOCHS = modelParams.GetParam(Axis.Names.EPOCHS);
+		const TOTAL_EPOCHS = modelParams.GetNumericParam(Axis.Names.EPOCHS);
 
 		console.log('Training with ' + TOTAL_CASES + ' cases ('
 					+ TOTAL_TRAINING_CASES + ' train, '
@@ -324,12 +338,12 @@ class Grid {
 		await model.fit(this._sessionData.trainingInputsTensor,
 						this._sessionData.trainingTargetsTensor,
 						{
-							batchSize: modelParams.GetParam(Axis.Names.BATCH_SIZE),
+							batchSize: modelParams.GetNumericParam(Axis.Names.BATCH_SIZE),
 							epochs: TOTAL_EPOCHS,
 							shuffle: true,
 							verbose: 2,
 //NOTE: Validation is only performed if we provide this "validationSplit" arg. It's necessary to track overfit and stuck.
-							validationSplit: modelParams.GetParam(Axis.Names.VALIDATION_SPLIT),
+							validationSplit: modelParams.GetNumericParam(Axis.Names.VALIDATION_SPLIT),
 							callbacks:
 							{
 //NOTE: These events are available, as of TF 2.7.0:
@@ -372,7 +386,7 @@ class Grid {
 									}
 
 									if (epoch === 0) {
-										console.log(EpochStats.ReportGuide);
+										console.log(EpochStats.REPORT_HEADER);
 									}
 
 									console.log((1 + epoch) + '/' + TOTAL_EPOCHS, this._epochStats.WriteReport());

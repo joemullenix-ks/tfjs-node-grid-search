@@ -1,17 +1,16 @@
 'use strict';
 
 
-const { IterationResult } = require('./IterationResult');
+import { IterationResult } from './IterationResult';
 
 
 class GridRunStats {
+	private _iterationResults: Array<IterationResult> = [];
+
 	constructor() {
-		this._iterationResults = [];
 	}
 
-	AddIterationResult(iterationResult) {
-		console.assert(iterationResult instanceof IterationResult);
-
+	AddIterationResult(iterationResult: IterationResult) {
 		this._iterationResults.push(iterationResult);
 	}
 
@@ -57,9 +56,7 @@ class GridRunStats {
 		return headerText + '\n' + iterationsTableText;
 	}
 
-	WriteReport(sortByScore) {
-		console.assert(typeof sortByScore === 'boolean');
-
+	WriteReport(sortByScore: boolean) {
 		let iterations = this._iterationResults;
 
 		if (sortByScore) {
@@ -86,4 +83,4 @@ class GridRunStats {
 
 Object.freeze(GridRunStats);
 
-exports.GridRunStats = GridRunStats;
+export { GridRunStats };

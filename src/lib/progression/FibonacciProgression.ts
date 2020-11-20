@@ -1,13 +1,18 @@
 'use strict';
 
 
-const { Progression } = require('../Progression');
+import { Progression } from '../Progression';
 
 
 const PROGRESSION_TYPENAME = 'Fibonacci';
 
 
 class FibonacciProgression extends Progression {
+	private _fiboA: number = 0;
+	private _fiboB: number = 0;
+	private _initFiboA: number = 0;
+	private _initFiboB: number = 0;
+
 //NOTE: It might seem useful to offer two arbitrary params, e.g. (1.5, 4), and let the user define their own
 //		Fibonacci-ish sequence. I actually tried that, and lo and behold, it basically finds it's way back
 //		to the actual Fibonaccis. It doesn't merged, exactly, but it produces the same curve, just slightly
@@ -15,23 +20,20 @@ class FibonacciProgression extends Progression {
 //		Makes sense in retrospect. The algorithm only cares about two inputs on the first step. After that,
 //		it exclusively uses one (the sum).
 //		Nature FTW.
-	constructor(initiator) {
-		super(	true,	// always integer based (no need to overcomplicate)
+	constructor(private _initiator: number) {
+		super(	true, // always integer based (no need to overcomplicate)
 				PROGRESSION_TYPENAME);
 
-		console.assert(typeof initiator === 'number');
-		console.assert(initiator >= 0);
-		console.assert(initiator === Math.floor(initiator));
-
-		this._initiator = initiator;
+		console.assert(this._initiator >= 0);
+		console.assert(this._initiator === Math.floor(this._initiator));
 
 		// we special case the first few values, to avoid grid iterations that don't differ, e.g. 0, 1, 1, 2, ...
-		if (initiator <= 1) {
+		if (this._initiator <= 1) {
 			this._initFiboA = 0;
 			this._initFiboB = 1;
 		}
 		else {
-			const FIRST_PICK = FIND_NEAREST_FIBONACCI_NUMBER(initiator);
+			const FIRST_PICK = FIND_NEAREST_FIBONACCI_NUMBER(this._initiator);
 
 			// choose the two inputs that generate the Fibonacci number nearest the initiator
 
@@ -42,7 +44,7 @@ class FibonacciProgression extends Progression {
 
 		if (this._initFiboB < this._initFiboA
 			|| (this._initFiboA === this._initFiboB && this._initFiboA !== 1)) {
-			throw new Error('invalid Fibonacci sequence initiator (' + initiator + '). Please choose another value.');
+			throw new Error('invalid Fibonacci sequence initiator (' + this._initiator + '). Please choose another value.');
 		}
 
 		// this initializes '_fiboA' and '_fiboB'
@@ -76,7 +78,7 @@ class FibonacciProgression extends Progression {
 //
 //		answered Jul 19 '17 at 16:27 by Neil
 
-const FIND_NEAREST_FIBONACCI_NUMBER = (n, x = 0, y = 1) => {
+const FIND_NEAREST_FIBONACCI_NUMBER = (n: number, x: number = 0, y: number = 1): number => {
 //PERF: This is not fast! Any high-frequency usage should instead use a cache.
 
 //NOTE: Though this looks dangerously unbounded, I've tested it up to max-integers, and it only goes ~80 calls deep.
@@ -95,4 +97,4 @@ const APPROXIMATE_FIBONACCI_RATIO = 0.6180339850;
 
 Object.freeze(FibonacciProgression);
 
-exports.FibonacciProgression = FibonacciProgression;
+export { FibonacciProgression };

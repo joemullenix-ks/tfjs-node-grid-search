@@ -7,7 +7,7 @@ type ArrayOrder4 = Array<Array<Array<Array<number>>>>;
 type ArrayOrder5 = Array<Array<Array<Array<Array<number>>>>>;
 type ArrayOrder6 = Array<Array<Array<Array<Array<Array<number>>>>>>;
 
-export type TFInputsArray = ArrayOrder2 | ArrayOrder3 | ArrayOrder4 | ArrayOrder5 | ArrayOrder6;
+export type TFInputsArray = ArrayOrder1 | ArrayOrder2 | ArrayOrder3 | ArrayOrder4 | ArrayOrder5 | ArrayOrder6;
 
 
 export type CallbackEvaluatePrediction = (	target: Array<number>,

@@ -35,11 +35,14 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.FILE_IO = void 0;
 var FS_PROMISES = require('fs/promises');
 var PATH_LIB = require('path');
 var SLASH = require('slash');
 var FILE_IO = {
     ProduceResultsFilename: function () {
+        //TODO: hard-coder; both the regex and the filename prefix & suffix.
         var TIMESTAMP = (new Date()).toLocaleString();
         var FILTERED = TIMESTAMP.replace(/[^a-z0-9]/gi, '_');
         var LOWERED = FILTERED.toLowerCase();
@@ -50,9 +53,7 @@ var FILE_IO = {
         return __generator(this, function (_b) {
             switch (_b.label) {
                 case 0:
-                    console.assert(typeof path === 'string');
                     console.assert(path !== '');
-                    console.assert(typeof result === 'object');
                     _b.label = 1;
                 case 1:
                     _b.trys.push([1, 3, , 4]);
@@ -73,11 +74,7 @@ var FILE_IO = {
         return __generator(this, function (_b) {
             switch (_b.label) {
                 case 0:
-                    console.assert(typeof fileName === 'string');
                     console.assert(fileName !== '');
-                    console.assert(typeof directory === 'string');
-                    console.assert(typeof dataToWrite === 'string');
-                    console.assert(typeof result === 'object');
                     WRITE_PATH = PATH_LIB.join(directory, fileName);
                     // correct for Unix/Windows path format
                     SLASH(WRITE_PATH);
@@ -88,7 +85,14 @@ var FILE_IO = {
                 case 1:
                     _b.trys.push([1, 3, , 4]);
                     _a = result;
-                    return [4 /*yield*/, FS_PROMISES.writeFile(WRITE_PATH, dataToWrite, 'utf8', function (err) {
+                    return [4 /*yield*/, FS_PROMISES.writeFile(WRITE_PATH, dataToWrite, 'utf8', 
+                        //NOTE: This is nether TF nor any, technically, but it still needs to be confirmed. I picked "Error" out of
+                        //		the wind.
+                        //TODO: Come to think of it, I don't even believe this ever tripped, during testing. Seems like the
+                        //		catch block was the only point-of-failure ... so confirm!
+                        //
+                        //[[TF ANY]]
+                        function (err) {
                             //NOTE: It seems that this doesn't get called, at least not for successful writes. The outer try/catch works,
                             //		however. It catches bad-path and bad-content. Maybe it precludes this? Unsure, but it's not hurting
                             //		anything, so it stays.
@@ -108,6 +112,6 @@ var FILE_IO = {
         });
     }); }
 };
+exports.FILE_IO = FILE_IO;
 Object.freeze(FILE_IO);
-exports.FileIO = FILE_IO;
 //# sourceMappingURL=FileIO.js.map

@@ -1,12 +1,19 @@
 'use strict';
-var Utils = require('./Utils').Utils;
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.GridOptions = void 0;
+var Utils_1 = require("./Utils");
+//NOTE: TODO: Not entirely thrilled with this class. It has a lot in common with ModelStatics, but the two
+//			  are implemented very differently. Part of that is due to ModelStatics's dependence on baked-in
+//			  TensorFlow keys, but it's also due to project churn and the TypeScript conversion process.
+//			  Revisit both classes, and settle on a common approach.
 var GridOptions = /** @class */ (function () {
-    function GridOptions(options) {
-        if (typeof options !== 'object') {
-            console.assert(options === null || options === undefined);
+    function GridOptions(userOptions) {
+        this._options = {};
+        if (typeof userOptions !== 'object') {
+            console.assert(userOptions === null || userOptions === undefined);
         }
         // merge the user-supplied options w/ the default options
-        for (var k in options) {
+        for (var k in userOptions) {
             if (ALL_AVAILABLE_OPTIONS[k] !== undefined) {
                 continue;
             }
@@ -31,20 +38,23 @@ var GridOptions = /** @class */ (function () {
             // These properties are intentionally left out (i.e. off by default):
             // writeResultsToDirectory: '<PATH>'
         };
-        if (options === null || options === undefined) {
+        if (userOptions === null || userOptions === undefined) {
             // nothing received; set defaults
-            options = DEFAULT_OPTIONS;
+            userOptions = DEFAULT_OPTIONS;
             // send the defaults through validation, to double-check these values, and especially future changes.
         }
         var ERROR_PREFIX = 'Grid option ';
-        for (var k in options) {
-            var OPTION = options[k];
+        for (var k in userOptions) {
+            var OPTION = userOptions[k];
             switch (k) {
                 case 'epochStatsDepth':
                 case 'repetitions':
                 case 'validationSetSizeMin':
                     {
-                        if (!Utils.CheckPositiveInteger(OPTION)) {
+                        if (typeof OPTION !== 'number') {
+                            throw new Error(ERROR_PREFIX + '"' + k + '" must be a number.');
+                        }
+                        if (!Utils_1.Utils.CheckPositiveInteger(OPTION)) {
                             throw new Error(ERROR_PREFIX + '"' + k + '" must be a positive integer.');
                         }
                     }
@@ -80,41 +90,48 @@ var GridOptions = /** @class */ (function () {
                 }
             }
         }
-        // now merge the defaults into the user's options; any they didn't set
+        // now merge the defaults into the user's options; any for which we provide a value, but the user sent nothing
         for (var k in DEFAULT_OPTIONS) {
-            if (options[k] === undefined) {
-                options[k] = DEFAULT_OPTIONS[k];
+            if (userOptions[k] === undefined) {
+                userOptions[k] = DEFAULT_OPTIONS[k];
             }
         }
-        // set the active options to our root
-        for (var k in options) {
-            //NOTE: Kind of an experiment, here. ...not thrilled with it; likely to break minification.
-            //TODO: Implement minification, friend. We'll know shortly!
-            this['_' + k] = options[k];
-        }
+        // now save this processed object; NOTE: It's not a private c'tor member because it's optional
+        this._options = userOptions;
     }
-    Object.defineProperty(GridOptions.prototype, "epochStatsDepth", {
-        get: function () { return this._epochStatsDepth; },
-        enumerable: false,
-        configurable: true
-    });
-    Object.defineProperty(GridOptions.prototype, "repetitions", {
-        get: function () { return this._repetitions; },
-        enumerable: false,
-        configurable: true
-    });
-    Object.defineProperty(GridOptions.prototype, "validationSetSizeMin", {
-        get: function () { return this._validationSetSizeMin; },
-        enumerable: false,
-        configurable: true
-    });
-    Object.defineProperty(GridOptions.prototype, "writeResultsToDirectory", {
-        get: function () { return this._writeResultsToDirectory; },
-        enumerable: false,
-        configurable: true
-    });
+    /*keep; for a bit
+    //TODO: This is technically not TensorFlow's "any", but it comes from there. See the note at the top about future fixes.
+    //[[TF ANY]]
+        GetOption(key: string): boolean | number | string | undefined  {
+    */
+    GridOptions.prototype.GetOption = function (key) {
+        switch (key) {
+            case 'epochStatsDepth':
+            case 'repetitions':
+            case 'validationSetSizeMin':
+            case 'writeResultsToDirectory': {
+                //NOTE: This value may be undefined. That's expected. We enforce that the key be known, but we don't require the user
+                //		to set a value for every possible key.
+                //		For example, if they don't want to save CSV files, they do not send "writeResultsToDirectory".
+                return this._options[key];
+            }
+            default: {
+                throw new Error('unknown option key: ' + key);
+            }
+        }
+    };
     return GridOptions;
 }());
+exports.GridOptions = GridOptions;
+//KEEP: TODO: (low-pri until TS conversion) Instead of hard-coding the option keys, implement this enum.
+//			  Also, I believe we'll use it to replace ALL_AVAILABLE_OPTIONS.
+//
+// const enum Names {
+// 	EPOCH_STATS_DEPTH			= 'epochStatsDepth',
+// 	REPETITIONS					= 'repetitions',
+// 	VALIDATION_SET_SIZE_MIN		= 'validationSetSizeMin',
+// 	WRITE_RESULTS_TO_DIRECTORY	= 'writeResultsToDirectory'
+// }
 var ALL_AVAILABLE_OPTIONS = {
     epochStatsDepth: null,
     repetitions: null,
@@ -122,5 +139,4 @@ var ALL_AVAILABLE_OPTIONS = {
     writeResultsToDirectory: null
 };
 Object.freeze(GridOptions);
-exports.GridOptions = GridOptions;
 //# sourceMappingURL=GridOptions.js.map

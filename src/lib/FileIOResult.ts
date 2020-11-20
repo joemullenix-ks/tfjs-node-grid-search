@@ -1,7 +1,7 @@
 'use strict';
 
 
-class FileReadResult {
+class FileIOResult {
 	_data: string = '';
 
 	constructor() {
@@ -17,6 +17,6 @@ class FileReadResult {
 }
 
 
-Object.freeze(FileReadResult);
+Object.freeze(FileIOResult);
 
-export { FileReadResult };
+export { FileIOResult };

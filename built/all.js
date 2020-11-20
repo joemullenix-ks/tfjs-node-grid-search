@@ -55,18 +55,16 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var AxisSet = require('./lib/AxisSet').AxisSet;
 var FileIO = require('./lib/FileIO').FileIO;
-var ExponentialProgression = require('./lib/progression/ExponentialProgression').ExponentialProgression;
-var FibonacciProgression = require('./lib/progression/FibonacciProgression').FibonacciProgression;
-var LinearProgression = require('./lib/progression/LinearProgression').LinearProgression;
-var SessionData = require('./lib/SessionData').SessionData;
 var Axis = __importStar(require("./lib/Axis"));
-var FileReadResult_1 = require("./lib/FileReadResult");
+var AxisSet_1 = require("./lib/AxisSet");
+var FileIOResult_1 = require("./lib/FileIOResult");
 var Grid_1 = require("./lib/Grid");
 var GridOptions_1 = require("./lib/GridOptions");
 var ModelStatics_1 = require("./lib/ModelStatics");
 var PredictionEvaluation_1 = require("./lib/PredictionEvaluation");
+var LinearProgression_1 = require("./lib/progression/LinearProgression");
+var SessionData_1 = require("./lib/SessionData");
 var Utils_1 = require("./lib/Utils");
 var MAIN = function () { return __awaiter(void 0, void 0, void 0, function () {
     var AXES, AXIS_SET, MODEL_STATICS, GRID_OPTIONS, FETCH_DATA, DATA_FILEPATH_INPUTS, DATA_FILEPATH_TARGETS, DATA_PACKAGE, PROOF_PERCENTAGE, SESSION_DATA, EVALUATE_PREDICTION, REPORT_BATCH, REPORT_EPOCH, REPORT_ITERATION, GRID, e_1;
@@ -76,23 +74,11 @@ var MAIN = function () { return __awaiter(void 0, void 0, void 0, function () {
                 AXES = [];
                 AXES.push(new Axis.Axis(0 /* BATCH_SIZE */, 5, // boundsBegin
                 10, // boundsEnd
-                new LinearProgression(5)));
-                AXES.push(new Axis.Axis(1 /* EPOCHS */, 10, // boundsBegin
-                20, // boundsEnd
-                new FibonacciProgression(4)));
-                /*
-                    AXES.push(new Axis.Axis(Axis.Types.LAYERS,
-                                            0,		// boundsBegin
-                                            1,		// boundsEnd
-                                            new LinearProgression(1)));
-                */
-                AXES.push(new Axis.Axis(3 /* LEARN_RATE */, 0.0001, // boundsBegin
-                0.002, // boundsEnd
-                new ExponentialProgression(2, 0.01)));
-                AXIS_SET = new AxisSet(AXES);
+                new LinearProgression_1.LinearProgression(5)));
+                AXIS_SET = new AxisSet_1.AxisSet(AXES);
                 MODEL_STATICS = new ModelStatics_1.ModelStatics({
                     batchSize: 10,
-                    epochs: 50,
+                    epochs: 5,
                     hiddenLayers: 1,
                     neuronsPerHiddenLayer: 15,
                     validationSplit: 0.25
@@ -101,14 +87,14 @@ var MAIN = function () { return __awaiter(void 0, void 0, void 0, function () {
                     epochStatsDepth: 3,
                     repetitions: 1,
                     validationSetSizeMin: 1000,
-                    writeResultsToDirectory: '' // ex: "c:/my tensorflow project/grid search results"
+                    writeResultsToDirectory: '' // ex: "", "c:/my tensorflow project/grid search results"
                 });
                 FETCH_DATA = function (pathInputs, pathTargets) { return __awaiter(void 0, void 0, void 0, function () {
                     var FILE_RESULT, RAW_INPUTS, RAW_TARGETS;
                     return __generator(this, function (_a) {
                         switch (_a.label) {
                             case 0:
-                                FILE_RESULT = new FileReadResult_1.FileReadResult();
+                                FILE_RESULT = new FileIOResult_1.FileIOResult();
                                 return [4 /*yield*/, FileIO.ReadDataFile(pathInputs, FILE_RESULT)];
                             case 1:
                                 _a.sent();
@@ -129,7 +115,7 @@ var MAIN = function () { return __awaiter(void 0, void 0, void 0, function () {
                 PROOF_PERCENTAGE = DATA_PACKAGE.inputs.length < 1000
                     ? 0.1
                     : (500 / DATA_PACKAGE.inputs.length);
-                SESSION_DATA = new SessionData(PROOF_PERCENTAGE, DATA_PACKAGE.inputs, DATA_PACKAGE.targets, true);
+                SESSION_DATA = new SessionData_1.SessionData(PROOF_PERCENTAGE, DATA_PACKAGE.inputs, DATA_PACKAGE.targets, true);
                 EVALUATE_PREDICTION = function (target, prediction) {
                     var TARGETTED_INDEX = Utils_1.Utils.ArrayFindIndexOfHighestValue(target);
                     var PREDICTED_INDEX = Utils_1.Utils.ArrayFindIndexOfHighestValue(prediction);
@@ -152,8 +138,14 @@ var MAIN = function () { return __awaiter(void 0, void 0, void 0, function () {
             case 2:
                 _a.trys.push([2, 4, , 5]);
                 GRID = new Grid_1.Grid(AXIS_SET, MODEL_STATICS, SESSION_DATA, EVALUATE_PREDICTION, GRID_OPTIONS);
+                // REPORT_ITERATION,
+                // REPORT_EPOCH,
+                // REPORT_BATCH);
                 return [4 /*yield*/, GRID.Run()];
             case 3:
+                // REPORT_ITERATION,
+                // REPORT_EPOCH,
+                // REPORT_BATCH);
                 _a.sent();
                 return [3 /*break*/, 5];
             case 4:

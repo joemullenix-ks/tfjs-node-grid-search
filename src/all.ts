@@ -1,24 +1,24 @@
 'use strict';
 
 
-const { AxisSet }					= require('./lib/AxisSet');
 const { FileIO }					= require('./lib/FileIO');
-const { ExponentialProgression }	= require('./lib/progression/ExponentialProgression');
-const { FibonacciProgression }		= require('./lib/progression/FibonacciProgression');
-const { LinearProgression } 		= require('./lib/progression/LinearProgression');
-const { SessionData }				= require('./lib/SessionData');
 
 
 import * as GridTypes from './ts_types/Grid';
 
 
-import * as Axis 				from './lib/Axis';
-import { FileReadResult } 		from './lib/FileReadResult';
-import { Grid }					from './lib/Grid';
-import { GridOptions } 			from './lib/GridOptions';
-import { ModelStatics } 		from './lib/ModelStatics';
-import { PredictionEvaluation } from './lib/PredictionEvaluation';
-import { Utils } 				from './lib/Utils';
+import * as Axis 					from './lib/Axis';
+import { AxisSet }					from './lib/AxisSet';
+import { FileIOResult } 			from './lib/FileIOResult';
+import { Grid }						from './lib/Grid';
+import { GridOptions } 				from './lib/GridOptions';
+import { ModelStatics } 			from './lib/ModelStatics';
+import { PredictionEvaluation } 	from './lib/PredictionEvaluation';
+import { ExponentialProgression }	from './lib/progression/ExponentialProgression';
+import { FibonacciProgression }		from './lib/progression/FibonacciProgression';
+import { LinearProgression } 		from './lib/progression/LinearProgression';
+import { SessionData }				from './lib/SessionData';
+import { Utils } 					from './lib/Utils';
 
 
 const MAIN = async () => {
@@ -34,24 +34,22 @@ const MAIN = async () => {
 							10,		// boundsEnd
 							new LinearProgression(5)));
 
+/*
 	AXES.push(new Axis.Axis(Axis.Types.EPOCHS,
 							10,		// boundsBegin
 							20,		// boundsEnd
 							new FibonacciProgression(4)));
 
-/*
 	AXES.push(new Axis.Axis(Axis.Types.LAYERS,
 							0,		// boundsBegin
 							1,		// boundsEnd
 							new LinearProgression(1)));
-*/
 
 	AXES.push(new Axis.Axis(Axis.Types.LEARN_RATE,
 							0.0001,	// boundsBegin
 							0.002,	// boundsEnd
 							new ExponentialProgression(2, 0.01)));
 
-/*
 	AXES.push(new Axis.Axis(Axis.Types.NEURONS,
 							10,		// boundsBegin
 							30,		// boundsEnd
@@ -78,7 +76,7 @@ const MAIN = async () => {
 
 	const MODEL_STATICS = new ModelStatics(	{
 												batchSize: 10,
-												epochs: 50,
+												epochs: 5,
 												hiddenLayers: 1,
 												neuronsPerHiddenLayer: 15,
 												validationSplit: 0.25
@@ -90,7 +88,7 @@ const MAIN = async () => {
 												epochStatsDepth: 3,
 												repetitions: 1,
 												validationSetSizeMin: 1000,
-												writeResultsToDirectory: '' // ex: "c:/my tensorflow project/grid search results"
+												writeResultsToDirectory: '' // ex: "", "c:/my tensorflow project/grid search results"
 											});
 
 	// Now we load and configure the data set. A fresh copy of this data will be used to train and test each
@@ -100,7 +98,7 @@ const MAIN = async () => {
 //TODO: TBD, but this will very likely become a method of a top-level controller, e.g. TFJSGridSearch.js.
 //		At the very least the IO needs try/catch
 	const FETCH_DATA = async (pathInputs: string, pathTargets: string) => {
-		const FILE_RESULT =	new FileReadResult();
+		const FILE_RESULT =	new FileIOResult();
 
 		await FileIO.ReadDataFile(pathInputs, FILE_RESULT);
 
@@ -179,10 +177,10 @@ const MAIN = async () => {
 								MODEL_STATICS,
 								SESSION_DATA,
 								EVALUATE_PREDICTION,
-								GRID_OPTIONS,
-								/* REPORT_ITERATION,
-								REPORT_EPOCH,
-								REPORT_BATCH */);
+								GRID_OPTIONS);
+								// REPORT_ITERATION,
+								// REPORT_EPOCH,
+								// REPORT_BATCH);
 
 		await GRID.Run();
 	}

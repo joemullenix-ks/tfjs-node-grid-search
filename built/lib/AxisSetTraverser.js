@@ -1,10 +1,14 @@
 'use strict';
-var AxisSet = require('./AxisSet').AxisSet;
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.AxisSetTraverser = void 0;
 var AxisSetTraverser = /** @class */ (function () {
-    function AxisSetTraverser(axisSet) {
+    function AxisSetTraverser(_axisSet) {
         var _this = this;
-        console.assert(axisSet instanceof AxisSet);
-        this._axisSet = axisSet;
+        this._axisSet = _axisSet;
+        this._totalAxes = 0;
+        this._traversed = false;
+        this._iterationDescriptorsByIndex = {};
+        this._totalIterations = 0;
         this._totalAxes = this._axisSet.GetTotalAxes(); // cache this; it doesn't change
         this._traversed = false;
         //NOTE: This function is buried in the c'tor because it actually runs the traversal (advances the axes).
@@ -65,12 +69,11 @@ var AxisSetTraverser = /** @class */ (function () {
             callback(axis.typeName);
         });
     };
-    AxisSetTraverser.prototype.LookupIterationDescriptor = function (i) {
-        console.assert(typeof i === 'number');
-        if (this._iterationDescriptorsByIndex[i] === undefined) {
-            throw new Error('Attempted to lookup descriptor for unknown iteration: ' + i);
+    AxisSetTraverser.prototype.LookupIterationDescriptor = function (index) {
+        if (this._iterationDescriptorsByIndex[index] === undefined) {
+            throw new Error('Attempted to lookup descriptor for unknown iteration: ' + index);
         }
-        return this._iterationDescriptorsByIndex[i];
+        return this._iterationDescriptorsByIndex[index];
     };
     AxisSetTraverser.prototype.WriteReport = function (compact) {
         var reportText = '';
@@ -85,6 +88,6 @@ var AxisSetTraverser = /** @class */ (function () {
     };
     return AxisSetTraverser;
 }());
-Object.freeze(AxisSetTraverser);
 exports.AxisSetTraverser = AxisSetTraverser;
+Object.freeze(AxisSetTraverser);
 //# sourceMappingURL=AxisSetTraverser.js.map

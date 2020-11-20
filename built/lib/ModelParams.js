@@ -17,12 +17,32 @@ var ModelParams = /** @class */ (function () {
             this._mergedParams[k] = this._dynamicParams[k];
         }
     }
-    ModelParams.prototype.GetParam = function (key) {
-        console.assert(key !== '');
-        if (this._mergedParams[key] !== undefined) {
-            return this._mergedParams[key];
+    ModelParams.prototype.GetBooleanParam = function (key) {
+        this.ValidateParamKey(key);
+        if (typeof this._mergedParams[key] !== 'boolean') {
+            throw new Error('param ' + key + ' is not Boolean: ' + this._mergedParams[key]);
         }
-        throw new Error('ModelParams key not found: ' + key);
+        return Boolean(this._mergedParams[key]);
+    };
+    ModelParams.prototype.GetNumericParam = function (key) {
+        this.ValidateParamKey(key);
+        if (typeof this._mergedParams[key] !== 'number') {
+            throw new Error('param ' + key + ' is not a number: ' + this._mergedParams[key]);
+        }
+        return Number(this._mergedParams[key]);
+    };
+    ModelParams.prototype.GetTextParam = function (key) {
+        this.ValidateParamKey(key);
+        if (typeof this._mergedParams[key] !== 'string') {
+            throw new Error('param ' + key + ' is not a string: ' + this._mergedParams[key]);
+        }
+        return String(this._mergedParams[key]);
+    };
+    ModelParams.prototype.ValidateParamKey = function (key) {
+        console.assert(key !== '');
+        if (this._mergedParams[key] === undefined) {
+            throw new Error('ModelParams key not found: ' + key);
+        }
     };
     //vv TODO: These move into a CSVSource interface
     ModelParams.prototype.WriteCSVLineKeys = function () {

@@ -1,30 +1,25 @@
 'use strict';
-var EpochStats = require('./EpochStats').EpochStats;
-var ModelParams = require('./ModelParams').ModelParams;
-var ModelTestStats = require('./ModelTestStats').ModelTestStats;
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.IterationResult = void 0;
+var ModelTestStats_1 = require("./ModelTestStats");
 var IterationResult = /** @class */ (function () {
-    function IterationResult(iteration, descriptor, epochStats, modelParams, modelTestStats, repetition, runDuration) {
-        console.assert(typeof iteration === 'number');
-        console.assert(iteration >= 0);
-        console.assert(typeof descriptor === 'string');
-        console.assert(descriptor !== '');
-        console.assert(epochStats instanceof EpochStats);
-        console.assert(Math.floor(iteration) === iteration);
-        console.assert(modelParams instanceof ModelParams);
-        console.assert(modelTestStats instanceof ModelTestStats);
-        console.assert(typeof repetition === 'number');
-        console.assert(repetition >= 0);
-        console.assert(repetition === Math.floor(repetition));
-        console.assert(typeof runDuration === 'number');
-        console.assert(runDuration >= 0);
-        console.assert(runDuration === Math.floor(runDuration));
-        this._iteration = iteration;
-        this._descriptor = descriptor;
-        this._epochStats = epochStats;
-        this._modelParams = modelParams;
-        this._modelTestStats = modelTestStats;
-        this._repetition = repetition;
-        this._runDuration = runDuration;
+    function IterationResult(_iteration, _descriptor, _epochStats, _modelParams, _modelTestStats, _repetition, _runDuration) {
+        this._iteration = _iteration;
+        this._descriptor = _descriptor;
+        this._epochStats = _epochStats;
+        this._modelParams = _modelParams;
+        this._modelTestStats = _modelTestStats;
+        this._repetition = _repetition;
+        this._runDuration = _runDuration;
+        this._score = 0;
+        console.assert(this._iteration >= 0);
+        console.assert(Math.floor(this._iteration) === this._iteration);
+        console.assert(this._descriptor !== '');
+        console.assert(this._modelTestStats instanceof ModelTestStats_1.ModelTestStats);
+        console.assert(this._repetition >= 0);
+        console.assert(this._repetition === Math.floor(this._repetition));
+        console.assert(this._runDuration >= 0);
+        console.assert(this._runDuration === Math.floor(this._runDuration));
         this._score = this._modelTestStats.CalculateScore();
     }
     Object.defineProperty(IterationResult.prototype, "iteration", {
@@ -76,6 +71,6 @@ var IterationResult = /** @class */ (function () {
     };
     return IterationResult;
 }());
-Object.freeze(IterationResult);
 exports.IterationResult = IterationResult;
+Object.freeze(IterationResult);
 //# sourceMappingURL=IterationResult.js.map

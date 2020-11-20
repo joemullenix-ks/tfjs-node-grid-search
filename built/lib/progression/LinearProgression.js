@@ -12,14 +12,17 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-var Progression = require('../Progression').Progression;
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.LinearProgression = void 0;
+var Progression_1 = require("../Progression");
 var PROGRESSION_TYPENAME = 'Linear';
 var LinearProgression = /** @class */ (function (_super) {
     __extends(LinearProgression, _super);
     function LinearProgression(step) {
         var _this = _super.call(this, step === Math.floor(step), // i.e. is this an integer?
         PROGRESSION_TYPENAME) || this;
-        console.assert(typeof step === 'number');
+        //NOTE: This is not a constructor-private because we need to send the constructor arg into super().
+        _this._step = 0;
         _this._step = step;
         return _this;
     }
@@ -27,7 +30,7 @@ var LinearProgression = /** @class */ (function (_super) {
         this._value += this._step;
     };
     return LinearProgression;
-}(Progression));
-Object.freeze(LinearProgression);
+}(Progression_1.Progression));
 exports.LinearProgression = LinearProgression;
+Object.freeze(LinearProgression);
 //# sourceMappingURL=LinearProgression.js.map

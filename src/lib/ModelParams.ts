@@ -25,14 +25,42 @@ class ModelParams {
 		}
 	}
 
-	GetParam(key: string) {
-		console.assert(key !== '');
+	GetBooleanParam(key: string): boolean {
+		this.ValidateParamKey(key);
 
-		if (this._mergedParams[key] !== undefined) {
-			return this._mergedParams[key];
+		if (typeof this._mergedParams[key] !== 'boolean') {
+			throw new Error('param ' + key + ' is not Boolean: ' + this._mergedParams[key]);
 		}
 
-		throw new Error('ModelParams key not found: ' + key);
+		return Boolean(this._mergedParams[key]);
+	}
+
+	GetNumericParam(key: string): number {
+		this.ValidateParamKey(key);
+
+		if (typeof this._mergedParams[key] !== 'number') {
+			throw new Error('param ' + key + ' is not a number: ' + this._mergedParams[key]);
+		}
+
+		return Number(this._mergedParams[key]);
+	}
+
+	GetTextParam(key: string): string {
+		this.ValidateParamKey(key);
+
+		if (typeof this._mergedParams[key] !== 'string') {
+			throw new Error('param ' + key + ' is not a string: ' + this._mergedParams[key]);
+		}
+
+		return String(this._mergedParams[key]);
+	}
+
+	ValidateParamKey(key: string) {
+		console.assert(key !== '');
+
+		if (this._mergedParams[key] === undefined) {
+			throw new Error('ModelParams key not found: ' + key);
+		}
 	}
 
 //vv TODO: These move into a CSVSource interface

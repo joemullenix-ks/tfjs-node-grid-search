@@ -86,19 +86,6 @@ var Axis = /** @class */ (function () {
                     + this._progression.typeName + ' }'));
         return REPORT_TEXT;
     };
-    Axis.LookupTypeName = function (x) {
-        switch (x) {
-            case 0 /* BATCH_SIZE */: return "batchSize" /* BATCH_SIZE */;
-            case 1 /* EPOCHS */: return "epochs" /* EPOCHS */;
-            case 2 /* LAYERS */: return "hiddenLayers" /* LAYERS */;
-            case 3 /* LEARN_RATE */: return "learnRate" /* LEARN_RATE */;
-            case 4 /* NEURONS */: return "neuronsPerHiddenLayer" /* NEURONS */;
-            case 5 /* VALIDATION_SPLIT */: return "validationSplit" /* VALIDATION_SPLIT */;
-            default: {
-                throw new Error('invalid enum index: ' + x + '/' + 6 /* _TOTAL */);
-            }
-        }
-    };
     Axis.AttemptValidateParameter = function (key, value, failureMessage) {
         //NOTE: It's important to gracefully handle bad inputs here, with explanations and recommendations in the failure text.
         //		This has the potential to be a point-of-failure for new users ramping up on model config.
@@ -173,6 +160,19 @@ var Axis = /** @class */ (function () {
         }
         failureMessage.text = '"' + key + '" is not valid. ' + errorSuffix;
         return false;
+    };
+    Axis.LookupTypeName = function (x) {
+        switch (x) {
+            case 0 /* BATCH_SIZE */: return "batchSize" /* BATCH_SIZE */;
+            case 1 /* EPOCHS */: return "epochs" /* EPOCHS */;
+            case 2 /* LAYERS */: return "hiddenLayers" /* LAYERS */;
+            case 3 /* LEARN_RATE */: return "learnRate" /* LEARN_RATE */;
+            case 4 /* NEURONS */: return "neuronsPerHiddenLayer" /* NEURONS */;
+            case 5 /* VALIDATION_SPLIT */: return "validationSplit" /* VALIDATION_SPLIT */;
+            default: {
+                throw new Error('invalid enum index: ' + x + '/' + 6 /* _TOTAL */);
+            }
+        }
     };
     return Axis;
 }());
