@@ -1,4 +1,6 @@
 'use strict';
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.Progression = void 0;
 /*KEEP: TO BE MOVED INTO DOCUMENTATION
 
 EXAMPLE PROGRESSION VALUES
@@ -81,15 +83,11 @@ Progression	= 0, 8, 13, 21 // we round down to 8 as nearest-Fibonacci value {8 <
 Values		= 100, 92, 87, 79, [66]
 */
 var Progression = /** @class */ (function () {
-    function Progression(integerBased, typeName) {
-        if (this.constructor === Progression) {
-            throw new Error('Progression is pure abstract (cannot be instantiated).');
-        }
-        console.assert(typeof integerBased === 'boolean');
-        console.assert(typeof typeName === 'string');
-        console.assert(typeName !== '');
-        this._integerBased = integerBased;
-        this._typeName = typeName;
+    function Progression(_integerBased, // "integerBased" as opposed to floating point
+    _typeName) {
+        this._integerBased = _integerBased;
+        this._typeName = _typeName;
+        console.assert(this._typeName !== '');
         //NOTE: All progressions begin at zero, because the bounds of the range we traverse are inclusive.
         this._value = 0;
     }
@@ -108,13 +106,11 @@ var Progression = /** @class */ (function () {
         enumerable: false,
         configurable: true
     });
-    Progression.prototype.Advance = function () {
-        throw new Error('Advance() method not implemented by concrete class; type: ' + this._typeName);
-    };
     Progression.prototype.Reset = function () {
         this._value = 0;
     };
     return Progression;
 }());
-Object.freeze(Progression);
 exports.Progression = Progression;
+Object.freeze(Progression);
+//# sourceMappingURL=Progression.js.map

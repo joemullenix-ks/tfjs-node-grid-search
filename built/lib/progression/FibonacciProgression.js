@@ -12,7 +12,9 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-var Progression = require('../Progression').Progression;
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.FibonacciProgression = void 0;
+var Progression_1 = require("../Progression");
 var PROGRESSION_TYPENAME = 'Fibonacci';
 var FibonacciProgression = /** @class */ (function (_super) {
     __extends(FibonacciProgression, _super);
@@ -23,27 +25,30 @@ var FibonacciProgression = /** @class */ (function (_super) {
     //		Makes sense in retrospect. The algorithm only cares about two inputs on the first step. After that,
     //		it exclusively uses one (the sum).
     //		Nature FTW.
-    function FibonacciProgression(initiator) {
+    function FibonacciProgression(_initiator) {
         var _this = _super.call(this, true, // always integer based (no need to overcomplicate)
         PROGRESSION_TYPENAME) || this;
-        console.assert(typeof initiator === 'number');
-        console.assert(initiator >= 0);
-        console.assert(initiator === Math.floor(initiator));
-        _this._initiator = initiator;
+        _this._initiator = _initiator;
+        _this._fiboA = 0;
+        _this._fiboB = 0;
+        _this._initFiboA = 0;
+        _this._initFiboB = 0;
+        console.assert(_this._initiator >= 0);
+        console.assert(_this._initiator === Math.floor(_this._initiator));
         // we special case the first few values, to avoid grid iterations that don't differ, e.g. 0, 1, 1, 2, ...
-        if (initiator <= 1) {
+        if (_this._initiator <= 1) {
             _this._initFiboA = 0;
             _this._initFiboB = 1;
         }
         else {
-            var FIRST_PICK = FIND_NEAREST_FIBONACCI_NUMBER(initiator);
+            var FIRST_PICK = FIND_NEAREST_FIBONACCI_NUMBER(_this._initiator);
             // choose the two inputs that generate the Fibonacci number nearest the initiator
             _this._initFiboA = FIND_NEAREST_FIBONACCI_NUMBER(FIRST_PICK * APPROXIMATE_FIBONACCI_RATIO * APPROXIMATE_FIBONACCI_RATIO);
             _this._initFiboB = FIND_NEAREST_FIBONACCI_NUMBER(FIRST_PICK * APPROXIMATE_FIBONACCI_RATIO);
         }
         if (_this._initFiboB < _this._initFiboA
             || (_this._initFiboA === _this._initFiboB && _this._initFiboA !== 1)) {
-            throw new Error('invalid Fibonacci sequence initiator (' + initiator + '). Please choose another value.');
+            throw new Error('invalid Fibonacci sequence initiator (' + _this._initiator + '). Please choose another value.');
         }
         // this initializes '_fiboA' and '_fiboB'
         _this.ResetFibonacciInputs();
@@ -63,7 +68,8 @@ var FibonacciProgression = /** @class */ (function (_super) {
         this._fiboB = this._initFiboB;
     };
     return FibonacciProgression;
-}(Progression));
+}(Progression_1.Progression));
+exports.FibonacciProgression = FibonacciProgression;
 //NOTE: Hilarious: https://codegolf.stackexchange.com/questions/133365/find-the-closest-fibonacci-number
 //
 //		f=(n,x=0,y=1)=>y<n?f(n,y,x+y):y-n>n-x?x:y
@@ -85,4 +91,4 @@ var FIND_NEAREST_FIBONACCI_NUMBER = function (n, x, y) {
 };
 var APPROXIMATE_FIBONACCI_RATIO = 0.6180339850;
 Object.freeze(FibonacciProgression);
-exports.FibonacciProgression = FibonacciProgression;
+//# sourceMappingURL=FibonacciProgression.js.map

@@ -1,17 +1,15 @@
 'use strict';
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.ModelTestStats = void 0;
 var ModelTestStats = /** @class */ (function () {
-    function ModelTestStats(deltaCorrect, deltaIncorrect, totalCorrect, totalCases) {
-        console.assert(typeof deltaCorrect === 'number');
-        console.assert(typeof deltaIncorrect === 'number');
-        console.assert(typeof totalCorrect === 'number');
-        console.assert(Math.floor(totalCorrect) === totalCorrect);
-        console.assert(typeof totalCases === 'number');
-        console.assert(totalCases >= totalCorrect);
-        console.assert(Math.floor(totalCases) === totalCases);
-        this._deltaCorrect = deltaCorrect;
-        this._deltaIncorrect = deltaIncorrect;
-        this._totalCorrect = totalCorrect;
-        this._totalCases = totalCases;
+    function ModelTestStats(_deltaCorrect, _deltaIncorrect, _totalCorrect, _totalCases) {
+        this._deltaCorrect = _deltaCorrect;
+        this._deltaIncorrect = _deltaIncorrect;
+        this._totalCorrect = _totalCorrect;
+        this._totalCases = _totalCases;
+        console.assert(Math.floor(this._totalCorrect) === this._totalCorrect);
+        console.assert(this._totalCases >= this._totalCorrect);
+        console.assert(Math.floor(this._totalCases) === this._totalCases);
     }
     ModelTestStats.prototype.CalculateScore = function () {
         return this._totalCorrect / this._totalCases;
@@ -28,5 +26,6 @@ var ModelTestStats = /** @class */ (function () {
     };
     return ModelTestStats;
 }());
-Object.freeze(ModelTestStats);
 exports.ModelTestStats = ModelTestStats;
+Object.freeze(ModelTestStats);
+//# sourceMappingURL=ModelTestStats.js.map

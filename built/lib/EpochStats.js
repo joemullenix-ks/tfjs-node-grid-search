@@ -1,16 +1,22 @@
 'use strict';
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.REPORT_HEADER = exports.EpochStats = void 0;
 var SIMPLE_STATISTICS = require('simple-statistics');
-var Utils = require('./Utils').Utils;
+var Utils_1 = require("./Utils");
 var EpochStats = /** @class */ (function () {
-    function EpochStats(trailDepth) {
-        console.assert(typeof trailDepth === 'number');
-        console.assert(trailDepth > 0);
-        console.assert(Math.floor(trailDepth) === trailDepth);
-        this._trailDepth = trailDepth;
+    function EpochStats(_trailDepth) {
+        this._trailDepth = _trailDepth;
         this._samplesAccuracy = [];
         this._samplesLoss = [];
         this._samplesValidationAccuracy = [];
         this._samplesValidationLoss = [];
+        this._averageAccuracy = 0;
+        this._averageLoss = 0;
+        this._averageLossDelta = 0;
+        this._averageValidationAccuracy = 0;
+        this._averageValidationLoss = 0;
+        console.assert(this._trailDepth > 0);
+        console.assert(Math.floor(this._trailDepth) === this._trailDepth);
     }
     Object.defineProperty(EpochStats.prototype, "averageAccuracy", {
         get: function () { return this._averageAccuracy; },
@@ -52,19 +58,19 @@ var EpochStats = /** @class */ (function () {
         enumerable: false,
         configurable: true
     });
+    //[[TF ANY]]
     EpochStats.prototype.Update = function (epoch, logs) {
-        console.assert(typeof epoch === 'number');
         console.assert(epoch >= 0);
         console.assert(Math.floor(epoch) === epoch);
         console.assert(typeof logs === 'object');
-        Utils.QueueRotate(this._samplesAccuracy, logs.acc, this._trailDepth);
-        Utils.QueueRotate(this._samplesLoss, logs.loss, this._trailDepth);
-        Utils.QueueRotate(this._samplesValidationAccuracy, logs.val_acc, this._trailDepth);
-        Utils.QueueRotate(this._samplesValidationLoss, logs.val_loss, this._trailDepth);
-        this._averageAccuracy = Utils.ArrayCalculateAverage(this._samplesAccuracy);
-        this._averageLoss = Utils.ArrayCalculateAverage(this._samplesLoss);
-        this._averageValidationAccuracy = Utils.ArrayCalculateAverage(this._samplesValidationAccuracy);
-        this._averageValidationLoss = Utils.ArrayCalculateAverage(this._samplesValidationLoss);
+        Utils_1.Utils.QueueRotate(this._samplesAccuracy, logs.acc, this._trailDepth);
+        Utils_1.Utils.QueueRotate(this._samplesLoss, logs.loss, this._trailDepth);
+        Utils_1.Utils.QueueRotate(this._samplesValidationAccuracy, logs.val_acc, this._trailDepth);
+        Utils_1.Utils.QueueRotate(this._samplesValidationLoss, logs.val_loss, this._trailDepth);
+        this._averageAccuracy = Utils_1.Utils.ArrayCalculateAverage(this._samplesAccuracy);
+        this._averageLoss = Utils_1.Utils.ArrayCalculateAverage(this._samplesLoss);
+        this._averageValidationAccuracy = Utils_1.Utils.ArrayCalculateAverage(this._samplesValidationAccuracy);
+        this._averageValidationLoss = Utils_1.Utils.ArrayCalculateAverage(this._samplesValidationLoss);
         var TRAILING_ACC_AS_XY = this._samplesAccuracy.map(function (value, index) { return [index, value]; });
         var TRAILING_LOSS_AS_XY = this._samplesLoss.map(function (value, index) { return [index, value]; });
         var TRAILING_VAL_ACC_AS_XY = this._samplesValidationAccuracy.map(function (value, index) { return [index, value]; });
@@ -105,15 +111,17 @@ var EpochStats = /** @class */ (function () {
     };
     return EpochStats;
 }());
+exports.EpochStats = EpochStats;
 //NOTE: This must be kept in sync with the text written by WriteReport().
-EpochStats.ReportGuide = 'EPOCH '
+var REPORT_HEADER = 'EPOCH '
     + 'LOSS(VALIDATION) '
     + 'Δ L-V DELTA, '
     + 'm LOSS-SLOPE(VALIDATION)'
     + ' || '
     + 'ACCURACY(VALIDATION) '
     + 'm ACCURACY-SLOPE(VALIDATION)';
+exports.REPORT_HEADER = REPORT_HEADER;
 var REPORTING_DIGITS_SLOPE = 6;
 var REPORTING_DIGITS_STAT = 4;
 Object.freeze(EpochStats);
-exports.EpochStats = EpochStats;
+//# sourceMappingURL=EpochStats.js.map

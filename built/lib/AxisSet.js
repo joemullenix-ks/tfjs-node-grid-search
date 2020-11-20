@@ -1,19 +1,18 @@
 'use strict';
-var Axis = require('./Axis').Axis;
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.AxisSet = void 0;
 var AxisSet = /** @class */ (function () {
-    function AxisSet(axes) {
-        console.assert(Array.isArray(axes));
+    function AxisSet(_axes) {
         // validate the incoming axes
+        this._axes = _axes;
         var AXES_BY_TYPE = {};
-        axes.forEach(function (axis) {
-            console.assert(axis instanceof Axis);
+        this._axes.forEach(function (axis) {
             // no duplicates
             if (AXES_BY_TYPE[axis.type] !== undefined) {
                 throw new Error('Duplicate axis found: ' + axis.typeName);
             }
-            AXES_BY_TYPE[axis.type] = 0;
+            AXES_BY_TYPE[axis.type] = null;
         });
-        this._axes = axes;
     }
     AxisSet.prototype.AdvanceAxis = function (index) {
         this.ValidateIndex(index);
@@ -27,8 +26,8 @@ var AxisSet = /** @class */ (function () {
         var PARAMS = {};
         for (var i = 0; i < this._axes.length; ++i) {
             var AXIS = this._axes[i];
-            //TODO: Should we do these by index or key?? This isn't particularly perf-intensive, so keys will be much friendlier to write
-            //		and debug.
+            //TODO: Should we do these by index or key?? This isn't particularly perf-intensive, and keys are much friendlier
+            //		to write and debug.
             //		This will be revisited when I implement minification.
             PARAMS[AXIS.typeName] = AXIS.CalculatePosition();
         }
@@ -42,12 +41,10 @@ var AxisSet = /** @class */ (function () {
         return this._axes[index].Reset();
     };
     AxisSet.prototype.ValidateIndex = function (index) {
-        console.assert(typeof index === 'number');
         console.assert(index >= 0);
         console.assert(index < this._axes.length);
     };
     AxisSet.prototype.Walk = function (callback) {
-        console.assert(typeof callback === 'function');
         this._axes.forEach(callback);
     };
     AxisSet.prototype.WriteAxisReport = function (index, compact) {
@@ -56,5 +53,6 @@ var AxisSet = /** @class */ (function () {
     };
     return AxisSet;
 }());
-Object.freeze(AxisSet);
 exports.AxisSet = AxisSet;
+Object.freeze(AxisSet);
+//# sourceMappingURL=AxisSet.js.map

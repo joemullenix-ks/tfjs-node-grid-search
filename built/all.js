@@ -1,4 +1,23 @@
 'use strict';
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -35,39 +54,47 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var Axis = require('./lib/Axis').Axis;
-var AxisSet = require('./lib/AxisSet').AxisSet;
+Object.defineProperty(exports, "__esModule", { value: true });
 var FileIO = require('./lib/FileIO').FileIO;
-var Grid = require('./lib/Grid').Grid;
-var ModelStatics = require('./lib/ModelStatics').ModelStatics;
-var ExponentialProgression = require('./lib/progression/ExponentialProgression').ExponentialProgression;
-var FibonacciProgression = require('./lib/progression/FibonacciProgression').FibonacciProgression;
-var LinearProgression = require('./lib/progression/LinearProgression').LinearProgression;
-var SessionData = require('./lib/SessionData').SessionData;
-var Utils = require('./lib/Utils').Utils;
+var Axis = __importStar(require("./lib/Axis"));
+var AxisSet_1 = require("./lib/AxisSet");
+var FileIOResult_1 = require("./lib/FileIOResult");
+var Grid_1 = require("./lib/Grid");
+var GridOptions_1 = require("./lib/GridOptions");
+var ModelStatics_1 = require("./lib/ModelStatics");
+var PredictionEvaluation_1 = require("./lib/PredictionEvaluation");
+var LinearProgression_1 = require("./lib/progression/LinearProgression");
+var SessionData_1 = require("./lib/SessionData");
+var Utils_1 = require("./lib/Utils");
 var MAIN = function () { return __awaiter(void 0, void 0, void 0, function () {
-    var AXES, AXIS_SET, MODEL_STATICS, FETCH_DATA, DATA_FILEPATH_INPUTS, DATA_FILEPATH_TARGETS, DATA_PACKAGE, PROOF_PERCENTAGE, SESSION_DATA, EVALUATE_PREDICTION, REPORT_BATCH, REPORT_EPOCH, REPORT_ITERATION, GRID, e_1;
+    var AXES, AXIS_SET, MODEL_STATICS, GRID_OPTIONS, FETCH_DATA, DATA_FILEPATH_INPUTS, DATA_FILEPATH_TARGETS, DATA_PACKAGE, PROOF_PERCENTAGE, SESSION_DATA, EVALUATE_PREDICTION, REPORT_BATCH, REPORT_EPOCH, REPORT_ITERATION, GRID, e_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 AXES = [];
-                AXES.push(new Axis(Axis.TYPE_BATCH_SIZE, 5, // boundsBegin
+                AXES.push(new Axis.Axis(0 /* BATCH_SIZE */, 5, // boundsBegin
                 10, // boundsEnd
-                new LinearProgression(5)));
-                AXIS_SET = new AxisSet(AXES);
-                MODEL_STATICS = new ModelStatics({
+                new LinearProgression_1.LinearProgression(5)));
+                AXIS_SET = new AxisSet_1.AxisSet(AXES);
+                MODEL_STATICS = new ModelStatics_1.ModelStatics({
                     batchSize: 10,
-                    epochs: 50,
+                    epochs: 5,
                     hiddenLayers: 1,
                     neuronsPerHiddenLayer: 15,
                     validationSplit: 0.25
+                });
+                GRID_OPTIONS = new GridOptions_1.GridOptions({
+                    epochStatsDepth: 3,
+                    repetitions: 1,
+                    validationSetSizeMin: 1000,
+                    writeResultsToDirectory: '' // ex: "", "c:/my tensorflow project/grid search results"
                 });
                 FETCH_DATA = function (pathInputs, pathTargets) { return __awaiter(void 0, void 0, void 0, function () {
                     var FILE_RESULT, RAW_INPUTS, RAW_TARGETS;
                     return __generator(this, function (_a) {
                         switch (_a.label) {
                             case 0:
-                                FILE_RESULT = {};
+                                FILE_RESULT = new FileIOResult_1.FileIOResult();
                                 return [4 /*yield*/, FileIO.ReadDataFile(pathInputs, FILE_RESULT)];
                             case 1:
                                 _a.sent();
@@ -88,43 +115,36 @@ var MAIN = function () { return __awaiter(void 0, void 0, void 0, function () {
                 PROOF_PERCENTAGE = DATA_PACKAGE.inputs.length < 1000
                     ? 0.1
                     : (500 / DATA_PACKAGE.inputs.length);
-                SESSION_DATA = new SessionData(PROOF_PERCENTAGE, DATA_PACKAGE.inputs, DATA_PACKAGE.targets, true);
+                SESSION_DATA = new SessionData_1.SessionData(PROOF_PERCENTAGE, DATA_PACKAGE.inputs, DATA_PACKAGE.targets, true);
                 EVALUATE_PREDICTION = function (target, prediction) {
+                    var TARGETTED_INDEX = Utils_1.Utils.ArrayFindIndexOfHighestValue(target);
+                    var PREDICTED_INDEX = Utils_1.Utils.ArrayFindIndexOfHighestValue(prediction);
                     //NOTE: This is written for a multi-class (one-hot), classification network.
                     //
                     //TODO: Write example for regression, multi-label classification, etc...
-                    var TARGETTED_INDEX = Utils.ArrayFindIndexOfHighestValue(target);
-                    var PREDICTED_INDEX = Utils.ArrayFindIndexOfHighestValue(prediction);
-                    return {
-                        correct: TARGETTED_INDEX === PREDICTED_INDEX,
-                        delta: 1 - prediction[PREDICTED_INDEX]
-                    };
+                    var EVALUATION = new PredictionEvaluation_1.PredictionEvaluation(TARGETTED_INDEX === PREDICTED_INDEX, 1 - prediction[PREDICTED_INDEX]);
+                    return EVALUATION;
                 };
                 REPORT_BATCH = function (duration, batch, logs) {
-                    console.log('Batch report', duration, Utils.WriteDurationReport(duration));
+                    console.log('Batch report', duration, batch, logs, Utils_1.Utils.WriteDurationReport(duration));
                 };
                 REPORT_EPOCH = function (duration, epoch, logs, epochStats) {
-                    console.log('Epoch report', duration, Utils.WriteDurationReport(duration));
+                    console.log('Epoch report', duration, epoch, logs, epochStats, Utils_1.Utils.WriteDurationReport(duration));
                 };
                 REPORT_ITERATION = function (duration, predictions, proofInputs, proofTargets) {
-                    console.log('Iteration report', duration, Utils.WriteDurationReport(duration));
+                    console.log('Iteration report', duration, predictions, proofInputs, proofTargets, Utils_1.Utils.WriteDurationReport(duration));
                 };
                 _a.label = 2;
             case 2:
                 _a.trys.push([2, 4, , 5]);
-                GRID = new Grid(AXIS_SET, MODEL_STATICS, SESSION_DATA, EVALUATE_PREDICTION, {
-                    epochStatsDepth: 3,
-                    repetitions: 1,
-                    validationSetSizeMin: 1000,
-                    writeResultsToDirectory: '' // ex: "c:/my tensorflow project/grid search results"
-                });
-                // REPORT_ITERATION);
-                // REPORT_EPOCH);
+                GRID = new Grid_1.Grid(AXIS_SET, MODEL_STATICS, SESSION_DATA, EVALUATE_PREDICTION, GRID_OPTIONS);
+                // REPORT_ITERATION,
+                // REPORT_EPOCH,
                 // REPORT_BATCH);
                 return [4 /*yield*/, GRID.Run()];
             case 3:
-                // REPORT_ITERATION);
-                // REPORT_EPOCH);
+                // REPORT_ITERATION,
+                // REPORT_EPOCH,
                 // REPORT_BATCH);
                 _a.sent();
                 return [3 /*break*/, 5];
@@ -139,3 +159,4 @@ var MAIN = function () { return __awaiter(void 0, void 0, void 0, function () {
     });
 }); };
 MAIN();
+//# sourceMappingURL=all.js.map

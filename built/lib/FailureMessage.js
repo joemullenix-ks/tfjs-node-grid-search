@@ -1,4 +1,6 @@
 'use strict';
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.FailureMessage = void 0;
 var FailureMessage = /** @class */ (function () {
     function FailureMessage() {
         this._text = '';
@@ -6,7 +8,6 @@ var FailureMessage = /** @class */ (function () {
     Object.defineProperty(FailureMessage.prototype, "text", {
         get: function () { return this._text; },
         set: function (text) {
-            console.assert(typeof text === 'string');
             console.assert(text !== '');
             this._text = text;
         },
@@ -15,5 +16,6 @@ var FailureMessage = /** @class */ (function () {
     });
     return FailureMessage;
 }());
-Object.freeze(FailureMessage);
 exports.FailureMessage = FailureMessage;
+Object.freeze(FailureMessage);
+//# sourceMappingURL=FailureMessage.js.map

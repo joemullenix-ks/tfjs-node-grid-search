@@ -16,11 +16,20 @@
 		{
 			"type": "node",
 			"request": "launch",
-			"name": "Launch TypeScript",
+			"name": "Launch TS Output",
 			"skipFiles": [
 				"<node_internals>/**"
 			],
 			"program": "${workspaceFolder}\\built\\all.js"
+		},
+		{
+			"type": "node",
+			"request": "launch",
+			"name": "Launch TypeScript Sandbox",
+			"skipFiles": [
+				"<node_internals>/**"
+			],
+			"program": "${workspaceFolder}\\built\\ts_sandbox.js"
 		}
 	]
 }

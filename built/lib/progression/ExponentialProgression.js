@@ -12,15 +12,19 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-var Progression = require('../Progression').Progression;
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.ExponentialProgression = void 0;
+var Progression_1 = require("../Progression");
 var PROGRESSION_TYPENAME = 'Exponential';
 var ExponentialProgression = /** @class */ (function (_super) {
     __extends(ExponentialProgression, _super);
     function ExponentialProgression(exponent, scale) {
         var _this = _super.call(this, exponent === Math.floor(exponent) && scale === Math.floor(scale), // i.e. are these integers?
         PROGRESSION_TYPENAME) || this;
-        console.assert(typeof exponent === 'number');
-        console.assert(typeof scale === 'number');
+        //NOTE: These are not constructor-privates because we need to send the constructor's args into super().
+        _this._exponent = 0;
+        _this._scale = 0;
+        _this._step = 0;
         // these rules prevent the progression going flat (infinite) or negative (yikes)
         //NOTE: We could support whackier curves, and will if requested. I don't anticipate that desire, but who knows.
         //		Also, the user may create a negative progression by inverting their Axis bounds; send a boundBegin > boundEnd.
@@ -44,6 +48,7 @@ var ExponentialProgression = /** @class */ (function (_super) {
         this._step = 0;
     };
     return ExponentialProgression;
-}(Progression));
-Object.freeze(ExponentialProgression);
+}(Progression_1.Progression));
 exports.ExponentialProgression = ExponentialProgression;
+Object.freeze(ExponentialProgression);
+//# sourceMappingURL=ExponentialProgression.js.map

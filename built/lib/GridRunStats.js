@@ -1,11 +1,11 @@
 'use strict';
-var IterationResult = require('./IterationResult').IterationResult;
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.GridRunStats = void 0;
 var GridRunStats = /** @class */ (function () {
     function GridRunStats() {
         this._iterationResults = [];
     }
     GridRunStats.prototype.AddIterationResult = function (iterationResult) {
-        console.assert(iterationResult instanceof IterationResult);
         this._iterationResults.push(iterationResult);
     };
     GridRunStats.prototype.WriteCSV = function () {
@@ -38,7 +38,6 @@ var GridRunStats = /** @class */ (function () {
         return headerText + '\n' + iterationsTableText;
     };
     GridRunStats.prototype.WriteReport = function (sortByScore) {
-        console.assert(typeof sortByScore === 'boolean');
         var iterations = this._iterationResults;
         if (sortByScore) {
             // create a shallow clone...
@@ -56,5 +55,6 @@ var GridRunStats = /** @class */ (function () {
     };
     return GridRunStats;
 }());
-Object.freeze(GridRunStats);
 exports.GridRunStats = GridRunStats;
+Object.freeze(GridRunStats);
+//# sourceMappingURL=GridRunStats.js.map
