@@ -4,39 +4,37 @@
 const TENSOR_FLOW = require('@tensorflow/tfjs');
 
 
-const { Axis } = require('./Axis');
 const { FailureMessage } = require('./FailureMessage');
 
 
-class ModelStatics {
-	constructor(params) {
-		console.assert(typeof params === 'object');
+import * as Types from '../ts_types/common';
 
-		// validate the user-supplied model params
+
+import * as Axis from './Axis';
+
+
+class ModelStatics {
+	private _staticParams: Types.StringKeyedSimpleObject = {};
+
+	constructor(private _userStatics: Types.StringKeyedNumbersObject) {
+
+		// validate the user-supplied static model params, i.e. those params that never change during grid search
 
 		const FAILURE_MESSAGE = new FailureMessage();
 
-		for (let k in params) {
-			if (!Axis.AttemptValidateParameter(k, params[k], FAILURE_MESSAGE)) {
+		for (let k in this._userStatics) {
+			if (!Axis.Axis.AttemptValidateParameter(k, this._userStatics[k], FAILURE_MESSAGE)) {
 				// fatal, so that users don't kick off a (potentially very long) grid search with a bad model config
-				throw new Error('There was a problem with the static model params. ' + FAILURE_MESSAGE.text);
+				throw new Error('There was a problem with the static model this._userStatics. ' + FAILURE_MESSAGE.text);
 			}
 		}
 
-		// the axes and param arguments are valid
+		// params are valid; write the working set, backfilling w/ defaults for any the user left out
 
-		// setup the static model params, i.e. those params that never change from iteration to iteration
-
-		this._staticParams = {};
-
-		this.WriteStaticParams(params);
-
-		// keep the user's originals on hand
-		this._userStatics = params;
+		this.WriteStaticParams();
 	}
 
-	AttemptStripParam(paramKey) {
-		console.assert(typeof paramKey === 'string');
+	AttemptStripParam(paramKey: string) {
 		console.assert(paramKey !== '');
 
 		if (this._staticParams[paramKey] === undefined) {
@@ -69,10 +67,9 @@ class ModelStatics {
 		return 'categoricalCrossentropy';
 	}
 
-	GenerateOptimizer(learnRate) {
+	GenerateOptimizer(learnRate: number) {
 //NOTE: See https://js.tensorflow.org/api/2.7.0/#tf.LayersModel.compile
 
-		console.assert(typeof learnRate === 'number');
 		console.assert(learnRate > 0.0);
 		console.assert(learnRate < 1.0);
 
@@ -83,40 +80,38 @@ class ModelStatics {
 		return Object.assign({}, this._staticParams);
 	}
 
-	WriteStaticParams(params) {
-		console.assert(typeof params === 'object');
+	WriteStaticParams() {
+		// set the user's value, or take the program default (these are optional from the user's point-of-view)
 
-		// set the user's value, or take the program default (every param is optional)
+		this._staticParams[Axis.Names.BATCH_SIZE] =
+			this._userStatics[Axis.Names.BATCH_SIZE] !== undefined
+			? this._userStatics[Axis.Names.BATCH_SIZE]
+			: Axis.Defaults.BATCH_SIZE;
 
-		this._staticParams[Axis.TYPE_NAME_BATCH_SIZE] =
-			params[Axis.TYPE_NAME_BATCH_SIZE] !== undefined
-			? params[Axis.TYPE_NAME_BATCH_SIZE]
-			: Axis.TYPE_DEFAULT_BATCH_SIZE;
+		this._staticParams[Axis.Names.EPOCHS] =
+			this._userStatics[Axis.Names.EPOCHS] !== undefined
+			? this._userStatics[Axis.Names.EPOCHS]
+			: Axis.Defaults.EPOCHS;
 
-		this._staticParams[Axis.TYPE_NAME_EPOCHS] =
-			params[Axis.TYPE_NAME_EPOCHS] !== undefined
-			? params[Axis.TYPE_NAME_EPOCHS]
-			: Axis.TYPE_DEFAULT_EPOCHS;
+		this._staticParams[Axis.Names.LAYERS] =
+			this._userStatics[Axis.Names.LAYERS] !== undefined
+			? this._userStatics[Axis.Names.LAYERS]
+			: Axis.Defaults.LAYERS;
 
-		this._staticParams[Axis.TYPE_NAME_LAYERS] =
-			params[Axis.TYPE_NAME_LAYERS] !== undefined
-			? params[Axis.TYPE_NAME_LAYERS]
-			: Axis.TYPE_DEFAULT_LAYERS;
+		this._staticParams[Axis.Names.LEARN_RATE] =
+			this._userStatics[Axis.Names.LEARN_RATE] !== undefined
+			? this._userStatics[Axis.Names.LEARN_RATE]
+			: Axis.Defaults.LEARN_RATE;
 
-		this._staticParams[Axis.TYPE_NAME_LEARN_RATE] =
-			params[Axis.TYPE_NAME_LEARN_RATE] !== undefined
-			? params[Axis.TYPE_NAME_LEARN_RATE]
-			: Axis.TYPE_DEFAULT_LEARN_RATE;
+		this._staticParams[Axis.Names.NEURONS] =
+			this._userStatics[Axis.Names.NEURONS] !== undefined
+			? this._userStatics[Axis.Names.NEURONS]
+			: Axis.Defaults.NEURONS;
 
-		this._staticParams[Axis.TYPE_NAME_NEURONS] =
-			params[Axis.TYPE_NAME_NEURONS] !== undefined
-			? params[Axis.TYPE_NAME_NEURONS]
-			: Axis.TYPE_DEFAULT_NEURONS;
-
-		this._staticParams[Axis.TYPE_NAME_VALIDATION_SPLIT] =
-			params[Axis.TYPE_NAME_VALIDATION_SPLIT] !== undefined
-			? params[Axis.TYPE_NAME_VALIDATION_SPLIT]
-			: Axis.TYPE_DEFAULT_VALIDATION_SPLIT;
+		this._staticParams[Axis.Names.VALIDATION_SPLIT] =
+			this._userStatics[Axis.Names.VALIDATION_SPLIT] !== undefined
+			? this._userStatics[Axis.Names.VALIDATION_SPLIT]
+			: Axis.Defaults.VALIDATION_SPLIT;
 
 		// now we tack on the parameters that can't be axes (or rather not-yet-supported-as-axes)
 
@@ -132,4 +127,4 @@ class ModelStatics {
 
 Object.freeze(ModelStatics);
 
-exports.ModelStatics = ModelStatics;
+export { ModelStatics };

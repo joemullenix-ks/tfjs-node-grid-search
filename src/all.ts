@@ -1,20 +1,8 @@
 'use strict';
 
 
-//TODO: Once the TS conversion is complete, do a full pass on 'number', subbing in 'bigint' as needed.
-//		The first step is to move our TS target to 'ES2020+' (or whatever it is these days).
-//		Then we can initialize like this:
-//			const TIME: bigint = 0n;
-//
-//		...as opposed to this:
-//			const TIME: bigint = BigInt(0);
-
-
-const { Axis }						= require('./lib/Axis');
 const { AxisSet }					= require('./lib/AxisSet');
 const { FileIO }					= require('./lib/FileIO');
-const { Grid }						= require('./lib/Grid');
-const { ModelStatics }				= require('./lib/ModelStatics');
 const { ExponentialProgression }	= require('./lib/progression/ExponentialProgression');
 const { FibonacciProgression }		= require('./lib/progression/FibonacciProgression');
 const { LinearProgression } 		= require('./lib/progression/LinearProgression');
@@ -24,10 +12,13 @@ const { SessionData }				= require('./lib/SessionData');
 import * as GridTypes from './ts_types/Grid';
 
 
-// import { EpochStats } from './lib/EpochStats';
-import { FileReadResult } from './lib/FileReadResult';
-import { GridOptions } from './lib/GridOptions';
-import { Utils } from './lib/Utils';
+import * as Axis 				from './lib/Axis';
+import { FileReadResult } 		from './lib/FileReadResult';
+import { Grid }					from './lib/Grid';
+import { GridOptions } 			from './lib/GridOptions';
+import { ModelStatics } 		from './lib/ModelStatics';
+import { PredictionEvaluation } from './lib/PredictionEvaluation';
+import { Utils } 				from './lib/Utils';
 
 
 const MAIN = async () => {
@@ -38,38 +29,38 @@ const MAIN = async () => {
 
 	const AXES = [];
 
-	AXES.push(new Axis(	Axis.TYPE_BATCH_SIZE,
-						5,		// boundsBegin
-						10,		// boundsEnd
-						new LinearProgression(5)));
+	AXES.push(new Axis.Axis(Axis.Types.BATCH_SIZE,
+							5,		// boundsBegin
+							10,		// boundsEnd
+							new LinearProgression(5)));
 
-	AXES.push(new Axis(	Axis.TYPE_EPOCHS,
-						10,		// boundsBegin
-						20,		// boundsEnd
-						new FibonacciProgression(4)));
+	AXES.push(new Axis.Axis(Axis.Types.EPOCHS,
+							10,		// boundsBegin
+							20,		// boundsEnd
+							new FibonacciProgression(4)));
 
 /*
-	AXES.push(new Axis(	Axis.TYPE_LAYERS,
-						0,		// boundsBegin
-						1,		// boundsEnd
-						new LinearProgression(1)));
+	AXES.push(new Axis.Axis(Axis.Types.LAYERS,
+							0,		// boundsBegin
+							1,		// boundsEnd
+							new LinearProgression(1)));
 */
 
-	AXES.push(new Axis(	Axis.TYPE_LEARN_RATE,
-						0.0001,	// boundsBegin
-						0.002,		// boundsEnd
-						new ExponentialProgression(2, 0.01)));
+	AXES.push(new Axis.Axis(Axis.Types.LEARN_RATE,
+							0.0001,	// boundsBegin
+							0.002,	// boundsEnd
+							new ExponentialProgression(2, 0.01)));
 
 /*
-	AXES.push(new Axis(	Axis.TYPE_NEURONS,
-						10,		// boundsBegin
-						30,		// boundsEnd
-						new FibonacciProgression(0)));
+	AXES.push(new Axis.Axis(Axis.Types.NEURONS,
+							10,		// boundsBegin
+							30,		// boundsEnd
+							new FibonacciProgression(0)));
 
-	AXES.push(new Axis(	Axis.TYPE_VALIDATION_SPLIT,
-						0.1,	// boundsBegin
-						0.3,	// boundsEnd
-						new LinearProgression(0.2)));
+	AXES.push(new Axis.Axis(Axis.Types.VALIDATION_SPLIT,
+							0.1,	// boundsBegin
+							0.3,	// boundsEnd
+							new LinearProgression(0.2)));
 */
 
 	const AXIS_SET = new AxisSet(AXES);
@@ -151,10 +142,10 @@ const MAIN = async () => {
 //
 //TODO: Write example for regression, multi-label classification, etc...
 
-		return	{
-					correct: TARGETTED_INDEX === PREDICTED_INDEX,
-					delta: 1 - prediction[PREDICTED_INDEX]
-				};
+		const EVALUATION = new PredictionEvaluation(TARGETTED_INDEX === PREDICTED_INDEX,
+													1 - prediction[PREDICTED_INDEX]);
+
+		return EVALUATION;
 	}
 
 	// The three remaining callbacks are optional, for tracking statistics during the grid search.
@@ -189,9 +180,9 @@ const MAIN = async () => {
 								SESSION_DATA,
 								EVALUATE_PREDICTION,
 								GRID_OPTIONS,
-								REPORT_ITERATION,
+								/* REPORT_ITERATION,
 								REPORT_EPOCH,
-								REPORT_BATCH);
+								REPORT_BATCH */);
 
 		await GRID.Run();
 	}

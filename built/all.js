@@ -1,4 +1,23 @@
 'use strict';
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -36,25 +55,18 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-//TODO: Once the TS conversion is complete, do a full pass on 'number', subbing in 'bigint' as needed.
-//		The first step is to move our TS target to 'ES2020+' (or whatever it is these days).
-//		Then we can initialize like this:
-//			const TIME: bigint = 0n;
-//
-//		...as opposed to this:
-//			const TIME: bigint = BigInt(0);
-var Axis = require('./lib/Axis').Axis;
 var AxisSet = require('./lib/AxisSet').AxisSet;
 var FileIO = require('./lib/FileIO').FileIO;
-var Grid = require('./lib/Grid').Grid;
-var ModelStatics = require('./lib/ModelStatics').ModelStatics;
 var ExponentialProgression = require('./lib/progression/ExponentialProgression').ExponentialProgression;
 var FibonacciProgression = require('./lib/progression/FibonacciProgression').FibonacciProgression;
 var LinearProgression = require('./lib/progression/LinearProgression').LinearProgression;
 var SessionData = require('./lib/SessionData').SessionData;
-// import { EpochStats } from './lib/EpochStats';
+var Axis = __importStar(require("./lib/Axis"));
 var FileReadResult_1 = require("./lib/FileReadResult");
+var Grid_1 = require("./lib/Grid");
 var GridOptions_1 = require("./lib/GridOptions");
+var ModelStatics_1 = require("./lib/ModelStatics");
+var PredictionEvaluation_1 = require("./lib/PredictionEvaluation");
 var Utils_1 = require("./lib/Utils");
 var MAIN = function () { return __awaiter(void 0, void 0, void 0, function () {
     var AXES, AXIS_SET, MODEL_STATICS, GRID_OPTIONS, FETCH_DATA, DATA_FILEPATH_INPUTS, DATA_FILEPATH_TARGETS, DATA_PACKAGE, PROOF_PERCENTAGE, SESSION_DATA, EVALUATE_PREDICTION, REPORT_BATCH, REPORT_EPOCH, REPORT_ITERATION, GRID, e_1;
@@ -62,23 +74,23 @@ var MAIN = function () { return __awaiter(void 0, void 0, void 0, function () {
         switch (_a.label) {
             case 0:
                 AXES = [];
-                AXES.push(new Axis(Axis.TYPE_BATCH_SIZE, 5, // boundsBegin
+                AXES.push(new Axis.Axis(0 /* BATCH_SIZE */, 5, // boundsBegin
                 10, // boundsEnd
                 new LinearProgression(5)));
-                AXES.push(new Axis(Axis.TYPE_EPOCHS, 10, // boundsBegin
+                AXES.push(new Axis.Axis(1 /* EPOCHS */, 10, // boundsBegin
                 20, // boundsEnd
                 new FibonacciProgression(4)));
                 /*
-                    AXES.push(new Axis(	Axis.TYPE_LAYERS,
-                                        0,		// boundsBegin
-                                        1,		// boundsEnd
-                                        new LinearProgression(1)));
+                    AXES.push(new Axis.Axis(Axis.Types.LAYERS,
+                                            0,		// boundsBegin
+                                            1,		// boundsEnd
+                                            new LinearProgression(1)));
                 */
-                AXES.push(new Axis(Axis.TYPE_LEARN_RATE, 0.0001, // boundsBegin
+                AXES.push(new Axis.Axis(3 /* LEARN_RATE */, 0.0001, // boundsBegin
                 0.002, // boundsEnd
                 new ExponentialProgression(2, 0.01)));
                 AXIS_SET = new AxisSet(AXES);
-                MODEL_STATICS = new ModelStatics({
+                MODEL_STATICS = new ModelStatics_1.ModelStatics({
                     batchSize: 10,
                     epochs: 50,
                     hiddenLayers: 1,
@@ -124,10 +136,8 @@ var MAIN = function () { return __awaiter(void 0, void 0, void 0, function () {
                     //NOTE: This is written for a multi-class (one-hot), classification network.
                     //
                     //TODO: Write example for regression, multi-label classification, etc...
-                    return {
-                        correct: TARGETTED_INDEX === PREDICTED_INDEX,
-                        delta: 1 - prediction[PREDICTED_INDEX]
-                    };
+                    var EVALUATION = new PredictionEvaluation_1.PredictionEvaluation(TARGETTED_INDEX === PREDICTED_INDEX, 1 - prediction[PREDICTED_INDEX]);
+                    return EVALUATION;
                 };
                 REPORT_BATCH = function (duration, batch, logs) {
                     console.log('Batch report', duration, batch, logs, Utils_1.Utils.WriteDurationReport(duration));
@@ -141,7 +151,7 @@ var MAIN = function () { return __awaiter(void 0, void 0, void 0, function () {
                 _a.label = 2;
             case 2:
                 _a.trys.push([2, 4, , 5]);
-                GRID = new Grid(AXIS_SET, MODEL_STATICS, SESSION_DATA, EVALUATE_PREDICTION, GRID_OPTIONS, REPORT_ITERATION, REPORT_EPOCH, REPORT_BATCH);
+                GRID = new Grid_1.Grid(AXIS_SET, MODEL_STATICS, SESSION_DATA, EVALUATE_PREDICTION, GRID_OPTIONS);
                 return [4 /*yield*/, GRID.Run()];
             case 3:
                 _a.sent();

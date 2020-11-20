@@ -73,11 +73,11 @@ var UTILS = {
         //TODO: (low-pri) Bring in time-reporting from the f lib, which has smart duration-category picking.
         return durationMS + ' ms'
             + ' / '
-            + (Number(durationMS) / 1000).toFixed(2) + ' sec'
+            + (durationMS / 1000).toFixed(2) + ' sec'
             + ' / '
-            + (Number(durationMS) / 60 / 1000).toFixed(2) + ' min'
+            + (durationMS / 60 / 1000).toFixed(2) + ' min'
             + ' / '
-            + (Number(durationMS) / 60 / 60 / 1000).toFixed(1) + ' hr';
+            + (durationMS / 60 / 60 / 1000).toFixed(1) + ' hr';
     }
 };
 exports.Utils = UTILS;

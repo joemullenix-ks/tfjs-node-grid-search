@@ -11,7 +11,6 @@
 const TENSOR_FLOW = require('@tensorflow/tfjs');
 
 
-const { Axis }					= require('./Axis');
 const { AxisSet }				= require('./AxisSet');
 const { AxisSetTraverser }		= require('./AxisSetTraverser');
 const { EpochStats }			= require('./EpochStats');
@@ -28,25 +27,33 @@ const { Utils }					= require('./Utils');
 import * as Types from '../ts_types/Grid';
 
 
+import * as Axis from './Axis';
+
+
 class Grid {
 	_axisSetTraverser: typeof AxisSetTraverser;
 	_epochStats: typeof EpochStats;
 	_gridRunStats: typeof GridRunStats;
-	_timeStartBatch: bigint = BigInt(0);
-	_timeStartEpoch: bigint = BigInt(0);
-	_timeStartGrid: bigint = BigInt(0);
-	_timeStartIteration: bigint = BigInt(0);
+	_timeStartBatch: number = 0;
+	_timeStartEpoch: number = 0;
+	_timeStartGrid: number = 0;
+	_timeStartIteration: number = 0;
 
 	constructor(axisSet: typeof AxisSet,
 				private _modelStatics: typeof ModelStatics,
 				private _sessionData: typeof SessionData,
 				private _callbackEvaluatePrediction: Types.CallbackEvaluatePrediction,
-				private _gridOptions: typeof GridOptions,
+				private _gridOptions?: typeof GridOptions,
 				private _callbackReportIteration?: Types.CallbackReportIteration,
 				private _callbackReportEpoch?: Types.CallbackReportEpoch,
 				private _callbackReportBatch?: Types.CallbackReportBatch) {
 
 		console.log('\n' + 'Instantiating Grid...');
+
+		// if the user doesn't provide an options block, we'll setup defaults
+		if (!this._gridOptions) {
+			this._gridOptions = new GridOptions();
+		}
 
 		this._axisSetTraverser = new AxisSetTraverser(axisSet);
 
@@ -58,7 +65,7 @@ class Grid {
 		const TOTAL_INPUT_NEURONS = this._sessionData.totalInputNeurons;
 		const TOTAL_OUTPUT_NEURONS = this._sessionData.totalOutputNeurons;
 
-		const TOTAL_HIDDEN_LAYERS = modelParams.GetParam(Axis.TYPE_NAME_LAYERS);
+		const TOTAL_HIDDEN_LAYERS = modelParams.GetParam(Axis.Names.LAYERS);
 
 		const TF_MODEL = TENSOR_FLOW.sequential();
 
@@ -77,7 +84,7 @@ class Grid {
 			// add the first hidden layer, which takes the inputs (TF has no discrete 'input layer')
 			TF_MODEL.add(TENSOR_FLOW.layers.dense(	{
 														inputShape: [TOTAL_INPUT_NEURONS],
-														units: modelParams.GetParam(Axis.TYPE_NAME_NEURONS),
+														units: modelParams.GetParam(Axis.Names.NEURONS),
 														activation: modelParams.GetParam('activationInput'), //HARD-CODER; TODO: Add this as a managed Axis.
 														useBias: true,
 														kernelInitializer: this._modelStatics.GenerateInitializerKernel(),
@@ -87,7 +94,7 @@ class Grid {
 			// add the remaining hidden layers; one-based, because of the built-in input layer
 			for (let i = 1; i < TOTAL_HIDDEN_LAYERS; ++i) {
 				TF_MODEL.add(TENSOR_FLOW.layers.dense(	{
-															units: modelParams.GetParam(Axis.TYPE_NAME_NEURONS),
+															units: modelParams.GetParam(Axis.Names.NEURONS),
 															activation: modelParams.GetParam('activationHidden'), //HARD-CODER; TODO: Add this as a managed Axis.
 															useBias: true,
 															kernelInitializer: this._modelStatics.GenerateInitializerKernel(),
@@ -108,7 +115,7 @@ class Grid {
 
 		// compile the model, which prepares it for training
 		TF_MODEL.compile(	{
-								optimizer: this._modelStatics.GenerateOptimizer(modelParams.GetParam(Axis.TYPE_NAME_LEARN_RATE)),
+								optimizer: this._modelStatics.GenerateOptimizer(modelParams.GetParam(Axis.Names.LEARN_RATE)),
 								loss: this._modelStatics.GenerateLossFunction(),
 								metrics: 'accuracy'
 							});
@@ -131,7 +138,7 @@ class Grid {
 
 		let pass = 0;
 
-		this._timeStartGrid = BigInt(Date.now());
+		this._timeStartGrid = Date.now();
 
 		for (let i = 0; !this._axisSetTraverser.traversed; ++i) {
 			const DYNAMIC_PARAMS = this._axisSetTraverser.CreateIterationParams();
@@ -227,7 +234,7 @@ class Grid {
 	}
 
 //TODO: This model type might be too strict. Consider the lower-level TF LayersModel.
-	TestModel(model: typeof TENSOR_FLOW.Sequential, modelParams: typeof ModelParams, duration: bigint) {
+	TestModel(model: typeof TENSOR_FLOW.Sequential, modelParams: typeof ModelParams, duration: number) {
 		console.assert(model.built);
 		console.assert(duration >= 0);
 
@@ -236,7 +243,7 @@ class Grid {
 		// run the unseen data through this trained model
 		const PREDICTIONS_TENSOR = model.predict(	this._sessionData.proofInputsTensor,
 													{
-														batchSize: modelParams.GetParam(Axis.TYPE_NAME_BATCH_SIZE),
+														batchSize: modelParams.GetParam(Axis.Names.BATCH_SIZE),
 //NOTE: 'verbose' is not implemented as of TF 2.7.0. The documentation is wrong, but it's noted in the lib (see model.ts).
 														verbose: false
 													});
@@ -252,7 +259,7 @@ class Grid {
 
 		console.assert(PROOF_TARGETS.length === PREDICTIONS.length); // sanity-check
 
-		if (this._callbackReportIteration !== undefined) {
+		if (this._callbackReportIteration) {
 			this._callbackReportIteration(duration, PREDICTIONS, PROOF_INPUTS, PROOF_TARGETS);
 		}
 
@@ -265,22 +272,6 @@ class Grid {
 
 		for (let i = 0; i < PREDICTIONS.length; ++i) {
 			const EVALUATION = this._callbackEvaluatePrediction(PROOF_TARGETS[i], PREDICTIONS[i]);
-
-			// enforce the required response format; TODO: Make a simple class for this
-
-			if (typeof EVALUATION !== 'object') {
-				throw new Error('"callbackEvaluatePrediction" must return an object. Received type ' + typeof EVALUATION);
-			}
-
-			if (   typeof EVALUATION.correct !== 'boolean'
-				|| typeof EVALUATION.delta !== 'number') {
-				throw new Error('"callbackEvaluatePrediction" response invalid. The returned object must have the '
-								+ 'following proerties:' + '\n'
-								+ 'correct: <boolean>' + '\n'
-								+ 'delta: <number>');
-			}
-
-			// the response is valid; tally the results
 
 			if (EVALUATION.correct) {
 				++totalCorrect;
@@ -302,17 +293,16 @@ class Grid {
 		return MODEL_TEST_STATS;
 	}
 
-	async TrainModel(model, modelParams) {
-		console.assert(model instanceof TENSOR_FLOW.Sequential); //TODO: This might be too strict; consider the lower-level TF LayersModel
+//TODO: This model type might be too strict. Consider the lower-level TF LayersModel.
+	async TrainModel(model: typeof TENSOR_FLOW.Sequential, modelParams: typeof ModelParams) {
 		console.assert(model.built);
-		console.assert(modelParams instanceof ModelParams);
 
 		this.ResetEpochStats()
 
 		const TOTAL_CASES = this._sessionData.totalTrainingCases;
 
 //NOTE: ceil() is how TF performs this same split, as of v2.7.0.
-		const TOTAL_VALIDATION_CASES = Math.ceil(TOTAL_CASES * modelParams.GetParam(Axis.TYPE_NAME_VALIDATION_SPLIT));
+		const TOTAL_VALIDATION_CASES = Math.ceil(TOTAL_CASES * modelParams.GetParam(Axis.Names.VALIDATION_SPLIT));
 
 		const TOTAL_TRAINING_CASES = TOTAL_CASES - TOTAL_VALIDATION_CASES;
 
@@ -324,7 +314,7 @@ class Grid {
 			console.warn('Validation split is extremely high, and may not produce useful results.');
 		}
 
-		const TOTAL_EPOCHS = modelParams.GetParam(Axis.TYPE_NAME_EPOCHS);
+		const TOTAL_EPOCHS = modelParams.GetParam(Axis.Names.EPOCHS);
 
 		console.log('Training with ' + TOTAL_CASES + ' cases ('
 					+ TOTAL_TRAINING_CASES + ' train, '
@@ -334,12 +324,12 @@ class Grid {
 		await model.fit(this._sessionData.trainingInputsTensor,
 						this._sessionData.trainingTargetsTensor,
 						{
-							batchSize: modelParams.GetParam(Axis.TYPE_NAME_BATCH_SIZE),
+							batchSize: modelParams.GetParam(Axis.Names.BATCH_SIZE),
 							epochs: TOTAL_EPOCHS,
 							shuffle: true,
 							verbose: 2,
 //NOTE: Validation is only performed if we provide this "validationSplit" arg. It's necessary to track overfit and stuck.
-							validationSplit: modelParams.GetParam(Axis.TYPE_NAME_VALIDATION_SPLIT),
+							validationSplit: modelParams.GetParam(Axis.Names.VALIDATION_SPLIT),
 							callbacks:
 							{
 //NOTE: These events are available, as of TF 2.7.0:
@@ -351,15 +341,14 @@ class Grid {
 // 								onBatchEnd: (batch, logs) => { console.log('onBatchEnd', batch, logs); },
 // 								onYield: (epoch, batch, logs) => { console.log('onYield', epoch, batch, logs); }
 
-								onBatchEnd: (batch, logs) => {
+//[[TF ANY]]
+								onBatchEnd: (batch: any, logs: any) => {
 //TODO: This is essentially duped by the Epoch handler (just below).
-									if (this._callbackReportBatch === undefined) {
+									if (!this._callbackReportBatch) {
 										return;
 									}
 
 									const TIME_NOW = Date.now();
-
-									const DURATION = TIME_NOW - this._timeStartGrid;
 
 									const DURATION_BATCH = TIME_NOW - this._timeStartBatch;
 
@@ -367,29 +356,26 @@ class Grid {
 
 									this._callbackReportBatch(DURATION_BATCH, batch, logs);
 								},
-								onEpochEnd: (epoch, logs) => {
+//[[TF ANY]]
+								onEpochEnd: (epoch: number, logs: any) => {
 									this._epochStats.Update(epoch, logs);
 
 									const TIME_NOW = Date.now();
-
-									const DURATION = TIME_NOW - this._timeStartGrid;
 
 									const DURATION_EPOCH = TIME_NOW - this._timeStartEpoch;
 
 									this._timeStartEpoch = TIME_NOW;
 
-									if (this._callbackReportEpoch === undefined) {
-										if (epoch === 0) {
-											console.log(EpochStats.ReportGuide);
-										}
-
-										console.log((1 + epoch) + '/' + TOTAL_EPOCHS,
-													this._epochStats.WriteReport());
-
+									if (this._callbackReportEpoch) {
+										this._callbackReportEpoch(DURATION_EPOCH, epoch, logs, this._epochStats);
 										return;
 									}
 
-									this._callbackReportEpoch(DURATION_EPOCH, epoch, logs, this._epochStats);
+									if (epoch === 0) {
+										console.log(EpochStats.ReportGuide);
+									}
+
+									console.log((1 + epoch) + '/' + TOTAL_EPOCHS, this._epochStats.WriteReport());
 								}
 							}
 						});
@@ -399,4 +385,4 @@ class Grid {
 
 Object.freeze(Grid);
 
-exports.Grid = Grid;
+export { Grid };

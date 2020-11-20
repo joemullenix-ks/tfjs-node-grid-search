@@ -97,17 +97,17 @@ const UTILS = {
 		throw new Error('Value contains comma or newline (which interferes with CSV): ' + x + ', ' + AS_STRING);
 	},
 
-	WriteDurationReport: (durationMS: bigint): string => {
+	WriteDurationReport: (durationMS: number): string => {
 		console.assert(durationMS >= 0);
 
 //TODO: (low-pri) Bring in time-reporting from the f lib, which has smart duration-category picking.
 		return durationMS + ' ms'
 				+ ' / '
-				+ (Number(durationMS) / 1000).toFixed(2) + ' sec'
+				+ (durationMS / 1000).toFixed(2) + ' sec'
 				+ ' / '
-				+ (Number(durationMS) / 60 / 1000).toFixed(2) + ' min'
+				+ (durationMS / 60 / 1000).toFixed(2) + ' min'
 				+ ' / '
-				+ (Number(durationMS) / 60 / 60 / 1000).toFixed(1) + ' hr';
+				+ (durationMS / 60 / 60 / 1000).toFixed(1) + ' hr';
 	}
 };
 

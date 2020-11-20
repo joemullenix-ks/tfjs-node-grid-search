@@ -1,20 +1,17 @@
 'use strict';
 
 
+import * as Types from '../ts_types/common';
+
+
 import { Utils } from './Utils';
 
 
-//NOTE: TODO: Should this be lifted out into a d.ts file?
-//			  If so, should it go into custom (which should be "_common" or "Common" or such as)
-type StringKeyedSimpleObject = { [key: string]: string | number | boolean; };
-// export type StringKeyedSimpleObject = { [key: string]: string | number | boolean; };
-
-
 class ModelParams {
-	private _mergedParams: StringKeyedSimpleObject = {};
+	private _mergedParams: Types.StringKeyedSimpleObject = {};
 
-	constructor(private _dynamicParams: StringKeyedSimpleObject,
-				private _staticParams: StringKeyedSimpleObject) {
+	constructor(private _dynamicParams: Types.StringKeyedSimpleObject,
+				private _staticParams: Types.StringKeyedSimpleObject) {
 		// start off with a (shallow) clone of the statics...
 		this._mergedParams = Object.assign({}, this._staticParams);
 

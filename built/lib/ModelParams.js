@@ -2,7 +2,6 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ModelParams = void 0;
 var Utils_1 = require("./Utils");
-// export type StringKeyedSimpleObject = { [key: string]: string | number | boolean; };
 var ModelParams = /** @class */ (function () {
     function ModelParams(_dynamicParams, _staticParams) {
         this._dynamicParams = _dynamicParams;
