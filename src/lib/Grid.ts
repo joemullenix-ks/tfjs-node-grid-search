@@ -11,9 +11,6 @@
 const TENSOR_FLOW = require('@tensorflow/tfjs');
 
 
-const { SessionData }			= require('./SessionData');
-
-
 import * as Types from '../ts_types/Grid';
 
 
@@ -21,12 +18,15 @@ import * as Axis				from './Axis';
 import { AxisSet }				from './AxisSet';
 import { AxisSetTraverser }		from './AxisSetTraverser';
 import * as EpochStats			from './EpochStats';
+import { FileIO }				from './FileIO';
+import { FileIOResult }			from './FileIOResult';
 import { GridOptions }			from './GridOptions';
 import { GridRunStats }			from './GridRunStats';
 import { IterationResult }		from './IterationResult';
 import { ModelParams }			from './ModelParams';
 import { ModelStatics }			from './ModelStatics';
 import { ModelTestStats }		from './ModelTestStats';
+import { SessionData }			from './SessionData';
 import { Utils }				from './Utils';
 
 
@@ -41,7 +41,7 @@ class Grid {
 
 	constructor(axisSet: AxisSet,
 				private _modelStatics: ModelStatics,
-				private _sessionData: typeof SessionData,
+				private _sessionData: SessionData,
 				private _callbackEvaluatePrediction: Types.CallbackEvaluatePrediction,
 				private _userGridOptions?: GridOptions,
 				private _callbackReportIteration?: Types.CallbackReportIteration,
@@ -213,16 +213,14 @@ class Grid {
 		const WRITE_RESULTS_OPTION = this._gridOptions.GetOption('writeResultsToDirectory');
 
 		if (typeof WRITE_RESULTS_OPTION === 'string') {
-			const { FileIO } = require('./FileIO');
-
-			const RESULT = {};
+			const FILE_RESULT =	new FileIOResult();
 
 			const FILENAME = FileIO.ProduceResultsFilename();
 
 			await FileIO.WriteResultsFile(	FILENAME,
 											WRITE_RESULTS_OPTION,
 											GRID_RUN_STATS.WriteCSV(),
-											RESULT);
+											FILE_RESULT);
 
 //TODO: Look into Node's os/platform library. Gotta be a way to pull the appropriate slashes.
 //		...and on the same pass, lookup and print the root directory.
@@ -285,6 +283,7 @@ class Grid {
 		let totalCorrect = 0;
 
 		for (let i = 0; i < PREDICTIONS.length; ++i) {
+			// send each targets-prediction pair to the user, for their scoring logic
 			const EVALUATION = this._callbackEvaluatePrediction(PROOF_TARGETS[i], PREDICTIONS[i]);
 
 			if (EVALUATION.correct) {

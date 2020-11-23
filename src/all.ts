@@ -1,14 +1,12 @@
 'use strict';
 
 
-const { FileIO }					= require('./lib/FileIO');
-
-
 import * as GridTypes from './ts_types/Grid';
 
 
 import * as Axis 					from './lib/Axis';
 import { AxisSet }					from './lib/AxisSet';
+import { FileIO }					from './lib/FileIO';
 import { FileIOResult } 			from './lib/FileIOResult';
 import { Grid }						from './lib/Grid';
 import { GridOptions } 				from './lib/GridOptions';
@@ -94,7 +92,6 @@ const MAIN = async () => {
 	// Now we load and configure the data set. A fresh copy of this data will be used to train and test each
 	// 'iteration' of the grid search (i.e. each unique combination of dynamic params).
 
-
 //TODO: TBD, but this will very likely become a method of a top-level controller, e.g. TFJSGridSearch.js.
 //		At the very least the IO needs try/catch
 	const FETCH_DATA = async (pathInputs: string, pathTargets: string) => {
@@ -131,17 +128,23 @@ const MAIN = async () => {
 	// prediction for each proof case. It calls this function, passing the prediction, as well as the targets.
 	// If the prediction is acceptable, set the return object's "correct" property to true.
 	// An optional "delta" is also available, which takes a value representing the accuracy of the prediction.
-	const EVALUATE_PREDICTION: GridTypes.CallbackEvaluatePrediction = (target, prediction) => {
-		const TARGETTED_INDEX = Utils.ArrayFindIndexOfHighestValue(target);
 
-		const PREDICTED_INDEX = Utils.ArrayFindIndexOfHighestValue(prediction);
+	const EVALUATE_PREDICTION:GridTypes.CallbackEvaluatePrediction = (target, prediction) => {
+
+		// these come in as arbitrarily nested arrays; cast down to our known depth
+		const TARGET_2D = target as Array<number>;
+		const PREDICTION_2D = prediction as Array<number>;
+
+		const TARGETTED_INDEX = Utils.ArrayFindIndexOfHighestValue(TARGET_2D);
+
+		const PREDICTED_INDEX = Utils.ArrayFindIndexOfHighestValue(PREDICTION_2D);
 
 //NOTE: This is written for a multi-class (one-hot), classification network.
 //
-//TODO: Write example for regression, multi-label classification, etc...
+//TODO: Write further examples; regression, multi-label classification, more dimensions, etc...
 
 		const EVALUATION = new PredictionEvaluation(TARGETTED_INDEX === PREDICTED_INDEX,
-													1 - prediction[PREDICTED_INDEX]);
+													1 - PREDICTION_2D[PREDICTED_INDEX]);
 
 		return EVALUATION;
 	}

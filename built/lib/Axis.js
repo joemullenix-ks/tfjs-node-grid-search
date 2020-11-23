@@ -1,8 +1,7 @@
 'use strict';
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Axis = void 0;
-var FailureMessage = require('./FailureMessage').FailureMessage;
-var Progression = require('./Progression').Progression;
+var FailureMessage_1 = require("./FailureMessage");
 var Utils_1 = require("./Utils");
 var Axis = /** @class */ (function () {
     function Axis(_typeEnum, _boundBegin, _boundEnd, _progression) {
@@ -29,7 +28,7 @@ var Axis = /** @class */ (function () {
         //		That said - we only enforce basic rules, e.g. no negative epoch counts, integer neuron counts, etc...
         //		We're not attempting to do TF's job, here.
         //		Nor do we project memory usage or battery life (yet).
-        var FAILURE_MESSAGE = new FailureMessage();
+        var FAILURE_MESSAGE = new FailureMessage_1.FailureMessage();
         if (!Axis.AttemptValidateParameter(this._typeName, this._boundBegin, FAILURE_MESSAGE)) {
             throw new Error('There was a problem with an axis-begin value. ' + FAILURE_MESSAGE.text);
         }

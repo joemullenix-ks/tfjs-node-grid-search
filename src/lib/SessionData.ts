@@ -1,7 +1,7 @@
 'use strict';
 
 
-import { TFInputsArray } from '../ts_types/Grid';
+import { TFNestedArray } from '../ts_types/Grid';
 
 
 const TENSOR_FLOW = require('@tensorflow/tfjs');
@@ -20,12 +20,11 @@ const TENSOR_FLOW = require('@tensorflow/tfjs');
 
 
 class SessionData {
-	// _rawInputsProof: TFInputsArray;
-	_rawInputsProof: Array<any> = [];
-	_rawInputsTraining: TFInputsArray;
+	_rawInputsProof: TFNestedArray;
+	_rawInputsTraining: TFNestedArray;
 //[[TF ANY]]
 	_proofInputsTensor: any;
-	_proofTargets: TFInputsArray;
+	_proofTargets: TFNestedArray;
 //[[TF ANY]]
 	_proofTargetsTensor: any;
 	_totalInputNeurons: number = 0;
@@ -36,11 +35,11 @@ class SessionData {
 	_trainingTargetsTensor: any;
 
 	constructor(proofPercentage: number,
-				rawInputs: TFInputsArray,
-				rawTargets: TFInputsArray,
+				rawInputs: TFNestedArray,
+				rawTargets: TFNestedArray,
 				private _useDefaultStandardization: boolean,
-				private _callbackStandardize?: (unstandardizedInputs: TFInputsArray) => void,
-				private _callbackUnstandardize?: (standardizedInputs: TFInputsArray) => void) {
+				private _callbackStandardize?: (unstandardizedInputs: TFNestedArray) => void,
+				private _callbackUnstandardize?: (standardizedInputs: TFNestedArray) => void) {
 		console.assert(proofPercentage > 0.0);
 		console.assert(proofPercentage < 1.0);
 
@@ -109,7 +108,7 @@ class SessionData {
 //			PROOF_INPUTS.length === _rawInputsProof.length
 //			rawInputs.length === _rawInputsTraining.length
 
-		// this._rawInputsProof = [];
+		this._rawInputsProof = [];
 
 		for (let i = 0; i < PROOF_COUNT; ++i) {
 			const RAW_I = rawInputs.shift();
@@ -164,13 +163,13 @@ class SessionData {
 		}
 	}
 
-	static ValidateRawData(raw: TFInputsArray) {
+	static ValidateRawData(raw: TFNestedArray) {
 //NOTE: The top level of 'raw' must be an array, otherwise a lone Number would pass validation. This is no longer
 //		a problem under TypeScript, but it's worth keeping in mind.
 
 		let recursionKillswitch = false;
 
-		const CHECK_ARRAYS_OF_NUMBERS_RECURSIVELY = (a: number | TFInputsArray) => {
+		const CHECK_ARRAYS_OF_NUMBERS_RECURSIVELY = (a: number | TFNestedArray) => {
 			if (recursionKillswitch) {
 				// this raw data has already failed
 				return false;
@@ -222,7 +221,7 @@ class SessionData {
 
 //TODO: This standardization code moves into a separate lib, and/or gets replaced by simple-statistics(tm).
 //		It also has a few generic tensor tools; unsure whether TF or simple-statistics has either, but probably.
-function CountLeafElements(inputData: TFInputsArray) {
+function CountLeafElements(inputData: TFNestedArray) {
 	console.assert(inputData.length > 0);
 
 	// find the lowest level of these (potentially) nested arrays
@@ -262,7 +261,7 @@ function FindStandardDeviation(data: Array<number>, mean: number) {
 	return STDEV;
 }
 
-function StandardizeInputs(inputData: TFInputsArray) {
+function StandardizeInputs(inputData: TFNestedArray) {
 	console.assert(inputData.length > 0);
 
 	// find the lowest level of these (potentially) nested arrays
@@ -294,10 +293,10 @@ function StandardizeInputs(inputData: TFInputsArray) {
 
 //NOTE: TODO: This is actually a basic tensor tool, I'm now realizing. Find a good tensor lib, or start one.
 //			  ...after you check TF's own utils, or course!
-	const RECURSIVELY_TABULATE_FEATURES = (a: TFInputsArray) => {
+	const RECURSIVELY_TABULATE_FEATURES = (a: TFNestedArray) => {
 		console.assert(a.length > 0);
 
-		a.forEach((value: TFInputsArray | number, index: number) => {
+		a.forEach((value: TFNestedArray | number, index: number) => {
 			if (Array.isArray(value)) {
 				RECURSIVELY_TABULATE_FEATURES(value);
 				return;
@@ -328,10 +327,10 @@ function StandardizeInputs(inputData: TFInputsArray) {
 
 	// walk this set of (potentially) nested arrays, adjusting each feature set to mean zero and variance one
 
-	const RECURSIVELY_STANDARDIZE_FEATURES = (a: TFInputsArray) => {
+	const RECURSIVELY_STANDARDIZE_FEATURES = (a: TFNestedArray) => {
 		console.assert(a.length > 0);
 
-		a.forEach((value: TFInputsArray | number, index: number, array: TFInputsArray) => {
+		a.forEach((value: TFNestedArray | number, index: number, array: TFNestedArray) => {
 			if (Array.isArray(value)) {
 				RECURSIVELY_STANDARDIZE_FEATURES(value);
 				return;
@@ -381,7 +380,7 @@ function StandardizeInputs(inputData: TFInputsArray) {
 	RECURSIVELY_STANDARDIZE_FEATURES(inputData);
 }
 
-function UnstandardizeInputs(inputData: TFInputsArray) {
+function UnstandardizeInputs(inputData: TFNestedArray) {
 throw new Error('KEEP: but this needs a rewrite before it can be used; see the recursive digs in StandardizeInputs()')
 
 /*

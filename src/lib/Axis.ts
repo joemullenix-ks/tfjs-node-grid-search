@@ -1,10 +1,8 @@
 'use strict';
 
 
-const { FailureMessage } = require('./FailureMessage');
-const { Progression } = require('./Progression');
-
-
+import { FailureMessage } from './FailureMessage';
+import { Progression } from './Progression';
 import { Utils } from './Utils';
 
 
@@ -15,7 +13,7 @@ class Axis {
 	constructor(private _typeEnum: number,
 				private _boundBegin: number,
 				private _boundEnd: number,
-				private _progression: typeof Progression) {
+				private _progression: Progression) {
 		console.assert(_typeEnum >= 0 && _typeEnum < Types._TOTAL);
 
 		console.assert(_boundEnd >= 0);
@@ -103,7 +101,7 @@ class Axis {
 		return REPORT_TEXT;
 	}
 
-	static AttemptValidateParameter(key: string, value: number, failureMessage: typeof FailureMessage) {
+	static AttemptValidateParameter(key: string, value: number, failureMessage: FailureMessage) {
 
 //NOTE: It's important to gracefully handle bad inputs here, with explanations and recommendations in the failure text.
 //		This has the potential to be a point-of-failure for new users ramping up on model config.
@@ -153,7 +151,7 @@ class Axis {
 		return false;
 	}
 
-	static AttemptValidateProgression(key: string, progression: typeof Progression, failureMessage: typeof FailureMessage) {
+	static AttemptValidateProgression(key: string, progression: Progression, failureMessage: FailureMessage) {
 
 //NOTE: It's important to gracefully handle bad inputs here, with explanations and recommendations in the failure text.
 //		This has the potential to be a point-of-failure for new users ramping up on model config.
