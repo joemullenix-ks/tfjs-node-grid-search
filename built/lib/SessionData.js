@@ -1,7 +1,7 @@
 'use strict';
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.SessionData = void 0;
-var TENSOR_FLOW = require('@tensorflow/tfjs');
+var TENSOR_FLOW = require('@tensorflow/tfjs-node');
 //TODO: PERF: This object wastes memory, potentially a lot of it. It carries duplicates of the inputs, as both TF tensors
 //			  and raw arrays.
 //			  In some usage cases the array versions aren't required (e.g. the user does not use standardization). Further,

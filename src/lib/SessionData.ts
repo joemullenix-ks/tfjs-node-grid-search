@@ -4,7 +4,7 @@
 import { TFNestedArray } from '../ts_types/Grid';
 
 
-const TENSOR_FLOW = require('@tensorflow/tfjs');
+const TENSOR_FLOW = require('@tensorflow/tfjs-node');
 
 
 //TODO: PERF: This object wastes memory, potentially a lot of it. It carries duplicates of the inputs, as both TF tensors

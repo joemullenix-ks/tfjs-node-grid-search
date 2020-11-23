@@ -1,7 +1,7 @@
 'use strict';
 
 
-const TENSOR_FLOW = require('@tensorflow/tfjs');
+const TENSOR_FLOW = require('@tensorflow/tfjs-node');
 
 
 const { FailureMessage } = require('./FailureMessage');

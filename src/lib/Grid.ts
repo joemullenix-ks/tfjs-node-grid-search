@@ -1,14 +1,9 @@
 'use strict';
 
 
-//BUG: This require() crashes (logged as https://github.com/tensorflow/tfjs/issues/4052):
-//
-//	const TENSOR_FLOW = require('@tensorflow/tfjs-node');
-//
-//NOTE: Confirmed that this file exists. However, building w/ tfjs-node reports module not found:
-//	<project>\node_modules\@tensorflow\tfjs-node\lib\napi-v6
-//	<project>\node_modules\@tensorflow\tfjs-node\lib\napi-v6\tfjs_binding.node
-const TENSOR_FLOW = require('@tensorflow/tfjs');
+const TENSOR_FLOW = require('@tensorflow/tfjs-node');
+//NOTE: Now that this lib is available, upgrade to ESM import, and continue the conversion.
+// import * as TENSOR_FLOW from '@tensorflow/tfjs-node';
 
 
 import * as Types from '../ts_types/Grid';
@@ -340,7 +335,9 @@ class Grid {
 							batchSize: modelParams.GetNumericParam(Axis.Names.BATCH_SIZE),
 							epochs: TOTAL_EPOCHS,
 							shuffle: true,
-							verbose: 2,
+//NOTE: As of 2020 11 23, tfjs-node logs an extra line per-epoch w/ verbosity 2+. It's redundant with our
+//		default per-epoch line, thus the "1". However, it's worth keeping an eye on this for debugging.
+							verbose: 1,
 //NOTE: Validation is only performed if we provide this "validationSplit" arg. It's necessary to track overfit and stuck.
 							validationSplit: modelParams.GetNumericParam(Axis.Names.VALIDATION_SPLIT),
 							callbacks:
