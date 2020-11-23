@@ -1,17 +1,9 @@
 'use strict';
 
 
-//BUG: This require() crashes (logged as https://github.com/tensorflow/tfjs/issues/4052):
-//
-//	const TENSOR_FLOW = require('@tensorflow/tfjs-node');
-//
-//NOTE: Confirmed that this file exists. However, building w/ tfjs-node reports module not found:
-//	<project>\node_modules\@tensorflow\tfjs-node\lib\napi-v6
-//	<project>\node_modules\@tensorflow\tfjs-node\lib\napi-v6\tfjs_binding.node
-const TENSOR_FLOW = require('@tensorflow/tfjs');
-
-
-const { SessionData }			= require('./SessionData');
+const TENSOR_FLOW = require('@tensorflow/tfjs-node');
+//NOTE: Now that this lib is available, upgrade to ESM import, and continue the conversion.
+// import * as TENSOR_FLOW from '@tensorflow/tfjs-node';
 
 
 import * as Types from '../ts_types/Grid';
@@ -21,12 +13,15 @@ import * as Axis				from './Axis';
 import { AxisSet }				from './AxisSet';
 import { AxisSetTraverser }		from './AxisSetTraverser';
 import * as EpochStats			from './EpochStats';
+import { FileIO }				from './FileIO';
+import { FileIOResult }			from './FileIOResult';
 import { GridOptions }			from './GridOptions';
 import { GridRunStats }			from './GridRunStats';
 import { IterationResult }		from './IterationResult';
 import { ModelParams }			from './ModelParams';
 import { ModelStatics }			from './ModelStatics';
 import { ModelTestStats }		from './ModelTestStats';
+import { SessionData }			from './SessionData';
 import { Utils }				from './Utils';
 
 
@@ -41,7 +36,7 @@ class Grid {
 
 	constructor(axisSet: AxisSet,
 				private _modelStatics: ModelStatics,
-				private _sessionData: typeof SessionData,
+				private _sessionData: SessionData,
 				private _callbackEvaluatePrediction: Types.CallbackEvaluatePrediction,
 				private _userGridOptions?: GridOptions,
 				private _callbackReportIteration?: Types.CallbackReportIteration,
@@ -213,16 +208,14 @@ class Grid {
 		const WRITE_RESULTS_OPTION = this._gridOptions.GetOption('writeResultsToDirectory');
 
 		if (typeof WRITE_RESULTS_OPTION === 'string') {
-			const { FileIO } = require('./FileIO');
-
-			const RESULT = {};
+			const FILE_RESULT =	new FileIOResult();
 
 			const FILENAME = FileIO.ProduceResultsFilename();
 
 			await FileIO.WriteResultsFile(	FILENAME,
 											WRITE_RESULTS_OPTION,
 											GRID_RUN_STATS.WriteCSV(),
-											RESULT);
+											FILE_RESULT);
 
 //TODO: Look into Node's os/platform library. Gotta be a way to pull the appropriate slashes.
 //		...and on the same pass, lookup and print the root directory.
@@ -285,6 +278,7 @@ class Grid {
 		let totalCorrect = 0;
 
 		for (let i = 0; i < PREDICTIONS.length; ++i) {
+			// send each targets-prediction pair to the user, for their scoring logic
 			const EVALUATION = this._callbackEvaluatePrediction(PROOF_TARGETS[i], PREDICTIONS[i]);
 
 			if (EVALUATION.correct) {
@@ -341,7 +335,9 @@ class Grid {
 							batchSize: modelParams.GetNumericParam(Axis.Names.BATCH_SIZE),
 							epochs: TOTAL_EPOCHS,
 							shuffle: true,
-							verbose: 2,
+//NOTE: As of 2020 11 23, tfjs-node logs an extra line per-epoch w/ verbosity 2+. It's redundant with our
+//		default per-epoch line, thus the "1". However, it's worth keeping an eye on this for debugging.
+							verbose: 1,
 //NOTE: Validation is only performed if we provide this "validationSplit" arg. It's necessary to track overfit and stuck.
 							validationSplit: modelParams.GetNumericParam(Axis.Names.VALIDATION_SPLIT),
 							callbacks:

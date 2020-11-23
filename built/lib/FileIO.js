@@ -36,7 +36,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.FILE_IO = void 0;
+exports.FileIO = void 0;
 var FS_PROMISES = require('fs/promises');
 var PATH_LIB = require('path');
 var SLASH = require('slash');
@@ -112,6 +112,6 @@ var FILE_IO = {
         });
     }); }
 };
-exports.FILE_IO = FILE_IO;
+exports.FileIO = FILE_IO;
 Object.freeze(FILE_IO);
 //# sourceMappingURL=FileIO.js.map

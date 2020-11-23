@@ -20,7 +20,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ModelStatics = void 0;
-var TENSOR_FLOW = require('@tensorflow/tfjs');
+var TENSOR_FLOW = require('@tensorflow/tfjs-node');
 var FailureMessage = require('./FailureMessage').FailureMessage;
 var Axis = __importStar(require("./Axis"));
 var ModelStatics = /** @class */ (function () {

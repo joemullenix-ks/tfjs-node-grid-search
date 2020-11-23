@@ -79,4 +79,4 @@ const FILE_IO = {
 
 Object.freeze(FILE_IO);
 
-export {FILE_IO};
+export { FILE_IO as FileIO };

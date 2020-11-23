@@ -10,6 +10,11 @@ This isn't catching the 0.3 cases, but it should, since bounds are inclusive:
 
 
 TODO
+TS conversion:
+	- full require() pass
+	- full 'ANY' and 'AS' pass
+	- export a completely minified, bundled, whatever'd NPM-ready package
+
 Write the CSVSource interface // This may be much better held until after TS.
 
 Project upgrades; Lint, TS, Travis(?), JSDOC, public Git, NPM

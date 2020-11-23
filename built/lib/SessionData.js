@@ -1,7 +1,7 @@
 'use strict';
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.SessionData = void 0;
-var TENSOR_FLOW = require('@tensorflow/tfjs');
+var TENSOR_FLOW = require('@tensorflow/tfjs-node');
 //TODO: PERF: This object wastes memory, potentially a lot of it. It carries duplicates of the inputs, as both TF tensors
 //			  and raw arrays.
 //			  In some usage cases the array versions aren't required (e.g. the user does not use standardization). Further,
@@ -17,8 +17,6 @@ var SessionData = /** @class */ (function () {
         this._useDefaultStandardization = _useDefaultStandardization;
         this._callbackStandardize = _callbackStandardize;
         this._callbackUnstandardize = _callbackUnstandardize;
-        // _rawInputsProof: TFInputsArray;
-        this._rawInputsProof = [];
         this._totalInputNeurons = 0;
         this._totalOutputNeurons = 0;
         this._totalTrainingCases = 0;
@@ -72,7 +70,7 @@ var SessionData = /** @class */ (function () {
         //		i.e. both of these are true:
         //			PROOF_INPUTS.length === _rawInputsProof.length
         //			rawInputs.length === _rawInputsTraining.length
-        // this._rawInputsProof = [];
+        this._rawInputsProof = [];
         for (var i = 0; i < PROOF_COUNT; ++i) {
             var RAW_I = rawInputs.shift();
             var RAW_T = rawTargets.shift();

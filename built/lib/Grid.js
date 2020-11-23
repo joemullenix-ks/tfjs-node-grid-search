@@ -56,18 +56,12 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Grid = void 0;
-//BUG: This require() crashes (logged as https://github.com/tensorflow/tfjs/issues/4052):
-//
-//	const TENSOR_FLOW = require('@tensorflow/tfjs-node');
-//
-//NOTE: Confirmed that this file exists. However, building w/ tfjs-node reports module not found:
-//	<project>\node_modules\@tensorflow\tfjs-node\lib\napi-v6
-//	<project>\node_modules\@tensorflow\tfjs-node\lib\napi-v6\tfjs_binding.node
-var TENSOR_FLOW = require('@tensorflow/tfjs');
-var SessionData = require('./SessionData').SessionData;
+var TENSOR_FLOW = require('@tensorflow/tfjs-node');
 var Axis = __importStar(require("./Axis"));
 var AxisSetTraverser_1 = require("./AxisSetTraverser");
 var EpochStats = __importStar(require("./EpochStats"));
+var FileIO_1 = require("./FileIO");
+var FileIOResult_1 = require("./FileIOResult");
 var GridOptions_1 = require("./GridOptions");
 var GridRunStats_1 = require("./GridRunStats");
 var IterationResult_1 = require("./IterationResult");
@@ -162,7 +156,7 @@ var Grid = /** @class */ (function () {
     };
     Grid.prototype.Run = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var GRID_RUN_STATS, TOTAL_ITERATIONS, TOTAL_REPETITIONS, TOTAL_PASSES, pass, i, DYNAMIC_PARAMS, STATIC_PARAMS, MODEL_PARAMS, r, MODEL, ITERATION_DURATION, MODEL_TEST_STATS, ITERATION_RESULT, GRID_TIME_END, GRID_DURATION, WRITE_RESULTS_OPTION, FileIO, RESULT, FILENAME;
+            var GRID_RUN_STATS, TOTAL_ITERATIONS, TOTAL_REPETITIONS, TOTAL_PASSES, pass, i, DYNAMIC_PARAMS, STATIC_PARAMS, MODEL_PARAMS, r, MODEL, ITERATION_DURATION, MODEL_TEST_STATS, ITERATION_RESULT, GRID_TIME_END, GRID_DURATION, WRITE_RESULTS_OPTION, FILE_RESULT, FILENAME;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -219,10 +213,9 @@ var Grid = /** @class */ (function () {
                         console.log(GRID_RUN_STATS.WriteReport(true));
                         WRITE_RESULTS_OPTION = this._gridOptions.GetOption('writeResultsToDirectory');
                         if (!(typeof WRITE_RESULTS_OPTION === 'string')) return [3 /*break*/, 9];
-                        FileIO = require('./FileIO').FileIO;
-                        RESULT = {};
-                        FILENAME = FileIO.ProduceResultsFilename();
-                        return [4 /*yield*/, FileIO.WriteResultsFile(FILENAME, WRITE_RESULTS_OPTION, GRID_RUN_STATS.WriteCSV(), RESULT)];
+                        FILE_RESULT = new FileIOResult_1.FileIOResult();
+                        FILENAME = FileIO_1.FileIO.ProduceResultsFilename();
+                        return [4 /*yield*/, FileIO_1.FileIO.WriteResultsFile(FILENAME, WRITE_RESULTS_OPTION, GRID_RUN_STATS.WriteCSV(), FILE_RESULT)];
                     case 8:
                         _a.sent();
                         //TODO: Look into Node's os/platform library. Gotta be a way to pull the appropriate slashes.
@@ -275,6 +268,7 @@ var Grid = /** @class */ (function () {
         var aggregateDeltaIncorrect = 0.0;
         var totalCorrect = 0;
         for (var i = 0; i < PREDICTIONS.length; ++i) {
+            // send each targets-prediction pair to the user, for their scoring logic
             var EVALUATION = this._callbackEvaluatePrediction(PROOF_TARGETS[i], PREDICTIONS[i]);
             if (EVALUATION.correct) {
                 ++totalCorrect;
@@ -316,7 +310,9 @@ var Grid = /** @class */ (function () {
                                 batchSize: modelParams.GetNumericParam("batchSize" /* BATCH_SIZE */),
                                 epochs: TOTAL_EPOCHS,
                                 shuffle: true,
-                                verbose: 2,
+                                //NOTE: As of 2020 11 23, tfjs-node logs an extra line per-epoch w/ verbosity 2+. It's redundant with our
+                                //		default per-epoch line, thus the "1". However, it's worth keeping an eye on this for debugging.
+                                verbose: 1,
                                 //NOTE: Validation is only performed if we provide this "validationSplit" arg. It's necessary to track overfit and stuck.
                                 validationSplit: modelParams.GetNumericParam("validationSplit" /* VALIDATION_SPLIT */),
                                 callbacks: {

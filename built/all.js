@@ -55,9 +55,9 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var FileIO = require('./lib/FileIO').FileIO;
 var Axis = __importStar(require("./lib/Axis"));
 var AxisSet_1 = require("./lib/AxisSet");
+var FileIO_1 = require("./lib/FileIO");
 var FileIOResult_1 = require("./lib/FileIOResult");
 var Grid_1 = require("./lib/Grid");
 var GridOptions_1 = require("./lib/GridOptions");
@@ -95,11 +95,11 @@ var MAIN = function () { return __awaiter(void 0, void 0, void 0, function () {
                         switch (_a.label) {
                             case 0:
                                 FILE_RESULT = new FileIOResult_1.FileIOResult();
-                                return [4 /*yield*/, FileIO.ReadDataFile(pathInputs, FILE_RESULT)];
+                                return [4 /*yield*/, FileIO_1.FileIO.ReadDataFile(pathInputs, FILE_RESULT)];
                             case 1:
                                 _a.sent();
                                 RAW_INPUTS = JSON.parse(FILE_RESULT.data);
-                                return [4 /*yield*/, FileIO.ReadDataFile(pathTargets, FILE_RESULT)];
+                                return [4 /*yield*/, FileIO_1.FileIO.ReadDataFile(pathTargets, FILE_RESULT)];
                             case 2:
                                 _a.sent();
                                 RAW_TARGETS = JSON.parse(FILE_RESULT.data);
@@ -117,12 +117,15 @@ var MAIN = function () { return __awaiter(void 0, void 0, void 0, function () {
                     : (500 / DATA_PACKAGE.inputs.length);
                 SESSION_DATA = new SessionData_1.SessionData(PROOF_PERCENTAGE, DATA_PACKAGE.inputs, DATA_PACKAGE.targets, true);
                 EVALUATE_PREDICTION = function (target, prediction) {
-                    var TARGETTED_INDEX = Utils_1.Utils.ArrayFindIndexOfHighestValue(target);
-                    var PREDICTED_INDEX = Utils_1.Utils.ArrayFindIndexOfHighestValue(prediction);
+                    // these come in as arbitrarily nested arrays; cast down to our known depth
+                    var TARGET_2D = target;
+                    var PREDICTION_2D = prediction;
+                    var TARGETTED_INDEX = Utils_1.Utils.ArrayFindIndexOfHighestValue(TARGET_2D);
+                    var PREDICTED_INDEX = Utils_1.Utils.ArrayFindIndexOfHighestValue(PREDICTION_2D);
                     //NOTE: This is written for a multi-class (one-hot), classification network.
                     //
-                    //TODO: Write example for regression, multi-label classification, etc...
-                    var EVALUATION = new PredictionEvaluation_1.PredictionEvaluation(TARGETTED_INDEX === PREDICTED_INDEX, 1 - prediction[PREDICTED_INDEX]);
+                    //TODO: Write further examples; regression, multi-label classification, more dimensions, etc...
+                    var EVALUATION = new PredictionEvaluation_1.PredictionEvaluation(TARGETTED_INDEX === PREDICTED_INDEX, 1 - PREDICTION_2D[PREDICTED_INDEX]);
                     return EVALUATION;
                 };
                 REPORT_BATCH = function (duration, batch, logs) {
