@@ -56,10 +56,9 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Grid = void 0;
-//NOTE: Now that this lib is available, upgrade to ESM import, and continue the conversion. This is not
-//		yet part of a proper release (as of 2.7.0). See https://github.com/tensorflow/tfjs/issues/4052
-//		for the solution
-//
+//NOTE: This variant of the lib (tfjs-node) is not yet part of a proper release (as of 2.7.0)!
+//		See https://github.com/tensorflow/tfjs/issues/4052 for the solution, which involves manually
+//		copying a .DLL.
 var TENSOR_FLOW = __importStar(require("@tensorflow/tfjs-node"));
 var Axis = __importStar(require("./Axis"));
 var AxisSetTraverser_1 = require("./AxisSetTraverser");
@@ -237,7 +236,7 @@ var Grid = /** @class */ (function () {
         });
     };
     Grid.prototype.ResolveModelDefinition = function () {
-        //NOTE: TODO: Not entirely happy with this. It feels like access breaking; reaching in via callback.
+        //NOTE: TODO: I'm not entirely happy with this. It feels like access breaking, to reach in via callback.
         //			  It would be better to just produce a list of axis keys. That's all we want, anyway.
         //			  ...will leave this pending the completion of the supported axes. There may be more
         //			  to consider when it comes to complex axes like activator-schedules.
@@ -335,20 +334,19 @@ var Grid = /** @class */ (function () {
                                     // 								onBatchBegin: (batch, logs) => { console.log('onBatchBegin', batch, logs); },
                                     // 								onBatchEnd: (batch, logs) => { console.log('onBatchEnd', batch, logs); },
                                     // 								onYield: (epoch, batch, logs) => { console.log('onYield', epoch, batch, logs); }
-                                    //[[TF ANY]]
                                     onBatchEnd: function (batch, logs) {
-                                        //TODO: This is essentially duped by the Epoch handler (just below).
                                         if (!_this._callbackReportBatch) {
                                             return;
                                         }
+                                        //TODO: This is essentially duped by the Epoch handler (just below).
                                         var TIME_NOW = Date.now();
                                         var DURATION_BATCH = TIME_NOW - _this._timeStartBatch;
                                         _this._timeStartBatch = TIME_NOW;
                                         _this._callbackReportBatch(DURATION_BATCH, batch, logs);
                                     },
-                                    //[[TF ANY]]
                                     onEpochEnd: function (epoch, logs) {
                                         _this._epochStats.Update(epoch, logs);
+                                        //TODO: This is essentially duped by the Batch handler (just above).
                                         var TIME_NOW = Date.now();
                                         var DURATION_EPOCH = TIME_NOW - _this._timeStartEpoch;
                                         _this._timeStartEpoch = TIME_NOW;

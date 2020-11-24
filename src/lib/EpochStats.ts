@@ -1,7 +1,9 @@
 'use strict';
 
 
-// import * as SIMPLE_STATISTICS from 'simple-statistics';
+import { Logs } from '@tensorflow/tfjs-node';
+
+
 import { linearRegression } from 'simple-statistics';
 
 
@@ -42,8 +44,7 @@ class EpochStats {
 	get lineValidationAccuracy() { return this._lineValidationAccuracy; }
 	get lineValidationLoss() { return this._lineValidationLoss; }
 
-//[[TF ANY]]
-	Update(epoch: number, logs: any) {
+	Update(epoch: number, logs: Logs) {
 		console.assert(epoch >= 0);
 		console.assert(Math.floor(epoch) === epoch);
 		console.assert(typeof logs === 'object');

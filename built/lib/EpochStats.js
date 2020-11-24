@@ -1,7 +1,6 @@
 'use strict';
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.REPORT_HEADER = exports.EpochStats = void 0;
-// import * as SIMPLE_STATISTICS from 'simple-statistics';
 var simple_statistics_1 = require("simple-statistics");
 var Utils_1 = require("./Utils");
 var EpochStats = /** @class */ (function () {
@@ -63,7 +62,6 @@ var EpochStats = /** @class */ (function () {
         enumerable: false,
         configurable: true
     });
-    //[[TF ANY]]
     EpochStats.prototype.Update = function (epoch, logs) {
         console.assert(epoch >= 0);
         console.assert(Math.floor(epoch) === epoch);

@@ -35,9 +35,9 @@
 
 		/* Additional Checks */
 
-//KEEP: These two will be back, once the conversion is complete. For now they over-complicate things.
-//		"noUnusedLocals": true, /* Report errors on unused locals. */
-//		"noUnusedParameters": true, /* Report errors on unused parameters. */
+//KEEP: This one is too tedious to be always on; used only for releases (and not that important even then).
+		// "noUnusedLocals": true, /* Report errors on unused locals. */
+		"noUnusedParameters": true, /* Report errors on unused parameters. */
 
 		"noImplicitReturns": true, /* Report error when not all code paths in function return a value. */
 		"noFallthroughCasesInSwitch": true, /* Report errors for fallthrough cases in switch statement. */

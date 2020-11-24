@@ -24,13 +24,13 @@ export type CallbackEvaluatePrediction = (	target: TFNestedArray,
 
 //[[TF ANY]]
 export type CallbackReportBatch = (	duration: number,
-									batch: any,
-									logs: any) => void;
+									batch,
+									logs) => void;
 
 //[[TF ANY]]
 export type CallbackReportEpoch = (	duration: number,
 									epoch: number,
-									logs: any,
+									logs,
 									epochStats: typeof EpochStats) => void;
 
 export type CallbackReportIteration = (	duration: number,

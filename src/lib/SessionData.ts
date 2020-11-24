@@ -22,17 +22,14 @@ import { TFNestedArray } from '../ts_types/Grid';
 class SessionData {
 	_rawInputsProof: TFNestedArray;
 	_rawInputsTraining: TFNestedArray;
-//[[TF ANY]]
-	_proofInputsTensor: any;
+	_proofInputsTensor: TENSOR_FLOW.Tensor;
 	_proofTargets: TFNestedArray;
-//[[TF ANY]]
-	_proofTargetsTensor: any;
+	_proofTargetsTensor: TENSOR_FLOW.Tensor;
 	_totalInputNeurons: number = 0;
 	_totalOutputNeurons: number = 0;
 	_totalTrainingCases: number = 0;
-//[[TF ANY]]
-	_trainingInputsTensor: any;
-	_trainingTargetsTensor: any;
+	_trainingInputsTensor: TENSOR_FLOW.Tensor;
+	_trainingTargetsTensor: TENSOR_FLOW.Tensor;
 
 	constructor(proofPercentage: number,
 				rawInputs: TFNestedArray,
@@ -380,36 +377,6 @@ function StandardizeInputs(inputData: TFNestedArray) {
 	RECURSIVELY_STANDARDIZE_FEATURES(inputData);
 }
 
-function UnstandardizeInputs(inputData: TFNestedArray) {
-throw new Error('KEEP: but this needs a rewrite before it can be used; see the recursive digs in StandardizeInputs()')
-
-/*
-//NOTE: TODO: This format assumption is far too limiting. That's why standardization will moved into an optional callback.
-	console.assert(Array.isArray(inputData));
-	console.assert(inputData.length > 0);
-	console.assert(Array.isArray(inputData[0]));
-	console.assert(inputData[0].length > 0);
-
-	for (let i = 0; i < inputData.length; ++i) {
-		const CASE = inputData[i];
-
-		// sanity check these
-		CASE.forEach((element, b, c) => {
-			console.assert(Math.abs(element - PROOF_INPUTS[i][b]) < 0.001); // epsilon
-		});
-
-		for (let x = 0; x < CASE.length; ++x) {
-			if (STANDARDIZATION_PARAMS[x].stdev !== 0) {
-				CASE[x] *= STANDARDIZATION_PARAMS[x].stdev;
-			}
-
-			CASE[x] += STANDARDIZATION_PARAMS[x].mean;
-		}
-	}
-
-	return inputData;
-*/
-}
 //^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 //^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
