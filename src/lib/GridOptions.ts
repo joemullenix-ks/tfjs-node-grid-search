@@ -4,6 +4,9 @@
 import * as Types from '../ts_types/common';
 
 
+import * as FS from 'fs';
+
+
 import { Utils } from './Utils';
 
 
@@ -98,8 +101,6 @@ class GridOptions {
 					}
 					else {
 						// confirm this is a valid path of an existing directory (not a file)
-
-						const FS = require('fs');
 
 //TODO: Move these to FileIO (or FileIOSync).
 //TODO: (low-pri) Have that lib create the directory, if it doesn't exist ... maybe.

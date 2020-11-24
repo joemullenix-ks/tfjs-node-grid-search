@@ -1,8 +1,15 @@
 'use strict';
 
 
-const FS_PROMISES = require('fs/promises');
-const PATH_LIB = require('path');
+import * as FS_PROMISES from 'fs/promises';
+import * as PATH_LIB from 'path';
+
+
+//NOTE: Not yet ready to move this one to ESM, only because I don't want to bring in added
+//		module variability until the bundled package is ready. Stay tuned.
+//
+//		"This module can only be referenced with ECMAScript imports/exports by turning on
+//		the 'esModuleInterop' flag and referencing its default export.ts(2497)"
 const SLASH = require('slash');
 
 
