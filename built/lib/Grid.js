@@ -56,7 +56,11 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Grid = void 0;
-var TENSOR_FLOW = require('@tensorflow/tfjs-node');
+//NOTE: Now that this lib is available, upgrade to ESM import, and continue the conversion. This is not
+//		yet part of a proper release (as of 2.7.0). See https://github.com/tensorflow/tfjs/issues/4052
+//		for the solution
+//
+var TENSOR_FLOW = __importStar(require("@tensorflow/tfjs-node"));
 var Axis = __importStar(require("./Axis"));
 var AxisSetTraverser_1 = require("./AxisSetTraverser");
 var EpochStats = __importStar(require("./EpochStats"));
@@ -248,6 +252,13 @@ var Grid = /** @class */ (function () {
         console.assert(model.built);
         console.assert(duration >= 0);
         console.log('Testing...');
+        //NOTE: This rule (limitation) is for the arraySync() done on PREDICTIONS_TENSOR.
+        //		"model.predict()" is dual mode. It outputs an array of Tensors when given an array of Tensors
+        //		as input. Our evaluation and scoring logic is not yet ready to support multiple ins/outs.
+        //TODO: ...but it will.
+        if (!(this._sessionData.proofInputsTensor instanceof TENSOR_FLOW.Tensor)) {
+            throw new Error('Invalid proof inputs; multi-input models are not yet supported.');
+        }
         // run the unseen data through this trained model
         var PREDICTIONS_TENSOR = model.predict(this._sessionData.proofInputsTensor, {
             batchSize: modelParams.GetNumericParam("batchSize" /* BATCH_SIZE */),
@@ -310,9 +321,9 @@ var Grid = /** @class */ (function () {
                                 batchSize: modelParams.GetNumericParam("batchSize" /* BATCH_SIZE */),
                                 epochs: TOTAL_EPOCHS,
                                 shuffle: true,
-                                //NOTE: As of 2020 11 23, tfjs-node logs an extra line per-epoch w/ verbosity 2+. It's redundant with our
-                                //		default per-epoch line, thus the "1". However, it's worth keeping an eye on this for debugging.
-                                verbose: 1,
+                                //NOTE: As of 2020 11 23, tfjs-node logs an extra line per-epoch w/ verbosity 1+. It's redundant with our
+                                //		default per-epoch line, thus the "0". However, it's worth keeping an eye on this for debugging.
+                                verbose: 0,
                                 //NOTE: Validation is only performed if we provide this "validationSplit" arg. It's necessary to track overfit and stuck.
                                 validationSplit: modelParams.GetNumericParam("validationSplit" /* VALIDATION_SPLIT */),
                                 callbacks: {

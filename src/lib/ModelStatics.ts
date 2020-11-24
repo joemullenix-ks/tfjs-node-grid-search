@@ -1,10 +1,10 @@
 'use strict';
 
 
-const TENSOR_FLOW = require('@tensorflow/tfjs-node');
+import * as TENSOR_FLOW from '@tensorflow/tfjs-node';
 
 
-const { FailureMessage } = require('./FailureMessage');
+import { FailureMessage } from './FailureMessage';
 
 
 import * as Types from '../ts_types/common';
