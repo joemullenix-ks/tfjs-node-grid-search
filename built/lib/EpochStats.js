@@ -1,7 +1,8 @@
 'use strict';
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.REPORT_HEADER = exports.EpochStats = void 0;
-var SIMPLE_STATISTICS = require('simple-statistics');
+// import * as SIMPLE_STATISTICS from 'simple-statistics';
+var simple_statistics_1 = require("simple-statistics");
 var Utils_1 = require("./Utils");
 var EpochStats = /** @class */ (function () {
     function EpochStats(_trailDepth) {
@@ -15,6 +16,10 @@ var EpochStats = /** @class */ (function () {
         this._averageLossDelta = 0;
         this._averageValidationAccuracy = 0;
         this._averageValidationLoss = 0;
+        this._lineAccuracy = { m: 0, b: 0 };
+        this._lineLoss = { m: 0, b: 0 };
+        this._lineValidationAccuracy = { m: 0, b: 0 };
+        this._lineValidationLoss = { m: 0, b: 0 };
         console.assert(this._trailDepth > 0);
         console.assert(Math.floor(this._trailDepth) === this._trailDepth);
     }
@@ -75,10 +80,10 @@ var EpochStats = /** @class */ (function () {
         var TRAILING_LOSS_AS_XY = this._samplesLoss.map(function (value, index) { return [index, value]; });
         var TRAILING_VAL_ACC_AS_XY = this._samplesValidationAccuracy.map(function (value, index) { return [index, value]; });
         var TRAILING_VAL_LOSS_AS_XY = this._samplesValidationLoss.map(function (value, index) { return [index, value]; });
-        this._lineAccuracy = SIMPLE_STATISTICS.linearRegression(TRAILING_ACC_AS_XY);
-        this._lineLoss = SIMPLE_STATISTICS.linearRegression(TRAILING_LOSS_AS_XY);
-        this._lineValidationAccuracy = SIMPLE_STATISTICS.linearRegression(TRAILING_VAL_ACC_AS_XY);
-        this._lineValidationLoss = SIMPLE_STATISTICS.linearRegression(TRAILING_VAL_LOSS_AS_XY);
+        this._lineAccuracy = simple_statistics_1.linearRegression(TRAILING_ACC_AS_XY);
+        this._lineLoss = simple_statistics_1.linearRegression(TRAILING_LOSS_AS_XY);
+        this._lineValidationAccuracy = simple_statistics_1.linearRegression(TRAILING_VAL_ACC_AS_XY);
+        this._lineValidationLoss = simple_statistics_1.linearRegression(TRAILING_VAL_LOSS_AS_XY);
         this._averageLossDelta = this._averageLoss - this._averageValidationLoss;
     };
     //vv TODO: These move into a CSVSource interface
@@ -102,7 +107,7 @@ var EpochStats = /** @class */ (function () {
             + 'Δ ' + (this._averageLossDelta < 0 ? '' : ' ') + this._averageLossDelta.toFixed(2) + ', '
             + 'm ' + (this._lineLoss.m < 0 ? '' : ' ') + this._lineLoss.m.toFixed(REPORTING_DIGITS_SLOPE)
             + '(' + (this._lineValidationLoss.m < 0 ? '' : ' ') + this._lineValidationLoss.m.toFixed(REPORTING_DIGITS_SLOPE) + ') '
-            + '|| '
+            + '\\/ '
             + this._averageAccuracy.toFixed(REPORTING_DIGITS_STAT)
             + '(' + this._averageValidationAccuracy.toFixed(REPORTING_DIGITS_STAT) + '), '
             + 'm ' + (this._lineAccuracy.m < 0 ? '' : ' ') + this._lineAccuracy.m.toFixed(REPORTING_DIGITS_SLOPE)
@@ -117,7 +122,7 @@ var REPORT_HEADER = 'EPOCH '
     + 'LOSS(VALIDATION) '
     + 'Δ L-V DELTA, '
     + 'm LOSS-SLOPE(VALIDATION)'
-    + ' || '
+    + ' \\/ '
     + 'ACCURACY(VALIDATION) '
     + 'm ACCURACY-SLOPE(VALIDATION)';
 exports.REPORT_HEADER = REPORT_HEADER;

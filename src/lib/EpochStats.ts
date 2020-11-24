@@ -1,10 +1,15 @@
 'use strict';
 
 
-const SIMPLE_STATISTICS = require('simple-statistics');
+// import * as SIMPLE_STATISTICS from 'simple-statistics';
+import { linearRegression } from 'simple-statistics';
 
 
 import { Utils } from './Utils';
+
+
+//NOTE: This depends on simple-statistics(tm), which doesn't use a type for its basic line object.
+type SSLine = {m: number, b: number}; // slope and intercept
 
 
 class EpochStats {
@@ -18,12 +23,10 @@ class EpochStats {
 	private _averageValidationAccuracy: number = 0;
 	private _averageValidationLoss: number = 0;
 
-//NOTE: These come from simple-statistics(tm), so we'll have to find their types, or define an override.
-//[[TF ANY]]
-	private _lineAccuracy: any;
-	private _lineLoss: any;
-	private _lineValidationAccuracy: any;
-	private _lineValidationLoss: any;
+	private _lineAccuracy: SSLine = {m: 0, b: 0};
+	private _lineLoss: SSLine = {m: 0, b: 0};
+	private _lineValidationAccuracy: SSLine = {m: 0, b: 0};
+	private _lineValidationLoss: SSLine = {m: 0, b: 0};
 
 	constructor(private _trailDepth: number) {
 		console.assert(this._trailDepth > 0);
@@ -60,10 +63,10 @@ class EpochStats {
 		const TRAILING_VAL_ACC_AS_XY	= this._samplesValidationAccuracy.map((value, index) => {return [index, value];});
 		const TRAILING_VAL_LOSS_AS_XY	= this._samplesValidationLoss.map((value, index) => {return [index, value];});
 
-		this._lineAccuracy				= SIMPLE_STATISTICS.linearRegression(TRAILING_ACC_AS_XY);
-		this._lineLoss					= SIMPLE_STATISTICS.linearRegression(TRAILING_LOSS_AS_XY);
-		this._lineValidationAccuracy	= SIMPLE_STATISTICS.linearRegression(TRAILING_VAL_ACC_AS_XY);
-		this._lineValidationLoss		= SIMPLE_STATISTICS.linearRegression(TRAILING_VAL_LOSS_AS_XY);
+		this._lineAccuracy				= linearRegression(TRAILING_ACC_AS_XY);
+		this._lineLoss					= linearRegression(TRAILING_LOSS_AS_XY);
+		this._lineValidationAccuracy	= linearRegression(TRAILING_VAL_ACC_AS_XY);
+		this._lineValidationLoss		= linearRegression(TRAILING_VAL_LOSS_AS_XY);
 
 		this._averageLossDelta = this._averageLoss - this._averageValidationLoss;
 	}
@@ -92,7 +95,7 @@ class EpochStats {
 			+ 'Δ ' + (this._averageLossDelta < 0 ? '' : ' ' ) + this._averageLossDelta.toFixed(2) + ', '
 			+ 'm ' + (this._lineLoss.m < 0 ? '' : ' ' ) + this._lineLoss.m.toFixed(REPORTING_DIGITS_SLOPE)
 			+ '(' + (this._lineValidationLoss.m < 0 ? '' : ' ' ) + this._lineValidationLoss.m.toFixed(REPORTING_DIGITS_SLOPE) + ') '
-			+ '|| '
+			+ '\\/ '
 			+ this._averageAccuracy.toFixed(REPORTING_DIGITS_STAT)
 			+ '(' + this._averageValidationAccuracy.toFixed(REPORTING_DIGITS_STAT) + '), '
 			+ 'm ' + (this._lineAccuracy.m < 0 ? '' : ' ' ) + this._lineAccuracy.m.toFixed(REPORTING_DIGITS_SLOPE)
@@ -108,7 +111,7 @@ const REPORT_HEADER =  'EPOCH '
 						+ 'LOSS(VALIDATION) '
 						+ 'Δ L-V DELTA, '
 						+ 'm LOSS-SLOPE(VALIDATION)'
-						+ ' || '
+						+ ' \\/ '
 						+ 'ACCURACY(VALIDATION) '
 						+ 'm ACCURACY-SLOPE(VALIDATION)';
 
