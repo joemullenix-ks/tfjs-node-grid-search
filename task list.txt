@@ -1,4 +1,4 @@
-2020 11 17
+2020 11 24
 
 
 BUGS
@@ -11,16 +11,22 @@ This isn't catching the 0.3 cases, but it should, since bounds are inclusive:
 
 TODO
 TS conversion:
-	- full require() pass
-	- full 'ANY' pass
-	- full 'AS' pass
+	~ full require() pass
+		~ ONE EXCEPTION: The 'slash' lib wants extra tech for ESM; shelved as low-pri
+
 	- export a completely minified, bundled, whatever'd NPM-ready package
+
+	- project upgrades
+		- Lint
+		- TS
+		- Travis(?)
+		- JSDOC
+		- public Git
+		- NPM
 
 Break out a core object in (or from) ModelParams, with the literal TF types for each param; drop the dynamic list
 
 Write the CSVSource interface // This may be much better held until after TS.
-
-Project upgrades; Lint, TS, Travis(?), JSDOC, public Git, NPM
 
 Expose more behavior via optional callbacks
 	Custom models
