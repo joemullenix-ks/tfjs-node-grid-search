@@ -61,7 +61,8 @@ var UTILS = {
         queue.shift();
     },
     ValidateTextForCSV: function (x) {
-        // allows all input types (that's the point; we cast to string, just as a CSV-write would)
+        //NOTE: Add whichever (just not TS any) input type. That's the point, here. We're looking at the argument
+        //		after it's been cast to string, to ensure we have cleanly CSV-able information for file write().
         var AS_STRING = x.toString();
         if (AS_STRING.indexOf(',') === -1 && AS_STRING.indexOf('\n') === -1) {
             return;

@@ -20,15 +20,15 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ModelStatics = void 0;
-var TENSOR_FLOW = require('@tensorflow/tfjs-node');
-var FailureMessage = require('./FailureMessage').FailureMessage;
+var TENSOR_FLOW = __importStar(require("@tensorflow/tfjs-node"));
+var FailureMessage_1 = require("./FailureMessage");
 var Axis = __importStar(require("./Axis"));
 var ModelStatics = /** @class */ (function () {
     function ModelStatics(_userStatics) {
         // validate the user-supplied static model params, i.e. those params that never change during grid search
         this._userStatics = _userStatics;
         this._staticParams = {};
-        var FAILURE_MESSAGE = new FailureMessage();
+        var FAILURE_MESSAGE = new FailureMessage_1.FailureMessage();
         for (var k in this._userStatics) {
             if (!Axis.Axis.AttemptValidateParameter(k, this._userStatics[k], FAILURE_MESSAGE)) {
                 // fatal, so that users don't kick off a (potentially very long) grid search with a bad model config

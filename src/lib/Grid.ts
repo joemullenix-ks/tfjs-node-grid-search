@@ -1,9 +1,11 @@
 'use strict';
 
 
-const TENSOR_FLOW = require('@tensorflow/tfjs-node');
-//NOTE: Now that this lib is available, upgrade to ESM import, and continue the conversion.
-// import * as TENSOR_FLOW from '@tensorflow/tfjs-node';
+//NOTE: This variant of the lib (tfjs-node) is not yet part of a proper release (as of 2.7.0)!
+//		See https://github.com/tensorflow/tfjs/issues/4052 for the solution, which involves manually
+//		copying a .DLL.
+import * as TENSOR_FLOW from '@tensorflow/tfjs-node';
+import { ActivationIdentifier } from '@tensorflow/tfjs-layers/dist/keras_format/activation_config';
 
 
 import * as Types from '../ts_types/Grid';
@@ -72,7 +74,7 @@ class Grid {
 			TF_MODEL.add(TENSOR_FLOW.layers.dense(	{
 														inputShape: [TOTAL_INPUT_NEURONS],
 														units: TOTAL_OUTPUT_NEURONS,
-														activation: modelParams.GetTextParam('activationOutput'), //HARD-CODER; TODO: Add this as a managed Axis type, or define it ... somewhere.
+														activation: modelParams.GetTextParam('activationOutput') as ActivationIdentifier, //HARD-CODER; TODO: Add this key as a managed Axis.
 														useBias: true,
 														kernelInitializer: this._modelStatics.GenerateInitializerKernel(),
 														biasInitializer: this._modelStatics.GenerateInitializerBias()
@@ -83,7 +85,7 @@ class Grid {
 			TF_MODEL.add(TENSOR_FLOW.layers.dense(	{
 														inputShape: [TOTAL_INPUT_NEURONS],
 														units: modelParams.GetNumericParam(Axis.Names.NEURONS),
-														activation: modelParams.GetTextParam('activationInput'), //HARD-CODER; TODO: Add this as a managed Axis.
+														activation: modelParams.GetTextParam('activationInput') as ActivationIdentifier, //HARD-CODER; TODO: Add this key as a managed Axis.
 														useBias: true,
 														kernelInitializer: this._modelStatics.GenerateInitializerKernel(),
 														biasInitializer: this._modelStatics.GenerateInitializerBias()
@@ -93,7 +95,7 @@ class Grid {
 			for (let i = 1; i < TOTAL_HIDDEN_LAYERS; ++i) {
 				TF_MODEL.add(TENSOR_FLOW.layers.dense(	{
 															units: modelParams.GetNumericParam(Axis.Names.NEURONS),
-															activation: modelParams.GetTextParam('activationHidden'), //HARD-CODER; TODO: Add this as a managed Axis.
+															activation: modelParams.GetTextParam('activationHidden') as ActivationIdentifier, //HARD-CODER; TODO: Add this key as a managed Axis.
 															useBias: true,
 															kernelInitializer: this._modelStatics.GenerateInitializerKernel(),
 															biasInitializer: this._modelStatics.GenerateInitializerBias()
@@ -102,7 +104,7 @@ class Grid {
 
 			TF_MODEL.add(TENSOR_FLOW.layers.dense(	{
 														units: TOTAL_OUTPUT_NEURONS,
-														activation: modelParams.GetTextParam('activationOutput'), //HARD-CODER; TODO: Add this as a managed Axis.
+														activation: modelParams.GetTextParam('activationOutput') as ActivationIdentifier, //HARD-CODER; TODO: Add this key as a managed Axis.
 														useBias: true,
 														biasInitializer: this._modelStatics.GenerateInitializerBias()
 													}));
@@ -229,7 +231,7 @@ class Grid {
 	}
 
 	ResolveModelDefinition() {
-//NOTE: TODO: Not entirely happy with this. It feels like access breaking; reaching in via callback.
+//NOTE: TODO: I'm not entirely happy with this. It feels like access breaking, to reach in via callback.
 //			  It would be better to just produce a list of axis keys. That's all we want, anyway.
 //			  ...will leave this pending the completion of the supported axes. There may be more
 //			  to consider when it comes to complex axes like activator-schedules.
@@ -241,11 +243,19 @@ class Grid {
 	}
 
 //TODO: This model type might be too strict. Consider the lower-level TF LayersModel.
-	TestModel(model: typeof TENSOR_FLOW.Sequential, modelParams: ModelParams, duration: number) {
+	TestModel(model: TENSOR_FLOW.Sequential, modelParams: ModelParams, duration: number) {
 		console.assert(model.built);
 		console.assert(duration >= 0);
 
 		console.log('Testing...');
+
+//NOTE: This rule (limitation) is for the arraySync() done on PREDICTIONS_TENSOR.
+//		"model.predict()" is dual mode. It outputs an array of Tensors when given an array of Tensors
+//		as input. Our evaluation and scoring logic is not yet ready to support multiple ins/outs.
+//TODO: ...but it will.
+		if (!(this._sessionData.proofInputsTensor instanceof TENSOR_FLOW.Tensor)) {
+			throw new Error('Invalid proof inputs; multi-input models are not yet supported.');
+		}
 
 		// run the unseen data through this trained model
 		const PREDICTIONS_TENSOR = model.predict(	this._sessionData.proofInputsTensor,
@@ -253,10 +263,10 @@ class Grid {
 														batchSize: modelParams.GetNumericParam(Axis.Names.BATCH_SIZE),
 //NOTE: 'verbose' is not implemented as of TF 2.7.0. The documentation is wrong, but it's noted in the lib (see model.ts).
 														verbose: false
-													});
+													}) as TENSOR_FLOW.Tensor;
 
 		// convert this TF Tensor into array form, for human-friendly analysis
-		const PREDICTIONS = PREDICTIONS_TENSOR.arraySync();
+		const PREDICTIONS: Types.TFNestedArray = PREDICTIONS_TENSOR.arraySync();
 
 		// pull the unstandardized proof cases (again, for the human-friendly report)
 
@@ -302,7 +312,7 @@ class Grid {
 	}
 
 //TODO: This model type might be too strict. Consider the lower-level TF LayersModel.
-	async TrainModel(model: typeof TENSOR_FLOW.Sequential, modelParams: ModelParams) {
+	async TrainModel(model: TENSOR_FLOW.Sequential, modelParams: ModelParams) {
 		console.assert(model.built);
 
 		this.ResetEpochStats()
@@ -335,9 +345,9 @@ class Grid {
 							batchSize: modelParams.GetNumericParam(Axis.Names.BATCH_SIZE),
 							epochs: TOTAL_EPOCHS,
 							shuffle: true,
-//NOTE: As of 2020 11 23, tfjs-node logs an extra line per-epoch w/ verbosity 2+. It's redundant with our
-//		default per-epoch line, thus the "1". However, it's worth keeping an eye on this for debugging.
-							verbose: 1,
+//NOTE: As of 2020 11 23, tfjs-node logs an extra line per-epoch w/ verbosity 1+. It's redundant with our
+//		default per-epoch line, thus the "0". However, it's worth keeping an eye on this for debugging.
+							verbose: 0,
 //NOTE: Validation is only performed if we provide this "validationSplit" arg. It's necessary to track overfit and stuck.
 							validationSplit: modelParams.GetNumericParam(Axis.Names.VALIDATION_SPLIT),
 							callbacks:
@@ -351,13 +361,12 @@ class Grid {
 // 								onBatchEnd: (batch, logs) => { console.log('onBatchEnd', batch, logs); },
 // 								onYield: (epoch, batch, logs) => { console.log('onYield', epoch, batch, logs); }
 
-//[[TF ANY]]
-								onBatchEnd: (batch: any, logs: any) => {
-//TODO: This is essentially duped by the Epoch handler (just below).
+								onBatchEnd: (batch, logs) => {
 									if (!this._callbackReportBatch) {
 										return;
 									}
 
+//TODO: This is essentially duped by the Epoch handler (just below).
 									const TIME_NOW = Date.now();
 
 									const DURATION_BATCH = TIME_NOW - this._timeStartBatch;
@@ -366,10 +375,10 @@ class Grid {
 
 									this._callbackReportBatch(DURATION_BATCH, batch, logs);
 								},
-//[[TF ANY]]
-								onEpochEnd: (epoch: number, logs: any) => {
-									this._epochStats.Update(epoch, logs);
+								onEpochEnd: (epoch: number, logs) => {
+									this._epochStats.Update(epoch, logs as TENSOR_FLOW.Logs);
 
+//TODO: This is essentially duped by the Batch handler (just above).
 									const TIME_NOW = Date.now();
 
 									const DURATION_EPOCH = TIME_NOW - this._timeStartEpoch;

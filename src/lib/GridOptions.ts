@@ -136,11 +136,6 @@ class GridOptions {
 		this._options = userOptions;
 	}
 
-/*keep; for a bit
-//TODO: This is technically not TensorFlow's "any", but it comes from there. See the note at the top about future fixes.
-//[[TF ANY]]
-	GetOption(key: string): boolean | number | string | undefined  {
-*/
 	GetOption(key: string)  {
 		switch (key) {
 			case 'epochStatsDepth':

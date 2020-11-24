@@ -56,7 +56,10 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Grid = void 0;
-var TENSOR_FLOW = require('@tensorflow/tfjs-node');
+//NOTE: This variant of the lib (tfjs-node) is not yet part of a proper release (as of 2.7.0)!
+//		See https://github.com/tensorflow/tfjs/issues/4052 for the solution, which involves manually
+//		copying a .DLL.
+var TENSOR_FLOW = __importStar(require("@tensorflow/tfjs-node"));
 var Axis = __importStar(require("./Axis"));
 var AxisSetTraverser_1 = require("./AxisSetTraverser");
 var EpochStats = __importStar(require("./EpochStats"));
@@ -233,7 +236,7 @@ var Grid = /** @class */ (function () {
         });
     };
     Grid.prototype.ResolveModelDefinition = function () {
-        //NOTE: TODO: Not entirely happy with this. It feels like access breaking; reaching in via callback.
+        //NOTE: TODO: I'm not entirely happy with this. It feels like access breaking, to reach in via callback.
         //			  It would be better to just produce a list of axis keys. That's all we want, anyway.
         //			  ...will leave this pending the completion of the supported axes. There may be more
         //			  to consider when it comes to complex axes like activator-schedules.
@@ -248,6 +251,13 @@ var Grid = /** @class */ (function () {
         console.assert(model.built);
         console.assert(duration >= 0);
         console.log('Testing...');
+        //NOTE: This rule (limitation) is for the arraySync() done on PREDICTIONS_TENSOR.
+        //		"model.predict()" is dual mode. It outputs an array of Tensors when given an array of Tensors
+        //		as input. Our evaluation and scoring logic is not yet ready to support multiple ins/outs.
+        //TODO: ...but it will.
+        if (!(this._sessionData.proofInputsTensor instanceof TENSOR_FLOW.Tensor)) {
+            throw new Error('Invalid proof inputs; multi-input models are not yet supported.');
+        }
         // run the unseen data through this trained model
         var PREDICTIONS_TENSOR = model.predict(this._sessionData.proofInputsTensor, {
             batchSize: modelParams.GetNumericParam("batchSize" /* BATCH_SIZE */),
@@ -310,9 +320,9 @@ var Grid = /** @class */ (function () {
                                 batchSize: modelParams.GetNumericParam("batchSize" /* BATCH_SIZE */),
                                 epochs: TOTAL_EPOCHS,
                                 shuffle: true,
-                                //NOTE: As of 2020 11 23, tfjs-node logs an extra line per-epoch w/ verbosity 2+. It's redundant with our
-                                //		default per-epoch line, thus the "1". However, it's worth keeping an eye on this for debugging.
-                                verbose: 1,
+                                //NOTE: As of 2020 11 23, tfjs-node logs an extra line per-epoch w/ verbosity 1+. It's redundant with our
+                                //		default per-epoch line, thus the "0". However, it's worth keeping an eye on this for debugging.
+                                verbose: 0,
                                 //NOTE: Validation is only performed if we provide this "validationSplit" arg. It's necessary to track overfit and stuck.
                                 validationSplit: modelParams.GetNumericParam("validationSplit" /* VALIDATION_SPLIT */),
                                 callbacks: {
@@ -324,20 +334,19 @@ var Grid = /** @class */ (function () {
                                     // 								onBatchBegin: (batch, logs) => { console.log('onBatchBegin', batch, logs); },
                                     // 								onBatchEnd: (batch, logs) => { console.log('onBatchEnd', batch, logs); },
                                     // 								onYield: (epoch, batch, logs) => { console.log('onYield', epoch, batch, logs); }
-                                    //[[TF ANY]]
                                     onBatchEnd: function (batch, logs) {
-                                        //TODO: This is essentially duped by the Epoch handler (just below).
                                         if (!_this._callbackReportBatch) {
                                             return;
                                         }
+                                        //TODO: This is essentially duped by the Epoch handler (just below).
                                         var TIME_NOW = Date.now();
                                         var DURATION_BATCH = TIME_NOW - _this._timeStartBatch;
                                         _this._timeStartBatch = TIME_NOW;
                                         _this._callbackReportBatch(DURATION_BATCH, batch, logs);
                                     },
-                                    //[[TF ANY]]
                                     onEpochEnd: function (epoch, logs) {
                                         _this._epochStats.Update(epoch, logs);
+                                        //TODO: This is essentially duped by the Batch handler (just above).
                                         var TIME_NOW = Date.now();
                                         var DURATION_EPOCH = TIME_NOW - _this._timeStartEpoch;
                                         _this._timeStartEpoch = TIME_NOW;

@@ -1,10 +1,10 @@
 'use strict';
 
 
+import * as TENSOR_FLOW from '@tensorflow/tfjs-node';
+
+
 import { TFNestedArray } from '../ts_types/Grid';
-
-
-const TENSOR_FLOW = require('@tensorflow/tfjs-node');
 
 
 //TODO: PERF: This object wastes memory, potentially a lot of it. It carries duplicates of the inputs, as both TF tensors
@@ -22,17 +22,14 @@ const TENSOR_FLOW = require('@tensorflow/tfjs-node');
 class SessionData {
 	_rawInputsProof: TFNestedArray;
 	_rawInputsTraining: TFNestedArray;
-//[[TF ANY]]
-	_proofInputsTensor: any;
+	_proofInputsTensor: TENSOR_FLOW.Tensor;
 	_proofTargets: TFNestedArray;
-//[[TF ANY]]
-	_proofTargetsTensor: any;
+	_proofTargetsTensor: TENSOR_FLOW.Tensor;
 	_totalInputNeurons: number = 0;
 	_totalOutputNeurons: number = 0;
 	_totalTrainingCases: number = 0;
-//[[TF ANY]]
-	_trainingInputsTensor: any;
-	_trainingTargetsTensor: any;
+	_trainingInputsTensor: TENSOR_FLOW.Tensor;
+	_trainingTargetsTensor: TENSOR_FLOW.Tensor;
 
 	constructor(proofPercentage: number,
 				rawInputs: TFNestedArray,
@@ -91,20 +88,13 @@ class SessionData {
 			throw new Error('The provided proofPercentage is too high. 100% of cases moved from the training set.');
 		}
 
-//NOTE: This is NOT TensorFlow's any, here! I can't get TS to accept operations on these, yet.
-//		For some reason it sees TFInputsArray as including undefined; makes no sense.
-//TODO: First place to look is at the FETCH_DATA() values coming in. I think that's still untyped.
-//
-//[[TF ANY]]
-		// const PROOF_INPUTS: TFInputsArray = [];
-		// const PROOF_TARGETS: TFInputsArray = [];
-		const PROOF_INPUTS: Array<any> = [];
-		const PROOF_TARGETS: Array<any> = [];
+		const PROOF_INPUTS: TFNestedArray = [];
+		const PROOF_TARGETS: TFNestedArray = [];
 
 		// we also carry a copy of the proof subset, in its original, unstandardized form
 
-//NOTE: Cases are migrated from _rawInputsTraining, so that afterward the standardized and raw collections match,
-//		i.e. both of these are true:
+//NOTE: Cases are migrated from _rawInputsTraining, so that afterward the standardized and raw collections
+//		match, i.e. both of these are true:
 //			PROOF_INPUTS.length === _rawInputsProof.length
 //			rawInputs.length === _rawInputsTraining.length
 
@@ -380,36 +370,6 @@ function StandardizeInputs(inputData: TFNestedArray) {
 	RECURSIVELY_STANDARDIZE_FEATURES(inputData);
 }
 
-function UnstandardizeInputs(inputData: TFNestedArray) {
-throw new Error('KEEP: but this needs a rewrite before it can be used; see the recursive digs in StandardizeInputs()')
-
-/*
-//NOTE: TODO: This format assumption is far too limiting. That's why standardization will moved into an optional callback.
-	console.assert(Array.isArray(inputData));
-	console.assert(inputData.length > 0);
-	console.assert(Array.isArray(inputData[0]));
-	console.assert(inputData[0].length > 0);
-
-	for (let i = 0; i < inputData.length; ++i) {
-		const CASE = inputData[i];
-
-		// sanity check these
-		CASE.forEach((element, b, c) => {
-			console.assert(Math.abs(element - PROOF_INPUTS[i][b]) < 0.001); // epsilon
-		});
-
-		for (let x = 0; x < CASE.length; ++x) {
-			if (STANDARDIZATION_PARAMS[x].stdev !== 0) {
-				CASE[x] *= STANDARDIZATION_PARAMS[x].stdev;
-			}
-
-			CASE[x] += STANDARDIZATION_PARAMS[x].mean;
-		}
-	}
-
-	return inputData;
-*/
-}
 //^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 //^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 

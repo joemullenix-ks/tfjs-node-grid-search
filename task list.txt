@@ -12,8 +12,11 @@ This isn't catching the 0.3 cases, but it should, since bounds are inclusive:
 TODO
 TS conversion:
 	- full require() pass
-	- full 'ANY' and 'AS' pass
+	- full 'ANY' pass
+	- full 'AS' pass
 	- export a completely minified, bundled, whatever'd NPM-ready package
+
+Break out a core object in (or from) ModelParams, with the literal TF types for each param; drop the dynamic list
 
 Write the CSVSource interface // This may be much better held until after TS.
 

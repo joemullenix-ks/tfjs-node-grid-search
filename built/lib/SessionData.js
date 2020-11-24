@@ -1,7 +1,26 @@
 'use strict';
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.SessionData = void 0;
-var TENSOR_FLOW = require('@tensorflow/tfjs-node');
+var TENSOR_FLOW = __importStar(require("@tensorflow/tfjs-node"));
 //TODO: PERF: This object wastes memory, potentially a lot of it. It carries duplicates of the inputs, as both TF tensors
 //			  and raw arrays.
 //			  In some usage cases the array versions aren't required (e.g. the user does not use standardization). Further,
@@ -56,18 +75,11 @@ var SessionData = /** @class */ (function () {
         if (PROOF_COUNT >= TOTAL_CASES) {
             throw new Error('The provided proofPercentage is too high. 100% of cases moved from the training set.');
         }
-        //NOTE: This is NOT TensorFlow's any, here! I can't get TS to accept operations on these, yet.
-        //		For some reason it sees TFInputsArray as including undefined; makes no sense.
-        //TODO: First place to look is at the FETCH_DATA() values coming in. I think that's still untyped.
-        //
-        //[[TF ANY]]
-        // const PROOF_INPUTS: TFInputsArray = [];
-        // const PROOF_TARGETS: TFInputsArray = [];
         var PROOF_INPUTS = [];
         var PROOF_TARGETS = [];
         // we also carry a copy of the proof subset, in its original, unstandardized form
-        //NOTE: Cases are migrated from _rawInputsTraining, so that afterward the standardized and raw collections match,
-        //		i.e. both of these are true:
+        //NOTE: Cases are migrated from _rawInputsTraining, so that afterward the standardized and raw collections
+        //		match, i.e. both of these are true:
         //			PROOF_INPUTS.length === _rawInputsProof.length
         //			rawInputs.length === _rawInputsTraining.length
         this._rawInputsProof = [];
@@ -296,35 +308,6 @@ function StandardizeInputs(inputData) {
         });
     };
     RECURSIVELY_STANDARDIZE_FEATURES(inputData);
-}
-function UnstandardizeInputs(inputData) {
-    throw new Error('KEEP: but this needs a rewrite before it can be used; see the recursive digs in StandardizeInputs()');
-    /*
-    //NOTE: TODO: This format assumption is far too limiting. That's why standardization will moved into an optional callback.
-        console.assert(Array.isArray(inputData));
-        console.assert(inputData.length > 0);
-        console.assert(Array.isArray(inputData[0]));
-        console.assert(inputData[0].length > 0);
-    
-        for (let i = 0; i < inputData.length; ++i) {
-            const CASE = inputData[i];
-    
-            // sanity check these
-            CASE.forEach((element, b, c) => {
-                console.assert(Math.abs(element - PROOF_INPUTS[i][b]) < 0.001); // epsilon
-            });
-    
-            for (let x = 0; x < CASE.length; ++x) {
-                if (STANDARDIZATION_PARAMS[x].stdev !== 0) {
-                    CASE[x] *= STANDARDIZATION_PARAMS[x].stdev;
-                }
-    
-                CASE[x] += STANDARDIZATION_PARAMS[x].mean;
-            }
-        }
-    
-        return inputData;
-    */
 }
 //^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 //^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

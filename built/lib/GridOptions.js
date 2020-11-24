@@ -99,11 +99,6 @@ var GridOptions = /** @class */ (function () {
         // now save this processed object; NOTE: It's not a private c'tor member because it's optional
         this._options = userOptions;
     }
-    /*keep; for a bit
-    //TODO: This is technically not TensorFlow's "any", but it comes from there. See the note at the top about future fixes.
-    //[[TF ANY]]
-        GetOption(key: string): boolean | number | string | undefined  {
-    */
     GridOptions.prototype.GetOption = function (key) {
         switch (key) {
             case 'epochStatsDepth':
