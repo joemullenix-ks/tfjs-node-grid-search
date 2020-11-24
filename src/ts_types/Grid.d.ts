@@ -22,12 +22,10 @@ export type TFNestedArray = ArrayOrder1 | ArrayOrder2 | ArrayOrder3 | ArrayOrder
 export type CallbackEvaluatePrediction = (	target: TFNestedArray,
 											prediction: TFNestedArray) => PredictionEvaluation;
 
-//[[TF ANY]]
 export type CallbackReportBatch = (	duration: number,
 									batch,
 									logs) => void;
 
-//[[TF ANY]]
 export type CallbackReportEpoch = (	duration: number,
 									epoch: number,
 									logs,

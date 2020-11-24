@@ -75,18 +75,11 @@ var SessionData = /** @class */ (function () {
         if (PROOF_COUNT >= TOTAL_CASES) {
             throw new Error('The provided proofPercentage is too high. 100% of cases moved from the training set.');
         }
-        //NOTE: This is NOT TensorFlow's any, here! I can't get TS to accept operations on these, yet.
-        //		For some reason it sees TFInputsArray as including undefined; makes no sense.
-        //TODO: First place to look is at the FETCH_DATA() values coming in. I think that's still untyped.
-        //
-        //[[TF ANY]]
-        // const PROOF_INPUTS: TFInputsArray = [];
-        // const PROOF_TARGETS: TFInputsArray = [];
         var PROOF_INPUTS = [];
         var PROOF_TARGETS = [];
         // we also carry a copy of the proof subset, in its original, unstandardized form
-        //NOTE: Cases are migrated from _rawInputsTraining, so that afterward the standardized and raw collections match,
-        //		i.e. both of these are true:
+        //NOTE: Cases are migrated from _rawInputsTraining, so that afterward the standardized and raw collections
+        //		match, i.e. both of these are true:
         //			PROOF_INPUTS.length === _rawInputsProof.length
         //			rawInputs.length === _rawInputsTraining.length
         this._rawInputsProof = [];

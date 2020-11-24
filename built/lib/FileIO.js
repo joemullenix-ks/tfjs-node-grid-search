@@ -86,16 +86,9 @@ var FILE_IO = {
                     _b.trys.push([1, 3, , 4]);
                     _a = result;
                     return [4 /*yield*/, FS_PROMISES.writeFile(WRITE_PATH, dataToWrite, 'utf8', 
-                        //NOTE: This is nether TF nor any, technically, but it still needs to be confirmed. I picked "Error" out of
-                        //		the wind.
-                        //TODO: Come to think of it, I don't even believe this ever tripped, during testing. Seems like the
-                        //		catch block was the only point-of-failure ... so confirm!
-                        //
-                        //[[TF ANY]]
+                        //NOTE: I picked "Error" here as the safest bet. This never tripped during testing. Even w/o the try/catch.
+                        //		So I'm guessing it isn't actually used by the 'promises' variant of node's filesystem lib.
                         function (err) {
-                            //NOTE: It seems that this doesn't get called, at least not for successful writes. The outer try/catch works,
-                            //		however. It catches bad-path and bad-content. Maybe it precludes this? Unsure, but it's not hurting
-                            //		anything, so it stays.
                             if (err) {
                                 throw err;
                             }
