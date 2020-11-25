@@ -1,6 +1,6 @@
 {
-  "name": "tfjsgridder",
-  "version": "1.0.0",
+  "name": "tfjs-node-grid-search",
+  "version": "0.0.0",
   "description": "",
   "main": "all.js",
   "directories": {
@@ -17,12 +17,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/joemullenix-ks/tfjsGridder.git"
+    "url": "git+https://github.com/joemullenix-ks/tfjs-node-grid-search.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/joemullenix-ks/tfjsGridder/issues"
+    "url": "https://github.com/joemullenix-ks/tfjs-node-grid-search/issues"
   },
-  "homepage": "https://github.com/joemullenix-ks/tfjsGridder#readme"
+  "homepage": "https://github.com/joemullenix-ks/tfjs-node-grid-search#readme"
 }
