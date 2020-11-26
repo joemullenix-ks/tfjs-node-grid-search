@@ -40,8 +40,7 @@ const FILE_IO = {
 
 	WriteResultsFile: async (	fileName: string,
 								directory: string,
-								dataToWrite: string,
-								result: FileIOResult) => {
+								dataToWrite: string) => {
 		console.assert(fileName !== '');
 
 		const WRITE_PATH = PATH_LIB.join(directory, fileName);
@@ -54,19 +53,10 @@ const FILE_IO = {
 		}
 
 		try {
-			result.data = await FS_PROMISES.writeFile(
+			await FS_PROMISES.writeFile(
 							WRITE_PATH,
 							dataToWrite,
-							'utf8',
-//NOTE: I picked "Error" here as the safest bet. This never tripped during testing. Even w/o the try/catch.
-//		So I'm guessing it isn't actually used by the 'promises' variant of node's filesystem lib.
-							(err: Error) => {
-								if (err) {
-									throw err;
-								}
-
-								console.log('file written');
-							});
+							'utf8');
 
 			return;
 		}

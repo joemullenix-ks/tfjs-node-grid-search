@@ -1,6 +1,26 @@
 'use strict';
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.GridOptions = void 0;
+var FS = __importStar(require("fs"));
 var Utils_1 = require("./Utils");
 //NOTE: TODO: Not entirely thrilled with this class. It has a lot in common with ModelStatics, but the two
 //			  are implemented very differently. Part of that is due to ModelStatics's dependence on baked-in
@@ -71,7 +91,6 @@ var GridOptions = /** @class */ (function () {
                         }
                         else {
                             // confirm this is a valid path of an existing directory (not a file)
-                            var FS = require('fs');
                             //TODO: Move these to FileIO (or FileIOSync).
                             //TODO: (low-pri) Have that lib create the directory, if it doesn't exist ... maybe.
                             if (!FS.existsSync(OPTION)) {

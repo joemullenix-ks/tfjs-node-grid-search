@@ -64,7 +64,6 @@ var Axis = __importStar(require("./Axis"));
 var AxisSetTraverser_1 = require("./AxisSetTraverser");
 var EpochStats = __importStar(require("./EpochStats"));
 var FileIO_1 = require("./FileIO");
-var FileIOResult_1 = require("./FileIOResult");
 var GridOptions_1 = require("./GridOptions");
 var GridRunStats_1 = require("./GridRunStats");
 var IterationResult_1 = require("./IterationResult");
@@ -159,7 +158,7 @@ var Grid = /** @class */ (function () {
     };
     Grid.prototype.Run = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var GRID_RUN_STATS, TOTAL_ITERATIONS, TOTAL_REPETITIONS, TOTAL_PASSES, pass, i, DYNAMIC_PARAMS, STATIC_PARAMS, MODEL_PARAMS, r, MODEL, ITERATION_DURATION, MODEL_TEST_STATS, ITERATION_RESULT, GRID_TIME_END, GRID_DURATION, WRITE_RESULTS_OPTION, FILE_RESULT, FILENAME;
+            var GRID_RUN_STATS, TOTAL_ITERATIONS, TOTAL_REPETITIONS, TOTAL_PASSES, pass, i, DYNAMIC_PARAMS, STATIC_PARAMS, MODEL_PARAMS, r, MODEL, ITERATION_DURATION, MODEL_TEST_STATS, ITERATION_RESULT, GRID_TIME_END, GRID_DURATION, WRITE_RESULTS_OPTION, FILENAME;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -216,9 +215,9 @@ var Grid = /** @class */ (function () {
                         console.log(GRID_RUN_STATS.WriteReport(true));
                         WRITE_RESULTS_OPTION = this._gridOptions.GetOption('writeResultsToDirectory');
                         if (!(typeof WRITE_RESULTS_OPTION === 'string')) return [3 /*break*/, 9];
-                        FILE_RESULT = new FileIOResult_1.FileIOResult();
                         FILENAME = FileIO_1.FileIO.ProduceResultsFilename();
-                        return [4 /*yield*/, FileIO_1.FileIO.WriteResultsFile(FILENAME, WRITE_RESULTS_OPTION, GRID_RUN_STATS.WriteCSV(), FILE_RESULT)];
+                        return [4 /*yield*/, FileIO_1.FileIO.WriteResultsFile(FILENAME, WRITE_RESULTS_OPTION, GRID_RUN_STATS.WriteCSV() /*,
+                            FILE_RESULT*/)];
                     case 8:
                         _a.sent();
                         //TODO: Look into Node's os/platform library. Gotta be a way to pull the appropriate slashes.
