@@ -1,4 +1,23 @@
 'use strict';
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -37,8 +56,13 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.FileIO = void 0;
-var FS_PROMISES = require('fs/promises');
-var PATH_LIB = require('path');
+var FS_PROMISES = __importStar(require("fs/promises"));
+var PATH_LIB = __importStar(require("path"));
+//NOTE: Not yet ready to move this one to ESM, only because I don't want to bring in added
+//		module variability until the bundled package is ready. Stay tuned.
+//
+//		"This module can only be referenced with ECMAScript imports/exports by turning on
+//		the 'esModuleInterop' flag and referencing its default export.ts(2497)"
 var SLASH = require('slash');
 var FILE_IO = {
     ProduceResultsFilename: function () {
@@ -69,10 +93,11 @@ var FILE_IO = {
             }
         });
     }); },
-    WriteResultsFile: function (fileName, directory, dataToWrite, result) { return __awaiter(void 0, void 0, void 0, function () {
-        var WRITE_PATH, _a, err_2;
-        return __generator(this, function (_b) {
-            switch (_b.label) {
+    WriteResultsFile: function (fileName, directory, dataToWrite /*,
+    result: FileIOResult*/) { return __awaiter(void 0, void 0, void 0, function () {
+        var WRITE_PATH, err_2;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
                 case 0:
                     console.assert(fileName !== '');
                     WRITE_PATH = PATH_LIB.join(directory, fileName);
@@ -81,24 +106,24 @@ var FILE_IO = {
                     if (dataToWrite === '') {
                         console.warn('Writing empty file: ' + WRITE_PATH);
                     }
-                    _b.label = 1;
+                    _a.label = 1;
                 case 1:
-                    _b.trys.push([1, 3, , 4]);
-                    _a = result;
-                    return [4 /*yield*/, FS_PROMISES.writeFile(WRITE_PATH, dataToWrite, 'utf8', 
-                        //NOTE: I picked "Error" here as the safest bet. This never tripped during testing. Even w/o the try/catch.
-                        //		So I'm guessing it isn't actually used by the 'promises' variant of node's filesystem lib.
-                        function (err) {
+                    _a.trys.push([1, 3, , 4]);
+                    /*result.data = */ return [4 /*yield*/, FS_PROMISES.writeFile(WRITE_PATH, dataToWrite, 'utf8' /*,
+//NOTE: I picked "Error" here as the safest bet. This never tripped during testing. Even w/o the try/catch.
+//		So I'm guessing it isn't actually used by the 'promises' variant of node's filesystem lib.
+                        (err: Error) => {
                             if (err) {
                                 throw err;
                             }
+
                             console.log('file written');
-                        })];
+                        }*/)];
                 case 2:
-                    _a.data = _b.sent();
+                    /*result.data = */ _a.sent();
                     return [2 /*return*/];
                 case 3:
-                    err_2 = _b.sent();
+                    err_2 = _a.sent();
                     throw new Error('Failed to write file: ' + WRITE_PATH + '; ' + err_2.code + ', ' + err_2.message);
                 case 4: return [2 /*return*/];
             }

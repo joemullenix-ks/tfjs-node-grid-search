@@ -2,8 +2,14 @@
 
 
 //NOTE: This variant of the lib (tfjs-node) is not yet part of a proper release (as of 2.7.0)!
-//		See https://github.com/tensorflow/tfjs/issues/4052 for the solution, which involves manually
-//		copying a .DLL.
+//		See https://github.com/tensorflow/tfjs/issues/4052 for the issue and a _workaround_ (not a proper
+//		solution yet), which involves manually copying this file:
+//
+//			copy tensorflow.dll
+//			from: node_modules\@tensorflow\tfjs-node\deps\lib
+//			  to: node_modules\@tensorflow\tfjs-node\lib\napi-v6
+
+
 import * as TENSOR_FLOW from '@tensorflow/tfjs-node';
 import { ActivationIdentifier } from '@tensorflow/tfjs-layers/dist/keras_format/activation_config';
 
@@ -210,14 +216,11 @@ class Grid {
 		const WRITE_RESULTS_OPTION = this._gridOptions.GetOption('writeResultsToDirectory');
 
 		if (typeof WRITE_RESULTS_OPTION === 'string') {
-			const FILE_RESULT =	new FileIOResult();
-
 			const FILENAME = FileIO.ProduceResultsFilename();
 
 			await FileIO.WriteResultsFile(	FILENAME,
 											WRITE_RESULTS_OPTION,
-											GRID_RUN_STATS.WriteCSV(),
-											FILE_RESULT);
+											GRID_RUN_STATS.WriteCSV());
 
 //TODO: Look into Node's os/platform library. Gotta be a way to pull the appropriate slashes.
 //		...and on the same pass, lookup and print the root directory.

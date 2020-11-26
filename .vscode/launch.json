@@ -7,20 +7,20 @@
 		{
 			"type": "node",
 			"request": "launch",
-			"name": "Launch JS",
-			"skipFiles": [
-				"<node_internals>/**"
-			],
-			"program": "${workspaceFolder}\\src\\all.js"
-		},
-		{
-			"type": "node",
-			"request": "launch",
-			"name": "Launch TypeScript Build",
+			"name": "Launch built JS",
 			"skipFiles": [
 				"<node_internals>/**"
 			],
 			"program": "${workspaceFolder}\\built\\all.js"
+		},
+		{
+			"type": "node",
+			"request": "launch",
+			"name": "Launch unbuilt TypeScript",
+			"skipFiles": [
+				"<node_internals>/**"
+			],
+			"program": "${workspaceFolder}\\src\\all.ts"
 		}
 	]
 }
