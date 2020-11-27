@@ -57,8 +57,12 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Grid = void 0;
 //NOTE: This variant of the lib (tfjs-node) is not yet part of a proper release (as of 2.7.0)!
-//		See https://github.com/tensorflow/tfjs/issues/4052 for the solution, which involves manually
-//		copying a .DLL.
+//		See https://github.com/tensorflow/tfjs/issues/4052 for the issue and a _workaround_ (not a proper
+//		solution yet), which involves manually copying this file:
+//
+//			copy tensorflow.dll
+//			from: node_modules\@tensorflow\tfjs-node\deps\lib
+//			  to: node_modules\@tensorflow\tfjs-node\lib\napi-v6
 var TENSOR_FLOW = __importStar(require("@tensorflow/tfjs-node"));
 var Axis = __importStar(require("./Axis"));
 var AxisSetTraverser_1 = require("./AxisSetTraverser");
@@ -216,8 +220,7 @@ var Grid = /** @class */ (function () {
                         WRITE_RESULTS_OPTION = this._gridOptions.GetOption('writeResultsToDirectory');
                         if (!(typeof WRITE_RESULTS_OPTION === 'string')) return [3 /*break*/, 9];
                         FILENAME = FileIO_1.FileIO.ProduceResultsFilename();
-                        return [4 /*yield*/, FileIO_1.FileIO.WriteResultsFile(FILENAME, WRITE_RESULTS_OPTION, GRID_RUN_STATS.WriteCSV() /*,
-                            FILE_RESULT*/)];
+                        return [4 /*yield*/, FileIO_1.FileIO.WriteResultsFile(FILENAME, WRITE_RESULTS_OPTION, GRID_RUN_STATS.WriteCSV())];
                     case 8:
                         _a.sent();
                         //TODO: Look into Node's os/platform library. Gotta be a way to pull the appropriate slashes.
