@@ -22,7 +22,6 @@ import { AxisSet }				from './AxisSet';
 import { AxisSetTraverser }		from './AxisSetTraverser';
 import * as EpochStats			from './EpochStats';
 import { FileIO }				from './FileIO';
-import { FileIOResult }			from './FileIOResult';
 import { GridOptions }			from './GridOptions';
 import { GridRunStats }			from './GridRunStats';
 import { IterationResult }		from './IterationResult';

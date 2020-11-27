@@ -93,8 +93,7 @@ var FILE_IO = {
             }
         });
     }); },
-    WriteResultsFile: function (fileName, directory, dataToWrite /*,
-    result: FileIOResult*/) { return __awaiter(void 0, void 0, void 0, function () {
+    WriteResultsFile: function (fileName, directory, dataToWrite) { return __awaiter(void 0, void 0, void 0, function () {
         var WRITE_PATH, err_2;
         return __generator(this, function (_a) {
             switch (_a.label) {
@@ -109,18 +108,9 @@ var FILE_IO = {
                     _a.label = 1;
                 case 1:
                     _a.trys.push([1, 3, , 4]);
-                    /*result.data = */ return [4 /*yield*/, FS_PROMISES.writeFile(WRITE_PATH, dataToWrite, 'utf8' /*,
-//NOTE: I picked "Error" here as the safest bet. This never tripped during testing. Even w/o the try/catch.
-//		So I'm guessing it isn't actually used by the 'promises' variant of node's filesystem lib.
-                        (err: Error) => {
-                            if (err) {
-                                throw err;
-                            }
-
-                            console.log('file written');
-                        }*/)];
+                    return [4 /*yield*/, FS_PROMISES.writeFile(WRITE_PATH, dataToWrite, 'utf8')];
                 case 2:
-                    /*result.data = */ _a.sent();
+                    _a.sent();
                     return [2 /*return*/];
                 case 3:
                     err_2 = _a.sent();
