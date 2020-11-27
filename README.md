@@ -2,7 +2,7 @@
 
 **tfjs-node-grid-search (TNGS)** is a grid search utility for TensorFLow.js in Node.js. You provide a data set, and define ranges of hyperparameters. For each combination, TNGS will create a model, train it and test it. Results are given in the log, and optionally written as a CSV file.
 
-[Learn about running TensorFlow in Node here.](https://www.tensorflow.org/js/tutorials/setup#nodejs_setup)
+[Learn about running TensorFlow in Node.](https://www.tensorflow.org/js/tutorials/setup#nodejs_setup)
 
 ## Installation
 ```
