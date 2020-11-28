@@ -19,8 +19,8 @@
     "type": "git",
     "url": "git+https://github.com/joemullenix-ks/tfjs-node-grid-search.git"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "Joe Mullenix",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/joemullenix-ks/tfjs-node-grid-search/issues"
   },
