@@ -69,7 +69,8 @@
 		"forceConsistentCasingInFileNames": true /* Disallow inconsistently-cased references to the same file. */
 	},
 	"include": [
-		"./src/**/*", "./src/ts_types/*"
+		"./src/**/*",
+		"./src/ts_types/*"
 //TODO: this last one looks redundant, as we already include src subfolders  :\
 	]
 }
