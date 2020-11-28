@@ -1,6 +1,7 @@
 # tfjs-node-grid-search &middot; [![npm version](https://img.shields.io/npm/v/tfjs-node-grid-search.svg?style=flat)](https://www.npmjs.com/package/tfjs-node-grid-search)
 
-**tfjs-node-grid-search (TNGS)** is a grid search utility for TensorFLow.js in Node.js. You provide a data set, and define ranges of hyperparameters. For each combination, TNGS will create a model, train it and test it. Results are given in the log, and optionally written as a CSV file.
+**tfjs-node-grid-search (TNGS)** is a grid search utility for TensorFLow.js in Node.js.
+Simply define ranges of hyperparameters. For each combination, TNGS will create a model, train it and test it using your data set. Results are logged and (optionally) written as a CSV file.
 
 [Learn about running TensorFlow in Node.](https://www.tensorflow.org/js/tutorials/setup#nodejs_setup)
 
@@ -11,7 +12,7 @@ npm i tfjs-node-grid-search
 
 ## Examples
 ```js
-const THINGS = 'great';
+const EXAMPLE = 'coming soon'; // stay tuned
 ```
 
 ## Documentation
