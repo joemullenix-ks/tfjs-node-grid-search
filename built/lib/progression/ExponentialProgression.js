@@ -27,7 +27,7 @@ var ExponentialProgression = /** @class */ (function (_super) {
         _this._step = 0;
         // these rules prevent the progression going flat (infinite) or negative (yikes)
         //NOTE: We could support whackier curves, and will if requested. I don't anticipate that desire, but who knows.
-        //		Also, the user may create a negative progression by inverting their Axis bounds; send a boundBegin > boundEnd.
+        //		Also, the user may create a negative progression by inverting their Axis bounds, i.e. use boundBegin > boundEnd.
         console.assert(exponent > 1.0);
         console.assert(scale > 0.0);
         _this._exponent = exponent;

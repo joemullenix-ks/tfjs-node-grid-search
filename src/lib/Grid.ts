@@ -30,16 +30,17 @@ import { ModelStatics }			from './ModelStatics';
 import { ModelTestStats }		from './ModelTestStats';
 import { SessionData }			from './SessionData';
 import { Utils }				from './Utils';
+import { PredictionEvaluation } from './PredictionEvaluation';
 
 
 class Grid {
 	private _axisSetTraverser: AxisSetTraverser;
 	private _epochStats!: EpochStats.EpochStats;
 	private _gridOptions: GridOptions;
-	private _timeStartBatch: number = 0;
-	private _timeStartEpoch: number = 0;
-	private _timeStartGrid: number = 0;
-	private _timeStartIteration: number = 0;
+	private _timeStartBatch = 0;
+	private _timeStartEpoch = 0;
+	private _timeStartGrid = 0;
+	private _timeStartIteration = 0;
 
 	constructor(axisSet: AxisSet,
 				private _modelStatics: ModelStatics,
@@ -66,7 +67,7 @@ class Grid {
 		this.ResolveModelDefinition();
 	}
 
-	CreateModel(modelParams: ModelParams) {
+	CreateModel(modelParams: ModelParams): TENSOR_FLOW.Sequential {
 		const TOTAL_INPUT_NEURONS = this._sessionData.totalInputNeurons;
 		const TOTAL_OUTPUT_NEURONS = this._sessionData.totalOutputNeurons;
 
@@ -130,7 +131,7 @@ class Grid {
 		return TF_MODEL;
 	}
 
-	ResetEpochStats() {
+	ResetEpochStats(): void {
 		console.assert(this._gridOptions.GetOption('epochStatsDepth') !== undefined);
 
 //NOTE: This is currently only used by the reporting callback. It's contents, however, will be critical to tracking
@@ -141,7 +142,7 @@ class Grid {
 		this._epochStats = new EpochStats.EpochStats(EPOCH_STATS_DEPTH);
 	}
 
-	async Run() {
+	async Run(): Promise<void> {
 		const GRID_RUN_STATS = new GridRunStats();
 
 		const TOTAL_ITERATIONS = this._axisSetTraverser.totalIterations;
@@ -232,7 +233,7 @@ class Grid {
 		}
 	}
 
-	ResolveModelDefinition() {
+	ResolveModelDefinition(): void {
 //NOTE: TODO: I'm not entirely happy with this. It feels like access breaking, to reach in via callback.
 //			  It would be better to just produce a list of axis keys. That's all we want, anyway.
 //			  ...will leave this pending the completion of the supported axes. There may be more
@@ -245,7 +246,7 @@ class Grid {
 	}
 
 //TODO: This model type might be too strict. Consider the lower-level TF LayersModel.
-	TestModel(model: TENSOR_FLOW.Sequential, modelParams: ModelParams, duration: number) {
+	TestModel(model: TENSOR_FLOW.Sequential, modelParams: ModelParams, duration: number): ModelTestStats {
 		console.assert(model.built);
 		console.assert(duration >= 0);
 
@@ -268,7 +269,7 @@ class Grid {
 													}) as TENSOR_FLOW.Tensor;
 
 		// convert this TF Tensor into array form, for human-friendly analysis
-		const PREDICTIONS: Types.TFNestedArray = PREDICTIONS_TENSOR.arraySync();
+		const PREDICTIONS: Types.ArrayOrder2 = PREDICTIONS_TENSOR.arraySync() as Types.ArrayOrder2;
 
 		// pull the unstandardized proof cases (again, for the human-friendly report)
 
@@ -291,7 +292,7 @@ class Grid {
 
 		for (let i = 0; i < PREDICTIONS.length; ++i) {
 			// send each targets-prediction pair to the user, for their scoring logic
-			const EVALUATION = this._callbackEvaluatePrediction(PROOF_TARGETS[i], PREDICTIONS[i]);
+			const EVALUATION: PredictionEvaluation = this._callbackEvaluatePrediction(PROOF_TARGETS[i], PREDICTIONS[i]);
 
 			if (EVALUATION.correct) {
 				++totalCorrect;
@@ -314,7 +315,7 @@ class Grid {
 	}
 
 //TODO: This model type might be too strict. Consider the lower-level TF LayersModel.
-	async TrainModel(model: TENSOR_FLOW.Sequential, modelParams: ModelParams) {
+	async TrainModel(model: TENSOR_FLOW.Sequential, modelParams: ModelParams): Promise<void> {
 		console.assert(model.built);
 
 		this.ResetEpochStats()

@@ -95,11 +95,11 @@ abstract class Progression {
 		this._value = 0;
 	}
 
-	get integerBased() { return this._integerBased; }
-	get typeName() { return this._typeName; }
-	get value() { return this._value; }
+	get integerBased(): boolean { return this._integerBased; }
+	get typeName(): string { return this._typeName; }
+	get value(): number { return this._value; }
 
-	Reset() {
+	Reset(): void {
 		this._value = 0;
 	}
 

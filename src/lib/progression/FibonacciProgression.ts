@@ -8,14 +8,14 @@ const PROGRESSION_TYPENAME = 'Fibonacci';
 
 
 class FibonacciProgression extends Progression {
-	private _fiboA: number = 0;
-	private _fiboB: number = 0;
-	private _initFiboA: number = 0;
-	private _initFiboB: number = 0;
+	private _fiboA = 0;
+	private _fiboB = 0;
+	private _initFiboA = 0;
+	private _initFiboB = 0;
 
 //NOTE: It might seem useful to offer two arbitrary params, e.g. (1.5, 4), and let the user define their own
-//		Fibonacci-ish sequence. I actually tried that, and lo and behold, it basically finds it's way back
-//		to the actual Fibonaccis. It doesn't merged, exactly, but it produces the same curve, just slightly
+//		Fibonacci-ish sequence. I actually tried that, and lo and behold, it basically finds its way back
+//		to the actual Fibonaccis. It doesn't merge, exactly, but it produces the same curve, just slightly
 //		offset.
 //		Makes sense in retrospect. The algorithm only cares about two inputs on the first step. After that,
 //		it exclusively uses one (the sum).
@@ -51,7 +51,7 @@ class FibonacciProgression extends Progression {
 		this.ResetFibonacciInputs();
 	}
 
-	Advance() {
+	Advance(): void {
 		this._value = this._fiboA + this._fiboB;
 
 		this._fiboA = this._fiboB;
@@ -59,13 +59,13 @@ class FibonacciProgression extends Progression {
 		this._fiboB = this._value;
 	}
 
-	Reset() {
+	Reset(): void {
 		super.Reset();
 
 		this.ResetFibonacciInputs();
 	}
 
-	ResetFibonacciInputs() {
+	ResetFibonacciInputs(): void {
 		this._fiboA = this._initFiboA;
 		this._fiboB = this._initFiboB;
 	}
@@ -78,7 +78,7 @@ class FibonacciProgression extends Progression {
 //
 //		answered Jul 19 '17 at 16:27 by Neil
 
-const FIND_NEAREST_FIBONACCI_NUMBER = (n: number, x: number = 0, y: number = 1): number => {
+const FIND_NEAREST_FIBONACCI_NUMBER = (n: number, x = 0, y = 1): number => {
 //PERF: This is not fast! Any high-frequency usage should instead use a cache.
 
 //NOTE: Though this looks dangerously unbounded, I've tested it up to max-integers, and it only goes ~80 calls deep.

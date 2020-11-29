@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 'use strict';
 
 
@@ -99,11 +100,11 @@ const MAIN = async () => {
 
 		await FileIO.ReadDataFile(pathInputs, FILE_RESULT);
 
-		const RAW_INPUTS = JSON.parse(FILE_RESULT.data);
+		const RAW_INPUTS = JSON.parse(FILE_RESULT.data) as GridTypes.TFNestedArray;
 
 		await FileIO.ReadDataFile(pathTargets, FILE_RESULT);
 
-		const RAW_TARGETS = JSON.parse(FILE_RESULT.data);
+		const RAW_TARGETS = JSON.parse(FILE_RESULT.data) as GridTypes.ArrayOrder2;
 
 		return {inputs: RAW_INPUTS, targets: RAW_TARGETS};
 	};
@@ -129,11 +130,11 @@ const MAIN = async () => {
 	// If the prediction is acceptable, set the return object's "correct" property to true.
 	// An optional "delta" is also available, which takes a value representing the accuracy of the prediction.
 
-	const EVALUATE_PREDICTION:GridTypes.CallbackEvaluatePrediction = (target, prediction) => {
+	const EVALUATE_PREDICTION: GridTypes.CallbackEvaluatePrediction = (target, prediction) => {
 
 		// these come in as arbitrarily nested arrays; cast down to our known depth
-		const TARGET_2D = target as Array<number>;
-		const PREDICTION_2D = prediction as Array<number>;
+		const TARGET_2D = target;// as Array<number>;
+		const PREDICTION_2D = prediction;// as Array<number>;
 
 		const TARGETTED_INDEX = Utils.ArrayFindIndexOfHighestValue(TARGET_2D);
 
@@ -194,4 +195,4 @@ const MAIN = async () => {
 	console.log('\n' + 'eol');
 };
 
-MAIN();
+void MAIN();

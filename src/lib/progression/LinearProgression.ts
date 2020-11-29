@@ -9,7 +9,7 @@ const PROGRESSION_TYPENAME = 'Linear';
 
 class LinearProgression extends Progression {
 //NOTE: This is not a constructor-private because we need to send the constructor arg into super().
-	private _step: number = 0;
+	private _step = 0;
 
 	constructor(step: number) {
 		super(	step === Math.floor(step),	// i.e. is this an integer?
@@ -18,7 +18,7 @@ class LinearProgression extends Progression {
 		this._step = step;
 	}
 
-	Advance() {
+	Advance(): void {
 		this._value += this._step;
 	}
 }

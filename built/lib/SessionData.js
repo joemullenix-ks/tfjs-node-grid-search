@@ -75,6 +75,11 @@ var SessionData = /** @class */ (function () {
         if (PROOF_COUNT >= TOTAL_CASES) {
             throw new Error('The provided proofPercentage is too high. 100% of cases moved from the training set.');
         }
+        //NOTE: "unknown" feels like a copout, but there is no other (even remotely clean) way to inform the upcoming
+        //		array shift/push calls. This would have to be initialized to the depth of the user input, which is
+        //		unknown (ha!) at compile time. I could measure it outsie, and create a generic class/interface of some
+        //		kind (in lieu of six differnet support objects (at least), and gobs of duplication).
+        //TODO: (low-pri, but good exercise) Look into a generic class, e.g. DeepTrainingData::Array<T>.
         var PROOF_INPUTS = [];
         var PROOF_TARGETS = [];
         // we also carry a copy of the proof subset, in its original, unstandardized form
@@ -84,13 +89,21 @@ var SessionData = /** @class */ (function () {
         //			rawInputs.length === _rawInputsTraining.length
         this._rawInputsProof = [];
         for (var i = 0; i < PROOF_COUNT; ++i) {
-            var RAW_I = rawInputs.shift();
-            var RAW_T = rawTargets.shift();
-            // PROOF_INPUTS.push(rawInputs.shift());
-            // PROOF_TARGETS.push(rawTargets.shift());
-            PROOF_INPUTS.push(RAW_I);
-            PROOF_TARGETS.push(RAW_T);
-            this._rawInputsProof.push(this._rawInputsTraining.shift());
+            if (rawInputs.length === 0) {
+                throw new Error('Inputs array emptied prematurely');
+            }
+            if (rawTargets.length === 0) {
+                throw new Error('Targets array emptied prematurely');
+            }
+            //NOTE: This assign-first-then-shift approach is not ideal, and it's only done as a workaround to the conversion
+            //		problems I had w/ TFNestedArray; possibly alleviated by the Array<unknown> change, but that's also
+            //		an unacceptable solution, long term.
+            PROOF_INPUTS[i] = rawInputs[0];
+            PROOF_TARGETS[i] = rawTargets[0];
+            rawInputs.shift();
+            rawTargets.shift();
+            this._rawInputsProof[i] = this._rawInputsTraining[0];
+            this._rawInputsTraining.shift();
         }
         // store the targets of the cases we separated from the training set
         this._proofTargets = PROOF_TARGETS;
@@ -193,7 +206,6 @@ var SessionData = /** @class */ (function () {
         }
         throw new Error('Invalid raw data. Inputs and targets must be supplied as arrays of numbers, flat or nested.');
     };
-    ;
     return SessionData;
 }());
 exports.SessionData = SessionData;
@@ -254,6 +266,9 @@ function StandardizeInputs(inputData) {
                 RECURSIVELY_TABULATE_FEATURES(value);
                 return;
             }
+            if (typeof value !== 'number') {
+                throw new Error('Invalid type found while tabulating features ' + (typeof value));
+            }
             // we've hit a 'bottom' level array (a leaf node); tabulate its feature values
             FEATURE_VALUE_TABLE[index].push(value);
         });
@@ -271,40 +286,54 @@ function StandardizeInputs(inputData) {
     // walk this set of (potentially) nested arrays, adjusting each feature set to mean zero and variance one
     var RECURSIVELY_STANDARDIZE_FEATURES = function (a) {
         console.assert(a.length > 0);
+        // a.forEach((value: TFNestedArray | number, index: number, array: TFNestedArray) => {
         a.forEach(function (value, index, array) {
             if (Array.isArray(value)) {
                 RECURSIVELY_STANDARDIZE_FEATURES(value);
                 return;
             }
+            if (typeof value !== 'number') {
+                throw new Error('Invalid type found during default standardization ' + (typeof value));
+            }
+            var CASTED_INDEX = Number(index);
+            var CASTED_VALUE = Number(value);
+            console.log(CASTED_INDEX, CASTED_VALUE);
             // we've hit a 'bottom' level array (a leaf node)
+            /*KEEP: IMPORTANT
             //NOTE: We use this unnecessary, temporary 'sample' as an extra register. This is purely done because TypeScript
             //		does not like my TFInputsArray type. That type was written to handle nested arrays, but it's causing other
             //		problems, primarily within this file.
-            var sample = Number(array[index]);
-            // shift left by the mean, to 'center' everything on zero
-            sample -= MEANS[index];
-            if (STANDARD_DEVIATIONS[index] === 0) {
-                // this category (feature) has no deviation; all samples equal the mean
-                // set the value back into its slot
-                array[index] = sample;
-                return;
-            }
-            // divide by the standard deviation, so that all categories have a variance of one
-            sample /= STANDARD_DEVIATIONS[index];
-            // set the value back into its slot
-            array[index] = sample;
-            /*KEEP: ...until the above TS issue is resolved. This is the original, and there's nothing wrong with it.
+            
+                        let sample = Number(array[index]);
+            
                         // shift left by the mean, to 'center' everything on zero
-                        array[index] -= MEANS[index];
+                        sample -= MEANS[index];
             
                         if (STANDARD_DEVIATIONS[index] === 0) {
                             // this category (feature) has no deviation; all samples equal the mean
+            
+                            // set the value back into its slot
+                            array[index] = sample;
+            
                             return;
                         }
             
                         // divide by the standard deviation, so that all categories have a variance of one
-                        array[index] /= STANDARD_DEVIATIONS[index];
+                        sample /= STANDARD_DEVIATIONS[index];
+            
+                        // set the value back into its slot
+                        array[index] = sample;
             */
+            /*KEEP: ...until the above TS issue is resolved. This is the original, and there's nothing wrong with it.*/
+            // shift left by the mean, to 'center' everything on zero
+            array[index] -= MEANS[index];
+            if (STANDARD_DEVIATIONS[index] === 0) {
+                // this category (feature) has no deviation; all samples equal the mean
+                return;
+            }
+            // divide by the standard deviation, so that all categories have a variance of one
+            array[index] /= STANDARD_DEVIATIONS[index];
+            /**/
         });
     };
     RECURSIVELY_STANDARDIZE_FEATURES(inputData);
