@@ -124,8 +124,8 @@ var GridOptions = /** @class */ (function () {
             case 'repetitions':
             case 'validationSetSizeMin':
             case 'writeResultsToDirectory': {
-                //NOTE: This value may be undefined. That's expected. We enforce that the key be known, but we don't require the user
-                //		to set a value for every possible key.
+                //NOTE: This value may be undefined. That's expected. We enforce that all user-supplied keys be known, but we
+                //		do not require the user to set a value for every possible key.
                 //		For example, if they don't want to save CSV files, they do not send "writeResultsToDirectory".
                 return this._options[key];
             }

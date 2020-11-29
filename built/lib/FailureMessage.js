@@ -4,6 +4,7 @@ exports.FailureMessage = void 0;
 var FailureMessage = /** @class */ (function () {
     function FailureMessage() {
         this._text = '';
+        // Lint gripes about empty constructors. Apperently this is good enough. Party on.
     }
     Object.defineProperty(FailureMessage.prototype, "text", {
         get: function () { return this._text; },

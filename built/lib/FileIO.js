@@ -54,16 +54,19 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.FileIO = void 0;
 var FS_PROMISES = __importStar(require("fs/promises"));
 var PATH_LIB = __importStar(require("path"));
-//NOTE: Not yet ready to move this one to ESM, only because I don't want to bring in added
-//		module variability until the bundled package is ready. Stay tuned.
+//NOTE: Moved this one to ESM for Lint; had hesitated only because it kicks this:
 //
 //		"This module can only be referenced with ECMAScript imports/exports by turning on
 //		the 'esModuleInterop' flag and referencing its default export.ts(2497)"
-var SLASH = require('slash');
+var slash_1 = __importDefault(require("slash"));
+var Utils_1 = require("./Utils");
 var FILE_IO = {
     ProduceResultsFilename: function () {
         //TODO: hard-coder; both the regex and the filename prefix & suffix.
@@ -73,7 +76,7 @@ var FILE_IO = {
         return 'Results_' + LOWERED + '.csv';
     },
     ReadDataFile: function (path, result) { return __awaiter(void 0, void 0, void 0, function () {
-        var _a, err_1;
+        var _a, e_1;
         return __generator(this, function (_b) {
             switch (_b.label) {
                 case 0:
@@ -87,21 +90,22 @@ var FILE_IO = {
                     _a.data = _b.sent();
                     return [2 /*return*/];
                 case 3:
-                    err_1 = _b.sent();
-                    throw new Error('Failed to read file: ' + path + '; ' + err_1.code + ', ' + err_1.message);
+                    e_1 = _b.sent();
+                    Utils_1.Utils.ThrowCaughtUnknown('Failed to read file: ' + path, e_1);
+                    return [3 /*break*/, 4];
                 case 4: return [2 /*return*/];
             }
         });
     }); },
     WriteResultsFile: function (fileName, directory, dataToWrite) { return __awaiter(void 0, void 0, void 0, function () {
-        var WRITE_PATH, err_2;
+        var WRITE_PATH, e_2;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
                     console.assert(fileName !== '');
                     WRITE_PATH = PATH_LIB.join(directory, fileName);
                     // correct for Unix/Windows path format
-                    SLASH(WRITE_PATH);
+                    slash_1.default(WRITE_PATH);
                     if (dataToWrite === '') {
                         console.warn('Writing empty file: ' + WRITE_PATH);
                     }
@@ -113,8 +117,9 @@ var FILE_IO = {
                     _a.sent();
                     return [2 /*return*/];
                 case 3:
-                    err_2 = _a.sent();
-                    throw new Error('Failed to write file: ' + WRITE_PATH + '; ' + err_2.code + ', ' + err_2.message);
+                    e_2 = _a.sent();
+                    Utils_1.Utils.ThrowCaughtUnknown('Failed to write file: ' + WRITE_PATH, e_2);
+                    return [3 /*break*/, 4];
                 case 4: return [2 /*return*/];
             }
         });

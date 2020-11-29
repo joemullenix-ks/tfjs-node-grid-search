@@ -7,8 +7,8 @@ class PredictionEvaluation {
 //NOTE: There is a high likelihood we'll enforce rules on these deltas, e.g. x >= 0; pending beta.
 	}
 
-	get correct() { return this._correct; }
-	get delta() { return this._delta; }
+	get correct(): boolean { return this._correct; }
+	get delta(): number { return this._delta; }
 }
 
 

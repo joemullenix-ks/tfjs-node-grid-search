@@ -19,11 +19,11 @@ class EpochStats {
 	private _samplesLoss: Array<number> = [];
 	private _samplesValidationAccuracy: Array<number> = [];
 	private _samplesValidationLoss: Array<number> = [];
-	private _averageAccuracy: number = 0;
-	private _averageLoss: number = 0;
-	private _averageLossDelta: number = 0;
-	private _averageValidationAccuracy: number = 0;
-	private _averageValidationLoss: number = 0;
+	private _averageAccuracy = 0;
+	private _averageLoss = 0;
+	private _averageLossDelta = 0;
+	private _averageValidationAccuracy = 0;
+	private _averageValidationLoss = 0;
 
 	private _lineAccuracy: SSLine = {m: 0, b: 0};
 	private _lineLoss: SSLine = {m: 0, b: 0};
@@ -35,16 +35,16 @@ class EpochStats {
 		console.assert(Math.floor(this._trailDepth) === this._trailDepth);
 	}
 
-	get averageAccuracy() { return this._averageAccuracy; }
-	get averageLoss() { return this._averageLoss; }
-	get averageValidationAccuracy() { return this._averageValidationAccuracy; }
-	get averageValidationLoss() { return this._averageValidationLoss; }
-	get lineAccuracy() { return this._lineAccuracy; }
-	get lineLoss() { return this._lineLoss; }
-	get lineValidationAccuracy() { return this._lineValidationAccuracy; }
-	get lineValidationLoss() { return this._lineValidationLoss; }
+	get averageAccuracy(): number { return this._averageAccuracy; }
+	get averageLoss(): number { return this._averageLoss; }
+	get averageValidationAccuracy(): number { return this._averageValidationAccuracy; }
+	get averageValidationLoss(): number { return this._averageValidationLoss; }
+	get lineAccuracy(): SSLine { return this._lineAccuracy; }
+	get lineLoss(): SSLine { return this._lineLoss; }
+	get lineValidationAccuracy(): SSLine { return this._lineValidationAccuracy; }
+	get lineValidationLoss(): SSLine { return this._lineValidationLoss; }
 
-	Update(epoch: number, logs: Logs) {
+	Update(epoch: number, logs: Logs): void {
 		console.assert(epoch >= 0);
 		console.assert(Math.floor(epoch) === epoch);
 		console.assert(typeof logs === 'object');
@@ -73,11 +73,11 @@ class EpochStats {
 	}
 
 //vv TODO: These move into a CSVSource interface
-	WriteCSVLineKeys() {
+	WriteCSVLineKeys(): string {
 		return 'averageAccuracy,averageLoss,averageValidationAccuracy,averageValidationLoss,slopeAccuracy,slopeLoss,slopeValidationAccuracy,slopeValidationLoss';
 	}
 
-	WriteCSVLineValues() {
+	WriteCSVLineValues(): string {
 		return this._averageAccuracy
 				+ ',' + this._averageLoss
 				+ ',' + this._averageValidationAccuracy
@@ -89,7 +89,7 @@ class EpochStats {
 	}
 //^^
 
-	WriteReport() {
+	WriteReport(): string {
 		const TEXT_OUT =
 			this._averageLoss.toFixed(REPORTING_DIGITS_STAT)
 			+ '(' + this._averageValidationLoss.toFixed(REPORTING_DIGITS_STAT) + ') '

@@ -8,19 +8,20 @@ class GridRunStats {
 	private _iterationResults: Array<IterationResult> = [];
 
 	constructor() {
+		// Lint gripes about empty constructors. Apperently this is good enough. Party on.
 	}
 
-	AddIterationResult(iterationResult: IterationResult) {
+	AddIterationResult(iterationResult: IterationResult): void {
 		this._iterationResults.push(iterationResult);
 	}
 
-	WriteCSV() {
+	WriteCSV(): string {
 		if (this._iterationResults.length === 0) {
 			return 'no data';
 		}
 
 		// write the header of the CSV table
-		let headerText = 'pass,iteration,repetition,score,duration,'
+		const HEADER_TEXT = 'pass,iteration,repetition,score,duration,'
 							+ this._iterationResults[0].WriteModelParamHeader()
 							+ ','
 							+ this._iterationResults[0].WriteEpochStatsHeader()
@@ -53,10 +54,10 @@ class GridRunStats {
 		// drop the trailing newline
 		iterationsTableText = iterationsTableText.slice(0, -1);
 
-		return headerText + '\n' + iterationsTableText;
+		return HEADER_TEXT + '\n' + iterationsTableText;
 	}
 
-	WriteReport(sortByScore: boolean) {
+	WriteReport(sortByScore: boolean): string {
 		let iterations = this._iterationResults;
 
 		if (sortByScore) {

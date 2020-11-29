@@ -5,19 +5,19 @@ import * as FS_PROMISES from 'fs/promises';
 import * as PATH_LIB from 'path';
 
 
-//NOTE: Not yet ready to move this one to ESM, only because I don't want to bring in added
-//		module variability until the bundled package is ready. Stay tuned.
+//NOTE: Moved this one to ESM for Lint; had hesitated only because it kicks this:
 //
 //		"This module can only be referenced with ECMAScript imports/exports by turning on
 //		the 'esModuleInterop' flag and referencing its default export.ts(2497)"
-const SLASH = require('slash');
+import SLASH from 'slash';
 
 
 import { FileIOResult } from './FileIOResult';
+import { Utils } from './Utils';
 
 
 const FILE_IO = {
-	ProduceResultsFilename: () => {
+	ProduceResultsFilename: (): string => {
 //TODO: hard-coder; both the regex and the filename prefix & suffix.
 		const TIMESTAMP = (new Date()).toLocaleString();
 		const FILTERED = TIMESTAMP.replace(/[^a-z0-9]/gi, '_');
@@ -26,21 +26,21 @@ const FILE_IO = {
 		return 'Results_' + LOWERED + '.csv';
 	},
 
-	ReadDataFile: async (path: string, result: FileIOResult) => {
+	ReadDataFile: async (path: string, result: FileIOResult): Promise<void> => {
 		console.assert(path !== '');
 
 		try {
 			result.data = await FS_PROMISES.readFile(path, 'utf8');
 			return;
 		}
-		catch (err) {
-			throw new Error('Failed to read file: ' + path + '; ' + err.code + ', ' + err.message);
+		catch (e) {
+			Utils.ThrowCaughtUnknown('Failed to read file: ' + path, e);
 		}
 	},
 
 	WriteResultsFile: async (	fileName: string,
 								directory: string,
-								dataToWrite: string) => {
+								dataToWrite: string): Promise<void> => {
 		console.assert(fileName !== '');
 
 		const WRITE_PATH = PATH_LIB.join(directory, fileName);
@@ -60,8 +60,8 @@ const FILE_IO = {
 
 			return;
 		}
-		catch (err) {
-			throw new Error('Failed to write file: ' + WRITE_PATH + '; ' + err.code + ', ' + err.message);
+		catch (e) {
+			Utils.ThrowCaughtUnknown('Failed to write file: ' + WRITE_PATH, e);
 		}
 	}
 };

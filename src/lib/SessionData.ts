@@ -4,7 +4,7 @@
 import * as TENSOR_FLOW from '@tensorflow/tfjs-node';
 
 
-import { TFNestedArray } from '../ts_types/Grid';
+import { ArrayOrder2, TFArrayStack, TFNestedArray } from '../ts_types/Grid';
 
 
 //TODO: PERF: This object wastes memory, potentially a lot of it. It carries duplicates of the inputs, as both TF tensors
@@ -23,17 +23,17 @@ class SessionData {
 	_rawInputsProof: TFNestedArray;
 	_rawInputsTraining: TFNestedArray;
 	_proofInputsTensor: TENSOR_FLOW.Tensor;
-	_proofTargets: TFNestedArray;
+	_proofTargets: ArrayOrder2;
 	_proofTargetsTensor: TENSOR_FLOW.Tensor;
-	_totalInputNeurons: number = 0;
-	_totalOutputNeurons: number = 0;
-	_totalTrainingCases: number = 0;
+	_totalInputNeurons = 0;
+	_totalOutputNeurons = 0;
+	_totalTrainingCases = 0;
 	_trainingInputsTensor: TENSOR_FLOW.Tensor;
 	_trainingTargetsTensor: TENSOR_FLOW.Tensor;
 
 	constructor(proofPercentage: number,
 				rawInputs: TFNestedArray,
-				rawTargets: TFNestedArray,
+				rawTargets: ArrayOrder2,
 				private _useDefaultStandardization: boolean,
 				private _callbackStandardize?: (unstandardizedInputs: TFNestedArray) => void,
 				private _callbackUnstandardize?: (standardizedInputs: TFNestedArray) => void) {
@@ -55,7 +55,7 @@ class SessionData {
 		console.log('output neurons: ' + this._totalOutputNeurons);
 
 		// create a clone of these inputs pre-standardization, to be used (potentially) for human-friendly reporting
-		this._rawInputsTraining = JSON.parse(JSON.stringify(rawInputs));
+		this._rawInputsTraining = JSON.parse(JSON.stringify(rawInputs)) as TFNestedArray;
 
 //NOTE: This call validates and sets the callback members, as needed.
 		this.SetupStandardization();
@@ -88,8 +88,13 @@ class SessionData {
 			throw new Error('The provided proofPercentage is too high. 100% of cases moved from the training set.');
 		}
 
+//NOTE: "unknown" feels like a copout, but there is no other (even remotely clean) way to inform the upcoming
+//		array shift/push calls. This would have to be initialized to the depth of the user input, which is
+//		unknown (ha!) at compile time. I could measure it outsie, and create a generic class/interface of some
+//		kind (in lieu of six differnet support objects (at least), and gobs of duplication).
+//TODO: (low-pri, but good exercise) Look into a generic class, e.g. DeepTrainingData::Array<T>.
 		const PROOF_INPUTS: TFNestedArray = [];
-		const PROOF_TARGETS: TFNestedArray = [];
+		const PROOF_TARGETS: ArrayOrder2 = [];
 
 		// we also carry a copy of the proof subset, in its original, unstandardized form
 
@@ -101,41 +106,53 @@ class SessionData {
 		this._rawInputsProof = [];
 
 		for (let i = 0; i < PROOF_COUNT; ++i) {
-			const RAW_I = rawInputs.shift();
-			const RAW_T = rawTargets.shift();
+			if (rawInputs.length === 0) {
+				throw new Error('Inputs array emptied prematurely');
+			}
 
-			// PROOF_INPUTS.push(rawInputs.shift());
-			// PROOF_TARGETS.push(rawTargets.shift());
-			PROOF_INPUTS.push(RAW_I);
-			PROOF_TARGETS.push(RAW_T);
+			if (rawTargets.length === 0) {
+				throw new Error('Targets array emptied prematurely');
+			}
 
-			this._rawInputsProof.push(this._rawInputsTraining.shift());
+//NOTE: This assign-first-then-shift approach is not ideal, and it's only done as a workaround to the conversion
+//		problems I had w/ TFNestedArray; possibly alleviated by the Array<unknown> change, but that's also
+//		an unacceptable solution, long term.
+
+			PROOF_INPUTS[i] = rawInputs[0];
+			PROOF_TARGETS[i] = rawTargets[0];
+
+			rawInputs.shift();
+			rawTargets.shift();
+
+			this._rawInputsProof[i] = this._rawInputsTraining[0];
+
+			this._rawInputsTraining.shift();
 		}
 
 		// store the targets of the cases we separated from the training set
 		this._proofTargets = PROOF_TARGETS;
 
 		// convert the proof data to tensors, for the post-training prediction step
-		this._proofInputsTensor = TENSOR_FLOW.tidy(() => { return TENSOR_FLOW.tensor(PROOF_INPUTS); });
+		this._proofInputsTensor = TENSOR_FLOW.tidy(() => { return TENSOR_FLOW.tensor(PROOF_INPUTS as TFArrayStack); });
 		this._proofTargetsTensor = TENSOR_FLOW.tidy(() => { return TENSOR_FLOW.tensor(PROOF_TARGETS); });
 
 		// convert the training data to tensors, for the model-fit step
-		this._trainingInputsTensor = TENSOR_FLOW.tidy(() => { return TENSOR_FLOW.tensor(rawInputs); });
+		this._trainingInputsTensor = TENSOR_FLOW.tidy(() => { return TENSOR_FLOW.tensor(rawInputs as TFArrayStack); });
 		this._trainingTargetsTensor = TENSOR_FLOW.tidy(() => { return TENSOR_FLOW.tensor(rawTargets); });
 
 		this._totalTrainingCases = rawInputs.length;
 	}
 
-	get proofInputsTensor() { return this._proofInputsTensor; }
-	get proofTargets() { return this._proofTargets; }
-	get rawInputsProof() { return this._rawInputsProof; }
-	get totalInputNeurons() { return this._totalInputNeurons; }
-	get totalOutputNeurons() { return this._totalOutputNeurons; }
-	get totalTrainingCases() { return this._totalTrainingCases; }
-	get trainingInputsTensor() { return this._trainingInputsTensor; }
-	get trainingTargetsTensor() { return this._trainingTargetsTensor; }
+	get proofInputsTensor(): TENSOR_FLOW.Tensor { return this._proofInputsTensor; }
+	get proofTargets(): ArrayOrder2 { return this._proofTargets; }
+	get rawInputsProof(): TFNestedArray { return this._rawInputsProof; }
+	get totalInputNeurons(): number { return this._totalInputNeurons; }
+	get totalOutputNeurons(): number { return this._totalOutputNeurons; }
+	get totalTrainingCases(): number { return this._totalTrainingCases; }
+	get trainingInputsTensor(): TENSOR_FLOW.Tensor { return this._trainingInputsTensor; }
+	get trainingTargetsTensor(): TENSOR_FLOW.Tensor { return this._trainingTargetsTensor; }
 
-	SetupStandardization() {
+	SetupStandardization(): void {
 		if (!this._callbackStandardize) {
 			if (!this._callbackUnstandardize) {
 				// no callbacks; useDefaultStandardization will drive the behavior
@@ -153,13 +170,13 @@ class SessionData {
 		}
 	}
 
-	static ValidateRawData(raw: TFNestedArray) {
+	static ValidateRawData(raw: TFNestedArray): void {
 //NOTE: The top level of 'raw' must be an array, otherwise a lone Number would pass validation. This is no longer
 //		a problem under TypeScript, but it's worth keeping in mind.
 
 		let recursionKillswitch = false;
 
-		const CHECK_ARRAYS_OF_NUMBERS_RECURSIVELY = (a: number | TFNestedArray) => {
+		const CHECK_ARRAYS_OF_NUMBERS_RECURSIVELY = (a: unknown) => {
 			if (recursionKillswitch) {
 				// this raw data has already failed
 				return false;
@@ -202,7 +219,7 @@ class SessionData {
 		}
 
 		throw new Error('Invalid raw data. Inputs and targets must be supplied as arrays of numbers, flat or nested.');
-	};
+	}
 }
 
 
@@ -286,10 +303,14 @@ function StandardizeInputs(inputData: TFNestedArray) {
 	const RECURSIVELY_TABULATE_FEATURES = (a: TFNestedArray) => {
 		console.assert(a.length > 0);
 
-		a.forEach((value: TFNestedArray | number, index: number) => {
+		a.forEach((value: unknown, index: number) => {
 			if (Array.isArray(value)) {
 				RECURSIVELY_TABULATE_FEATURES(value);
 				return;
+			}
+
+			if (typeof value !== 'number') {
+				throw new Error('Invalid type found while tabulating features ' + (typeof value));
 			}
 
 			// we've hit a 'bottom' level array (a leaf node); tabulate its feature values
@@ -320,10 +341,15 @@ function StandardizeInputs(inputData: TFNestedArray) {
 	const RECURSIVELY_STANDARDIZE_FEATURES = (a: TFNestedArray) => {
 		console.assert(a.length > 0);
 
-		a.forEach((value: TFNestedArray | number, index: number, array: TFNestedArray) => {
+		// a.forEach((value: TFNestedArray | number, index: number, array: TFNestedArray) => {
+		a.forEach((value: unknown, index: number, array: TFNestedArray) => {
 			if (Array.isArray(value)) {
 				RECURSIVELY_STANDARDIZE_FEATURES(value);
 				return;
+			}
+
+			if (typeof value !== 'number') {
+				throw new Error('Invalid type found during default standardization ' + (typeof value));
 			}
 
 			// we've hit a 'bottom' level array (a leaf node)
@@ -331,6 +357,9 @@ function StandardizeInputs(inputData: TFNestedArray) {
 //NOTE: We use this unnecessary, temporary 'sample' as an extra register. This is purely done because TypeScript
 //		does not like my TFInputsArray type. That type was written to handle nested arrays, but it's causing other
 //		problems, primarily within this file.
+//
+//TODO: This can be 'solved' with this cast: "const NUMBER_ARRAY = array as Array<number>;", but that seems as
+//		ugly as this, if not uglier. I need further investigation of map/reduce/filter/forEach/etc in TS.
 
 			let sample = Number(array[index]);
 

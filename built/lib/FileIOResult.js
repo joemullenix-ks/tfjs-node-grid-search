@@ -4,6 +4,7 @@ exports.FileIOResult = void 0;
 var FileIOResult = /** @class */ (function () {
     function FileIOResult() {
         this._data = '';
+        // Lint gripes about empty constructors. Apperently this is good enough. Party on.
     }
     Object.defineProperty(FileIOResult.prototype, "data", {
         get: function () { return this._data; },

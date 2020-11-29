@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 'use strict';
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
@@ -118,8 +119,8 @@ var MAIN = function () { return __awaiter(void 0, void 0, void 0, function () {
                 SESSION_DATA = new SessionData_1.SessionData(PROOF_PERCENTAGE, DATA_PACKAGE.inputs, DATA_PACKAGE.targets, true);
                 EVALUATE_PREDICTION = function (target, prediction) {
                     // these come in as arbitrarily nested arrays; cast down to our known depth
-                    var TARGET_2D = target;
-                    var PREDICTION_2D = prediction;
+                    var TARGET_2D = target; // as Array<number>;
+                    var PREDICTION_2D = prediction; // as Array<number>;
                     var TARGETTED_INDEX = Utils_1.Utils.ArrayFindIndexOfHighestValue(TARGET_2D);
                     var PREDICTED_INDEX = Utils_1.Utils.ArrayFindIndexOfHighestValue(PREDICTION_2D);
                     //NOTE: This is written for a multi-class (one-hot), classification network.
@@ -161,5 +162,5 @@ var MAIN = function () { return __awaiter(void 0, void 0, void 0, function () {
         }
     });
 }); };
-MAIN();
+void MAIN();
 //# sourceMappingURL=all.js.map

@@ -19,8 +19,8 @@ var PROGRESSION_TYPENAME = 'Fibonacci';
 var FibonacciProgression = /** @class */ (function (_super) {
     __extends(FibonacciProgression, _super);
     //NOTE: It might seem useful to offer two arbitrary params, e.g. (1.5, 4), and let the user define their own
-    //		Fibonacci-ish sequence. I actually tried that, and lo and behold, it basically finds it's way back
-    //		to the actual Fibonaccis. It doesn't merged, exactly, but it produces the same curve, just slightly
+    //		Fibonacci-ish sequence. I actually tried that, and lo and behold, it basically finds its way back
+    //		to the actual Fibonaccis. It doesn't merge, exactly, but it produces the same curve, just slightly
     //		offset.
     //		Makes sense in retrospect. The algorithm only cares about two inputs on the first step. After that,
     //		it exclusively uses one (the sum).
