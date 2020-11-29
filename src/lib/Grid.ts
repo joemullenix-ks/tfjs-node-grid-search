@@ -327,11 +327,14 @@ class Grid {
 
 		const TOTAL_TRAINING_CASES = TOTAL_CASES - TOTAL_VALIDATION_CASES;
 
-		if (TOTAL_VALIDATION_CASES <= this._gridOptions.GetOption('validationSetSizeMin')) {
+//NOTE: Cast this one. We know it exists, because we backfill any missing params. (TODO: Rewrite GridOptions vis-a-vis TS.)
+		const USER_VALIDATION_SET_SIZE_MIN = this._gridOptions.GetOption('validationSetSizeMin') as number;
+
+		if (TOTAL_VALIDATION_CASES <= USER_VALIDATION_SET_SIZE_MIN) {
 			console.warn('Validation split is extremely low, and may not produce useful results.');
 		}
 
-		if (TOTAL_TRAINING_CASES <= this._gridOptions.GetOption('validationSetSizeMin')) {
+		if (TOTAL_TRAINING_CASES <= USER_VALIDATION_SET_SIZE_MIN) {
 			console.warn('Validation split is extremely high, and may not produce useful results.');
 		}
 

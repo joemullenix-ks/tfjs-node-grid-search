@@ -7,8 +7,8 @@ import { Utils } from './Utils';
 
 
 class Axis {
-	private _forward: boolean = false;
-	private _typeName: string = '';
+	private _forward = false;
+	private _typeName = '';
 
 	constructor(private _typeEnum: number,
 				private _boundBegin: number,
@@ -61,30 +61,30 @@ class Axis {
 		this._forward = BOUNDS_DELTA >= 0;
 	}
 
-	get type() { return this._typeEnum; }
-	get typeName() { return this._typeName; }
+	get type(): number { return this._typeEnum; }
+	get typeName(): string { return this._typeName; }
 
-	Advance() {
+	Advance(): void {
 		this._progression.Advance();
 	}
 
-	CalculatePosition() {
+	CalculatePosition(): number {
 		const PROGRESSION_VALUE = this._progression.value;
 
 		return this._boundBegin + (this._forward ? PROGRESSION_VALUE : -PROGRESSION_VALUE);
 	}
 
-	CheckComplete() {
+	CheckComplete(): boolean {
 		return (this._forward
 				? this.CalculatePosition() > this._boundEnd
 				: this.CalculatePosition() < this._boundEnd);
 	}
 
-	Reset() {
+	Reset(): void {
 		this._progression.Reset();
 	}
 
-	WriteReport(compact: boolean) {
+	WriteReport(compact: boolean): string {
 		const POSITION_TEXT = this._progression.integerBased
 								? this.CalculatePosition()
 								: this.CalculatePosition().toFixed(6);
@@ -101,11 +101,9 @@ class Axis {
 		return REPORT_TEXT;
 	}
 
-	static AttemptValidateParameter(key: string, value: number, failureMessage: FailureMessage) {
-
 //NOTE: It's important to gracefully handle bad inputs here, with explanations and recommendations in the failure text.
-//		This has the potential to be a point-of-failure for new users ramping up on model config.
-
+//		This has the potential to be a point-of-failure for new users as they ramp up on model config.
+	static AttemptValidateParameter(key: string, value: number, failureMessage: FailureMessage): boolean {
 		let errorSuffix = '';
 
 		switch (key) {
@@ -151,11 +149,9 @@ class Axis {
 		return false;
 	}
 
-	static AttemptValidateProgression(key: string, progression: Progression, failureMessage: FailureMessage) {
-
 //NOTE: It's important to gracefully handle bad inputs here, with explanations and recommendations in the failure text.
-//		This has the potential to be a point-of-failure for new users ramping up on model config.
-
+//		This has the potential to be a point-of-failure for new users as they ramp up on model config.
+	static AttemptValidateProgression(key: string, progression: Progression, failureMessage: FailureMessage): boolean {
 		let errorSuffix = '';
 
 		switch (key) {
@@ -193,7 +189,7 @@ class Axis {
 		return false;
 	}
 
-	static LookupTypeName(x: number) {
+	static LookupTypeName(x: number): string {
 		switch (x) {
 			case Types.BATCH_SIZE:			return Names.BATCH_SIZE;
 			case Types.EPOCHS:				return Names.EPOCHS;
@@ -220,7 +216,7 @@ interface AxisDef {
 */
 
 //NOTE: TODO: This is wrong, I'm just not clear on the solution at the moment; need to finish the TS conversion.
-//			  Obviously we should not have three separate enums that represent one class of information.
+//			  Obviously we should NOT have three separate enums that represent one class of information.
 //  		  Either we'll have an interface that each instance of Axis takes as a constructor param,
 //			  or, and I think more likely, we'll treat Axis as a base (probably abstract), then derive
 //			  children for each axis (BatchSizeAxis, EpochsAxis, etc...).

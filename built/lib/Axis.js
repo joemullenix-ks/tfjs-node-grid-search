@@ -85,9 +85,9 @@ var Axis = /** @class */ (function () {
                     + this._progression.typeName + ' }'));
         return REPORT_TEXT;
     };
+    //NOTE: It's important to gracefully handle bad inputs here, with explanations and recommendations in the failure text.
+    //		This has the potential to be a point-of-failure for new users as they ramp up on model config.
     Axis.AttemptValidateParameter = function (key, value, failureMessage) {
-        //NOTE: It's important to gracefully handle bad inputs here, with explanations and recommendations in the failure text.
-        //		This has the potential to be a point-of-failure for new users ramping up on model config.
         var errorSuffix = '';
         switch (key) {
             case "batchSize" /* BATCH_SIZE */:
@@ -126,9 +126,9 @@ var Axis = /** @class */ (function () {
         failureMessage.text = '"' + key + '" is not valid. ' + errorSuffix;
         return false;
     };
+    //NOTE: It's important to gracefully handle bad inputs here, with explanations and recommendations in the failure text.
+    //		This has the potential to be a point-of-failure for new users as they ramp up on model config.
     Axis.AttemptValidateProgression = function (key, progression, failureMessage) {
-        //NOTE: It's important to gracefully handle bad inputs here, with explanations and recommendations in the failure text.
-        //		This has the potential to be a point-of-failure for new users ramping up on model config.
         var errorSuffix = '';
         switch (key) {
             // integer progressions, only

@@ -38,7 +38,7 @@ var AxisSet = /** @class */ (function () {
     };
     AxisSet.prototype.ResetAxis = function (index) {
         this.ValidateIndex(index);
-        return this._axes[index].Reset();
+        this._axes[index].Reset();
     };
     AxisSet.prototype.ValidateIndex = function (index) {
         console.assert(index >= 0);

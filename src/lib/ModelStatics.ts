@@ -2,6 +2,10 @@
 
 
 import * as TENSOR_FLOW from '@tensorflow/tfjs-node';
+import * as TF_INITIALIZERS from '@tensorflow/tfjs-layers/dist/initializers'
+//TODO: IMPORTANT: The import of this separate module (tfjs-layers) is probably the solution we need for the
+//				   nested arrays issue in Grid types (and related files). Getting TF's native types in should
+//				   preclude all of that Array<unknown> nonsense. Woot!
 
 
 import { FailureMessage } from './FailureMessage';
@@ -22,7 +26,7 @@ class ModelStatics {
 
 		const FAILURE_MESSAGE = new FailureMessage();
 
-		for (let k in this._userStatics) {
+		for (const k in this._userStatics) {
 			if (!Axis.Axis.AttemptValidateParameter(k, this._userStatics[k], FAILURE_MESSAGE)) {
 				// fatal, so that users don't kick off a (potentially very long) grid search with a bad model config
 				throw new Error('There was a problem with the static model this._userStatics. ' + FAILURE_MESSAGE.text);
@@ -34,7 +38,7 @@ class ModelStatics {
 		this.WriteStaticParams();
 	}
 
-	AttemptStripParam(paramKey: string) {
+	AttemptStripParam(paramKey: string): void {
 		console.assert(paramKey !== '');
 
 		if (this._staticParams[paramKey] === undefined) {
@@ -52,22 +56,26 @@ class ModelStatics {
 		delete this._staticParams[paramKey];
 	}
 
-	GenerateInitializerBias() {
+//TODO: Each of these four 'Generate' calls will be overridable via user callback.
+
+	GenerateInitializerBias(): TF_INITIALIZERS.Initializer {
 //NOTE: See https://js.tensorflow.org/api/2.7.0/#class:initializers.Initializer
 		return TENSOR_FLOW.initializers.constant({value: 0.1});
 	}
 
-	GenerateInitializerKernel() {
+	GenerateInitializerKernel(): TF_INITIALIZERS.Initializer {
 //NOTE: See https://js.tensorflow.org/api/2.7.0/#class:initializers.Initializer
 		return TENSOR_FLOW.initializers.heNormal({seed: Math.random()});
 	}
 
-	GenerateLossFunction() {
+//TODO: This will have a more complex type. It can take a string or string[], or a LossOrMetricFn or LossOrMetricFn[].
+	GenerateLossFunction(): string {
 //NOTE: See https://js.tensorflow.org/api/2.7.0/#tf.LayersModel.compile
+
 		return 'categoricalCrossentropy';
 	}
 
-	GenerateOptimizer(learnRate: number) {
+	GenerateOptimizer(learnRate: number): TENSOR_FLOW.Optimizer {
 //NOTE: See https://js.tensorflow.org/api/2.7.0/#tf.LayersModel.compile
 
 		console.assert(learnRate > 0.0);
@@ -76,11 +84,11 @@ class ModelStatics {
 		return TENSOR_FLOW.train.adam(learnRate);
 	}
 
-	ShallowCloneParams() {
+	ShallowCloneParams(): Types.StringKeyedSimpleObject {
 		return Object.assign({}, this._staticParams);
 	}
 
-	WriteStaticParams() {
+	WriteStaticParams(): void {
 		// set the user's value, or take the program default (these are optional from the user's point-of-view)
 
 		this._staticParams[Axis.Names.BATCH_SIZE] =

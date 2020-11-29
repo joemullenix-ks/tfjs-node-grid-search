@@ -295,45 +295,38 @@ function StandardizeInputs(inputData) {
             if (typeof value !== 'number') {
                 throw new Error('Invalid type found during default standardization ' + (typeof value));
             }
-            var CASTED_INDEX = Number(index);
-            var CASTED_VALUE = Number(value);
-            console.log(CASTED_INDEX, CASTED_VALUE);
             // we've hit a 'bottom' level array (a leaf node)
-            /*KEEP: IMPORTANT
             //NOTE: We use this unnecessary, temporary 'sample' as an extra register. This is purely done because TypeScript
             //		does not like my TFInputsArray type. That type was written to handle nested arrays, but it's causing other
             //		problems, primarily within this file.
-            
-                        let sample = Number(array[index]);
-            
+            //
+            //TODO: This can be 'solved' with this cast: "const NUMBER_ARRAY = array as Array<number>;", but that seems as
+            //		ugly as this, if not uglier. I need further investigation of map/reduce/filter/forEach/etc in TS.
+            var sample = Number(array[index]);
+            // shift left by the mean, to 'center' everything on zero
+            sample -= MEANS[index];
+            if (STANDARD_DEVIATIONS[index] === 0) {
+                // this category (feature) has no deviation; all samples equal the mean
+                // set the value back into its slot
+                array[index] = sample;
+                return;
+            }
+            // divide by the standard deviation, so that all categories have a variance of one
+            sample /= STANDARD_DEVIATIONS[index];
+            // set the value back into its slot
+            array[index] = sample;
+            /*KEEP: ...until the above TS issue is resolved. This is the original, and there's nothing wrong with it.
                         // shift left by the mean, to 'center' everything on zero
-                        sample -= MEANS[index];
+                        array[index] -= MEANS[index];
             
                         if (STANDARD_DEVIATIONS[index] === 0) {
                             // this category (feature) has no deviation; all samples equal the mean
-            
-                            // set the value back into its slot
-                            array[index] = sample;
-            
                             return;
                         }
             
                         // divide by the standard deviation, so that all categories have a variance of one
-                        sample /= STANDARD_DEVIATIONS[index];
-            
-                        // set the value back into its slot
-                        array[index] = sample;
+                        array[index] /= STANDARD_DEVIATIONS[index];
             */
-            /*KEEP: ...until the above TS issue is resolved. This is the original, and there's nothing wrong with it.*/
-            // shift left by the mean, to 'center' everything on zero
-            array[index] -= MEANS[index];
-            if (STANDARD_DEVIATIONS[index] === 0) {
-                // this category (feature) has no deviation; all samples equal the mean
-                return;
-            }
-            // divide by the standard deviation, so that all categories have a variance of one
-            array[index] /= STANDARD_DEVIATIONS[index];
-            /**/
         });
     };
     RECURSIVELY_STANDARDIZE_FEATURES(inputData);

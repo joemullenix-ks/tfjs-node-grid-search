@@ -85,6 +85,18 @@ const UTILS = {
 		queue.shift();
 	},
 
+	ThrowCaughtUnknown: (messagePrefix: string, errorOrException: unknown): void => {
+		if (typeof errorOrException === 'string') {
+			throw new Error(messagePrefix + errorOrException);
+		}
+
+		if (errorOrException instanceof Error) {
+			throw new Error(messagePrefix + errorOrException.message);
+		}
+
+		throw new Error(messagePrefix + 'unknown exception type');
+	},
+
 	ValidateTextForCSV: (x: string | number | boolean): void => {
 //NOTE: Add whichever (just not TS any) input type. That's the point, here. We're looking at the argument
 //		after it's been cast to string, to ensure we have cleanly CSV-able information for file write().

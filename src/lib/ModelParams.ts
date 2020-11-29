@@ -16,7 +16,7 @@ class ModelParams {
 		this._mergedParams = Object.assign({}, this._staticParams);
 
 		// ...then merge in the dynamics, throwing in the event of a collision
-		for (let k in this._dynamicParams) {
+		for (const k in this._dynamicParams) {
 			if (this._mergedParams[k] !== undefined) {
 				throw new Error('Merging model params with a dynamic-static collision (these are mutually exclusive); key: ' + k);
 			}
@@ -55,7 +55,7 @@ class ModelParams {
 		return String(this._mergedParams[key]);
 	}
 
-	ValidateParamKey(key: string) {
+	ValidateParamKey(key: string): void {
 		console.assert(key !== '');
 
 		if (this._mergedParams[key] === undefined) {
@@ -64,10 +64,10 @@ class ModelParams {
 	}
 
 //vv TODO: These move into a CSVSource interface
-	WriteCSVLineKeys() {
+	WriteCSVLineKeys(): string {
 		let textOut = '';
 
-		for (let k in this._mergedParams) {
+		for (const k in this._mergedParams) {
 			textOut += k + ',';
 		}
 
@@ -77,10 +77,10 @@ class ModelParams {
 		return textOut;
 	}
 
-	WriteCSVLineValues() {
+	WriteCSVLineValues(): string {
 		let textOut = '';
 
-		for (let k in this._mergedParams) {
+		for (const k in this._mergedParams) {
 			// check every string for file-breakers, while we're here
 
 //PERF: This is potentially overkill (we validate these early on in their lifecycle), and it _could_ matter.

@@ -11,16 +11,16 @@ class ModelTestStats {
 		console.assert(Math.floor(this._totalCases) === this._totalCases);
 	}
 
-	CalculateScore() {
+	CalculateScore(): number {
 		return this._totalCorrect / this._totalCases;
 	}
 
 //vv TODO: These move into a CSVSource interface
-	WriteCSVLineKeys() {
+	WriteCSVLineKeys(): string {
 		return 'deltaCorrect,deltaIncorrect,totalCorrect,totalCases';
 	}
 
-	WriteCSVLineValues() {
+	WriteCSVLineValues(): string {
 		return this._deltaCorrect
 				+ ',' + this._deltaIncorrect
 				+ ',' + this._totalCorrect

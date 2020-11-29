@@ -297,7 +297,7 @@ var Grid = /** @class */ (function () {
     //TODO: This model type might be too strict. Consider the lower-level TF LayersModel.
     Grid.prototype.TrainModel = function (model, modelParams) {
         return __awaiter(this, void 0, void 0, function () {
-            var TOTAL_CASES, TOTAL_VALIDATION_CASES, TOTAL_TRAINING_CASES, TOTAL_EPOCHS;
+            var TOTAL_CASES, TOTAL_VALIDATION_CASES, TOTAL_TRAINING_CASES, USER_VALIDATION_SET_SIZE_MIN, TOTAL_EPOCHS;
             var _this = this;
             return __generator(this, function (_a) {
                 switch (_a.label) {
@@ -307,10 +307,11 @@ var Grid = /** @class */ (function () {
                         TOTAL_CASES = this._sessionData.totalTrainingCases;
                         TOTAL_VALIDATION_CASES = Math.ceil(TOTAL_CASES * modelParams.GetNumericParam("validationSplit" /* VALIDATION_SPLIT */));
                         TOTAL_TRAINING_CASES = TOTAL_CASES - TOTAL_VALIDATION_CASES;
-                        if (TOTAL_VALIDATION_CASES <= this._gridOptions.GetOption('validationSetSizeMin')) {
+                        USER_VALIDATION_SET_SIZE_MIN = this._gridOptions.GetOption('validationSetSizeMin');
+                        if (TOTAL_VALIDATION_CASES <= USER_VALIDATION_SET_SIZE_MIN) {
                             console.warn('Validation split is extremely low, and may not produce useful results.');
                         }
-                        if (TOTAL_TRAINING_CASES <= this._gridOptions.GetOption('validationSetSizeMin')) {
+                        if (TOTAL_TRAINING_CASES <= USER_VALIDATION_SET_SIZE_MIN) {
                             console.warn('Validation split is extremely high, and may not produce useful results.');
                         }
                         TOTAL_EPOCHS = modelParams.GetNumericParam("epochs" /* EPOCHS */);

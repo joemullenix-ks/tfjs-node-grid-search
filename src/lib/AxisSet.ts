@@ -23,19 +23,19 @@ class AxisSet {
 		});
 	}
 
-	AdvanceAxis(index: number) {
+	AdvanceAxis(index: number): void {
 		this.ValidateIndex(index);
 
 		this._axes[index].Advance();
 	}
 
-	CheckAxisComplete(index: number) {
+	CheckAxisComplete(index: number): boolean {
 		this.ValidateIndex(index);
 
 		return this._axes[index].CheckComplete();
 	}
 
-	CreateParams() {
+	CreateParams(): StringKeyedNumbersObject {
 		const PARAMS: StringKeyedNumbersObject = {};
 
 		for (let i = 0; i < this._axes.length; ++i) {
@@ -50,26 +50,26 @@ class AxisSet {
 		return PARAMS;
 	}
 
-	GetTotalAxes() {
+	GetTotalAxes(): number {
 		return this._axes.length;
 	}
 
-	ResetAxis(index: number) {
+	ResetAxis(index: number): void {
 		this.ValidateIndex(index);
 
-		return this._axes[index].Reset();
+		this._axes[index].Reset();
 	}
 
-	ValidateIndex(index: number) {
+	ValidateIndex(index: number): void {
 		console.assert(index >= 0);
 		console.assert(index < this._axes.length);
 	}
 
-	Walk(callback: (axis: Axis) => void) {
+	Walk(callback: (axis: Axis) => void): void {
 		this._axes.forEach(callback);
 	}
 
-	WriteAxisReport(index: number, compact: boolean) {
+	WriteAxisReport(index: number, compact: boolean): string {
 		this.ValidateIndex(index);
 
 		return this._axes[index].WriteReport(compact);

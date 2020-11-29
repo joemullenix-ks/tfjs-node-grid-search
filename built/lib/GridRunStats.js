@@ -4,6 +4,7 @@ exports.GridRunStats = void 0;
 var GridRunStats = /** @class */ (function () {
     function GridRunStats() {
         this._iterationResults = [];
+        // Lint gripes about empty constructors. Apperently this is good enough. Party on.
     }
     GridRunStats.prototype.AddIterationResult = function (iterationResult) {
         this._iterationResults.push(iterationResult);
@@ -13,7 +14,7 @@ var GridRunStats = /** @class */ (function () {
             return 'no data';
         }
         // write the header of the CSV table
-        var headerText = 'pass,iteration,repetition,score,duration,'
+        var HEADER_TEXT = 'pass,iteration,repetition,score,duration,'
             + this._iterationResults[0].WriteModelParamHeader()
             + ','
             + this._iterationResults[0].WriteEpochStatsHeader()
@@ -35,7 +36,7 @@ var GridRunStats = /** @class */ (function () {
         });
         // drop the trailing newline
         iterationsTableText = iterationsTableText.slice(0, -1);
-        return headerText + '\n' + iterationsTableText;
+        return HEADER_TEXT + '\n' + iterationsTableText;
     };
     GridRunStats.prototype.WriteReport = function (sortByScore) {
         var iterations = this._iterationResults;

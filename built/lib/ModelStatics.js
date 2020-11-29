@@ -21,6 +21,9 @@ var __importStar = (this && this.__importStar) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ModelStatics = void 0;
 var TENSOR_FLOW = __importStar(require("@tensorflow/tfjs-node"));
+//TODO: IMPORTANT: The import of this separate module (tfjs-layers) is probably the solution we need for the
+//				   nested arrays issue in Grid types (and related files). Getting TF's native types in should
+//				   preclude all of that Array<unknown> nonsense. Woot!
 var FailureMessage_1 = require("./FailureMessage");
 var Axis = __importStar(require("./Axis"));
 var ModelStatics = /** @class */ (function () {
@@ -51,6 +54,7 @@ var ModelStatics = /** @class */ (function () {
         }
         delete this._staticParams[paramKey];
     };
+    //TODO: Each of these four 'Generate' calls will be overridable via user callback.
     ModelStatics.prototype.GenerateInitializerBias = function () {
         //NOTE: See https://js.tensorflow.org/api/2.7.0/#class:initializers.Initializer
         return TENSOR_FLOW.initializers.constant({ value: 0.1 });
@@ -59,6 +63,7 @@ var ModelStatics = /** @class */ (function () {
         //NOTE: See https://js.tensorflow.org/api/2.7.0/#class:initializers.Initializer
         return TENSOR_FLOW.initializers.heNormal({ seed: Math.random() });
     };
+    //TODO: This will have a more complex type. It can take a string or string[], or a LossOrMetricFn or LossOrMetricFn[].
     ModelStatics.prototype.GenerateLossFunction = function () {
         //NOTE: See https://js.tensorflow.org/api/2.7.0/#tf.LayersModel.compile
         return 'categoricalCrossentropy';

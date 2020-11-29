@@ -7,7 +7,7 @@ import { ModelTestStats } from './ModelTestStats';
 
 
 class IterationResult {
-	private _score: number = 0;
+	private _score = 0;
 
 	constructor(private _iteration: number,
 				private _descriptor: string,
@@ -28,10 +28,10 @@ class IterationResult {
 		this._score = this._modelTestStats.CalculateScore();
 	}
 
-	get iteration() { return this._iteration; }
-	get repetition() { return this._repetition; }
-	get runDuration() { return this._runDuration; }
-	get score() { return this._score; }
+	get iteration(): number { return this._iteration; }
+	get repetition(): number { return this._repetition; }
+	get runDuration(): number { return this._runDuration; }
+	get score(): number { return this._score; }
 
 //TODO: These WriteHeader/Values methods have duplicate structure and usage.
 //		Enforce them with a CSVSource interface.

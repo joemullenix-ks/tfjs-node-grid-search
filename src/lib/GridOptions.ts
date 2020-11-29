@@ -25,7 +25,7 @@ class GridOptions {
 		}
 
 		// merge the user-supplied options w/ the default options
-		for (let k in userOptions) {
+		for (const k in userOptions) {
 			if (ALL_AVAILABLE_OPTIONS[k] !== undefined) {
 				continue;
 			}
@@ -44,7 +44,7 @@ class GridOptions {
 
 			console.log('The following options are suppored:');
 
-			for (let l in ALL_AVAILABLE_OPTIONS) {
+			for (const l in ALL_AVAILABLE_OPTIONS) {
 				console.log(l);
 			}
 
@@ -70,7 +70,7 @@ class GridOptions {
 
 		const ERROR_PREFIX = 'Grid option ';
 
-		for (let k in userOptions) {
+		for (const k in userOptions) {
 			const OPTION = userOptions[k];
 
 			switch (k) {
@@ -127,7 +127,7 @@ class GridOptions {
 		}
 
 		// now merge the defaults into the user's options; any for which we provide a value, but the user sent nothing
-		for (let k in DEFAULT_OPTIONS) {
+		for (const k in DEFAULT_OPTIONS) {
 			if (userOptions[k] === undefined) {
 				userOptions[k] = DEFAULT_OPTIONS[k];
 			}
@@ -137,14 +137,14 @@ class GridOptions {
 		this._options = userOptions;
 	}
 
-	GetOption(key: string)  {
+	GetOption(key: string): string | number | boolean | undefined {
 		switch (key) {
 			case 'epochStatsDepth':
 			case 'repetitions':
 			case 'validationSetSizeMin':
 			case 'writeResultsToDirectory': {
-//NOTE: This value may be undefined. That's expected. We enforce that the key be known, but we don't require the user
-//		to set a value for every possible key.
+//NOTE: This value may be undefined. That's expected. We enforce that all user-supplied keys be known, but we
+//		do not require the user to set a value for every possible key.
 //		For example, if they don't want to save CSV files, they do not send "writeResultsToDirectory".
 				return this._options[key];
 			}
