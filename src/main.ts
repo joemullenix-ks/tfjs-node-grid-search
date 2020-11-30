@@ -1,8 +1,8 @@
 'use strict';
 
 
-export class Search {
+module.exports = class Search {
 	constructor() {
-		console.log('instantiated search');
+		console.log('instantiated search v00');
 	}
 }
