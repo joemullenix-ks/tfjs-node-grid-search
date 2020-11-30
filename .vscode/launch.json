@@ -7,16 +7,16 @@
 		{
 			"type": "node",
 			"request": "launch",
-			"name": "Launch built JS",
+			"name": "Launch transpiled JS",
 			"skipFiles": [
 				"<node_internals>/**"
 			],
-			"program": "${workspaceFolder}\\built\\all.js"
+			"program": "${workspaceFolder}\\dist\\all.js"
 		},
 		{
 			"type": "node",
 			"request": "launch",
-			"name": "Launch unbuilt TypeScript",
+			"name": "Launch as TypeScript",
 			"skipFiles": [
 				"<node_internals>/**"
 			],

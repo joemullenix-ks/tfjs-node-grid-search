@@ -19,7 +19,7 @@
 			"windows": {
 				"command": "del",
 				"args": [
-					"built/*",
+					"dist/*",
 					"-Recurse"
 				]
 			}
