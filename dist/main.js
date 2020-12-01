@@ -19,6 +19,7 @@ SESSION_DATA,
 EVALUATE_PREDICTION,
 GRID_OPTIONS
 */
+__exportStar(require("./lib/DateTime"), exports);
 __exportStar(require("./lib/AxisSet"), exports);
 __exportStar(require("./lib/GridOptions"), exports);
 __exportStar(require("./lib/ModelStatics"), exports);
