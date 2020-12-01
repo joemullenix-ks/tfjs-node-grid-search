@@ -1,6 +1,4 @@
 'use strict';
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.Progression = void 0;
 /*KEEP: TO BE MOVED INTO DOCUMENTATION
 
 EXAMPLE PROGRESSION VALUES
@@ -82,8 +80,8 @@ initiator	= 10
 Progression	= 0, 8, 13, 21 // we round down to 8 as nearest-Fibonacci value {8 <= 10 <= 13}
 Values		= 100, 92, 87, 79, [66]
 */
-var Progression = /** @class */ (function () {
-    function Progression(_integerBased, // "integerBased" as opposed to floating point
+class Progression {
+    constructor(_integerBased, // "integerBased" as opposed to floating point
     _typeName) {
         this._integerBased = _integerBased;
         this._typeName = _typeName;
@@ -91,26 +89,13 @@ var Progression = /** @class */ (function () {
         //NOTE: All progressions begin at zero, because the bounds of the range we traverse are inclusive.
         this._value = 0;
     }
-    Object.defineProperty(Progression.prototype, "integerBased", {
-        get: function () { return this._integerBased; },
-        enumerable: false,
-        configurable: true
-    });
-    Object.defineProperty(Progression.prototype, "typeName", {
-        get: function () { return this._typeName; },
-        enumerable: false,
-        configurable: true
-    });
-    Object.defineProperty(Progression.prototype, "value", {
-        get: function () { return this._value; },
-        enumerable: false,
-        configurable: true
-    });
-    Progression.prototype.Reset = function () {
+    get integerBased() { return this._integerBased; }
+    get typeName() { return this._typeName; }
+    get value() { return this._value; }
+    Reset() {
         this._value = 0;
-    };
-    return Progression;
-}());
-exports.Progression = Progression;
+    }
+}
 Object.freeze(Progression);
+export { Progression };
 //# sourceMappingURL=Progression.js.map

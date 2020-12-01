@@ -1,9 +1,6 @@
 'use strict';
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.AxisSetTraverser = void 0;
-var AxisSetTraverser = /** @class */ (function () {
-    function AxisSetTraverser(_axisSet) {
-        var _this = this;
+class AxisSetTraverser {
+    constructor(_axisSet) {
         this._axisSet = _axisSet;
         this._totalAxes = 0;
         this._traversed = false;
@@ -15,37 +12,29 @@ var AxisSetTraverser = /** @class */ (function () {
         //		It cleans up after itself, resetting to a pristine state on the way out.
         this._iterationDescriptorsByIndex = {};
         this._totalIterations = 0;
-        var BUILD_SCHEDULE = function () {
-            var reportText = '';
-            for (var i = 0; !_this._traversed; ++i) {
-                ++_this._totalIterations;
-                var DESCRIPTOR = _this.WriteReport(true); // compact report
-                _this._iterationDescriptorsByIndex[i] = DESCRIPTOR;
+        const BUILD_SCHEDULE = () => {
+            let reportText = '';
+            for (let i = 0; !this._traversed; ++i) {
+                ++this._totalIterations;
+                const DESCRIPTOR = this.WriteReport(true); // compact report
+                this._iterationDescriptorsByIndex[i] = DESCRIPTOR;
                 //TODO: (maybe) add a "x3" suffix to this printout; needs 'repetitions' from the owner.
                 //		...could make more sense to factor this out of the constructor. The protection of the 'running' state seems misplaced.
                 reportText += DESCRIPTOR + '\n';
-                _this.Advance();
+                this.Advance();
             }
             console.log('Iteration schedule:' + '\n' + reportText);
             // reset for traversals managed by the owner
-            _this._traversed = false;
+            this._traversed = false;
         };
         BUILD_SCHEDULE();
     }
-    Object.defineProperty(AxisSetTraverser.prototype, "totalIterations", {
-        get: function () { return this._totalIterations; },
-        enumerable: false,
-        configurable: true
-    });
-    Object.defineProperty(AxisSetTraverser.prototype, "traversed", {
-        get: function () { return this._traversed; },
-        enumerable: false,
-        configurable: true
-    });
-    AxisSetTraverser.prototype.Advance = function () {
+    get totalIterations() { return this._totalIterations; }
+    get traversed() { return this._traversed; }
+    Advance() {
         console.assert(!this._traversed);
-        var resetCounter = 0;
-        for (var i = 0; i < this._totalAxes; ++i) {
+        let resetCounter = 0;
+        for (let i = 0; i < this._totalAxes; ++i) {
             this._axisSet.AdvanceAxis(i);
             if (this._axisSet.CheckAxisComplete(i)) {
                 this._axisSet.ResetAxis(i);
@@ -60,24 +49,24 @@ var AxisSetTraverser = /** @class */ (function () {
         console.assert(resetCounter === this._totalAxes);
         // this advance completed the traversal; reset
         this._traversed = true;
-    };
-    AxisSetTraverser.prototype.CreateIterationParams = function () {
+    }
+    CreateIterationParams() {
         return this._axisSet.CreateParams();
-    };
-    AxisSetTraverser.prototype.ExamineAxisNames = function (callback) {
-        this._axisSet.Walk(function (axis) {
+    }
+    ExamineAxisNames(callback) {
+        this._axisSet.Walk((axis) => {
             callback(axis.typeName);
         });
-    };
-    AxisSetTraverser.prototype.LookupIterationDescriptor = function (index) {
+    }
+    LookupIterationDescriptor(index) {
         if (this._iterationDescriptorsByIndex[index] === undefined) {
             throw new Error('Attempted to lookup descriptor for unknown iteration: ' + index);
         }
         return this._iterationDescriptorsByIndex[index];
-    };
-    AxisSetTraverser.prototype.WriteReport = function (compact) {
-        var reportText = '';
-        for (var i = 0; i < this._totalAxes; ++i) {
+    }
+    WriteReport(compact) {
+        let reportText = '';
+        for (let i = 0; i < this._totalAxes; ++i) {
             reportText += (compact ? '' : '• ')
                 + this._axisSet.WriteAxisReport(i, compact)
                 + (compact ? ', ' : '\n');
@@ -85,9 +74,8 @@ var AxisSetTraverser = /** @class */ (function () {
         // remove the trailing newline or comma-and-space
         reportText = reportText.slice(0, (compact ? -2 : -1));
         return reportText;
-    };
-    return AxisSetTraverser;
-}());
-exports.AxisSetTraverser = AxisSetTraverser;
+    }
+}
 Object.freeze(AxisSetTraverser);
+export { AxisSetTraverser };
 //# sourceMappingURL=AxisSetTraverser.js.map

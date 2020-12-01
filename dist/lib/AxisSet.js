@@ -1,12 +1,10 @@
 'use strict';
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.AxisSet = void 0;
-var AxisSet = /** @class */ (function () {
-    function AxisSet(_axes) {
+class AxisSet {
+    constructor(_axes) {
         // validate the incoming axes
         this._axes = _axes;
-        var AXES_BY_TYPE = {};
-        this._axes.forEach(function (axis) {
+        const AXES_BY_TYPE = {};
+        this._axes.forEach((axis) => {
             // no duplicates
             if (AXES_BY_TYPE[axis.type] !== undefined) {
                 throw new Error('Duplicate axis found: ' + axis.typeName);
@@ -14,45 +12,44 @@ var AxisSet = /** @class */ (function () {
             AXES_BY_TYPE[axis.type] = null;
         });
     }
-    AxisSet.prototype.AdvanceAxis = function (index) {
+    AdvanceAxis(index) {
         this.ValidateIndex(index);
         this._axes[index].Advance();
-    };
-    AxisSet.prototype.CheckAxisComplete = function (index) {
+    }
+    CheckAxisComplete(index) {
         this.ValidateIndex(index);
         return this._axes[index].CheckComplete();
-    };
-    AxisSet.prototype.CreateParams = function () {
-        var PARAMS = {};
-        for (var i = 0; i < this._axes.length; ++i) {
-            var AXIS = this._axes[i];
+    }
+    CreateParams() {
+        const PARAMS = {};
+        for (let i = 0; i < this._axes.length; ++i) {
+            const AXIS = this._axes[i];
             //TODO: Should we do these by index or key?? This isn't particularly perf-intensive, and keys are much friendlier
             //		to write and debug.
             //		This will be revisited when I implement minification.
             PARAMS[AXIS.typeName] = AXIS.CalculatePosition();
         }
         return PARAMS;
-    };
-    AxisSet.prototype.GetTotalAxes = function () {
+    }
+    GetTotalAxes() {
         return this._axes.length;
-    };
-    AxisSet.prototype.ResetAxis = function (index) {
+    }
+    ResetAxis(index) {
         this.ValidateIndex(index);
         this._axes[index].Reset();
-    };
-    AxisSet.prototype.ValidateIndex = function (index) {
+    }
+    ValidateIndex(index) {
         console.assert(index >= 0);
         console.assert(index < this._axes.length);
-    };
-    AxisSet.prototype.Walk = function (callback) {
+    }
+    Walk(callback) {
         this._axes.forEach(callback);
-    };
-    AxisSet.prototype.WriteAxisReport = function (index, compact) {
+    }
+    WriteAxisReport(index, compact) {
         this.ValidateIndex(index);
         return this._axes[index].WriteReport(compact);
-    };
-    return AxisSet;
-}());
-exports.AxisSet = AxisSet;
+    }
+}
 Object.freeze(AxisSet);
+export { AxisSet };
 //# sourceMappingURL=AxisSet.js.map

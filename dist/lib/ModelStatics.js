@@ -1,38 +1,17 @@
 'use strict';
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.ModelStatics = void 0;
-var TENSOR_FLOW = __importStar(require("@tensorflow/tfjs-node"));
+import * as TENSOR_FLOW from '@tensorflow/tfjs-node';
 //TODO: IMPORTANT: The import of this separate module (tfjs-layers) is probably the solution we need for the
 //				   nested arrays issue in Grid types (and related files). Getting TF's native types in should
 //				   preclude all of that Array<unknown> nonsense. Woot!
-var FailureMessage_1 = require("./FailureMessage");
-var Axis = __importStar(require("./Axis"));
-var ModelStatics = /** @class */ (function () {
-    function ModelStatics(_userStatics) {
+import { FailureMessage } from './FailureMessage';
+import * as Axis from './Axis';
+class ModelStatics {
+    constructor(_userStatics) {
         // validate the user-supplied static model params, i.e. those params that never change during grid search
         this._userStatics = _userStatics;
         this._staticParams = {};
-        var FAILURE_MESSAGE = new FailureMessage_1.FailureMessage();
-        for (var k in this._userStatics) {
+        const FAILURE_MESSAGE = new FailureMessage();
+        for (const k in this._userStatics) {
             if (!Axis.Axis.AttemptValidateParameter(k, this._userStatics[k], FAILURE_MESSAGE)) {
                 // fatal, so that users don't kick off a (potentially very long) grid search with a bad model config
                 throw new Error('There was a problem with the static model this._userStatics. ' + FAILURE_MESSAGE.text);
@@ -41,7 +20,7 @@ var ModelStatics = /** @class */ (function () {
         // params are valid; write the working set, backfilling w/ defaults for any the user left out
         this.WriteStaticParams();
     }
-    ModelStatics.prototype.AttemptStripParam = function (paramKey) {
+    AttemptStripParam(paramKey) {
         console.assert(paramKey !== '');
         if (this._staticParams[paramKey] === undefined) {
             // nothing to strip
@@ -53,31 +32,31 @@ var ModelStatics = /** @class */ (function () {
             console.warn('The static model param "' + paramKey + '" will be ignored. (It\'s likely overridden by a dynamic grid axis.)');
         }
         delete this._staticParams[paramKey];
-    };
+    }
     //TODO: Each of these four 'Generate' calls will be overridable via user callback.
-    ModelStatics.prototype.GenerateInitializerBias = function () {
+    GenerateInitializerBias() {
         //NOTE: See https://js.tensorflow.org/api/2.7.0/#class:initializers.Initializer
         return TENSOR_FLOW.initializers.constant({ value: 0.1 });
-    };
-    ModelStatics.prototype.GenerateInitializerKernel = function () {
+    }
+    GenerateInitializerKernel() {
         //NOTE: See https://js.tensorflow.org/api/2.7.0/#class:initializers.Initializer
         return TENSOR_FLOW.initializers.heNormal({ seed: Math.random() });
-    };
+    }
     //TODO: This will have a more complex type. It can take a string or string[], or a LossOrMetricFn or LossOrMetricFn[].
-    ModelStatics.prototype.GenerateLossFunction = function () {
+    GenerateLossFunction() {
         //NOTE: See https://js.tensorflow.org/api/2.7.0/#tf.LayersModel.compile
         return 'categoricalCrossentropy';
-    };
-    ModelStatics.prototype.GenerateOptimizer = function (learnRate) {
+    }
+    GenerateOptimizer(learnRate) {
         //NOTE: See https://js.tensorflow.org/api/2.7.0/#tf.LayersModel.compile
         console.assert(learnRate > 0.0);
         console.assert(learnRate < 1.0);
         return TENSOR_FLOW.train.adam(learnRate);
-    };
-    ModelStatics.prototype.ShallowCloneParams = function () {
+    }
+    ShallowCloneParams() {
         return Object.assign({}, this._staticParams);
-    };
-    ModelStatics.prototype.WriteStaticParams = function () {
+    }
+    WriteStaticParams() {
         // set the user's value, or take the program default (these are optional from the user's point-of-view)
         this._staticParams["batchSize" /* BATCH_SIZE */] =
             this._userStatics["batchSize" /* BATCH_SIZE */] !== undefined
@@ -109,9 +88,8 @@ var ModelStatics = /** @class */ (function () {
         this._staticParams.activationHidden = 'relu';
         this._staticParams.activationInput = 'relu';
         this._staticParams.activationOutput = 'softmax';
-    };
-    return ModelStatics;
-}());
-exports.ModelStatics = ModelStatics;
+    }
+}
 Object.freeze(ModelStatics);
+export { ModelStatics };
 //# sourceMappingURL=ModelStatics.js.map

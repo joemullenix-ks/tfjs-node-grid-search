@@ -1,26 +1,5 @@
 'use strict';
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.SessionData = void 0;
-var TENSOR_FLOW = __importStar(require("@tensorflow/tfjs-node"));
+import * as TENSOR_FLOW from '@tensorflow/tfjs-node';
 //TODO: PERF: This object wastes memory, potentially a lot of it. It carries duplicates of the inputs, as both TF tensors
 //			  and raw arrays.
 //			  In some usage cases the array versions aren't required (e.g. the user does not use standardization). Further,
@@ -31,8 +10,8 @@ var TENSOR_FLOW = __importStar(require("@tensorflow/tfjs-node"));
 //				> SessionDataStandardized
 //				> SessionDataStandardizedFaster
 //				> SessionDataStandardizedSmaller
-var SessionData = /** @class */ (function () {
-    function SessionData(proofPercentage, rawInputs, rawTargets, _useDefaultStandardization, _callbackStandardize, _callbackUnstandardize) {
+class SessionData {
+    constructor(proofPercentage, rawInputs, rawTargets, _useDefaultStandardization, _callbackStandardize, _callbackUnstandardize) {
         this._useDefaultStandardization = _useDefaultStandardization;
         this._callbackStandardize = _callbackStandardize;
         this._callbackUnstandardize = _callbackUnstandardize;
@@ -65,8 +44,8 @@ var SessionData = /** @class */ (function () {
             StandardizeInputs(rawInputs);
         }
         // move a portion of the cases into a 'proof' set, to be used after training to measure generalization
-        var TOTAL_CASES = rawInputs.length;
-        var PROOF_COUNT = Math.round(TOTAL_CASES * proofPercentage);
+        const TOTAL_CASES = rawInputs.length;
+        const PROOF_COUNT = Math.round(TOTAL_CASES * proofPercentage);
         console.log('total cases: ' + TOTAL_CASES);
         console.log('reserved for generalization tests: ' + PROOF_COUNT);
         if (PROOF_COUNT < 1) {
@@ -80,15 +59,15 @@ var SessionData = /** @class */ (function () {
         //		unknown (ha!) at compile time. I could measure it outsie, and create a generic class/interface of some
         //		kind (in lieu of six differnet support objects (at least), and gobs of duplication).
         //TODO: (low-pri, but good exercise) Look into a generic class, e.g. DeepTrainingData::Array<T>.
-        var PROOF_INPUTS = [];
-        var PROOF_TARGETS = [];
+        const PROOF_INPUTS = [];
+        const PROOF_TARGETS = [];
         // we also carry a copy of the proof subset, in its original, unstandardized form
         //NOTE: Cases are migrated from _rawInputsTraining, so that afterward the standardized and raw collections
         //		match, i.e. both of these are true:
         //			PROOF_INPUTS.length === _rawInputsProof.length
         //			rawInputs.length === _rawInputsTraining.length
         this._rawInputsProof = [];
-        for (var i = 0; i < PROOF_COUNT; ++i) {
+        for (let i = 0; i < PROOF_COUNT; ++i) {
             if (rawInputs.length === 0) {
                 throw new Error('Inputs array emptied prematurely');
             }
@@ -108,54 +87,22 @@ var SessionData = /** @class */ (function () {
         // store the targets of the cases we separated from the training set
         this._proofTargets = PROOF_TARGETS;
         // convert the proof data to tensors, for the post-training prediction step
-        this._proofInputsTensor = TENSOR_FLOW.tidy(function () { return TENSOR_FLOW.tensor(PROOF_INPUTS); });
-        this._proofTargetsTensor = TENSOR_FLOW.tidy(function () { return TENSOR_FLOW.tensor(PROOF_TARGETS); });
+        this._proofInputsTensor = TENSOR_FLOW.tidy(() => { return TENSOR_FLOW.tensor(PROOF_INPUTS); });
+        this._proofTargetsTensor = TENSOR_FLOW.tidy(() => { return TENSOR_FLOW.tensor(PROOF_TARGETS); });
         // convert the training data to tensors, for the model-fit step
-        this._trainingInputsTensor = TENSOR_FLOW.tidy(function () { return TENSOR_FLOW.tensor(rawInputs); });
-        this._trainingTargetsTensor = TENSOR_FLOW.tidy(function () { return TENSOR_FLOW.tensor(rawTargets); });
+        this._trainingInputsTensor = TENSOR_FLOW.tidy(() => { return TENSOR_FLOW.tensor(rawInputs); });
+        this._trainingTargetsTensor = TENSOR_FLOW.tidy(() => { return TENSOR_FLOW.tensor(rawTargets); });
         this._totalTrainingCases = rawInputs.length;
     }
-    Object.defineProperty(SessionData.prototype, "proofInputsTensor", {
-        get: function () { return this._proofInputsTensor; },
-        enumerable: false,
-        configurable: true
-    });
-    Object.defineProperty(SessionData.prototype, "proofTargets", {
-        get: function () { return this._proofTargets; },
-        enumerable: false,
-        configurable: true
-    });
-    Object.defineProperty(SessionData.prototype, "rawInputsProof", {
-        get: function () { return this._rawInputsProof; },
-        enumerable: false,
-        configurable: true
-    });
-    Object.defineProperty(SessionData.prototype, "totalInputNeurons", {
-        get: function () { return this._totalInputNeurons; },
-        enumerable: false,
-        configurable: true
-    });
-    Object.defineProperty(SessionData.prototype, "totalOutputNeurons", {
-        get: function () { return this._totalOutputNeurons; },
-        enumerable: false,
-        configurable: true
-    });
-    Object.defineProperty(SessionData.prototype, "totalTrainingCases", {
-        get: function () { return this._totalTrainingCases; },
-        enumerable: false,
-        configurable: true
-    });
-    Object.defineProperty(SessionData.prototype, "trainingInputsTensor", {
-        get: function () { return this._trainingInputsTensor; },
-        enumerable: false,
-        configurable: true
-    });
-    Object.defineProperty(SessionData.prototype, "trainingTargetsTensor", {
-        get: function () { return this._trainingTargetsTensor; },
-        enumerable: false,
-        configurable: true
-    });
-    SessionData.prototype.SetupStandardization = function () {
+    get proofInputsTensor() { return this._proofInputsTensor; }
+    get proofTargets() { return this._proofTargets; }
+    get rawInputsProof() { return this._rawInputsProof; }
+    get totalInputNeurons() { return this._totalInputNeurons; }
+    get totalOutputNeurons() { return this._totalOutputNeurons; }
+    get totalTrainingCases() { return this._totalTrainingCases; }
+    get trainingInputsTensor() { return this._trainingInputsTensor; }
+    get trainingTargetsTensor() { return this._trainingTargetsTensor; }
+    SetupStandardization() {
         if (!this._callbackStandardize) {
             if (!this._callbackUnstandardize) {
                 // no callbacks; useDefaultStandardization will drive the behavior
@@ -168,12 +115,12 @@ var SessionData = /** @class */ (function () {
             console.warn('Standardization callbacks supplied, so default standardization will be ignored.');
             this._useDefaultStandardization = false;
         }
-    };
-    SessionData.ValidateRawData = function (raw) {
+    }
+    static ValidateRawData(raw) {
         //NOTE: The top level of 'raw' must be an array, otherwise a lone Number would pass validation. This is no longer
         //		a problem under TypeScript, but it's worth keeping in mind.
-        var recursionKillswitch = false;
-        var CHECK_ARRAYS_OF_NUMBERS_RECURSIVELY = function (a) {
+        let recursionKillswitch = false;
+        const CHECK_ARRAYS_OF_NUMBERS_RECURSIVELY = (a) => {
             if (recursionKillswitch) {
                 // this raw data has already failed
                 return false;
@@ -183,7 +130,7 @@ var SessionData = /** @class */ (function () {
             }
             if (Array.isArray(a)) {
                 if (a.length > 0) {
-                    for (var i = 0; i < a.length; ++i) {
+                    for (let i = 0; i < a.length; ++i) {
                         if (CHECK_ARRAYS_OF_NUMBERS_RECURSIVELY(a[i])) {
                             continue;
                         }
@@ -205,10 +152,8 @@ var SessionData = /** @class */ (function () {
             return;
         }
         throw new Error('Invalid raw data. Inputs and targets must be supplied as arrays of numbers, flat or nested.');
-    };
-    return SessionData;
-}());
-exports.SessionData = SessionData;
+    }
+}
 //vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
 //vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
 //TODO: This standardization code moves into a separate lib, and/or gets replaced by simple-statistics(tm).
@@ -216,7 +161,7 @@ exports.SessionData = SessionData;
 function CountLeafElements(inputData) {
     console.assert(inputData.length > 0);
     // find the lowest level of these (potentially) nested arrays
-    var deepestArray = inputData;
+    let deepestArray = inputData;
     while (Array.isArray(deepestArray[0])) {
         console.assert(deepestArray.length > 0);
         deepestArray = deepestArray[0];
@@ -225,43 +170,43 @@ function CountLeafElements(inputData) {
 }
 function FindMean(data) {
     console.assert(data.length > 0);
-    var sum = 0;
-    for (var i = 0; i < data.length; ++i) {
+    let sum = 0;
+    for (let i = 0; i < data.length; ++i) {
         sum += data[i];
     }
-    var MEAN = sum / data.length;
+    const MEAN = sum / data.length;
     return MEAN;
 }
 function FindStandardDeviation(data, mean) {
     // for each sample, subtract the mean and square the result
-    var SQUARED_MEAN_DELTAS = data.map(function (x) { return Math.pow(x - mean, 2); });
-    var MEAN_OF_ALL_THAT = FindMean(SQUARED_MEAN_DELTAS);
-    var STDEV = Math.sqrt(MEAN_OF_ALL_THAT);
+    const SQUARED_MEAN_DELTAS = data.map((x) => { return Math.pow(x - mean, 2); });
+    const MEAN_OF_ALL_THAT = FindMean(SQUARED_MEAN_DELTAS);
+    const STDEV = Math.sqrt(MEAN_OF_ALL_THAT);
     return STDEV;
 }
 function StandardizeInputs(inputData) {
     console.assert(inputData.length > 0);
     // find the lowest level of these (potentially) nested arrays
-    var deepestArray = inputData;
-    var tensorDimensions = 1;
+    let deepestArray = inputData;
+    let tensorDimensions = 1;
     while (Array.isArray(deepestArray[0])) {
         console.assert(deepestArray.length > 0);
         deepestArray = deepestArray[0];
         ++tensorDimensions;
     }
     // prepare a table for every feature value
-    var TOTAL_FEATURES = deepestArray.length;
+    const TOTAL_FEATURES = deepestArray.length;
     console.log('standardizing ' + tensorDimensions + ' dimension tensor with ' + TOTAL_FEATURES + ' features');
-    var FEATURE_VALUE_TABLE = [];
-    for (var i = 0; i < TOTAL_FEATURES; ++i) {
+    const FEATURE_VALUE_TABLE = [];
+    for (let i = 0; i < TOTAL_FEATURES; ++i) {
         FEATURE_VALUE_TABLE.push([]);
     }
     // walk this set of (potentially nested) arrays, tabulating the feature values at the bottom
     //NOTE: TODO: This is actually a basic tensor tool, I'm now realizing. Find a good tensor lib, or start one.
     //			  ...after you check TF's own utils, or course!
-    var RECURSIVELY_TABULATE_FEATURES = function (a) {
+    const RECURSIVELY_TABULATE_FEATURES = (a) => {
         console.assert(a.length > 0);
-        a.forEach(function (value, index) {
+        a.forEach((value, index) => {
             if (Array.isArray(value)) {
                 RECURSIVELY_TABULATE_FEATURES(value);
                 return;
@@ -275,19 +220,19 @@ function StandardizeInputs(inputData) {
     };
     RECURSIVELY_TABULATE_FEATURES(inputData);
     // find mean and standard deviation for each feature
-    var MEANS = [];
-    var STANDARD_DEVIATIONS = [];
-    for (var i = 0; i < TOTAL_FEATURES; ++i) {
-        var FEATURE_MEAN = FindMean(FEATURE_VALUE_TABLE[i]);
-        var FEATURE_STDEV = FindStandardDeviation(FEATURE_VALUE_TABLE[i], FEATURE_MEAN);
+    const MEANS = [];
+    const STANDARD_DEVIATIONS = [];
+    for (let i = 0; i < TOTAL_FEATURES; ++i) {
+        const FEATURE_MEAN = FindMean(FEATURE_VALUE_TABLE[i]);
+        const FEATURE_STDEV = FindStandardDeviation(FEATURE_VALUE_TABLE[i], FEATURE_MEAN);
         MEANS.push(FEATURE_MEAN);
         STANDARD_DEVIATIONS.push(FEATURE_STDEV);
     }
     // walk this set of (potentially) nested arrays, adjusting each feature set to mean zero and variance one
-    var RECURSIVELY_STANDARDIZE_FEATURES = function (a) {
+    const RECURSIVELY_STANDARDIZE_FEATURES = (a) => {
         console.assert(a.length > 0);
         // a.forEach((value: TFNestedArray | number, index: number, array: TFNestedArray) => {
-        a.forEach(function (value, index, array) {
+        a.forEach((value, index, array) => {
             if (Array.isArray(value)) {
                 RECURSIVELY_STANDARDIZE_FEATURES(value);
                 return;
@@ -302,7 +247,7 @@ function StandardizeInputs(inputData) {
             //
             //TODO: This can be 'solved' with this cast: "const NUMBER_ARRAY = array as Array<number>;", but that seems as
             //		ugly as this, if not uglier. I need further investigation of map/reduce/filter/forEach/etc in TS.
-            var sample = Number(array[index]);
+            let sample = Number(array[index]);
             // shift left by the mean, to 'center' everything on zero
             sample -= MEANS[index];
             if (STANDARD_DEVIATIONS[index] === 0) {
@@ -334,4 +279,5 @@ function StandardizeInputs(inputData) {
 //^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 //^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Object.freeze(SessionData);
+export { SessionData };
 //# sourceMappingURL=SessionData.js.map

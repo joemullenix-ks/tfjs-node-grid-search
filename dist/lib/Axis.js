@@ -1,10 +1,8 @@
 'use strict';
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.Axis = void 0;
-var FailureMessage_1 = require("./FailureMessage");
-var Utils_1 = require("./Utils");
-var Axis = /** @class */ (function () {
-    function Axis(_typeEnum, _boundBegin, _boundEnd, _progression) {
+import { FailureMessage } from './FailureMessage';
+import { Utils } from './Utils';
+class Axis {
+    constructor(_typeEnum, _boundBegin, _boundEnd, _progression) {
         this._typeEnum = _typeEnum;
         this._boundBegin = _boundBegin;
         this._boundEnd = _boundEnd;
@@ -28,7 +26,7 @@ var Axis = /** @class */ (function () {
         //		That said - we only enforce basic rules, e.g. no negative epoch counts, integer neuron counts, etc...
         //		We're not attempting to do TF's job, here.
         //		Nor do we project memory usage or battery life (yet).
-        var FAILURE_MESSAGE = new FailureMessage_1.FailureMessage();
+        const FAILURE_MESSAGE = new FailureMessage();
         if (!Axis.AttemptValidateParameter(this._typeName, this._boundBegin, FAILURE_MESSAGE)) {
             throw new Error('There was a problem with an axis-begin value. ' + FAILURE_MESSAGE.text);
         }
@@ -38,7 +36,7 @@ var Axis = /** @class */ (function () {
         if (!Axis.AttemptValidateProgression(this._typeName, this._progression, FAILURE_MESSAGE)) {
             throw new Error('There was a problem with an axis progression. ' + FAILURE_MESSAGE.text);
         }
-        var BOUNDS_DELTA = this._boundEnd - this._boundBegin;
+        const BOUNDS_DELTA = this._boundEnd - this._boundBegin;
         //NOTE: Negative deltas are supported.
         if (BOUNDS_DELTA === 0) {
             console.warn('"' + this._typeName
@@ -46,36 +44,28 @@ var Axis = /** @class */ (function () {
         }
         this._forward = BOUNDS_DELTA >= 0;
     }
-    Object.defineProperty(Axis.prototype, "type", {
-        get: function () { return this._typeEnum; },
-        enumerable: false,
-        configurable: true
-    });
-    Object.defineProperty(Axis.prototype, "typeName", {
-        get: function () { return this._typeName; },
-        enumerable: false,
-        configurable: true
-    });
-    Axis.prototype.Advance = function () {
+    get type() { return this._typeEnum; }
+    get typeName() { return this._typeName; }
+    Advance() {
         this._progression.Advance();
-    };
-    Axis.prototype.CalculatePosition = function () {
-        var PROGRESSION_VALUE = this._progression.value;
+    }
+    CalculatePosition() {
+        const PROGRESSION_VALUE = this._progression.value;
         return this._boundBegin + (this._forward ? PROGRESSION_VALUE : -PROGRESSION_VALUE);
-    };
-    Axis.prototype.CheckComplete = function () {
+    }
+    CheckComplete() {
         return (this._forward
             ? this.CalculatePosition() > this._boundEnd
             : this.CalculatePosition() < this._boundEnd);
-    };
-    Axis.prototype.Reset = function () {
+    }
+    Reset() {
         this._progression.Reset();
-    };
-    Axis.prototype.WriteReport = function (compact) {
-        var POSITION_TEXT = this._progression.integerBased
+    }
+    WriteReport(compact) {
+        const POSITION_TEXT = this._progression.integerBased
             ? this.CalculatePosition()
             : this.CalculatePosition().toFixed(6);
-        var REPORT_TEXT = POSITION_TEXT
+        const REPORT_TEXT = POSITION_TEXT
             + ' ' + this._typeName
             + (compact
                 ? ''
@@ -84,17 +74,17 @@ var Axis = /** @class */ (function () {
                     + this._boundEnd + ' '
                     + this._progression.typeName + ' }'));
         return REPORT_TEXT;
-    };
+    }
     //NOTE: It's important to gracefully handle bad inputs here, with explanations and recommendations in the failure text.
     //		This has the potential to be a point-of-failure for new users as they ramp up on model config.
-    Axis.AttemptValidateParameter = function (key, value, failureMessage) {
-        var errorSuffix = '';
+    static AttemptValidateParameter(key, value, failureMessage) {
+        let errorSuffix = '';
         switch (key) {
             case "batchSize" /* BATCH_SIZE */:
             case "epochs" /* EPOCHS */:
             case "neuronsPerHiddenLayer" /* NEURONS */:
                 {
-                    if (Utils_1.Utils.CheckPositiveInteger(value)) {
+                    if (Utils.CheckPositiveInteger(value)) {
                         return true;
                     }
                     errorSuffix = ERROR_TEXT_POSITIVE_INTEGER;
@@ -103,7 +93,7 @@ var Axis = /** @class */ (function () {
             case "hiddenLayers" /* LAYERS */:
                 {
                     // zero is allowed
-                    if (Utils_1.Utils.CheckNonNegativeInteger(value)) {
+                    if (Utils.CheckNonNegativeInteger(value)) {
                         return true;
                     }
                     errorSuffix = ERROR_TEXT_NON_NEGATIVE_INTEGER;
@@ -113,7 +103,7 @@ var Axis = /** @class */ (function () {
             case "validationSplit" /* VALIDATION_SPLIT */:
                 { // << zero and one disable TF validation
                     // zero and one are not allowed
-                    if (Utils_1.Utils.CheckFloat0to1Exclusive(value)) {
+                    if (Utils.CheckFloat0to1Exclusive(value)) {
                         return true;
                     }
                     errorSuffix = ERROR_TEXT_EXCLUSIVE_UNIT_SCALAR;
@@ -125,11 +115,11 @@ var Axis = /** @class */ (function () {
         }
         failureMessage.text = '"' + key + '" is not valid. ' + errorSuffix;
         return false;
-    };
+    }
     //NOTE: It's important to gracefully handle bad inputs here, with explanations and recommendations in the failure text.
     //		This has the potential to be a point-of-failure for new users as they ramp up on model config.
-    Axis.AttemptValidateProgression = function (key, progression, failureMessage) {
-        var errorSuffix = '';
+    static AttemptValidateProgression(key, progression, failureMessage) {
+        let errorSuffix = '';
         switch (key) {
             // integer progressions, only
             case "batchSize" /* BATCH_SIZE */:
@@ -159,8 +149,8 @@ var Axis = /** @class */ (function () {
         }
         failureMessage.text = '"' + key + '" is not valid. ' + errorSuffix;
         return false;
-    };
-    Axis.LookupTypeName = function (x) {
+    }
+    static LookupTypeName(x) {
         switch (x) {
             case 0 /* BATCH_SIZE */: return "batchSize" /* BATCH_SIZE */;
             case 1 /* EPOCHS */: return "epochs" /* EPOCHS */;
@@ -172,14 +162,13 @@ var Axis = /** @class */ (function () {
                 throw new Error('invalid enum index: ' + x + '/' + 6 /* _TOTAL */);
             }
         }
-    };
-    return Axis;
-}());
-exports.Axis = Axis;
-var ERROR_TEXT_EXCLUSIVE_UNIT_SCALAR = 'The value must be between 0 and 1 exclusive.';
-var ERROR_TEXT_NON_NEGATIVE_INTEGER = 'The value must be a non-negative integer.';
-var ERROR_TEXT_PARAM_UNKNOWN = 'The parameter is not recognized.';
-var ERROR_TEXT_POSITIVE_FLOAT = 'The value must be a positive float.';
-var ERROR_TEXT_POSITIVE_INTEGER = 'The value must be a positive integer.';
+    }
+}
+const ERROR_TEXT_EXCLUSIVE_UNIT_SCALAR = 'The value must be between 0 and 1 exclusive.';
+const ERROR_TEXT_NON_NEGATIVE_INTEGER = 'The value must be a non-negative integer.';
+const ERROR_TEXT_PARAM_UNKNOWN = 'The parameter is not recognized.';
+const ERROR_TEXT_POSITIVE_FLOAT = 'The value must be a positive float.';
+const ERROR_TEXT_POSITIVE_INTEGER = 'The value must be a positive integer.';
 Object.freeze(Axis);
+export { Axis };
 //# sourceMappingURL=Axis.js.map

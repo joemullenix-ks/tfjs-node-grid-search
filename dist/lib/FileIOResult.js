@@ -1,22 +1,15 @@
 'use strict';
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.FileIOResult = void 0;
-var FileIOResult = /** @class */ (function () {
-    function FileIOResult() {
+class FileIOResult {
+    constructor() {
         this._data = '';
         // Lint gripes about empty constructors. Apperently this is good enough. Party on.
     }
-    Object.defineProperty(FileIOResult.prototype, "data", {
-        get: function () { return this._data; },
-        set: function (data) {
-            console.assert(data !== '');
-            this._data = data;
-        },
-        enumerable: false,
-        configurable: true
-    });
-    return FileIOResult;
-}());
-exports.FileIOResult = FileIOResult;
+    get data() { return this._data; }
+    set data(data) {
+        console.assert(data !== '');
+        this._data = data;
+    }
+}
 Object.freeze(FileIOResult);
+export { FileIOResult };
 //# sourceMappingURL=FileIOResult.js.map
