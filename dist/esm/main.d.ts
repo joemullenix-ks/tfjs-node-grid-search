@@ -1,5 +1,3 @@
-export * as Types from './ts_types/common';
-export * as GridTypes from './ts_types/Grid';
 export { Axis, Defaults as AxisDefaults, Names as AxisNames, Types as AxisType } from './lib/Axis';
 export { AxisSet } from './lib/AxisSet';
 export { AxisSetTraverser } from './lib/AxisSetTraverser';

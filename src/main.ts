@@ -1,9 +1,11 @@
 'use strict';
 
 
+/*
 //TDOO: Merge these into a single index.d.ts
 export * as Types from './ts_types/common';
 export * as GridTypes from './ts_types/Grid';
+*/
 
 //TDOO: This becomes abstract with subs, eliminating the enums
 export { Axis, Defaults as AxisDefaults, Names as AxisNames, Types as AxisType } from './lib/Axis';

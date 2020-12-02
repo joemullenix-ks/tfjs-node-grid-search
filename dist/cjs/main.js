@@ -1,28 +1,11 @@
 'use strict';
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Utils = exports.SessionData = exports.LinearProgression = exports.FibonacciProgression = exports.ExponentialProgression = exports.Progression = exports.PredictionEvaluation = exports.ModelTestStats = exports.ModelStatics = exports.ModelParams = exports.IterationResult = exports.GridRunStats = exports.GridOptions = exports.Grid = exports.FileIOResult = exports.FileIO = exports.FailureMessage = exports.EpochStats = exports.DateTime = exports.AxisSetTraverser = exports.AxisSet = exports.Axis = exports.GridTypes = exports.Types = void 0;
+exports.Utils = exports.SessionData = exports.LinearProgression = exports.FibonacciProgression = exports.ExponentialProgression = exports.Progression = exports.PredictionEvaluation = exports.ModelTestStats = exports.ModelStatics = exports.ModelParams = exports.IterationResult = exports.GridRunStats = exports.GridOptions = exports.Grid = exports.FileIOResult = exports.FileIO = exports.FailureMessage = exports.EpochStats = exports.DateTime = exports.AxisSetTraverser = exports.AxisSet = exports.Axis = void 0;
+/*
 //TDOO: Merge these into a single index.d.ts
-exports.Types = __importStar(require("./ts_types/common"));
-exports.GridTypes = __importStar(require("./ts_types/Grid"));
+export * as Types from './ts_types/common';
+export * as GridTypes from './ts_types/Grid';
+*/
 //TDOO: This becomes abstract with subs, eliminating the enums
 var Axis_1 = require("./lib/Axis");
 Object.defineProperty(exports, "Axis", { enumerable: true, get: function () { return Axis_1.Axis; } });
