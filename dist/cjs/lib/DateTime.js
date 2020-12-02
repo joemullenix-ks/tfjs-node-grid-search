@@ -1,7 +1,7 @@
 'use strict';
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.DateTime = void 0;
-//TEMP
+//DOOM: TEMP! Testing npm namespaces
 class DateTime {
     constructor() {
         this._data = '';
