@@ -223,8 +223,13 @@ interface AxisDef {
 //			  More to come!
 
 
-
-const enum Defaults {
+//NOTE: These can (and should!) be "const enum", but that causes a failure when packaging for npm.
+//		It's apparently a limitation of TypeScript. These are done are as #define in C, in that they're are
+//		implemented via find-and-replace at compile time. They have no run time aliases, ergo they can't
+//		be exported.
+//		When they're _not_ const, apparently they have aliases. Why anyone would want an enum that isn't
+//		constant is beyond me ... but there we are.
+enum Defaults {
 	BATCH_SIZE			= 10,
 	EPOCHS				= 50,
 	LAYERS				= 2,
@@ -233,7 +238,7 @@ const enum Defaults {
 	VALIDATION_SPLIT	= 0.2
 }
 
-const enum Names {
+enum Names {
 	BATCH_SIZE			= 'batchSize',
 	EPOCHS				= 'epochs',
 	LAYERS				= 'hiddenLayers',
@@ -242,7 +247,7 @@ const enum Names {
 	VALIDATION_SPLIT	= 'validationSplit'
 }
 
-const enum Types {
+enum Types {
 	BATCH_SIZE = 0,
 	EPOCHS,
 	LAYERS,
@@ -251,14 +256,6 @@ const enum Types {
 	VALIDATION_SPLIT,
 	_TOTAL
 }
-
-//vvv TEST: is 'const' the issue here?
-enum Potatoes {
-	RUSSETT = 0,
-	YUKON,
-	_TOTAL
-}
-//^^^
 
 
 const ERROR_TEXT_EXCLUSIVE_UNIT_SCALAR	= 'The value must be between 0 and 1 exclusive.';

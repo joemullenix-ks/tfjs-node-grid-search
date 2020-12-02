@@ -161,7 +161,7 @@ class GridOptions {
 //KEEP: TODO: (low-pri until TS conversion) Instead of hard-coding the option keys, implement this enum.
 //			  Also, I believe we'll use it to replace ALL_AVAILABLE_OPTIONS.
 //
-// const enum Names {
+// enum Names { << TS can't export "const enum", btw
 // 	EPOCH_STATS_DEPTH			= 'epochStatsDepth',
 // 	REPETITIONS					= 'repetitions',
 // 	VALIDATION_SET_SIZE_MIN		= 'validationSetSizeMin',
