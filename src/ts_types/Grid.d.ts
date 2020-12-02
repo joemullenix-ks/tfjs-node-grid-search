@@ -7,8 +7,8 @@ import { PredictionEvaluation } from '../lib/PredictionEvaluation'
 //TODO: I am not at all satisfied with this array typing, specifically the "Array<unknown>" cop-out.
 //		TypeScript is perfectly happy with the 'array stack' union, but ESLint is not. I tried a few templated,
 //		generic and/or recursive approaches, with varying degrees of success, but nothing clean enough.
-//		The next attempt will be to sue TF's built in types (e.g. TensorLike). If those can't be directly
-//		imported, then recreate them locally.
+//
+//		The next approach will use TF's built in types (e.g. TensorLike). See: ModelStatics.ts
 
 
 //NOTE: TensorFlow's Tensor classes go up to six, thus these defines. If you need seven, by all means extend.

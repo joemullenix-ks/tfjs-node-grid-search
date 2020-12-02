@@ -1,7 +1,7 @@
 'use strict';
 
 
-//TEMP
+//DOOM: TEMP! Testing npm namespaces
 
 
 class DateTime {
