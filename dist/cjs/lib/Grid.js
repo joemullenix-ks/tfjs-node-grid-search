@@ -75,7 +75,7 @@ class Grid {
     CreateModel(modelParams) {
         const TOTAL_INPUT_NEURONS = this._sessionData.totalInputNeurons;
         const TOTAL_OUTPUT_NEURONS = this._sessionData.totalOutputNeurons;
-        const TOTAL_HIDDEN_LAYERS = modelParams.GetNumericParam("hiddenLayers" /* LAYERS */);
+        const TOTAL_HIDDEN_LAYERS = modelParams.GetNumericParam(Axis.Names.LAYERS);
         const TF_MODEL = TENSOR_FLOW.sequential();
         if (TOTAL_HIDDEN_LAYERS === 0) {
             // this network goes directly from input to output, e.g. single layer perceptron
@@ -92,7 +92,7 @@ class Grid {
             // add the first hidden layer, which takes the inputs (TF has no discrete 'input layer')
             TF_MODEL.add(TENSOR_FLOW.layers.dense({
                 inputShape: [TOTAL_INPUT_NEURONS],
-                units: modelParams.GetNumericParam("neuronsPerHiddenLayer" /* NEURONS */),
+                units: modelParams.GetNumericParam(Axis.Names.NEURONS),
                 activation: modelParams.GetTextParam('activationInput'),
                 useBias: true,
                 kernelInitializer: this._modelStatics.GenerateInitializerKernel(),
@@ -101,7 +101,7 @@ class Grid {
             // add the remaining hidden layers; one-based, because of the built-in input layer
             for (let i = 1; i < TOTAL_HIDDEN_LAYERS; ++i) {
                 TF_MODEL.add(TENSOR_FLOW.layers.dense({
-                    units: modelParams.GetNumericParam("neuronsPerHiddenLayer" /* NEURONS */),
+                    units: modelParams.GetNumericParam(Axis.Names.NEURONS),
                     activation: modelParams.GetTextParam('activationHidden'),
                     useBias: true,
                     kernelInitializer: this._modelStatics.GenerateInitializerKernel(),
@@ -117,7 +117,7 @@ class Grid {
         }
         //TODO: Print these, but only under a verbocity setting (way too spammy)
         //		TF_MODEL.summary();
-        const LEARNING_RATE = modelParams.GetNumericParam("learnRate" /* LEARN_RATE */);
+        const LEARNING_RATE = modelParams.GetNumericParam(Axis.Names.LEARN_RATE);
         // compile the model, which prepares it for training
         TF_MODEL.compile({
             optimizer: this._modelStatics.GenerateOptimizer(LEARNING_RATE),
@@ -209,7 +209,7 @@ class Grid {
         }
         // run the unseen data through this trained model
         const PREDICTIONS_TENSOR = model.predict(this._sessionData.proofInputsTensor, {
-            batchSize: modelParams.GetNumericParam("batchSize" /* BATCH_SIZE */),
+            batchSize: modelParams.GetNumericParam(Axis.Names.BATCH_SIZE),
             //NOTE: 'verbose' is not implemented as of TF 2.7.0. The documentation is wrong, but it's noted in the lib (see model.ts).
             verbose: false
         });
@@ -248,7 +248,7 @@ class Grid {
             this.ResetEpochStats();
             const TOTAL_CASES = this._sessionData.totalTrainingCases;
             //NOTE: ceil() is how TF performs this same split, as of v2.7.0.
-            const TOTAL_VALIDATION_CASES = Math.ceil(TOTAL_CASES * modelParams.GetNumericParam("validationSplit" /* VALIDATION_SPLIT */));
+            const TOTAL_VALIDATION_CASES = Math.ceil(TOTAL_CASES * modelParams.GetNumericParam(Axis.Names.VALIDATION_SPLIT));
             const TOTAL_TRAINING_CASES = TOTAL_CASES - TOTAL_VALIDATION_CASES;
             //NOTE: Cast this one. We know it exists, because we backfill any missing params. (TODO: Rewrite GridOptions vis-a-vis TS.)
             const USER_VALIDATION_SET_SIZE_MIN = this._gridOptions.GetOption('validationSetSizeMin');
@@ -258,20 +258,20 @@ class Grid {
             if (TOTAL_TRAINING_CASES <= USER_VALIDATION_SET_SIZE_MIN) {
                 console.warn('Validation split is extremely high, and may not produce useful results.');
             }
-            const TOTAL_EPOCHS = modelParams.GetNumericParam("epochs" /* EPOCHS */);
+            const TOTAL_EPOCHS = modelParams.GetNumericParam(Axis.Names.EPOCHS);
             console.log('Training with ' + TOTAL_CASES + ' cases ('
                 + TOTAL_TRAINING_CASES + ' train, '
                 + TOTAL_VALIDATION_CASES + ' validate) '
                 + 'for ' + TOTAL_EPOCHS + ' epochs...');
             yield model.fit(this._sessionData.trainingInputsTensor, this._sessionData.trainingTargetsTensor, {
-                batchSize: modelParams.GetNumericParam("batchSize" /* BATCH_SIZE */),
+                batchSize: modelParams.GetNumericParam(Axis.Names.BATCH_SIZE),
                 epochs: TOTAL_EPOCHS,
                 shuffle: true,
                 //NOTE: As of 2020 11 23, tfjs-node logs an extra line per-epoch w/ verbosity 1+. It's redundant with our
                 //		default per-epoch line, thus the "0". However, it's worth keeping an eye on this for debugging.
                 verbose: 0,
                 //NOTE: Validation is only performed if we provide this "validationSplit" arg. It's necessary to track overfit and stuck.
-                validationSplit: modelParams.GetNumericParam("validationSplit" /* VALIDATION_SPLIT */),
+                validationSplit: modelParams.GetNumericParam(Axis.Names.VALIDATION_SPLIT),
                 callbacks: {
                     //NOTE: These events are available, as of TF 2.7.0:
                     // 								onTrainBegin: (logs) => { console.log('onTrainBegin', logs); },

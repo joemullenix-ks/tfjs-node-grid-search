@@ -45,7 +45,7 @@ const MAIN = () => __awaiter(void 0, void 0, void 0, function* () {
     // For each axis, we set a begin and end boundary, which are inclusive. We also create a progression
     // across that range, i.e. the values at which we'll stop to train and test a model.
     const AXES = [];
-    AXES.push(new Axis.Axis(0 /* BATCH_SIZE */, 5, // boundsBegin
+    AXES.push(new Axis.Axis(Axis.Types.BATCH_SIZE, 5, // boundsBegin
     10, // boundsEnd
     new LinearProgression_1.LinearProgression(5)));
     /*

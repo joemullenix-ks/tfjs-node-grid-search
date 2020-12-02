@@ -267,4 +267,4 @@ const ERROR_TEXT_POSITIVE_INTEGER		= 'The value must be a positive integer.';
 
 Object.freeze(Axis);
 
-export { Axis, Defaults, Names, Types, Potatoes };
+export { Axis, Defaults, Names, Types };

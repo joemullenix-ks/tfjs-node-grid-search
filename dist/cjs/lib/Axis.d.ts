@@ -19,7 +19,7 @@ declare class Axis {
     static AttemptValidateProgression(key: string, progression: Progression, failureMessage: FailureMessage): boolean;
     static LookupTypeName(x: number): string;
 }
-declare const enum Defaults {
+declare enum Defaults {
     BATCH_SIZE = 10,
     EPOCHS = 50,
     LAYERS = 2,
@@ -27,7 +27,7 @@ declare const enum Defaults {
     NEURONS = 16,
     VALIDATION_SPLIT = 0.2
 }
-declare const enum Names {
+declare enum Names {
     BATCH_SIZE = "batchSize",
     EPOCHS = "epochs",
     LAYERS = "hiddenLayers",
@@ -35,7 +35,7 @@ declare const enum Names {
     NEURONS = "neuronsPerHiddenLayer",
     VALIDATION_SPLIT = "validationSplit"
 }
-declare const enum Types {
+declare enum Types {
     BATCH_SIZE = 0,
     EPOCHS = 1,
     LAYERS = 2,
@@ -44,9 +44,4 @@ declare const enum Types {
     VALIDATION_SPLIT = 5,
     _TOTAL = 6
 }
-declare enum Potatoes {
-    RUSSETT = 0,
-    YUKON = 1,
-    _TOTAL = 2
-}
-export { Axis, Defaults, Names, Types, Potatoes };
+export { Axis, Defaults, Names, Types };

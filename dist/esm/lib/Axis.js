@@ -9,7 +9,7 @@ class Axis {
         this._progression = _progression;
         this._forward = false;
         this._typeName = '';
-        console.assert(_typeEnum >= 0 && _typeEnum < 6 /* _TOTAL */);
+        console.assert(_typeEnum >= 0 && _typeEnum < Types._TOTAL);
         console.assert(_boundEnd >= 0);
         console.assert(_boundBegin >= 0);
         this._typeName = Axis.LookupTypeName(this._typeEnum);
@@ -80,9 +80,9 @@ class Axis {
     static AttemptValidateParameter(key, value, failureMessage) {
         let errorSuffix = '';
         switch (key) {
-            case "batchSize" /* BATCH_SIZE */:
-            case "epochs" /* EPOCHS */:
-            case "neuronsPerHiddenLayer" /* NEURONS */:
+            case Names.BATCH_SIZE:
+            case Names.EPOCHS:
+            case Names.NEURONS:
                 {
                     if (Utils.CheckPositiveInteger(value)) {
                         return true;
@@ -90,7 +90,7 @@ class Axis {
                     errorSuffix = ERROR_TEXT_POSITIVE_INTEGER;
                 }
                 break;
-            case "hiddenLayers" /* LAYERS */:
+            case Names.LAYERS:
                 {
                     // zero is allowed
                     if (Utils.CheckNonNegativeInteger(value)) {
@@ -99,8 +99,8 @@ class Axis {
                     errorSuffix = ERROR_TEXT_NON_NEGATIVE_INTEGER;
                 }
                 break;
-            case "learnRate" /* LEARN_RATE */: // << zero and one break Adam (TODO: Not yet not confirmed, and optimizer dependent)
-            case "validationSplit" /* VALIDATION_SPLIT */:
+            case Names.LEARN_RATE: // << zero and one break Adam (TODO: Not yet not confirmed, and optimizer dependent)
+            case Names.VALIDATION_SPLIT:
                 { // << zero and one disable TF validation
                     // zero and one are not allowed
                     if (Utils.CheckFloat0to1Exclusive(value)) {
@@ -122,10 +122,10 @@ class Axis {
         let errorSuffix = '';
         switch (key) {
             // integer progressions, only
-            case "batchSize" /* BATCH_SIZE */:
-            case "epochs" /* EPOCHS */:
-            case "neuronsPerHiddenLayer" /* NEURONS */:
-            case "hiddenLayers" /* LAYERS */:
+            case Names.BATCH_SIZE:
+            case Names.EPOCHS:
+            case Names.NEURONS:
+            case Names.LAYERS:
                 {
                     if (progression.integerBased) {
                         return true;
@@ -134,8 +134,8 @@ class Axis {
                 }
                 break;
             // floating-point progressions allowed
-            case "learnRate" /* LEARN_RATE */:
-            case "validationSplit" /* VALIDATION_SPLIT */:
+            case Names.LEARN_RATE:
+            case Names.VALIDATION_SPLIT:
                 {
                     if (!progression.integerBased) {
                         return true;
@@ -152,31 +152,70 @@ class Axis {
     }
     static LookupTypeName(x) {
         switch (x) {
-            case 0 /* BATCH_SIZE */: return "batchSize" /* BATCH_SIZE */;
-            case 1 /* EPOCHS */: return "epochs" /* EPOCHS */;
-            case 2 /* LAYERS */: return "hiddenLayers" /* LAYERS */;
-            case 3 /* LEARN_RATE */: return "learnRate" /* LEARN_RATE */;
-            case 4 /* NEURONS */: return "neuronsPerHiddenLayer" /* NEURONS */;
-            case 5 /* VALIDATION_SPLIT */: return "validationSplit" /* VALIDATION_SPLIT */;
+            case Types.BATCH_SIZE: return Names.BATCH_SIZE;
+            case Types.EPOCHS: return Names.EPOCHS;
+            case Types.LAYERS: return Names.LAYERS;
+            case Types.LEARN_RATE: return Names.LEARN_RATE;
+            case Types.NEURONS: return Names.NEURONS;
+            case Types.VALIDATION_SPLIT: return Names.VALIDATION_SPLIT;
             default: {
-                throw new Error('invalid enum index: ' + x + '/' + 6 /* _TOTAL */);
+                throw new Error('invalid enum index: ' + x + '/' + Types._TOTAL);
             }
         }
     }
 }
-//vvv TEST: is 'const' the issue here?
-var Potatoes;
-(function (Potatoes) {
-    Potatoes[Potatoes["RUSSETT"] = 0] = "RUSSETT";
-    Potatoes[Potatoes["YUKON"] = 1] = "YUKON";
-    Potatoes[Potatoes["_TOTAL"] = 2] = "_TOTAL";
-})(Potatoes || (Potatoes = {}));
-//^^^
+/*KEEP: for a bit; see note below
+interface AxisDef {
+    default: number; //NOTE: This can (and likely will) could expand to include bool and string/
+    name: number;
+    type: number;
+}
+*/
+//NOTE: TODO: This is wrong, I'm just not clear on the solution at the moment; need to finish the TS conversion.
+//			  Obviously we should NOT have three separate enums that represent one class of information.
+//  		  Either we'll have an interface that each instance of Axis takes as a constructor param,
+//			  or, and I think more likely, we'll treat Axis as a base (probably abstract), then derive
+//			  children for each axis (BatchSizeAxis, EpochsAxis, etc...).
+//			  More to come!
+//NOTE: These can (and should!) be "const enum", but that causes a failure when packaging for npm.
+//		It's apparently a limitation of TypeScript. These are done are as #define in C, in that they're are
+//		implemented via find-and-replace at compile time. They have no run time aliases, ergo they can't
+//		be exported.
+//		When they're _not_ const, apparently they have aliases. Why anyone would want an enum that isn't
+//		constant is beyond me ... but there we are.
+var Defaults;
+(function (Defaults) {
+    Defaults[Defaults["BATCH_SIZE"] = 10] = "BATCH_SIZE";
+    Defaults[Defaults["EPOCHS"] = 50] = "EPOCHS";
+    Defaults[Defaults["LAYERS"] = 2] = "LAYERS";
+    Defaults[Defaults["LEARN_RATE"] = 0.001] = "LEARN_RATE";
+    Defaults[Defaults["NEURONS"] = 16] = "NEURONS";
+    Defaults[Defaults["VALIDATION_SPLIT"] = 0.2] = "VALIDATION_SPLIT";
+})(Defaults || (Defaults = {}));
+var Names;
+(function (Names) {
+    Names["BATCH_SIZE"] = "batchSize";
+    Names["EPOCHS"] = "epochs";
+    Names["LAYERS"] = "hiddenLayers";
+    Names["LEARN_RATE"] = "learnRate";
+    Names["NEURONS"] = "neuronsPerHiddenLayer";
+    Names["VALIDATION_SPLIT"] = "validationSplit";
+})(Names || (Names = {}));
+var Types;
+(function (Types) {
+    Types[Types["BATCH_SIZE"] = 0] = "BATCH_SIZE";
+    Types[Types["EPOCHS"] = 1] = "EPOCHS";
+    Types[Types["LAYERS"] = 2] = "LAYERS";
+    Types[Types["LEARN_RATE"] = 3] = "LEARN_RATE";
+    Types[Types["NEURONS"] = 4] = "NEURONS";
+    Types[Types["VALIDATION_SPLIT"] = 5] = "VALIDATION_SPLIT";
+    Types[Types["_TOTAL"] = 6] = "_TOTAL";
+})(Types || (Types = {}));
 const ERROR_TEXT_EXCLUSIVE_UNIT_SCALAR = 'The value must be between 0 and 1 exclusive.';
 const ERROR_TEXT_NON_NEGATIVE_INTEGER = 'The value must be a non-negative integer.';
 const ERROR_TEXT_PARAM_UNKNOWN = 'The parameter is not recognized.';
 const ERROR_TEXT_POSITIVE_FLOAT = 'The value must be a positive float.';
 const ERROR_TEXT_POSITIVE_INTEGER = 'The value must be a positive integer.';
 Object.freeze(Axis);
-export { Axis, Potatoes };
+export { Axis, Defaults, Names, Types };
 //# sourceMappingURL=Axis.js.map
