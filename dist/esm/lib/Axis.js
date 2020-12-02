@@ -164,6 +164,7 @@ class Axis {
         }
     }
 }
+//^^^
 const ERROR_TEXT_EXCLUSIVE_UNIT_SCALAR = 'The value must be between 0 and 1 exclusive.';
 const ERROR_TEXT_NON_NEGATIVE_INTEGER = 'The value must be a non-negative integer.';
 const ERROR_TEXT_PARAM_UNKNOWN = 'The parameter is not recognized.';

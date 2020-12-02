@@ -6,6 +6,10 @@ export * as GridTypes from './ts_types/Grid';
 */
 //TDOO: This becomes abstract with subs, eliminating the enums
 export { Axis } from './lib/Axis';
+// console.log(Axis);
+// console.log(AxisDefaults);
+// console.log(AxisNames);
+// console.log(AxisTypes);
 export { AxisSet } from './lib/AxisSet';
 export { AxisSetTraverser } from './lib/AxisSetTraverser';
 //TODO: doom this one (npm namespace tester)

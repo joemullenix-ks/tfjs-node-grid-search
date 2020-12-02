@@ -9,6 +9,10 @@ export * as GridTypes from './ts_types/Grid';
 //TDOO: This becomes abstract with subs, eliminating the enums
 var Axis_1 = require("./lib/Axis");
 Object.defineProperty(exports, "Axis", { enumerable: true, get: function () { return Axis_1.Axis; } });
+// console.log(Axis);
+// console.log(AxisDefaults);
+// console.log(AxisNames);
+// console.log(AxisTypes);
 var AxisSet_1 = require("./lib/AxisSet");
 Object.defineProperty(exports, "AxisSet", { enumerable: true, get: function () { return AxisSet_1.AxisSet; } });
 var AxisSetTraverser_1 = require("./lib/AxisSetTraverser");

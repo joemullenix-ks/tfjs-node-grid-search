@@ -252,6 +252,14 @@ const enum Types {
 	_TOTAL
 }
 
+//vvv TEST
+const enum Potatoes {
+	RUSSETT = 0,
+	YUKON,
+	_TOTAL
+}
+//^^^
+
 
 const ERROR_TEXT_EXCLUSIVE_UNIT_SCALAR	= 'The value must be between 0 and 1 exclusive.';
 const ERROR_TEXT_NON_NEGATIVE_INTEGER	= 'The value must be a non-negative integer.';
@@ -262,4 +270,4 @@ const ERROR_TEXT_POSITIVE_INTEGER		= 'The value must be a positive integer.';
 
 Object.freeze(Axis);
 
-export { Axis, Defaults, Names, Types };
+export { Axis, Defaults, Names, Types, Potatoes };

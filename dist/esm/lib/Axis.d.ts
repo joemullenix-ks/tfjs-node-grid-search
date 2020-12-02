@@ -44,4 +44,9 @@ declare const enum Types {
     VALIDATION_SPLIT = 5,
     _TOTAL = 6
 }
-export { Axis, Defaults, Names, Types };
+declare const enum Potatoes {
+    RUSSETT = 0,
+    YUKON = 1,
+    _TOTAL = 2
+}
+export { Axis, Defaults, Names, Types, Potatoes };
