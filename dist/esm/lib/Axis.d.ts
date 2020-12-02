@@ -44,7 +44,7 @@ declare const enum Types {
     VALIDATION_SPLIT = 5,
     _TOTAL = 6
 }
-declare const enum Potatoes {
+declare enum Potatoes {
     RUSSETT = 0,
     YUKON = 1,
     _TOTAL = 2

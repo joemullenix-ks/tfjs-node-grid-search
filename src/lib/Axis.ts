@@ -252,8 +252,8 @@ const enum Types {
 	_TOTAL
 }
 
-//vvv TEST
-const enum Potatoes {
+//vvv TEST: is 'const' the issue here?
+enum Potatoes {
 	RUSSETT = 0,
 	YUKON,
 	_TOTAL

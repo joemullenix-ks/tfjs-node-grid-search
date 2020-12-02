@@ -164,6 +164,13 @@ class Axis {
         }
     }
 }
+//vvv TEST: is 'const' the issue here?
+var Potatoes;
+(function (Potatoes) {
+    Potatoes[Potatoes["RUSSETT"] = 0] = "RUSSETT";
+    Potatoes[Potatoes["YUKON"] = 1] = "YUKON";
+    Potatoes[Potatoes["_TOTAL"] = 2] = "_TOTAL";
+})(Potatoes || (Potatoes = {}));
 //^^^
 const ERROR_TEXT_EXCLUSIVE_UNIT_SCALAR = 'The value must be between 0 and 1 exclusive.';
 const ERROR_TEXT_NON_NEGATIVE_INTEGER = 'The value must be a non-negative integer.';
@@ -171,5 +178,5 @@ const ERROR_TEXT_PARAM_UNKNOWN = 'The parameter is not recognized.';
 const ERROR_TEXT_POSITIVE_FLOAT = 'The value must be a positive float.';
 const ERROR_TEXT_POSITIVE_INTEGER = 'The value must be a positive integer.';
 Object.freeze(Axis);
-export { Axis };
+export { Axis, Potatoes };
 //# sourceMappingURL=Axis.js.map

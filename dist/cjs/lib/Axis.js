@@ -1,6 +1,6 @@
 'use strict';
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Axis = void 0;
+exports.Potatoes = exports.Axis = void 0;
 const FailureMessage_1 = require("./FailureMessage");
 const Utils_1 = require("./Utils");
 class Axis {
@@ -167,6 +167,14 @@ class Axis {
     }
 }
 exports.Axis = Axis;
+//vvv TEST: is 'const' the issue here?
+var Potatoes;
+(function (Potatoes) {
+    Potatoes[Potatoes["RUSSETT"] = 0] = "RUSSETT";
+    Potatoes[Potatoes["YUKON"] = 1] = "YUKON";
+    Potatoes[Potatoes["_TOTAL"] = 2] = "_TOTAL";
+})(Potatoes || (Potatoes = {}));
+exports.Potatoes = Potatoes;
 //^^^
 const ERROR_TEXT_EXCLUSIVE_UNIT_SCALAR = 'The value must be between 0 and 1 exclusive.';
 const ERROR_TEXT_NON_NEGATIVE_INTEGER = 'The value must be a non-negative integer.';

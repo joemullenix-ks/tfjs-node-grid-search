@@ -6,6 +6,7 @@ export * as GridTypes from './ts_types/Grid';
 */
 //TDOO: This becomes abstract with subs, eliminating the enums
 export { Axis } from './lib/Axis';
+export { Potatoes } from './lib/Axis';
 // console.log(Axis);
 // console.log(AxisDefaults);
 // console.log(AxisNames);

@@ -1,6 +1,6 @@
 'use strict';
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Utils = exports.SessionData = exports.LinearProgression = exports.FibonacciProgression = exports.ExponentialProgression = exports.Progression = exports.PredictionEvaluation = exports.ModelTestStats = exports.ModelStatics = exports.ModelParams = exports.IterationResult = exports.GridRunStats = exports.GridOptions = exports.Grid = exports.FileIOResult = exports.FileIO = exports.FailureMessage = exports.EpochStats = exports.DateTime = exports.AxisSetTraverser = exports.AxisSet = exports.Axis = void 0;
+exports.Utils = exports.SessionData = exports.LinearProgression = exports.FibonacciProgression = exports.ExponentialProgression = exports.Progression = exports.PredictionEvaluation = exports.ModelTestStats = exports.ModelStatics = exports.ModelParams = exports.IterationResult = exports.GridRunStats = exports.GridOptions = exports.Grid = exports.FileIOResult = exports.FileIO = exports.FailureMessage = exports.EpochStats = exports.DateTime = exports.AxisSetTraverser = exports.AxisSet = exports.Potatoes = exports.Axis = void 0;
 /*
 //TDOO: Merge these into a single index.d.ts
 export * as Types from './ts_types/common';
@@ -9,6 +9,8 @@ export * as GridTypes from './ts_types/Grid';
 //TDOO: This becomes abstract with subs, eliminating the enums
 var Axis_1 = require("./lib/Axis");
 Object.defineProperty(exports, "Axis", { enumerable: true, get: function () { return Axis_1.Axis; } });
+var Axis_2 = require("./lib/Axis");
+Object.defineProperty(exports, "Potatoes", { enumerable: true, get: function () { return Axis_2.Potatoes; } });
 // console.log(Axis);
 // console.log(AxisDefaults);
 // console.log(AxisNames);
