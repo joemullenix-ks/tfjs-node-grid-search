@@ -1,5 +1,5 @@
 declare class DateTime {
-    _data: string;
+    private _data;
     constructor();
     get data(): string;
     set data(data: string);

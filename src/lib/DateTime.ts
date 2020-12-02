@@ -5,10 +5,10 @@
 
 
 class DateTime {
-	_data = '';
+	private _data = '';
 
 	constructor() {
-		// Lint gripes about empty constructors. Apperently this is good enough. Party on.
+		console.warn('THIS IS A TEMP DOOMED CLASS');
 	}
 
 	get data(): string { return this._data; }

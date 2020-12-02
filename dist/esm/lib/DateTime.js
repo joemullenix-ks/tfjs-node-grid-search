@@ -3,7 +3,7 @@
 class DateTime {
     constructor() {
         this._data = '';
-        // Lint gripes about empty constructors. Apperently this is good enough. Party on.
+        console.warn('THIS IS A TEMP DOOMED CLASS');
     }
     get data() { return this._data; }
     set data(data) {

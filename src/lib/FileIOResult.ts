@@ -2,7 +2,7 @@
 
 
 class FileIOResult {
-	_data = '';
+	private _data = '';
 
 	constructor() {
 		// Lint gripes about empty constructors. Apperently this is good enough. Party on.
