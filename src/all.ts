@@ -133,8 +133,8 @@ const MAIN = async () => {
 	const EVALUATE_PREDICTION: GridTypes.CallbackEvaluatePrediction = (target, prediction) => {
 
 		// these come in as arbitrarily nested arrays; cast down to our known depth
-		const TARGET_2D = target;// as Array<number>;
-		const PREDICTION_2D = prediction;// as Array<number>;
+		const TARGET_2D = target;
+		const PREDICTION_2D = prediction;
 
 		const TARGETTED_INDEX = Utils.ArrayFindIndexOfHighestValue(TARGET_2D);
 

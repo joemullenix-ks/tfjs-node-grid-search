@@ -20,16 +20,16 @@ import { ArrayOrder2, TFArrayStack, TFNestedArray } from '../ts_types/Grid';
 
 
 class SessionData {
-	_rawInputsProof: TFNestedArray;
-	_rawInputsTraining: TFNestedArray;
-	_proofInputsTensor: TENSOR_FLOW.Tensor;
-	_proofTargets: ArrayOrder2;
-	_proofTargetsTensor: TENSOR_FLOW.Tensor;
-	_totalInputNeurons = 0;
-	_totalOutputNeurons = 0;
-	_totalTrainingCases = 0;
-	_trainingInputsTensor: TENSOR_FLOW.Tensor;
-	_trainingTargetsTensor: TENSOR_FLOW.Tensor;
+	private _rawInputsProof: TFNestedArray;
+	private _rawInputsTraining: TFNestedArray;
+	private _proofInputsTensor: TENSOR_FLOW.Tensor;
+	private _proofTargets: ArrayOrder2;
+	private _proofTargetsTensor: TENSOR_FLOW.Tensor;
+	private _totalInputNeurons = 0;
+	private _totalOutputNeurons = 0;
+	private _totalTrainingCases = 0;
+	private _trainingInputsTensor: TENSOR_FLOW.Tensor;
+	private _trainingTargetsTensor: TENSOR_FLOW.Tensor;
 
 	constructor(proofPercentage: number,
 				rawInputs: TFNestedArray,
