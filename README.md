@@ -16,127 +16,161 @@ npm i tfjs-node-grid-search
 
 //IMPORTANT: tfjs-node currently has an installation problem on Windows. TLDR, here's the _workaround_:
 //
-//			copy tensorflow.dll
-//			from: node_modules\@tensorflow\tfjs-node\deps\lib
-//			  to: node_modules\@tensorflow\tfjs-node\lib\napi-v6
+//              copy tensorflow.dll
+//             from: node_modules\@tensorflow\tfjs-node\deps\lib
+//               to: node_modules\@tensorflow\tfjs-node\lib\napi-v6
 
 
 'use strict';
 
+import * as tngs from 'tfjs-node-grid-search';
 
-const tngs = require('tfjs-node-grid-search');
-
-
-//NOTE: We wrap the example in an async function, because tfjs's model fit is asynchronous.
+//NOTE: We wrap the example in an async function, because tfjs's model fit
+//		is asynchronous.
 const main = async () => {
+  // First, we define the axes for our grid search (the supported axes are
+  // enumerated in Axis).
+  // For each axis, we set a begin and end boundary, which are inclusive. We
+  // also create a progression across that range, i.e. the values at which
+  // we'll stop to train and test a model.
 
-	// First, we define the axes for our grid search (the supported axes are enumerated in Axis).
-	// For each axis, we set a begin and end boundary, which are inclusive. We also create a progression
-	// across that range, i.e. the values at which we'll stop to train and test a model.
+  const axes = [];
 
-	const axes = [];
+  // test batch sizes from 8 to 16 inclusive, in linear steps of 4 (8, 12, 16)
+  axes.push(
+    new tngs.Axis(
+      tngs.AxisTypes.BATCH_SIZE,
+      8,
+      16,
+      new tngs.LinearProgression(4)
+    )
+  );
 
-	axes.push(new tngs.Axis(tngs.AxisTypes.BATCH_SIZE,
-							8,		// boundsBegin
-							16,		// boundsEnd
-							new tngs.LinearProgression(4)));
+  // test nuerons-per-hidden-layer from 10 to 18 inclusive, using the beginning
+  // of the Fibonacci sequence (10, 11, 12, 13, 15, 18)
+  axes.push(
+    new tngs.Axis(
+      tngs.AxisTypes.NEURONS,
+      10,
+      18,
+      new tngs.FibonacciProgression(0)
+    )
+  );
 
-	const axisSet = new tngs.AxisSet(axes);
+  const axisSet = new tngs.AxisSet(axes);
 
-	// Next, we define the static parameters. That is, those params that never change during our grid search.
+  // Next, we define the static parameters. That is, those params that never
+  // change during our grid search.
 
-	const modelStatics = new tngs.ModelStatics({
-													epochs: 5,
-													hiddenLayers: 1,
-													neuronsPerHiddenLayer: 15,
-													validationSplit: 0.25
-												});
+  const modelStatics = new tngs.ModelStatics({
+    epochs: 5,
+    hiddenLayers: 1,
+    validationSplit: 0.25
+  });
 
-	// Next, we setup options that will govern the Grid itself, as well as the search process.
+  // Next, we setup options that will govern the Grid itself, as well as the
+  // search process.
 
-	const gridOptions = new tngs.GridOptions(	{
-													epochStatsDepth: 3,
-													repetitions: 2,
-													validationSetSizeMin: 1000,
-													writeResultsToDirectory: '' // ex: "../results" or "c:\\my tensorflow project\\grid search results"
-												});
+  const gridOptions = new tngs.GridOptions({
+    epochStatsDepth: 3,
+    repetitions: 2,
+    validationSetSizeMin: 1000,
+    writeResultsToDirectory: ''
+  });
 
-	// Now we load and configure the data set. A fresh copy of this data will be used to train and test each
-	// 'iteration' of the grid search (i.e. each unique combination of dynamic params).
+  // Now we load and configure the data set. A fresh copy of this data will be
+  // used to train and test each 'iteration' of the grid search (i.e. each
+  // unique combination of dynamic params).
 
-	const fetchData = async (pathInputs, pathTargets) => {
-		const fileIOResult = new tngs.FileIOResult();
+  const fetchData = async (pathInputs: string, pathTargets: string) => {
+    const fileIOResult = new tngs.FileIOResult();
 
-		await tngs.FileIO.ReadDataFile(pathInputs, fileIOResult);
+    await tngs.FileIO.ReadDataFile(pathInputs, fileIOResult);
 
-		const fetchedInputs = JSON.parse(fileIOResult.data);
+    const fetchedInputs = JSON.parse(fileIOResult.data);
 
-		await tngs.FileIO.ReadDataFile(pathTargets, fileIOResult);
+    await tngs.FileIO.ReadDataFile(pathTargets, fileIOResult);
 
-		const fetchedOutputs = JSON.parse(fileIOResult.data);
+    const fetchedOutputs = JSON.parse(fileIOResult.data);
 
-		return {inputs: fetchedInputs, targets: fetchedOutputs};
-	};
+    return { inputs: fetchedInputs, targets: fetchedOutputs };
+  };
 
-	const launchArgs = JSON.parse(process.argv.slice(2)); // ignore the first two, which are built-in by Node
+  let launchArgs = { inputsPath: '', targetsPath: '' };
 
-	let dataSet = null;
+  let dataSet = null;
 
-	try {
-		dataSet = await fetchData(launchArgs['inputsPath'], launchArgs['targetsPath']);
-	}
-	catch (e) {
-		console.error('failed to read data set with launchArgs', launchArgs);
-		console.log('This is the expected format:\n  { inputsPath: <STRING>, targetsPath: <STRING> }');
-		return;
-	}
+  try {
+    // read the launch arguments, ignoring the first two Node defaults
+    launchArgs = JSON.parse(String(process.argv.slice(2)));
+    dataSet = await fetchData(
+      launchArgs.inputsPath,
+      launchArgs.targetsPath
+    );
+  } catch (e) {
+    console.error('failed to read data set with launchArgs', launchArgs);
+    console.log(
+      'This is the expected format:\n'
+      + '  { inputsPath: <STRING>, targetsPath: <STRING> }'
+    );
+    return;
+  }
 
-	// set aside 10% of these cases for post-training generalization tests
-	const TEST_DATA_FRACTION = 0.1;
+  // set aside 10% of these cases for post-training generalization tests
+  const TEST_DATA_FRACTION = 0.1;
 
-	const sessionData = new tngs.SessionData(	TEST_DATA_FRACTION,
-												dataSet.inputs,
-												dataSet.targets,
-												true);				// useDefaultStandardization
+  const sessionData = new tngs.SessionData(
+    TEST_DATA_FRACTION,
+    dataSet.inputs,
+    dataSet.targets,
+    true
+  );
 
-	// This callback is used by the Grid during generalization testing. At the end of each epoch (after) the network
-	// is trained, the Grid makes predictions using the test data. For each prediction, it calls this function, passing
-	// the known targets and its prediction.
-	// We evaluate each prediction, and return a PredictionEvaluation, which lets Grid score the network.
-	//	- If the prediction is acceptable, set the first argument ("correct") to true.
-	//	- The second argument (which is optional) is "delta", or an arbitrary value for the prediction.
+  // This callback is used by the Grid during generalization testing. At the end
+  // of each epoch (after) the network is trained, the Grid makes predictions
+  // using the test data. For each prediction, it calls this function, passing
+  // the known targets and its prediction.
+  // We evaluate each prediction, and return a PredictionEvaluation, which lets
+  // Grid score the network.
+  //	- If the prediction is acceptable, set the first argument ("correct")
+  //    to true.
+  //	- The second argument (which is optional) is "delta", or an arbitrary
+  //    value for the prediction.
 
-	const evaluatePrediction = (target, prediction) => {
+  const evaluatePrediction = (target: number[], prediction: number[]) => {
+    const targettedIndex = tngs.Utils.ArrayFindIndexOfHighestValue(target);
 
-		const targettedIndex = tngs.Utils.ArrayFindIndexOfHighestValue(target);
+    const predictedIndex = tngs.Utils.ArrayFindIndexOfHighestValue(prediction);
 
-		const predictedIndex = tngs.Utils.ArrayFindIndexOfHighestValue(prediction);
+//NOTE: This example is written for a multi-class (one-hot) classification
+//      network.
 
-//NOTE: This example is written for a multi-class (one-hot) classification network.
+    // if the network chose the correct index, we pass true
+    const correct = targettedIndex === predictedIndex;
 
-		// if the network chose the correct index, we pass true
-		const correct = targettedIndex === predictedIndex;
+    // we also pass a delta value, measuring how close the prediciton is to 1.0
+    // (or 100% probability)
+    const delta = 1 - prediction[predictedIndex];
 
-		// we also pass a delta value, measuring how close the prediciton is to 1.0 (or 100% probability)
-		const delta = 1 - prediction[predictedIndex];
+    return new tngs.PredictionEvaluation(correct, delta);
+  };
 
-		return new tngs.PredictionEvaluation(correct, delta);
-	}
+  // We're now ready to create the Grid, and run the search!
 
-	// We're now ready to create the Grid, and run the search!
+  const grid = new tngs.Grid(
+    axisSet,
+    modelStatics,
+    sessionData,
+    evaluatePrediction,
+    gridOptions
+  );
 
-	const grid = new tngs.Grid(	axisSet,
-								modelStatics,
-								sessionData,
-								evaluatePrediction,
-								gridOptions);
-
-	await grid.Run();
+  await grid.Run();
 };
 
 // run the example (with a top-level exception handler)
-main().catch((reason) => {
-	console.log('There was a problem.', reason);
+main().catch(reason => {
+  console.log('There was a problem.', reason);
 });
 ```
 
