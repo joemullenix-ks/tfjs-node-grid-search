@@ -288,7 +288,7 @@ function StandardizeInputs(inputData: TFNestedArray) {
 
 	const TOTAL_FEATURES = deepestArray.length;
 
-	console.log('standardizing ' + tensorDimensions + ' dimension tensor with ' + TOTAL_FEATURES + ' features');
+	console.log('Standardizing ' + tensorDimensions + ' dimension tensor with ' + TOTAL_FEATURES + ' features.');
 
 	const FEATURE_VALUE_TABLE: Array<Array<number>> = [];
 
