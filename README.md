@@ -82,37 +82,46 @@ const main = async () => {
   // used to train and test each 'iteration' of the grid search (i.e. each
   // unique combination of dynamic params).
 
-  const fetchData = async (pathInputs: string, pathTargets: string) => {
+  const fetchData = async () => {
+    if (process.argv.length < 4) {
+      throw new Error('Missing launch param(s). '
+                      + 'Expecting two paths, the first to the input data, the '
+                      + 'second to the targets.');
+    }
+
+    const launchArgPathInputs = process.argv[2];
+    const launchArgPathTargets = process.argv[3];
+
+    console.log('Attempting to read data from the following files:' + '\n'
+                + '   Inputs: ' + launchArgPathInputs + '\n'
+                + '  Targets: ' + launchArgPathTargets);
+
     const fileIOResult = new tngs.FileIOResult();
 
-    await tngs.FileIO.ReadDataFile(pathInputs, fileIOResult);
+    await tngs.FileIO.ReadDataFile(launchArgPathInputs, fileIOResult);
 
     const fetchedInputs = JSON.parse(fileIOResult.data);
 
-    await tngs.FileIO.ReadDataFile(pathTargets, fileIOResult);
+    await tngs.FileIO.ReadDataFile(launchArgPathTargets, fileIOResult);
 
     const fetchedOutputs = JSON.parse(fileIOResult.data);
 
     return { inputs: fetchedInputs, targets: fetchedOutputs };
   };
 
-  let launchArgs = { inputsPath: '', targetsPath: '' };
-
   let dataSet = null;
 
   try {
-    // read the launch arguments, ignoring the first two Node defaults
-    launchArgs = JSON.parse(String(process.argv.slice(2)));
-    dataSet = await fetchData(
-      launchArgs.inputsPath,
-      launchArgs.targetsPath
-    );
+    dataSet = await fetchData();
   } catch (e) {
-    console.error('failed to read data set with launchArgs', launchArgs);
-    console.log(
-      'This is the expected format:\n'
-      + '  { inputsPath: <STRING>, targetsPath: <STRING> }'
-    );
+    console.error('Failed to fetch the data set.' + '\n', e);
+
+    console.warn('\n' + 'Example command line:' + '\n'
+                  + '  node my-tngs-app.js data_inputs.txt data_targets.txt');
+
+    console.warn('\n' + 'Example launch.json config:' + '\n'
+                  + '  \"args\": [\"data_inputs.txt\", \"data_targets.txt\"]');
+
     return;
   }
 
