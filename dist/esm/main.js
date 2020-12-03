@@ -8,8 +8,6 @@ export * as GridTypes from './ts_types/Grid';
 export { Axis, Defaults as AxisDefaults, Names as AxisNames, Types as AxisTypes } from './lib/Axis';
 export { AxisSet } from './lib/AxisSet';
 export { AxisSetTraverser } from './lib/AxisSetTraverser';
-//TODO: doom this one (npm namespace tester)
-export { DateTime } from './lib/DateTime';
 export { EpochStats } from './lib/EpochStats';
 export { FailureMessage } from './lib/FailureMessage';
 export { FileIO } from './lib/FileIO';

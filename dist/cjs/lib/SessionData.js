@@ -218,7 +218,7 @@ function StandardizeInputs(inputData) {
     }
     // prepare a table for every feature value
     const TOTAL_FEATURES = deepestArray.length;
-    console.log('standardizing ' + tensorDimensions + ' dimension tensor with ' + TOTAL_FEATURES + ' features');
+    console.log('Standardizing ' + tensorDimensions + ' dimension tensor with ' + TOTAL_FEATURES + ' features.');
     const FEATURE_VALUE_TABLE = [];
     for (let i = 0; i < TOTAL_FEATURES; ++i) {
         FEATURE_VALUE_TABLE.push([]);

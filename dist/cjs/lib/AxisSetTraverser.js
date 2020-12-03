@@ -25,7 +25,7 @@ class AxisSetTraverser {
                 reportText += DESCRIPTOR + '\n';
                 this.Advance();
             }
-            console.log('Iteration schedule:' + '\n' + reportText);
+            console.log('iteration schedule:' + '\n' + reportText);
             // reset for traversals managed by the owner
             this._traversed = false;
         };
