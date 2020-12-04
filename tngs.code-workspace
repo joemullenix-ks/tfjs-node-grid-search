@@ -7,5 +7,7 @@
 	"settings": {
 		"workbench.colorCustomizations": {
 			"minimap.background": "#666"
+		},
+	    "editor.rulers": [120],
 	}
 }
