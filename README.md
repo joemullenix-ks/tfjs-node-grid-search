@@ -83,56 +83,16 @@ const main = async () => {
   // used to train and test each 'iteration' of the grid search (i.e. each
   // unique combination of dynamic params).
 
-  const fetchData = async () => {
-    if (process.argv.length < 4) {
-      throw new Error('Missing launch param(s). '
-                      + 'Expecting two paths, the first to the input data, the '
-                      + 'second to the targets.');
-    }
+  const dataSetFetcher = new tngs.DataSetFetcher(process.argv);
 
-    const launchArgPathInputs = process.argv[2];
-    const launchArgPathTargets = process.argv[3];
-
-    console.log('Attempting to read data from the following files:' + '\n'
-                + '   Inputs: ' + launchArgPathInputs + '\n'
-                + '  Targets: ' + launchArgPathTargets);
-
-    const fileIOResult = new tngs.FileIOResult();
-
-    await tngs.FileIO.ReadDataFile(launchArgPathInputs, fileIOResult);
-
-    const fetchedInputs = JSON.parse(fileIOResult.data);
-
-    await tngs.FileIO.ReadDataFile(launchArgPathTargets, fileIOResult);
-
-    const fetchedOutputs = JSON.parse(fileIOResult.data);
-
-    return { inputs: fetchedInputs, targets: fetchedOutputs };
-  };
-
-  let dataSet = null;
-
-  try {
-    dataSet = await fetchData();
-  } catch (e) {
-    console.error('Failed to fetch the data set.' + '\n', e);
-
-    console.warn('\n' + 'Example command line:' + '\n'
-                  + '  node my-tngs-app.js data_inputs.txt data_targets.txt');
-
-    console.warn('\n' + 'Example launch.json config:' + '\n'
-                  + '  "args": ["data_inputs.txt", "data_targets.txt"]');
-
-    return;
-  }
+  const dataSet = await dataSetFetcher.Fetch();
 
   // set aside 10% of these cases for post-training generalization tests
   const TEST_DATA_FRACTION = 0.1;
 
   const sessionData = new tngs.SessionData(
     TEST_DATA_FRACTION,
-    dataSet.inputs,
-    dataSet.targets,
+    dataSet,
     true
   );
 
