@@ -1,12 +1,7 @@
 'use strict';
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Utils = exports.SessionData = exports.LinearProgression = exports.FibonacciProgression = exports.ExponentialProgression = exports.Progression = exports.PredictionEvaluation = exports.ModelTestStats = exports.ModelStatics = exports.ModelParams = exports.IterationResult = exports.GridRunStats = exports.GridOptions = exports.Grid = exports.FileIOResult = exports.FileIO = exports.FailureMessage = exports.EpochStats = exports.AxisSetTraverser = exports.AxisSet = exports.AxisTypes = exports.AxisNames = exports.AxisDefaults = exports.Axis = void 0;
-/*
-//TDOO: Merge these into a single index.d.ts
-export * as Types from './ts_types/common';
-export * as GridTypes from './ts_types/Grid';
-*/
-//TDOO: This becomes abstract with subs, eliminating the enums
+exports.Utils = exports.SessionData = exports.LinearProgression = exports.FibonacciProgression = exports.ExponentialProgression = exports.Progression = exports.PredictionEvaluation = exports.ModelTestStats = exports.ModelStatics = exports.ModelParams = exports.IterationResult = exports.GridRunStats = exports.GridOptions = exports.Grid = exports.FileIOResult = exports.FileIO = exports.FailureMessage = exports.EpochStats = exports.DataSetFetcher = exports.DataSet = exports.AxisSetTraverser = exports.AxisSet = exports.AxisTypes = exports.AxisNames = exports.AxisDefaults = exports.Axis = void 0;
+//TDOO: Axis becomes abstract with subs, eliminating the enums
 var Axis_1 = require("./lib/Axis");
 Object.defineProperty(exports, "Axis", { enumerable: true, get: function () { return Axis_1.Axis; } });
 Object.defineProperty(exports, "AxisDefaults", { enumerable: true, get: function () { return Axis_1.Defaults; } });
@@ -16,6 +11,10 @@ var AxisSet_1 = require("./lib/AxisSet");
 Object.defineProperty(exports, "AxisSet", { enumerable: true, get: function () { return AxisSet_1.AxisSet; } });
 var AxisSetTraverser_1 = require("./lib/AxisSetTraverser");
 Object.defineProperty(exports, "AxisSetTraverser", { enumerable: true, get: function () { return AxisSetTraverser_1.AxisSetTraverser; } });
+var DataSet_1 = require("./lib/DataSet");
+Object.defineProperty(exports, "DataSet", { enumerable: true, get: function () { return DataSet_1.DataSet; } });
+var DataSetFetcher_1 = require("./lib/DataSetFetcher");
+Object.defineProperty(exports, "DataSetFetcher", { enumerable: true, get: function () { return DataSetFetcher_1.DataSetFetcher; } });
 var EpochStats_1 = require("./lib/EpochStats");
 Object.defineProperty(exports, "EpochStats", { enumerable: true, get: function () { return EpochStats_1.EpochStats; } });
 var FailureMessage_1 = require("./lib/FailureMessage");

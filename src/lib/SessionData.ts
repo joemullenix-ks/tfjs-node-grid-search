@@ -7,12 +7,21 @@ import * as TENSOR_FLOW from '@tensorflow/tfjs-node';
 import { ArrayOrder2, TFArrayStack, TFNestedArray } from '../ts_types/Grid';
 
 
-//TODO: PERF: This object wastes memory, potentially a lot of it. It carries duplicates of the inputs, as both TF tensors
-//			  and raw arrays.
+import { DataSet } from './DataSet';
+
+
+//TODO: PERF: This class will get a memory-hit upgrade. It carries duplicates of the inputs, because most runs will need
+//			  them as both TF tensors and raw arrays; problematic under a bad RAM:data ratio.
+//
+//			  TLDR: We will save memory in exchange for (potentially significant) CPU hits.
+//
+//			  Details:
 //			  In some usage cases the array versions aren't required (e.g. the user does not use standardization). Further,
 //			  even if the arrays _are_ required, we don't need to store them here. We can use TF's Tensor.arraySync() to
-//			  reproduces the data in array form, saving memory at the cost of a CPU hit.
-//			  Convert this to an abstract base, and setup concrete versions specific to the desired usage pattern:
+//			  reproduce the data in array form only while it's needed. Being more uptight, we could throw out the
+//			  data when not needed, then re-read it from (temp) local datafiles, never making both share memory, except
+//			  at startup.
+//			  Convert this to an abstract base, and write concrete versions for the user's desired mem/speed balance:
 //				SessionData
 //				> SessionDataStandardized
 //				> SessionDataStandardizedFaster
@@ -24,7 +33,6 @@ class SessionData {
 	private _rawInputsTraining: TFNestedArray;
 	private _proofInputsTensor: TENSOR_FLOW.Tensor;
 	private _proofTargets: ArrayOrder2;
-	private _proofTargetsTensor: TENSOR_FLOW.Tensor;
 	private _totalInputNeurons = 0;
 	private _totalOutputNeurons = 0;
 	private _totalTrainingCases = 0;
@@ -32,13 +40,15 @@ class SessionData {
 	private _trainingTargetsTensor: TENSOR_FLOW.Tensor;
 
 	constructor(proofPercentage: number,
-				rawInputs: TFNestedArray,
-				rawTargets: ArrayOrder2,
+				dataSet: DataSet,
 				private _useDefaultStandardization: boolean,
 				private _callbackStandardize?: (unstandardizedInputs: TFNestedArray) => void,
 				private _callbackUnstandardize?: (standardizedInputs: TFNestedArray) => void) {
 		console.assert(proofPercentage > 0.0);
 		console.assert(proofPercentage < 1.0);
+
+		const rawInputs = dataSet.inputs;
+		const rawTargets = dataSet.targets;
 
 		SessionData.ValidateRawData(rawInputs);
 		SessionData.ValidateRawData(rawTargets);
@@ -131,9 +141,8 @@ class SessionData {
 		// store the targets of the cases we separated from the training set
 		this._proofTargets = PROOF_TARGETS;
 
-		// convert the proof data to tensors, for the post-training prediction step
+		// convert the proof inputs to tensors, for the post-training prediction step
 		this._proofInputsTensor = TENSOR_FLOW.tidy(() => { return TENSOR_FLOW.tensor(PROOF_INPUTS as TFArrayStack); });
-		this._proofTargetsTensor = TENSOR_FLOW.tidy(() => { return TENSOR_FLOW.tensor(PROOF_TARGETS); });
 
 		// convert the training data to tensors, for the model-fit step
 		this._trainingInputsTensor = TENSOR_FLOW.tidy(() => { return TENSOR_FLOW.tensor(rawInputs as TFArrayStack); });

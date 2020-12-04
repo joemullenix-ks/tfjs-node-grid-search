@@ -7,11 +7,20 @@
 		{
 			"type": "node",
 			"request": "launch",
-			"name": "Launch transpiled JS",
+			"name": "Launch transpiled JS as CJS",
 			"skipFiles": [
 				"<node_internals>/**"
 			],
-			"program": "${workspaceFolder}\\dist\\all.js"
+			"program": "${workspaceFolder}\\dist\\cjs\\all.js"
+		},
+		{
+			"type": "node",
+			"request": "launch",
+			"name": "Launch transpiled JS as ESM",
+			"skipFiles": [
+				"<node_internals>/**"
+			],
+			"program": "${workspaceFolder}\\dist\\esm\\all.js"
 		},
 		{
 			"type": "node",

@@ -21,18 +21,27 @@ var __importStar = (this && this.__importStar) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.SessionData = void 0;
 const TENSOR_FLOW = __importStar(require("@tensorflow/tfjs-node"));
-//TODO: PERF: This object wastes memory, potentially a lot of it. It carries duplicates of the inputs, as both TF tensors
-//			  and raw arrays.
+//TODO: PERF: This class will get a memory-hit upgrade. It carries duplicates of the inputs, because most runs will need
+//			  them as both TF tensors and raw arrays; problematic under a bad RAM:data ratio.
+//
+//			  TLDR: We will save memory in exchange for (potentially significant) CPU hits.
+//
+//			  Details:
 //			  In some usage cases the array versions aren't required (e.g. the user does not use standardization). Further,
 //			  even if the arrays _are_ required, we don't need to store them here. We can use TF's Tensor.arraySync() to
-//			  reproduces the data in array form, saving memory at the cost of a CPU hit.
-//			  Convert this to an abstract base, and setup concrete versions specific to the desired usage pattern:
+//			  reproduce the data in array form only while it's needed. Being more uptight, we could throw out the
+//			  data when not needed, then re-read it from (temp) local datafiles, never making both share memory, except
+//			  at startup.
+//			  Convert this to an abstract base, and write concrete versions for the user's desired mem/speed balance:
 //				SessionData
 //				> SessionDataStandardized
 //				> SessionDataStandardizedFaster
 //				> SessionDataStandardizedSmaller
 class SessionData {
-    constructor(proofPercentage, rawInputs, rawTargets, _useDefaultStandardization, _callbackStandardize, _callbackUnstandardize) {
+    constructor(proofPercentage, dataSet, 
+    // rawInputs: TFNestedArray,
+    // rawTargets: ArrayOrder2,
+    _useDefaultStandardization, _callbackStandardize, _callbackUnstandardize) {
         this._useDefaultStandardization = _useDefaultStandardization;
         this._callbackStandardize = _callbackStandardize;
         this._callbackUnstandardize = _callbackUnstandardize;
@@ -41,6 +50,8 @@ class SessionData {
         this._totalTrainingCases = 0;
         console.assert(proofPercentage > 0.0);
         console.assert(proofPercentage < 1.0);
+        const rawInputs = dataSet.inputs;
+        const rawTargets = dataSet.targets;
         SessionData.ValidateRawData(rawInputs);
         SessionData.ValidateRawData(rawTargets);
         if (rawInputs.length !== rawTargets.length) {
@@ -106,9 +117,8 @@ class SessionData {
         }
         // store the targets of the cases we separated from the training set
         this._proofTargets = PROOF_TARGETS;
-        // convert the proof data to tensors, for the post-training prediction step
+        // convert the proof inputs to tensors, for the post-training prediction step
         this._proofInputsTensor = TENSOR_FLOW.tidy(() => { return TENSOR_FLOW.tensor(PROOF_INPUTS); });
-        this._proofTargetsTensor = TENSOR_FLOW.tidy(() => { return TENSOR_FLOW.tensor(PROOF_TARGETS); });
         // convert the training data to tensors, for the model-fit step
         this._trainingInputsTensor = TENSOR_FLOW.tidy(() => { return TENSOR_FLOW.tensor(rawInputs); });
         this._trainingTargetsTensor = TENSOR_FLOW.tidy(() => { return TENSOR_FLOW.tensor(rawTargets); });
