@@ -77,8 +77,7 @@ class SessionData {
 
 		const PROOF_COUNT = Math.round(TOTAL_CASES * proofPercentage);
 
-		console.log('total cases: ' + TOTAL_CASES);
-		console.log('reserved for generalization tests: ' + PROOF_COUNT);
+		console.log('total cases: ' + TOTAL_CASES + ', with ' + PROOF_COUNT + ' reserved for generalization tests');
 
 		if (PROOF_COUNT < 1) {
 			throw new Error('The provided proofPercentage is too low. Zero cases moved from the training set.');

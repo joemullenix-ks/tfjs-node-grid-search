@@ -34,7 +34,7 @@ const FILE_IO = {
 			return;
 		}
 		catch (e) {
-			Utils.ThrowCaughtUnknown('Failed to read file: ' + path, e);
+			Utils.ThrowCaughtUnknown('Failed to read file: ' + path + '\n', e);
 		}
 	},
 

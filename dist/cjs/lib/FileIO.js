@@ -55,7 +55,7 @@ const FILE_IO = {
             return;
         }
         catch (e) {
-            Utils_1.Utils.ThrowCaughtUnknown('Failed to read file: ' + path, e);
+            Utils_1.Utils.ThrowCaughtUnknown('Failed to read file: ' + path + '\n', e);
         }
     }),
     WriteResultsFile: (fileName, directory, dataToWrite) => __awaiter(void 0, void 0, void 0, function* () {
