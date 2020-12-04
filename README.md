@@ -22,15 +22,15 @@ npm i tfjs-node-grid-search
 //               to: node_modules\@tensorflow\tfjs-node\lib\napi-v6
 
 
-'use strict';
-
 import * as tngs from 'tfjs-node-grid-search';
+
+console.log('Welcome to TNGS!');
 
 //NOTE: We wrap the example in an async function, because tfjs's model fit
 //		is asynchronous.
 const main = async () => {
-  // First, we define the axes for our grid search (the supported axes are
-  // enumerated in Axis).
+  // First, we define the axes for our grid search (the available axis types are
+  // enumerated in Axis (with many more coming soon!)).
   // For each axis, we set a begin and end boundary, which are inclusive. We
   // also create a progression across that range, i.e. the values at which
   // we'll stop to train and test a model.
@@ -121,7 +121,7 @@ const main = async () => {
                   + '  node my-tngs-app.js data_inputs.txt data_targets.txt');
 
     console.warn('\n' + 'Example launch.json config:' + '\n'
-                  + '  \"args\": [\"data_inputs.txt\", \"data_targets.txt\"]');
+                  + '  "args": ["data_inputs.txt", "data_targets.txt"]');
 
     return;
   }
