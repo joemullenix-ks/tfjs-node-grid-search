@@ -1,0 +1,21 @@
+{
+    "plugins": [],
+    "recurseDepth": 100,
+    "source": {
+        "include": ["dist\\esm"],
+        "includePattern": ".+\\.js(doc|x)?$"
+    },
+    "sourceType": "module",
+    "tags": {
+        "allowUnknownTags": true,
+        "dictionaries": ["jsdoc","closure"]
+    },
+    "templates": {
+        "cleverLinks": false,
+        "monospaceLinks": false
+    },
+    "opts": {
+        "destination": "dist\\jsdoc\\output",
+        "recurse": true
+    }
+}

@@ -1,4 +1,9 @@
 'use strict';
+/**
+ * tfjs-node-grid-search
+ * @module main
+ * @see module:main
+ */
 //TDOO: Axis becomes abstract with subs, eliminating the enums
 export { Axis, Defaults as AxisDefaults, Names as AxisNames, Types as AxisTypes } from './lib/Axis';
 export { AxisSet } from './lib/AxisSet';

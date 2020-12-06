@@ -20,7 +20,8 @@
 				"command": "del",
 				"args": [
 					"dist/*",
-					"-Recurse"
+					"-Recurse",
+					"-Force"
 				]
 			}
 		}
