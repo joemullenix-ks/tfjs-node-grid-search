@@ -90,6 +90,7 @@ class Axis {
 	/**
 	* Moves the progression to its next position.
 	* @memberof Axis
+	* @method
 	*/
 	Advance(): void {
 		this._progression.Advance();
