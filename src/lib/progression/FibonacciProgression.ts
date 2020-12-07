@@ -7,12 +7,30 @@ import { Progression } from '../Progression';
 const PROGRESSION_TYPENAME = 'Fibonacci';
 
 
+/**
+ * Defines a series of steps starting from an arbitrary point in the Fibonacci
+ * sequence.
+ * @extends Progression
+ * @example
+ * // Fibonacci progression starting at 0*
+ * new tngs.FibonacciProgression(0) // 0, 1, 2, 3, 5, ...
+ *
+ * // Fibonacci progression starting at 5
+ * new tngs.FibonacciProgression(5) // 5, 8, 13, 21, 34, ...
+ *
+ * // *To prevent repeating models, the beginning of the Fibonacci sequence is tweaked.
+ */
 class FibonacciProgression extends Progression {
 	private _fiboA = 0;
 	private _fiboB = 0;
 	private _initFiboA = 0;
 	private _initFiboB = 0;
 
+	/**
+	* Creates an instance of FibonacciProgression.
+	* @param {number} _initiator The starting point in the Fibonacci sequence.
+	*/
+	constructor(private _initiator: number) {
 //NOTE: It might seem useful to offer two arbitrary params, e.g. (1.5, 4), and let the user define their own
 //		Fibonacci-ish sequence. I actually tried that, and lo and behold, it basically finds its way back
 //		to the actual Fibonaccis. It doesn't merge, exactly, but it produces the same curve, just slightly
@@ -20,7 +38,7 @@ class FibonacciProgression extends Progression {
 //		Makes sense in retrospect. The algorithm only cares about two inputs on the first step. After that,
 //		it exclusively uses one (the sum).
 //		Nature FTW.
-	constructor(private _initiator: number) {
+
 		super(	true, // always integer based (no need to overcomplicate)
 				PROGRESSION_TYPENAME);
 
@@ -51,6 +69,10 @@ class FibonacciProgression extends Progression {
 		this.ResetFibonacciInputs();
 	}
 
+	/**
+	 * Moves to the next value in the series.
+	 * @memberof FibonacciProgression
+	 */
 	Advance(): void {
 		this._value = this._fiboA + this._fiboB;
 
@@ -65,7 +87,7 @@ class FibonacciProgression extends Progression {
 		this.ResetFibonacciInputs();
 	}
 
-	ResetFibonacciInputs(): void {
+	private ResetFibonacciInputs(): void {
 		this._fiboA = this._initFiboA;
 		this._fiboB = this._initFiboB;
 	}
@@ -81,7 +103,7 @@ class FibonacciProgression extends Progression {
 const FIND_NEAREST_FIBONACCI_NUMBER = (n: number, x = 0, y = 1): number => {
 //PERF: This is not fast! Any high-frequency usage should instead use a cache.
 
-//NOTE: Though this looks dangerously unbounded, I've tested it up to max-integers, and it only goes ~80 calls deep.
+//NOTE: Although this looks dangerously unbounded, I've tested it up to max-integers, and it only goes ~80 calls deep.
 //		The limits in browsers are all 20k plus, and VSCode 64k; not in the realm of reasonable worry.
 //		...just ensure non-negative!
 	console.assert(n >= 0);

@@ -1,9 +1,8 @@
 /**
  * tfjs-node-grid-search
  * @module main
- * @see module:main
  */
-export { Axis, Defaults as AxisDefaults, Names as AxisNames, Types as AxisTypes } from './lib/Axis';
+export { Axis, AxisDefaults, AxisNames, AxisTypes } from './lib/Axis';
 export { AxisSet } from './lib/AxisSet';
 export { AxisSetTraverser } from './lib/AxisSetTraverser';
 export { DataSet } from './lib/DataSet';

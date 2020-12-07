@@ -4,14 +4,13 @@ exports.Utils = exports.SessionData = exports.LinearProgression = exports.Fibona
 /**
  * tfjs-node-grid-search
  * @module main
- * @see module:main
  */
 //TDOO: Axis becomes abstract with subs, eliminating the enums
 var Axis_1 = require("./lib/Axis");
 Object.defineProperty(exports, "Axis", { enumerable: true, get: function () { return Axis_1.Axis; } });
-Object.defineProperty(exports, "AxisDefaults", { enumerable: true, get: function () { return Axis_1.Defaults; } });
-Object.defineProperty(exports, "AxisNames", { enumerable: true, get: function () { return Axis_1.Names; } });
-Object.defineProperty(exports, "AxisTypes", { enumerable: true, get: function () { return Axis_1.Types; } });
+Object.defineProperty(exports, "AxisDefaults", { enumerable: true, get: function () { return Axis_1.AxisDefaults; } });
+Object.defineProperty(exports, "AxisNames", { enumerable: true, get: function () { return Axis_1.AxisNames; } });
+Object.defineProperty(exports, "AxisTypes", { enumerable: true, get: function () { return Axis_1.AxisTypes; } });
 var AxisSet_1 = require("./lib/AxisSet");
 Object.defineProperty(exports, "AxisSet", { enumerable: true, get: function () { return AxisSet_1.AxisSet; } });
 var AxisSetTraverser_1 = require("./lib/AxisSetTraverser");
