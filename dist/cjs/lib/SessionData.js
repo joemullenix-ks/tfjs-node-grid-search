@@ -38,10 +38,7 @@ const TENSOR_FLOW = __importStar(require("@tensorflow/tfjs-node"));
 //				> SessionDataStandardizedFaster
 //				> SessionDataStandardizedSmaller
 class SessionData {
-    constructor(proofPercentage, dataSet, 
-    // rawInputs: TFNestedArray,
-    // rawTargets: ArrayOrder2,
-    _useDefaultStandardization, _callbackStandardize, _callbackUnstandardize) {
+    constructor(proofPercentage, dataSet, _useDefaultStandardization, _callbackStandardize, _callbackUnstandardize) {
         this._useDefaultStandardization = _useDefaultStandardization;
         this._callbackStandardize = _callbackStandardize;
         this._callbackUnstandardize = _callbackUnstandardize;

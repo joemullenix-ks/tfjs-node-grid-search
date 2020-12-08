@@ -11,17 +11,15 @@ npm i tfjs-node-grid-search
 ```
 
 ## Examples
+> :warning: tfjs-node currently has an installation problem on Windows. [See details](https://github.com/tensorflow/tfjs/issues/4052)
+>
+>           TLDR, here's the workaround:
+>
+>              copy tensorflow.dll
+>             from: node_modules\@tensorflow\tfjs-node\deps\lib
+>               to: node_modules\@tensorflow\tfjs-node\lib\napi-v6
+
 ```js
-
-
-//IMPORTANT: tfjs-node currently has an installation problem on Windows.
-//           TLDR, here's the workaround:
-//
-//              copy tensorflow.dll
-//             from: node_modules\@tensorflow\tfjs-node\deps\lib
-//               to: node_modules\@tensorflow\tfjs-node\lib\napi-v6
-
-
 import * as tngs from 'tfjs-node-grid-search';
 
 console.log('Welcome to TNGS!');

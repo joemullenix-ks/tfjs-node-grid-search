@@ -27,11 +27,11 @@ step		= 0.5
 Progression	= 0.0, 0.5, 1.0, 1.5
 Values		= 0.5, 1.0, 1.5, 2.0, [2.5]
 
-[EXPONENTIAL]	// value = base + {0, scale * exponent ^ 0, scale * exponent ^ 1, scale * exponent ^ 2, ...}
+[EXPONENTIAL]	// value = base + {0, scale * base ^ 0, scale * base ^ 1, scale * base ^ 2, ...}
 Axis
 boundBegin	= 0
 boundEnd	= 10
-exponent	= 2
+base		= 2
 scale		= 1
 Progression	= 0, 1, 2, 4, 8
 Values		= 0, 1, 2, 4, 8, [16]
@@ -39,7 +39,7 @@ Values		= 0, 1, 2, 4, 8, [16]
 Axis
 boundBegin	= 600
 boundEnd	= 300
-exponent	= 3
+base		= 3
 scale		= 2
 Progression	= 0, 2, 6, 18, 54, 162
 Values		= 600, 598, 594, 582, 546, 438, [114]
@@ -47,7 +47,7 @@ Values		= 600, 598, 594, 582, 546, 438, [114]
 Axis
 boundBegin	= 1000
 boundEnd	= 85000
-exponent	= 4
+base		= 4
 scale		= 10
 Progression	= 0, 10, 40, 160, 640, 2560, 10240, 40960
 Values		= 1000, 1010, 1040, 1160, 1640, 3560, 41960, [164840]
@@ -55,7 +55,7 @@ Values		= 1000, 1010, 1040, 1160, 1640, 3560, 41960, [164840]
 Axis
 boundBegin	= 5.0
 boundEnd	= 20.0
-exponent	= 1.5
+base		= 1.5
 scale		= 0.5
 Progression	= 0.0, 0.5, 0.75, 1.125, 1.6875
 Values		= 5.0, 6.0, 7.5, 11.25, [20.625]
@@ -82,7 +82,18 @@ initiator	= 10
 Progression	= 0, 8, 13, 21 // we round down to 8 as nearest-Fibonacci value {8 <= 10 <= 13}
 Values		= 100, 92, 87, 79, [66]
 */
+/**
+ * Abstract base of the Progression classes.
+ * @abstract
+ */
 class Progression {
+    /**
+     * Creates an instance of Progression.
+     * @param {boolean} _integerBased Send 'true' if this progression uses
+     *								  integer steps exclusively (as opposed to
+     *								  floating-point).
+     * @param {string} _typeName A simple label for logging.
+     */
     constructor(_integerBased, // "integerBased" as opposed to floating point
     _typeName) {
         this._integerBased = _integerBased;
@@ -94,6 +105,10 @@ class Progression {
     get integerBased() { return this._integerBased; }
     get typeName() { return this._typeName; }
     get value() { return this._value; }
+    /**
+     * Puts the progression in its initial state (_value = 0).
+     * @memberof Progression
+     */
     Reset() {
         this._value = 0;
     }

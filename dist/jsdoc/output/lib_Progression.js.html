@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="utf-8">
+    <title>lib/Progression.js - Documentation</title>
+    
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+    <script src="scripts/nav.js" defer></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav >
+    
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Axis.html">Axis</a><ul class='methods'><li data-type='method'><a href="Axis.html#.AttemptValidateParameter">AttemptValidateParameter</a></li><li data-type='method'><a href="Axis.html#.AttemptValidateProgression">AttemptValidateProgression</a></li><li data-type='method'><a href="Axis.html#.LookupTypeName">LookupTypeName</a></li><li data-type='method'><a href="Axis.html#Advance">Advance</a></li><li data-type='method'><a href="Axis.html#CalculatePosition">CalculatePosition</a></li><li data-type='method'><a href="Axis.html#CheckComplete">CheckComplete</a></li><li data-type='method'><a href="Axis.html#Reset">Reset</a></li><li data-type='method'><a href="Axis.html#WriteReport">WriteReport</a></li></ul></li><li><a href="ExponentialProgression.html">ExponentialProgression</a><ul class='methods'><li data-type='method'><a href="ExponentialProgression.html#Advance">Advance</a></li><li data-type='method'><a href="ExponentialProgression.html#Reset">Reset</a></li></ul></li><li><a href="FailureMessage.html">FailureMessage</a></li><li><a href="FibonacciProgression.html">FibonacciProgression</a><ul class='methods'><li data-type='method'><a href="FibonacciProgression.html#Advance">Advance</a></li><li data-type='method'><a href="FibonacciProgression.html#Reset">Reset</a></li></ul></li><li><a href="LinearProgression.html">LinearProgression</a><ul class='methods'><li data-type='method'><a href="LinearProgression.html#Advance">Advance</a></li><li data-type='method'><a href="LinearProgression.html#Reset">Reset</a></li></ul></li><li><a href="Progression.html">Progression</a><ul class='methods'><li data-type='method'><a href="Progression.html#Reset">Reset</a></li></ul></li></ul><h3>Modules</h3><ul><li><a href="module-main.html">main</a></li></ul>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">lib/Progression.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>'use strict';
+/*KEEP: TO BE MOVED INTO DOCUMENTATION
+
+EXAMPLE PROGRESSION VALUES
+
+[LINEAR]		// value = base + {0, 1 * step, 2 * step, ...}
+Axis
+boundBegin	= 0
+boundEnd	= 3
+step		= 1
+Progression	= 0, 1, 2, 3
+Values		= 0, 1, 2, 3, [4]
+
+Axis
+boundBegin	= 6
+boundEnd	= 4
+step		= 1
+Progression	= 0, 1, 2
+Values		= 6, 5, 4, [3]
+
+Axis
+boundBegin	= 0.5
+boundEnd	= 2.0
+step		= 0.5
+Progression	= 0.0, 0.5, 1.0, 1.5
+Values		= 0.5, 1.0, 1.5, 2.0, [2.5]
+
+[EXPONENTIAL]	// value = base + {0, scale * base ^ 0, scale * base ^ 1, scale * base ^ 2, ...}
+Axis
+boundBegin	= 0
+boundEnd	= 10
+base		= 2
+scale		= 1
+Progression	= 0, 1, 2, 4, 8
+Values		= 0, 1, 2, 4, 8, [16]
+
+Axis
+boundBegin	= 600
+boundEnd	= 300
+base		= 3
+scale		= 2
+Progression	= 0, 2, 6, 18, 54, 162
+Values		= 600, 598, 594, 582, 546, 438, [114]
+
+Axis
+boundBegin	= 1000
+boundEnd	= 85000
+base		= 4
+scale		= 10
+Progression	= 0, 10, 40, 160, 640, 2560, 10240, 40960
+Values		= 1000, 1010, 1040, 1160, 1640, 3560, 41960, [164840]
+
+Axis
+boundBegin	= 5.0
+boundEnd	= 20.0
+base		= 1.5
+scale		= 0.5
+Progression	= 0.0, 0.5, 0.75, 1.125, 1.6875
+Values		= 5.0, 6.0, 7.5, 11.25, [20.625]
+
+[FIBONACCI-ish] // value = base + {special cases 0 and 1, then chooses the nearest Fibonacci number}
+Axis
+boundBegin	= 0
+boundEnd	= 5
+initiator	= 0
+Progression	= 0, 1, 2, 3, 5
+Values		= 0, 1, 2, 3, 5, [8]
+
+Axis
+boundBegin	= 7
+boundEnd	= 60
+initiator	= 3
+Progression	= 0, 3, 5, 8, 13, 21, 34
+Values		= 7, 10, 12, 15, 20, 28, 41, [62]
+
+Axis
+boundBegin	= 100
+boundEnd	= 70
+initiator	= 10
+Progression	= 0, 8, 13, 21 // we round down to 8 as nearest-Fibonacci value {8 &lt;= 10 &lt;= 13}
+Values		= 100, 92, 87, 79, [66]
+*/
+/**
+ * Abstract base of the Progression classes.
+ * @abstract
+ */
+class Progression {
+    /**
+     * Creates an instance of Progression.
+     * @param {boolean} _integerBased Send 'true' if this progression uses
+     *								  integer steps exclusively (as opposed to
+     *								  floating-point).
+     * @param {string} _typeName A simple label for logging.
+     */
+    constructor(_integerBased, // "integerBased" as opposed to floating point
+    _typeName) {
+        this._integerBased = _integerBased;
+        this._typeName = _typeName;
+        console.assert(this._typeName !== '');
+        //NOTE: All progressions begin at zero, because the bounds of the range we traverse are inclusive.
+        this._value = 0;
+    }
+    get integerBased() { return this._integerBased; }
+    get typeName() { return this._typeName; }
+    get value() { return this._value; }
+    /**
+     * Puts the progression in its initial state (_value = 0).
+     * @memberof Progression
+     */
+    Reset() {
+        this._value = 0;
+    }
+}
+Object.freeze(Progression);
+export { Progression };
+//# sourceMappingURL=Progression.js.map</code></pre>
+        </article>
+    </section>
+
+
+
+
+    
+    
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.6</a> on Mon Dec 07 2020 14:06:17 GMT-1000 (Hawaii-Aleutian Standard Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+
+
+</body>
+</html>

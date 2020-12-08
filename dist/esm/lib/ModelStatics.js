@@ -58,30 +58,30 @@ class ModelStatics {
     }
     WriteStaticParams() {
         // set the user's value, or take the program default (these are optional from the user's point-of-view)
-        this._staticParams[Axis.Names.BATCH_SIZE] =
-            this._userStatics[Axis.Names.BATCH_SIZE] !== undefined
-                ? this._userStatics[Axis.Names.BATCH_SIZE]
-                : Axis.Defaults.BATCH_SIZE;
-        this._staticParams[Axis.Names.EPOCHS] =
-            this._userStatics[Axis.Names.EPOCHS] !== undefined
-                ? this._userStatics[Axis.Names.EPOCHS]
-                : Axis.Defaults.EPOCHS;
-        this._staticParams[Axis.Names.LAYERS] =
-            this._userStatics[Axis.Names.LAYERS] !== undefined
-                ? this._userStatics[Axis.Names.LAYERS]
-                : Axis.Defaults.LAYERS;
-        this._staticParams[Axis.Names.LEARN_RATE] =
-            this._userStatics[Axis.Names.LEARN_RATE] !== undefined
-                ? this._userStatics[Axis.Names.LEARN_RATE]
-                : Axis.Defaults.LEARN_RATE;
-        this._staticParams[Axis.Names.NEURONS] =
-            this._userStatics[Axis.Names.NEURONS] !== undefined
-                ? this._userStatics[Axis.Names.NEURONS]
-                : Axis.Defaults.NEURONS;
-        this._staticParams[Axis.Names.VALIDATION_SPLIT] =
-            this._userStatics[Axis.Names.VALIDATION_SPLIT] !== undefined
-                ? this._userStatics[Axis.Names.VALIDATION_SPLIT]
-                : Axis.Defaults.VALIDATION_SPLIT;
+        this._staticParams[Axis.AxisNames.BATCH_SIZE] =
+            this._userStatics[Axis.AxisNames.BATCH_SIZE] !== undefined
+                ? this._userStatics[Axis.AxisNames.BATCH_SIZE]
+                : Axis.AxisDefaults.BATCH_SIZE;
+        this._staticParams[Axis.AxisNames.EPOCHS] =
+            this._userStatics[Axis.AxisNames.EPOCHS] !== undefined
+                ? this._userStatics[Axis.AxisNames.EPOCHS]
+                : Axis.AxisDefaults.EPOCHS;
+        this._staticParams[Axis.AxisNames.LAYERS] =
+            this._userStatics[Axis.AxisNames.LAYERS] !== undefined
+                ? this._userStatics[Axis.AxisNames.LAYERS]
+                : Axis.AxisDefaults.LAYERS;
+        this._staticParams[Axis.AxisNames.LEARN_RATE] =
+            this._userStatics[Axis.AxisNames.LEARN_RATE] !== undefined
+                ? this._userStatics[Axis.AxisNames.LEARN_RATE]
+                : Axis.AxisDefaults.LEARN_RATE;
+        this._staticParams[Axis.AxisNames.NEURONS] =
+            this._userStatics[Axis.AxisNames.NEURONS] !== undefined
+                ? this._userStatics[Axis.AxisNames.NEURONS]
+                : Axis.AxisDefaults.NEURONS;
+        this._staticParams[Axis.AxisNames.VALIDATION_SPLIT] =
+            this._userStatics[Axis.AxisNames.VALIDATION_SPLIT] !== undefined
+                ? this._userStatics[Axis.AxisNames.VALIDATION_SPLIT]
+                : Axis.AxisDefaults.VALIDATION_SPLIT;
         // now we tack on the parameters that can't be axes (or rather not-yet-supported-as-axes)
         //TODO: The primary goal of this project is to support as many of these in as many ways as possible (progressions,
         //		custom schedules, randomizers, smart systems, ... ?).

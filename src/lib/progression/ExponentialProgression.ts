@@ -7,32 +7,52 @@ import { Progression } from '../Progression';
 const PROGRESSION_TYPENAME = 'Exponential';
 
 
+/**
+ * Defines a series of steps that increase exponentially.
+ * @extends Progression
+ * @example
+ * // Exponential progression with base 2, scale 1
+ * new tngs.ExponentialProgression(2, 1) // 0, 1, 2, 4, 8, ...
+ *
+ * // Exponential progression with base 1.5, scale 0.5
+ * new tngs.ExponentialProgression(1.5, 0.5) // 0.0, 0.5, 0.75, 1.125, 1.6875, ...
+ */
 class ExponentialProgression extends Progression {
 //NOTE: These are not constructor-privates because we need to send the constructor's args into super().
-	private _exponent = 0;
+	private _base = 0;
 	private _scale = 0;
 	private _step = 0;
 
-	constructor(exponent: number, scale: number) {
-		super(	exponent === Math.floor(exponent) && scale === Math.floor(scale),	// i.e. are these integers?
+	/**
+	 * Creates an instance of ExponentialProgression. The series is calculated
+	 * like this: { 0, base ^ 0 * scale, base ^ 1 * scale, base ^ 2 * scale, ... }.
+	 * @param {number} base The base of the function. Must be > 1.0.
+	 * @param {number} scale The scale of the function. Must be > 0.0.
+	 */
+	constructor(base: number, scale: number) {
+		super(	base === Math.floor(base) && scale === Math.floor(scale),	// i.e. are these integers?
 				PROGRESSION_TYPENAME);
 
 		// these rules prevent the progression going flat (infinite) or negative (yikes)
 
 //NOTE: We could support whackier curves, and will if requested. I don't anticipate that desire, but who knows.
 //		Also, the user may create a negative progression by inverting their Axis bounds, i.e. use boundBegin > boundEnd.
-		console.assert(exponent > 1.0);
+		console.assert(base > 1.0);
 		console.assert(scale > 0.0);
 
-		this._exponent = exponent;
+		this._base = base;
 		this._scale = scale;
 
 		// this initializes '_step'
 		this.ResetStep();
 	}
 
+	/**
+	 * Moves to the next value in the series.
+	 * @memberof ExponentialProgression
+	 */
 	Advance(): void {
-		this._value = this._scale * Math.pow(this._exponent, this._step);
+		this._value = this._scale * Math.pow(this._base, this._step);
 
 		++this._step;
 	}
@@ -43,7 +63,7 @@ class ExponentialProgression extends Progression {
 		this.ResetStep();
 	}
 
-	ResetStep(): void {
+	private ResetStep(): void {
 		this._step = 0;
 	}
 }

@@ -1,5 +1,23 @@
+/**
+ * @module Axis
+ */
+import { StringKeyedNumbersObject, StringKeyedStringsObject } from '../ts_types/common';
 import { FailureMessage } from './FailureMessage';
 import { Progression } from './Progression';
+/**
+ * Manages one hyperparameter over the course of the search.
+ * It uses a bounded range, and a progression across that range, to define
+ * a set of steps. A model is trained and tested at each step.
+ * Positions along the axis are defined as the sum of _boundBegin and
+ * _progression's current value. When this sum is greather than _boundEnd,
+ * the axis is complete.
+ * @example
+ * // create an axis for the hyperparameter 'batch size', with a range of {8, 12, 16}
+ * new tngs.Axis(tngs.AxisTypes.BATCH_SIZE,
+ *               8,
+ *               16,
+ *               new tngs.LinearProgression(4))
+ */
 declare class Axis {
     private _typeEnum;
     private _boundBegin;
@@ -7,41 +25,97 @@ declare class Axis {
     private _progression;
     private _forward;
     private _typeName;
+    /**
+    * Creates an instance of Axis.
+    * @param {number} _typeEnum The hyperparameter associated with this axis.
+    *							Must be a member of the [AxisTypes]{@link Axis.AxisTypes} enum.
+    * @param {number} _boundBegin The start of the search range, inclusive.
+    * @param {number} _boundEnd The end of the search range, inclusive.
+    * @param {Progression} _progression Provides a set of offsets used to
+    *									determine the steps in the range.
+    */
     constructor(_typeEnum: number, _boundBegin: number, _boundEnd: number, _progression: Progression);
     get type(): number;
     get typeName(): string;
+    /**
+    * Moves the progression to its next position.
+    * @memberof Axis
+    */
     Advance(): void;
+    /**
+     * Gets the current value of this axis, defined as (_boundBegin +
+     * _progression.value).
+     * @return {number} The hyperparameter's value in the active model.
+     * @memberof Axis
+     */
     CalculatePosition(): number;
+    /**
+     * Determines whether this axis is at or beyond the end of its range.
+     * @return {boolean}
+     * @memberof Axis
+     */
     CheckComplete(): boolean;
+    /**
+     * Moves the progression to its initial position.
+     * @memberof Axis
+     */
     Reset(): void;
+    /**
+    * Gets a description of the axis's type and position. Set 'compact' to true
+    * for details on the progression.
+    * @param {boolean} compact If false, bounds and progression are included.
+    * @return {string}
+    * @memberof Axis
+    */
     WriteReport(compact: boolean): string;
+    /**
+     * Checks whether a begin/end boundary is valid for a given hyperparameter.
+     * Writes an informative message for the user, in the event of failure.
+     * @static
+     * @param {string} key Must match an entry in the [AxisNames]{@link Axis.AxisNames} enum.
+     * @param {number} value The number to validated against this hyperparameter.
+     * @param {FailureMessage} failureMessage Explanatory faliure text is written to this object.
+     * @return {boolean}
+     * @memberof Axis
+     */
     static AttemptValidateParameter(key: string, value: number, failureMessage: FailureMessage): boolean;
+    /**
+     * Checks whether a progression's config is valid for a given hyperparameter.
+     * Writes an informative message for the user, in the event of failure.
+     * @static
+     * @param {string} key Must match an entry in the [AxisNames]{@link Axis.AxisNames} enum.
+     * @param {Progression} progression A concrete instance derived from Progression.
+     * @param {FailureMessage} failureMessage Explanatory faliure text is written to this object.
+
+     * @return {boolean}
+     * @memberof Axis
+     */
     static AttemptValidateProgression(key: string, progression: Progression, failureMessage: FailureMessage): boolean;
-    static LookupTypeName(x: number): string;
+    /**
+     * Takes an entry from the [AxisTypes]{@link Axis.AxisTypes} enum, and return its associated name.
+     * @static
+     * @param {number} type An entry from the [AxisTypes]{@link Axis.AxisTypes} enum.
+     * @return {string} An entry from the [AxisNames]{@link Axis.AxisNames} enum.
+     * @memberof Axis
+     */
+    static LookupTypeName(type: number): string;
 }
-declare enum Defaults {
-    BATCH_SIZE = 10,
-    EPOCHS = 50,
-    LAYERS = 2,
-    LEARN_RATE = 0.001,
-    NEURONS = 16,
-    VALIDATION_SPLIT = 0.2
-}
-declare enum Names {
-    BATCH_SIZE = "batchSize",
-    EPOCHS = "epochs",
-    LAYERS = "hiddenLayers",
-    LEARN_RATE = "learnRate",
-    NEURONS = "neuronsPerHiddenLayer",
-    VALIDATION_SPLIT = "validationSplit"
-}
-declare enum Types {
-    BATCH_SIZE = 0,
-    EPOCHS = 1,
-    LAYERS = 2,
-    LEARN_RATE = 3,
-    NEURONS = 4,
-    VALIDATION_SPLIT = 5,
-    _TOTAL = 6
-}
-export { Axis, Defaults, Names, Types };
+/**
+ * Enumeration of the hyperparameter default values.
+ * @enum {number}
+ * @memberof Axis
+ */
+declare const AxisDefaults: StringKeyedNumbersObject;
+/**
+ * Enumeration of the hyperparameter names.
+ * @enum {string}
+ * @memberof Axis
+ */
+declare const AxisNames: StringKeyedStringsObject;
+/**
+ * Enumeration of the hyperparameters currently supported in TNGS.
+ * @enum {number}
+ * @memberof Axis
+ */
+declare const AxisTypes: StringKeyedNumbersObject;
+export { Axis, AxisDefaults, AxisNames, AxisTypes };

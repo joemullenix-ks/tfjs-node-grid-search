@@ -83,6 +83,21 @@ const main = async () => {
   //	- The second argument (which is optional) is "delta", or an arbitrary
   //    value for the prediction.
 
+
+  /**
+   *  This callback is used by the Grid during generalization testing. At the end
+   *  of each epoch (after) the network is trained, the Grid makes predictions
+   *  using the test data. For each prediction, it calls this function, passing
+   *  the known targets and its prediction.
+   *  We evaluate each prediction, and return a PredictionEvaluation, which lets
+   *  Grid score the network.
+   *  	- If the prediction is acceptable, set the first argument ("correct")
+   *     to true.
+   *  	- The second argument (which is optional) is "delta", or an arbitrary
+   *     value for the prediction.
+   * @param  {number[]} target The outputs associated with the case's inputs.
+   * @param  {number[]} prediction The outputs produced by the current model.
+   */
   const evaluatePrediction = (target: number[], prediction: number[]) => {
     const targettedIndex = tngs.Utils.ArrayFindIndexOfHighestValue(target);
 
