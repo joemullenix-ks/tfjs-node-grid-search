@@ -11,7 +11,8 @@ npm i tfjs-node-grid-search
 ```
 
 ## Examples
-> :warning: tfjs-node currently has an installation problem on Windows. See (link to bug)
+> :warning: tfjs-node currently has an installation problem on Windows. [See details](https://github.com/tensorflow/tfjs/issues/4052)
+>
 >           TLDR, here's the workaround:
 >
 >              copy tensorflow.dll
