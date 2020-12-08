@@ -1,6 +1,9 @@
 'use strict';
 
 
+//NOTE: A module tag is needed here due to the clumsy enums. JSDoc will not
+//		include them without it. Those enums are an important part of the
+//		documentation.
 /**
  * @module Axis
  */

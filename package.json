@@ -25,7 +25,7 @@
   "scripts": {
     "build": "npm run tsc && npm run jsdoc-docdash",
     "jsdoc": "jsdoc -c jsdoc\\conf.json --debug",
-    "jsdoc-docdash": "jsdoc -c jsdoc\\conf.json -t node_modules\\docdash --debug",
+    "jsdoc-docdash": "jsdoc -c jsdoc\\conf.json -t jsdoc\\themes\\docdash --debug",
     "test": "echo \"Error: no test specified\" && exit 1",
     "tsc": "tsc -p tsconfig.json && tsc -p tsconfig-cjs.json",
     "prepare": "npm run tsc"
