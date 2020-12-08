@@ -275,7 +275,7 @@ nav > ul > li > a {
 }
 
 nav ul ul a {
-  color: hsl(240, 1%, 60%);
+  color: hsl(240, 1%, 50%);
   border-left: 1px solid hsl(240, 10%, 86%);
 }
 
