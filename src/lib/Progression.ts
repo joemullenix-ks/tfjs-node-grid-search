@@ -112,7 +112,6 @@ abstract class Progression {
 
 	/**
 	 * Puts the progression in its initial state (_value = 0).
-	 * @memberof Progression
 	 */
 	Reset(): void {
 		this._value = 0;

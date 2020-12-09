@@ -20,7 +20,6 @@ declare abstract class Progression {
     get value(): number;
     /**
      * Puts the progression in its initial state (_value = 0).
-     * @memberof Progression
      */
     Reset(): void;
     abstract Advance(): void;

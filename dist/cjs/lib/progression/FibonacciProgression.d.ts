@@ -25,7 +25,6 @@ declare class FibonacciProgression extends Progression {
     constructor(_initiator: number);
     /**
      * Moves to the next value in the series.
-     * @memberof FibonacciProgression
      */
     Advance(): void;
     Reset(): void;

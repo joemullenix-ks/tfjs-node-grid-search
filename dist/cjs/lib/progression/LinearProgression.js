@@ -27,7 +27,6 @@ class LinearProgression extends Progression_1.Progression {
     }
     /**
      * Moves to the next value in the series.
-     * @memberof LinearProgression
      */
     Advance() {
         this._value += this._step;

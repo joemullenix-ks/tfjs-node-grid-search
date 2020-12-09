@@ -72,7 +72,6 @@ class Axis {
     get typeName() { return this._typeName; }
     /**
     * Moves the progression to its next position.
-    * @memberof Axis
     */
     Advance() {
         this._progression.Advance();
@@ -81,7 +80,6 @@ class Axis {
      * Gets the current value of this axis, defined as (_boundBegin +
      * _progression.value).
      * @return {number} The hyperparameter's value in the active model.
-     * @memberof Axis
      */
     CalculatePosition() {
         const PROGRESSION_VALUE = this._progression.value;
@@ -90,7 +88,6 @@ class Axis {
     /**
      * Determines whether this axis is at or beyond the end of its range.
      * @return {boolean}
-     * @memberof Axis
      */
     CheckComplete() {
         return (this._forward
@@ -99,7 +96,6 @@ class Axis {
     }
     /**
      * Moves the progression to its initial position.
-     * @memberof Axis
      */
     Reset() {
         this._progression.Reset();
@@ -109,7 +105,6 @@ class Axis {
     * for details on the progression.
     * @param {boolean} compact If false, bounds and progression are included.
     * @return {string}
-    * @memberof Axis
     */
     WriteReport(compact) {
         const POSITION_TEXT = this._progression.integerBased
@@ -133,7 +128,6 @@ class Axis {
      * @param {number} value The number to validated against this hyperparameter.
      * @param {FailureMessage} failureMessage Explanatory faliure text is written to this object.
      * @return {boolean}
-     * @memberof Axis
      */
     static AttemptValidateParameter(key, value, failureMessage) {
         //NOTE: It's important to gracefully handle bad inputs here, with explanations and recommendations in the failure text.
@@ -185,7 +179,6 @@ class Axis {
      * @param {FailureMessage} failureMessage Explanatory faliure text is written to this object.
 
      * @return {boolean}
-     * @memberof Axis
      */
     static AttemptValidateProgression(key, progression, failureMessage) {
         //NOTE: It's important to gracefully handle bad inputs here, with explanations and recommendations in the failure text.
@@ -226,7 +219,6 @@ class Axis {
      * @static
      * @param {number} type An entry from the [AxisTypes]{@link Axis.AxisTypes} enum.
      * @return {string} An entry from the [AxisNames]{@link Axis.AxisNames} enum.
-     * @memberof Axis
      */
     static LookupTypeName(type) {
         switch (type) {

@@ -2,6 +2,8 @@
  * tfjs-node-grid-search
  * @module main
  */
+export { NumberKeyedStringsObject, StringKeyedNullsObject, StringKeyedNumbersObject, StringKeyedSimpleObject, StringKeyedStringsObject } from './ts_types/common';
+export * from './ts_types/Grid';
 export { Axis, AxisDefaults, AxisNames, AxisTypes } from './lib/Axis';
 export { AxisSet } from './lib/AxisSet';
 export { AxisSetTraverser } from './lib/AxisSetTraverser';

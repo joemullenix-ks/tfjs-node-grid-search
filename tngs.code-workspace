@@ -8,6 +8,20 @@
 		"workbench.colorCustomizations": {
 			"minimap.background": "#666"
 		},
-	    "editor.rulers": [80, 120]
+	    "editor.rulers": [80, 120],
+		"docthis.includeMemberOfOnClassMembers": false
+
+/*REF
+"docthis.includeTypes": true, // When enabled, type information is added to comment tags.
+"docthis.includeMemberOfOnClassMembers": true, // When enabled, memberOf information is added to comment tags on class members.
+"docthis.includeMemberOfOnInterfaceMembers": true, // When enabled, memberOf information is added to comment tags on interface members.
+"docthis.includeDescriptionTag": false, // When enabled, JSDoc comments for functions and methods will include @description. Default: false
+"docthis.enableHungarianNotationEvaluation": false, // When enabled, hungarian notation will be used as a type hint.
+"docthis.inferTypesFromNames": false, // When enabled, will use names of params & methods as type hints.
+"docthis.includeAuthorTag": false, // When enabled, will add the @author tag.
+"docthis.authorName": false, // When docthis.includeAuthorTag is enabled, will add @author tag with this value.
+"docthis.includeDateTag": false, // When enabled, will add the @date tag in dd-mm-yyyy format.
+"docthis.returnsTag": false, // Put @returns in place of @returns
+*/
 	}
 }

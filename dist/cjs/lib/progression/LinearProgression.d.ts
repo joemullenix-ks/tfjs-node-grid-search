@@ -18,7 +18,6 @@ declare class LinearProgression extends Progression {
     constructor(step: number);
     /**
      * Moves to the next value in the series.
-     * @memberof LinearProgression
      */
     Advance(): void;
 }

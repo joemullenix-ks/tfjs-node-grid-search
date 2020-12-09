@@ -7,6 +7,15 @@
  */
 
 
+export {NumberKeyedStringsObject,
+		StringKeyedNullsObject,
+		StringKeyedNumbersObject,
+		StringKeyedSimpleObject,
+		StringKeyedStringsObject } from './ts_types/common';
+
+export * from './ts_types/Grid';
+
+
 //TDOO: Axis becomes abstract with subs, eliminating the enums
 export { Axis, AxisDefaults, AxisNames, AxisTypes } from './lib/Axis';
 export { AxisSet }					from './lib/AxisSet';

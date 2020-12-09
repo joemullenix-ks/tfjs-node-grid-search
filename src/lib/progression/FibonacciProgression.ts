@@ -71,7 +71,6 @@ class FibonacciProgression extends Progression {
 
 	/**
 	 * Moves to the next value in the series.
-	 * @memberof FibonacciProgression
 	 */
 	Advance(): void {
 		this._value = this._fiboA + this._fiboB;
