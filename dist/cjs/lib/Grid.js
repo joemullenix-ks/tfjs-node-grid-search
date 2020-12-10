@@ -40,7 +40,7 @@ const TENSOR_FLOW = __importStar(require("@tensorflow/tfjs-node"));
 const Axis = __importStar(require("./Axis"));
 const AxisSetTraverser_1 = require("./AxisSetTraverser");
 const EpochStats_1 = require("./EpochStats");
-const FileIO_1 = require("./FileIO");
+const FileIO = __importStar(require("./FileIO"));
 const GridOptions_1 = require("./GridOptions");
 const GridRunStats_1 = require("./GridRunStats");
 const IterationResult_1 = require("./IterationResult");
@@ -172,8 +172,8 @@ class Grid {
             console.log(GRID_RUN_STATS.WriteReport(true));
             const WRITE_RESULTS_OPTION = this._gridOptions.GetOption('writeResultsToDirectory');
             if (typeof WRITE_RESULTS_OPTION === 'string') {
-                const FILENAME = FileIO_1.FileIO.ProduceResultsFilename();
-                yield FileIO_1.FileIO.WriteResultsFile(FILENAME, WRITE_RESULTS_OPTION, GRID_RUN_STATS.WriteCSV());
+                const FILENAME = FileIO.ProduceResultsFilename();
+                yield FileIO.WriteResultsFile(FILENAME, WRITE_RESULTS_OPTION, GRID_RUN_STATS.WriteCSV());
                 //TODO: Look into Node's os/platform library. Gotta be a way to pull the appropriate slashes.
                 //		...and on the same pass, lookup and print the root directory.
                 console.log('\n'

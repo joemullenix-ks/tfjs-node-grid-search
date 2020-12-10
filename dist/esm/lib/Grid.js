@@ -19,7 +19,7 @@ import * as TENSOR_FLOW from '@tensorflow/tfjs-node';
 import * as Axis from './Axis';
 import { AxisSetTraverser } from './AxisSetTraverser';
 import { EpochStats } from './EpochStats';
-import { FileIO } from './FileIO';
+import * as FileIO from './FileIO';
 import { GridOptions } from './GridOptions';
 import { GridRunStats } from './GridRunStats';
 import { IterationResult } from './IterationResult';

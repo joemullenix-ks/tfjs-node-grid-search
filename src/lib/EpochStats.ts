@@ -14,6 +14,13 @@ import { Utils } from './Utils';
 type SSLine = {m: number, b: number}; // slope and intercept
 
 
+/**
+ * Manages the training statistics for one model. TensorFlow produces stats each
+ * epoch. This class records them, and maintains trailing averages to smooth
+ * spikes and dips. It calculates deltas and slopes for these averages. This
+ * information can be used to detect problematic situations such as overfitting.
+ * EpochStats also has text helpers for logging and output as CSV.
+ */
 class EpochStats {
 	private _samplesAccuracy: Array<number> = [];
 	private _samplesLoss: Array<number> = [];
@@ -30,6 +37,10 @@ class EpochStats {
 	private _lineValidationAccuracy: SSLine = {m: 0, b: 0};
 	private _lineValidationLoss: SSLine = {m: 0, b: 0};
 
+	/**
+	 * Creates an instance of EpochStats.
+	 * @param {number} _trailDepth Total samples in a (simple) trailing average.
+	 */
 	constructor(private _trailDepth: number) {
 		console.assert(this._trailDepth > 0);
 		console.assert(Math.floor(this._trailDepth) === this._trailDepth);
@@ -44,6 +55,14 @@ class EpochStats {
 	get lineValidationAccuracy(): SSLine { return this._lineValidationAccuracy; }
 	get lineValidationLoss(): SSLine { return this._lineValidationLoss; }
 
+	/**
+	 * Takes the results of an epoch, and updates the trailing averages, deltas
+	 * and slopes.
+	 * @param {number} epoch Iteration count from model fit; currently unused.
+	 * @param {Logs} logs A TensorFlow object with the latest values for
+	 *					  accuracy, loss, validation-accuracy and
+	 *					  validation-loss.
+	 */
 	Update(epoch: number, logs: Logs): void {
 		console.assert(epoch >= 0);
 		console.assert(Math.floor(epoch) === epoch);
@@ -89,7 +108,19 @@ class EpochStats {
 	}
 //^^
 
+	/**
+	 * Generates a one-line text report with the following:
+	 * <ul>
+	 *   <li>all of the trailing averages</li>
+	 *   <li>the slope of each of the four categories</li>
+	 *   <li>relevant deltas between the training and validation values</li>
+	 * <ul>
+	 * @return {string}
+	 */
 	WriteReport(): string {
+//NOTE: These '< 0' ternaries add a space before each positive number. This is
+//		done to maintain float alignement on the ".". This is useful when
+//		examing numeric details in a large Matrix-waterfall of digits.
 		const TEXT_OUT =
 			this._averageLoss.toFixed(REPORTING_DIGITS_STAT)
 			+ '(' + this._averageValidationLoss.toFixed(REPORTING_DIGITS_STAT) + ') '
@@ -105,6 +136,11 @@ class EpochStats {
 		return TEXT_OUT;
 	}
 
+	/**
+	 * Gets the header that goes with {@link WriteReport}.
+	 * @static
+	 * @return {string}
+	 */
 	static WriteReportHeader(): string {
 //NOTE: This must be kept in sync with the text written by WriteReport().
 		return 'EPOCH '

@@ -5,11 +5,11 @@ import { ArrayOrder2, TFNestedArray } from './types';
 
 
 import { DataSet } from './DataSet';
-import { FileIO } from './FileIO';
+import * as FileIO from './FileIO';
 import { FileIOResult } from './FileIOResult';
 
 
-//TODO: Add more techniques, e.g. fetch via url (see below). When we make that pass, refactor this into an abstract
+//TODO: Add more techniques, e.g. fetch via url (example below). When we make that pass, refactor this into an abstract
 //		base, then implement dedicated fetchers e.g. URLDataSetFetcher, LocalFilesDataSetFetcher, etc...
 //
 // 	async function getData() {
@@ -19,10 +19,25 @@ import { FileIOResult } from './FileIOResult';
 // 	}
 
 
+/**
+ * Retrieves the data to be used for training and testing, and uses that data to
+ * create an instance of {@link DataSet}. Currently limited to fetching from
+ * local files. The file reads are done asynchronously.
+ * Note: Fetching via URL is coming soon!
+ */
 class DataSetFetcher {
 	private _pathInputs = '';
 	private _pathTargets = '';
 
+	/**
+	 * Creates an instance of DataSetFetcher.
+	 * @param {Array<string>} nodeLaunchArguments An array of strings, in which
+	 *											  the 3rd and 4th are the input
+	 *											  and target file paths,
+	 *											  respectively. This is written
+	 *											  specifically to take the Node
+	 *											  launch params (process.argv).
+	 */
 	constructor(nodeLaunchArguments: Array<string>) {
 		if (nodeLaunchArguments.length < 4) {
 			// show the user a template in 'warning' color, since this is a potential barrier to entry
@@ -40,6 +55,10 @@ class DataSetFetcher {
 		this._pathTargets = nodeLaunchArguments[3];
 	}
 
+	/**
+	 * Loads the data asynchronously. Throws if a file path is missing/invalid.
+	 * @return {Promise<DataSet>}
+	 */
 	async Fetch(): Promise<DataSet> {
 		try {
 			return await this.ReadDataFiles();
@@ -50,6 +69,11 @@ class DataSetFetcher {
 		}
 	}
 
+	/**
+	 * Handles the file reads, and returns a {@link DataSet} with the results.
+	 * @private
+	 * @return {Promise<DataSet>}
+	 */
 	private async ReadDataFiles(): Promise<DataSet> {
 		console.log('Attempting to read data from the following files:' + '\n'
 			+ '   Inputs: ' + this._pathInputs + '\n'

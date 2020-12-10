@@ -21,7 +21,7 @@ import * as Axis				from './Axis';
 import { AxisSet }				from './AxisSet';
 import { AxisSetTraverser }		from './AxisSetTraverser';
 import { EpochStats }			from './EpochStats';
-import { FileIO }				from './FileIO';
+import * as FileIO				from './FileIO';
 import { GridOptions }			from './GridOptions';
 import { GridRunStats }			from './GridRunStats';
 import { IterationResult }		from './IterationResult';

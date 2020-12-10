@@ -10,7 +10,7 @@ export { DataSet } from './lib/DataSet';
 export { DataSetFetcher } from './lib/DataSetFetcher';
 export { EpochStats } from './lib/EpochStats';
 export { FailureMessage } from './lib/FailureMessage';
-export { FileIO } from './lib/FileIO';
+export * as FileIO from './lib/FileIO';
 export { FileIOResult } from './lib/FileIOResult';
 export { Grid } from './lib/Grid';
 export { GridOptions } from './lib/GridOptions';

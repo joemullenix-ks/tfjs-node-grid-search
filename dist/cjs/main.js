@@ -6,8 +6,20 @@ var __createBinding = (this && this.__createBinding) || (Object.create ? (functi
     if (k2 === undefined) k2 = k;
     o[k2] = m[k];
 }));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
 var __exportStar = (this && this.__exportStar) || function(m, exports) {
     for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports, p)) __createBinding(exports, m, p);
+};
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Utils = exports.SessionData = exports.LinearProgression = exports.FibonacciProgression = exports.ExponentialProgression = exports.Progression = exports.PredictionEvaluation = exports.ModelTestStats = exports.ModelStatics = exports.ModelParams = exports.IterationResult = exports.GridRunStats = exports.GridOptions = exports.Grid = exports.FileIOResult = exports.FileIO = exports.FailureMessage = exports.EpochStats = exports.DataSetFetcher = exports.DataSet = exports.AxisSetTraverser = exports.AxisSet = exports.AxisTypes = exports.AxisNames = exports.AxisDefaults = exports.Axis = void 0;
@@ -34,8 +46,8 @@ var EpochStats_1 = require("./lib/EpochStats");
 Object.defineProperty(exports, "EpochStats", { enumerable: true, get: function () { return EpochStats_1.EpochStats; } });
 var FailureMessage_1 = require("./lib/FailureMessage");
 Object.defineProperty(exports, "FailureMessage", { enumerable: true, get: function () { return FailureMessage_1.FailureMessage; } });
-var FileIO_1 = require("./lib/FileIO");
-Object.defineProperty(exports, "FileIO", { enumerable: true, get: function () { return FileIO_1.FileIO; } });
+// export { FileIO }					from './lib/FileIO';
+exports.FileIO = __importStar(require("./lib/FileIO"));
 var FileIOResult_1 = require("./lib/FileIOResult");
 Object.defineProperty(exports, "FileIOResult", { enumerable: true, get: function () { return FileIOResult_1.FileIOResult; } });
 var Grid_1 = require("./lib/Grid");

@@ -3,7 +3,18 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.EpochStats = void 0;
 const simple_statistics_1 = require("simple-statistics");
 const Utils_1 = require("./Utils");
+/**
+ * Manages the training statistics for one model. TensorFlow produces stats each
+ * epoch. This class records them, and maintains trailing averages to smooth
+ * spikes and dips. It calculates deltas and slopes for these averages. This
+ * information can be used to detect problematic situations such as overfitting.
+ * EpochStats also has text helpers for logging and output as CSV.
+ */
 class EpochStats {
+    /**
+     * Creates an instance of EpochStats.
+     * @param {number} _trailDepth Total samples in a (simple) trailing average.
+     */
     constructor(_trailDepth) {
         this._trailDepth = _trailDepth;
         this._samplesAccuracy = [];
@@ -30,6 +41,14 @@ class EpochStats {
     get lineLoss() { return this._lineLoss; }
     get lineValidationAccuracy() { return this._lineValidationAccuracy; }
     get lineValidationLoss() { return this._lineValidationLoss; }
+    /**
+     * Takes the results of an epoch, and updates the trailing averages, deltas
+     * and slopes.
+     * @param {number} epoch Iteration count from model fit; currently unused.
+     * @param {Logs} logs A TensorFlow object with the latest values for
+     *					  accuracy, loss, validation-accuracy and
+     *					  validation-loss.
+     */
     Update(epoch, logs) {
         console.assert(epoch >= 0);
         console.assert(Math.floor(epoch) === epoch);
@@ -67,7 +86,19 @@ class EpochStats {
             + ',' + this._lineValidationLoss.m;
     }
     //^^
+    /**
+     * Generates a one-line text report with the following:
+     * <ul>
+     *   <li>all of the trailing averages</li>
+     *   <li>the slope of each of the four categories</li>
+     *   <li>relevant deltas between the training and validation values</li>
+     * <ul>
+     * @return {string}
+     */
     WriteReport() {
+        //NOTE: These '< 0' ternaries add a space before each positive number. This is
+        //		done to maintain float alignement on the ".". This is useful when
+        //		examing numeric details in a large Matrix-waterfall of digits.
         const TEXT_OUT = this._averageLoss.toFixed(REPORTING_DIGITS_STAT)
             + '(' + this._averageValidationLoss.toFixed(REPORTING_DIGITS_STAT) + ') '
             + 'Δ ' + (this._averageLossDelta < 0 ? '' : ' ') + this._averageLossDelta.toFixed(2) + ', '
@@ -80,6 +111,11 @@ class EpochStats {
             + '(' + (this._lineValidationAccuracy.m < 0 ? '' : ' ') + this._lineValidationAccuracy.m.toFixed(REPORTING_DIGITS_SLOPE) + ')';
         return TEXT_OUT;
     }
+    /**
+     * Gets the header that goes with {@link WriteReport}.
+     * @static
+     * @return {string}
+     */
     static WriteReportHeader() {
         //NOTE: This must be kept in sync with the text written by WriteReport().
         return 'EPOCH '
