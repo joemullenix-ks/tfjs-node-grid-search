@@ -78,17 +78,19 @@ class EpochStats {
             + '(' + (this._lineValidationAccuracy.m < 0 ? '' : ' ') + this._lineValidationAccuracy.m.toFixed(REPORTING_DIGITS_SLOPE) + ')';
         return TEXT_OUT;
     }
+    static WriteReportHeader() {
+        //NOTE: This must be kept in sync with the text written by WriteReport().
+        return 'EPOCH '
+            + 'LOSS(VALIDATION) '
+            + 'Δ L-V DELTA, '
+            + 'm LOSS-SLOPE(VALIDATION)'
+            + ' \\/ '
+            + 'ACCURACY(VALIDATION) '
+            + 'm ACCURACY-SLOPE(VALIDATION)';
+    }
 }
-//NOTE: This must be kept in sync with the text written by WriteReport().
-const REPORT_HEADER = 'EPOCH '
-    + 'LOSS(VALIDATION) '
-    + 'Δ L-V DELTA, '
-    + 'm LOSS-SLOPE(VALIDATION)'
-    + ' \\/ '
-    + 'ACCURACY(VALIDATION) '
-    + 'm ACCURACY-SLOPE(VALIDATION)';
 const REPORTING_DIGITS_SLOPE = 6;
 const REPORTING_DIGITS_STAT = 4;
 Object.freeze(EpochStats);
-export { EpochStats, REPORT_HEADER };
+export { EpochStats };
 //# sourceMappingURL=EpochStats.js.map

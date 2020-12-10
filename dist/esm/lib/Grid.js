@@ -18,7 +18,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 import * as TENSOR_FLOW from '@tensorflow/tfjs-node';
 import * as Axis from './Axis';
 import { AxisSetTraverser } from './AxisSetTraverser';
-import { EpochStats, REPORT_HEADER as EpochStatsReportHeader } from './EpochStats'; //TOD: ugly; built it into the class
+import { EpochStats } from './EpochStats';
 import { FileIO } from './FileIO';
 import { GridOptions } from './GridOptions';
 import { GridRunStats } from './GridRunStats';
@@ -167,7 +167,7 @@ class Grid {
     ResolveModelDefinition() {
         //NOTE: TODO: I'm not entirely happy with this. It feels like access breaking, to reach in via callback.
         //			  It would be better to just produce a list of axis keys. That's all we want, anyway.
-        //			  ...will leave this pending the completion of the supported axes. There may be more
+        //			  ...will leave this on hold, pending the completion of the supported axes. There may be more
         //			  to consider when it comes to complex axes like activator-schedules.
         // ensure the static and dynamic model parameters have no overlap, by stripping any dupes from the statics
         this._axisSetTraverser.ExamineAxisNames((axisKey) => {
@@ -281,7 +281,7 @@ class Grid {
                             return;
                         }
                         if (epoch === 0) {
-                            console.log(EpochStatsReportHeader);
+                            console.log(EpochStats.WriteReportHeader());
                         }
                         console.log((1 + epoch) + '/' + TOTAL_EPOCHS, this._epochStats.WriteReport());
                     }

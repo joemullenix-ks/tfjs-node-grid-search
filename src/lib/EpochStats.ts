@@ -104,17 +104,18 @@ class EpochStats {
 
 		return TEXT_OUT;
 	}
-}
 
-
+	static WriteReportHeader(): string {
 //NOTE: This must be kept in sync with the text written by WriteReport().
-const REPORT_HEADER =  'EPOCH '
-						+ 'LOSS(VALIDATION) '
-						+ 'Δ L-V DELTA, '
-						+ 'm LOSS-SLOPE(VALIDATION)'
-						+ ' \\/ '
-						+ 'ACCURACY(VALIDATION) '
-						+ 'm ACCURACY-SLOPE(VALIDATION)';
+		return 'EPOCH '
+				+ 'LOSS(VALIDATION) '
+				+ 'Δ L-V DELTA, '
+				+ 'm LOSS-SLOPE(VALIDATION)'
+				+ ' \\/ '
+				+ 'ACCURACY(VALIDATION) '
+				+ 'm ACCURACY-SLOPE(VALIDATION)';
+	}
+}
 
 
 const REPORTING_DIGITS_SLOPE = 6;
@@ -123,4 +124,4 @@ const REPORTING_DIGITS_STAT = 4;
 
 Object.freeze(EpochStats);
 
-export { EpochStats, REPORT_HEADER };
+export { EpochStats };

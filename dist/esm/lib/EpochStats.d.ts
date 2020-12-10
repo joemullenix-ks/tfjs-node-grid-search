@@ -31,6 +31,6 @@ declare class EpochStats {
     WriteCSVLineKeys(): string;
     WriteCSVLineValues(): string;
     WriteReport(): string;
+    static WriteReportHeader(): string;
 }
-declare const REPORT_HEADER: string;
-export { EpochStats, REPORT_HEADER };
+export { EpochStats };

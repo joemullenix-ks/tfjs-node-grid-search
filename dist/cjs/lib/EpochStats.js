@@ -1,6 +1,6 @@
 'use strict';
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.REPORT_HEADER = exports.EpochStats = void 0;
+exports.EpochStats = void 0;
 const simple_statistics_1 = require("simple-statistics");
 const Utils_1 = require("./Utils");
 class EpochStats {
@@ -80,17 +80,18 @@ class EpochStats {
             + '(' + (this._lineValidationAccuracy.m < 0 ? '' : ' ') + this._lineValidationAccuracy.m.toFixed(REPORTING_DIGITS_SLOPE) + ')';
         return TEXT_OUT;
     }
+    static WriteReportHeader() {
+        //NOTE: This must be kept in sync with the text written by WriteReport().
+        return 'EPOCH '
+            + 'LOSS(VALIDATION) '
+            + 'Δ L-V DELTA, '
+            + 'm LOSS-SLOPE(VALIDATION)'
+            + ' \\/ '
+            + 'ACCURACY(VALIDATION) '
+            + 'm ACCURACY-SLOPE(VALIDATION)';
+    }
 }
 exports.EpochStats = EpochStats;
-//NOTE: This must be kept in sync with the text written by WriteReport().
-const REPORT_HEADER = 'EPOCH '
-    + 'LOSS(VALIDATION) '
-    + 'Δ L-V DELTA, '
-    + 'm LOSS-SLOPE(VALIDATION)'
-    + ' \\/ '
-    + 'ACCURACY(VALIDATION) '
-    + 'm ACCURACY-SLOPE(VALIDATION)';
-exports.REPORT_HEADER = REPORT_HEADER;
 const REPORTING_DIGITS_SLOPE = 6;
 const REPORTING_DIGITS_STAT = 4;
 Object.freeze(EpochStats);

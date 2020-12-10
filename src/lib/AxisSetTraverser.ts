@@ -7,14 +7,25 @@ import { NumberKeyedStringsObject, StringKeyedNumbersObject } from './types';
 import { AxisSet } from './AxisSet';
 
 
+/**
+ * Manages an {@link AxisSet}.
+ * Performs the selection of hyperparameter values during the grid search.
+ */
 class AxisSetTraverser {
 	private _totalAxes = 0;
 	private _traversed = false;
 	private _iterationDescriptorsByIndex: NumberKeyedStringsObject = {};
 	private _totalIterations = 0;
 
+	/**
+	 * Creates an instance of AxisSetTraverser.
+	 * @param {AxisSet} _axisSet The collection of {@link Axis} that define the
+	 *							 grid (parameter space) to be searched. Each
+	 *							 axis is associated with one hyperparameter.
+	 */
 	constructor(private _axisSet: AxisSet) {
-		this._totalAxes = this._axisSet.GetTotalAxes(); // cache this; it doesn't change
+		// save off our axis count, which never changes
+		this._totalAxes = this._axisSet.GetTotalAxes();
 
 		this._traversed = false;
 
@@ -53,6 +64,11 @@ class AxisSetTraverser {
 	get	totalIterations(): number { return this._totalIterations; }
 	get traversed(): boolean { return this._traversed; }
 
+	/**
+	 * Iterates the grid. Called after each 'cell' (i.e. unique
+	 * combination of hyperparameters) is trained and tested. Once all axes
+	 * are complete, we mark ourselves as traversed (or done).
+	 */
 	Advance(): void {
 		console.assert(!this._traversed);
 
@@ -83,16 +99,31 @@ class AxisSetTraverser {
 		this._traversed = true;
 	}
 
+	/**
+	 * Produces a simple key: value mapping of the axes current positions,
+	 * keyed by their names.
+	 * @return {StringKeyedNumbersObject}
+	 */
 	CreateIterationParams(): StringKeyedNumbersObject {
 		return this._axisSet.CreateParams();
 	}
 
-	ExamineAxisNames(callback: (axisKey: string) => void): void {
+	/**
+	 * Traverses the axis set, invoking a callback with the name of each axis.
+	 * @param {function(string): void} callback The function to be invoked.
+	 */
+	ExamineAxisNames(callback: CallbackDoSomethingWithAxisName): void {
 		this._axisSet.Walk((axis) => {
 			callback(axis.typeName);
 		});
 	}
 
+	/**
+	 * Gets the descriptor for a requested axis. We build these simple strings
+	 * in the constructor.
+	 * @param {number} index The axis to be described.
+	 * @return {string}
+	 */
 	LookupIterationDescriptor(index: number): string {
 		if (this._iterationDescriptorsByIndex[index] === undefined) {
 			throw new Error('Attempted to lookup descriptor for unknown iteration: ' + index);
@@ -101,6 +132,11 @@ class AxisSetTraverser {
 		return this._iterationDescriptorsByIndex[index];
 	}
 
+	/**
+	 * Gets a combined report of every axis' status.
+	 * @param {boolean} compact Whether to get a detailed report.
+	 * @return {string}
+	 */
 	WriteReport(compact: boolean): string {
 		let reportText = '';
 
@@ -116,6 +152,11 @@ class AxisSetTraverser {
 		return reportText;
 	}
 }
+
+
+//NOTE: This is only here for JSDoc, which has a hard time parsing the
+//		signature. It's not hurting anyone. Yet.
+type CallbackDoSomethingWithAxisName = (axisKey: string) => void;
 
 
 Object.freeze(AxisSetTraverser);
