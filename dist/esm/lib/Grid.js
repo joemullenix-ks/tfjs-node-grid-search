@@ -18,7 +18,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 import * as TENSOR_FLOW from '@tensorflow/tfjs-node';
 import * as Axis from './Axis';
 import { AxisSetTraverser } from './AxisSetTraverser';
-import * as EpochStats from './EpochStats';
+import { EpochStats, REPORT_HEADER as EpochStatsReportHeader } from './EpochStats'; //TOD: ugly; built it into the class
 import { FileIO } from './FileIO';
 import { GridOptions } from './GridOptions';
 import { GridRunStats } from './GridRunStats';
@@ -110,7 +110,7 @@ class Grid {
         //NOTE: This is currently only used by the reporting callback. It's contents, however, will be critical to tracking
         //		overfit and stuck situations, as well as things like Smart Start(tm) (restarting unlucky iterations).
         const EPOCH_STATS_DEPTH = Number(this._gridOptions.GetOption('epochStatsDepth'));
-        this._epochStats = new EpochStats.EpochStats(EPOCH_STATS_DEPTH);
+        this._epochStats = new EpochStats(EPOCH_STATS_DEPTH);
     }
     Run() {
         return __awaiter(this, void 0, void 0, function* () {
@@ -281,7 +281,7 @@ class Grid {
                             return;
                         }
                         if (epoch === 0) {
-                            console.log(EpochStats.REPORT_HEADER);
+                            console.log(EpochStatsReportHeader);
                         }
                         console.log((1 + epoch) + '/' + TOTAL_EPOCHS, this._epochStats.WriteReport());
                     }

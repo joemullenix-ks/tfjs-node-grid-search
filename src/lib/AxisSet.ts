@@ -1,7 +1,7 @@
 'use strict';
 
 
-import { StringKeyedNullsObject, StringKeyedNumbersObject } from '../ts_types/common';
+import { StringKeyedNullsObject, StringKeyedNumbersObject } from './types';
 
 
 import { Axis } from './Axis';

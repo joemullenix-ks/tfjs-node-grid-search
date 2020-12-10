@@ -1,7 +1,7 @@
 'use strict';
 
 
-import { ArrayOrder2, TFNestedArray } from '../ts_types/Grid';
+import { ArrayOrder2, TFNestedArray } from './types';
 
 
 import { DataSet } from './DataSet';

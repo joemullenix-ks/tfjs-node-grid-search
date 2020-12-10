@@ -1,4 +1,4 @@
-import * as Types from '../ts_types/common';
+import * as Types from './types';
 declare class GridOptions {
     private _options;
     constructor(userOptions?: Types.StringKeyedSimpleObject);

@@ -1,4 +1,4 @@
-import { ArrayOrder2, TFNestedArray } from '../ts_types/Grid';
+import { ArrayOrder2, TFNestedArray } from './types';
 declare class DataSet {
     private _inputs;
     private _targets;

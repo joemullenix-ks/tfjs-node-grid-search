@@ -1,4 +1,4 @@
-import { StringKeyedNumbersObject } from '../ts_types/common';
+import { StringKeyedNumbersObject } from './types';
 import { Axis } from './Axis';
 /**
  * Manages a collection of {@link Axis}.

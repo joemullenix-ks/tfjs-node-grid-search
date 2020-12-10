@@ -11,7 +11,9 @@
  */
 
 
-import { StringKeyedNumbersObject, StringKeyedStringsObject } from '../ts_types/common';
+import { StringKeyedNumbersObject, StringKeyedStringsObject } from './types';
+
+
 import { FailureMessage } from './FailureMessage';
 import { Progression } from './Progression';
 import { Utils } from './Utils';

@@ -1,4 +1,4 @@
-import * as Types from '../ts_types/common';
+import * as Types from './types';
 declare class ModelParams {
     private _dynamicParams;
     private _staticParams;

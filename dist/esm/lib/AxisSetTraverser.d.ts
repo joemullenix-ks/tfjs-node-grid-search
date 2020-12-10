@@ -1,4 +1,4 @@
-import { StringKeyedNumbersObject } from '../ts_types/common';
+import { StringKeyedNumbersObject } from './types';
 import { AxisSet } from './AxisSet';
 declare class AxisSetTraverser {
     private _axisSet;

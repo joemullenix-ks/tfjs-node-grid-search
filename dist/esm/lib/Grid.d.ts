@@ -1,10 +1,12 @@
 import * as TENSOR_FLOW from '@tensorflow/tfjs-node';
-import * as Types from '../ts_types/Grid';
+import * as Types from './types';
 import { AxisSet } from './AxisSet';
+import { EpochStats } from './EpochStats';
 import { GridOptions } from './GridOptions';
 import { ModelParams } from './ModelParams';
 import { ModelStatics } from './ModelStatics';
 import { ModelTestStats } from './ModelTestStats';
+import { PredictionEvaluation } from './PredictionEvaluation';
 import { SessionData } from './SessionData';
 declare class Grid {
     private _modelStatics;
@@ -21,7 +23,7 @@ declare class Grid {
     private _timeStartEpoch;
     private _timeStartGrid;
     private _timeStartIteration;
-    constructor(axisSet: AxisSet, _modelStatics: ModelStatics, _sessionData: SessionData, _callbackEvaluatePrediction: Types.CallbackEvaluatePrediction, _userGridOptions?: GridOptions | undefined, _callbackReportIteration?: Types.CallbackReportIteration | undefined, _callbackReportEpoch?: Types.CallbackReportEpoch | undefined, _callbackReportBatch?: Types.CallbackReportBatch | undefined);
+    constructor(axisSet: AxisSet, _modelStatics: ModelStatics, _sessionData: SessionData, _callbackEvaluatePrediction: CallbackEvaluatePrediction, _userGridOptions?: GridOptions | undefined, _callbackReportIteration?: CallbackReportIteration | undefined, _callbackReportEpoch?: CallbackReportEpoch | undefined, _callbackReportBatch?: CallbackReportBatch | undefined);
     CreateModel(modelParams: ModelParams): TENSOR_FLOW.Sequential;
     ResetEpochStats(): void;
     Run(): Promise<void>;
@@ -29,4 +31,8 @@ declare class Grid {
     TestModel(model: TENSOR_FLOW.Sequential, modelParams: ModelParams, duration: number): ModelTestStats;
     TrainModel(model: TENSOR_FLOW.Sequential, modelParams: ModelParams): Promise<void>;
 }
+declare type CallbackEvaluatePrediction = (target: Types.ArrayOrder1, prediction: Types.ArrayOrder1) => PredictionEvaluation;
+declare type CallbackReportBatch = (duration: number, batch: number, logs: TENSOR_FLOW.Logs | undefined) => void;
+declare type CallbackReportEpoch = (duration: number, epoch: number, logs: TENSOR_FLOW.Logs | undefined, epochStats: EpochStats) => void;
+declare type CallbackReportIteration = (duration: number, predictions: Types.ArrayOrder2, proofInputs: Types.TFNestedArray, proofTargets: Types.ArrayOrder2) => void;
 export { Grid };

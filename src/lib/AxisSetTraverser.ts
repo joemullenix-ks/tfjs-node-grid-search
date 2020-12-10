@@ -1,7 +1,7 @@
 'use strict';
 
 
-import { NumberKeyedStringsObject, StringKeyedNumbersObject } from '../ts_types/common';
+import { NumberKeyedStringsObject, StringKeyedNumbersObject } from './types';
 
 
 import { AxisSet } from './AxisSet';

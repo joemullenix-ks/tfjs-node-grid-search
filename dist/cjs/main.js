@@ -11,7 +11,11 @@ var __exportStar = (this && this.__exportStar) || function(m, exports) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Utils = exports.SessionData = exports.LinearProgression = exports.FibonacciProgression = exports.ExponentialProgression = exports.Progression = exports.PredictionEvaluation = exports.ModelTestStats = exports.ModelStatics = exports.ModelParams = exports.IterationResult = exports.GridRunStats = exports.GridOptions = exports.Grid = exports.FileIOResult = exports.FileIO = exports.FailureMessage = exports.EpochStats = exports.DataSetFetcher = exports.DataSet = exports.AxisSetTraverser = exports.AxisSet = exports.AxisTypes = exports.AxisNames = exports.AxisDefaults = exports.Axis = void 0;
-__exportStar(require("./ts_types/Grid"), exports);
+/**
+ * tfjs-node-grid-search
+ * @module main
+ */
+__exportStar(require("./lib/types"), exports);
 //TDOO: Axis becomes abstract with subs, eliminating the enums
 var Axis_1 = require("./lib/Axis");
 Object.defineProperty(exports, "Axis", { enumerable: true, get: function () { return Axis_1.Axis; } });

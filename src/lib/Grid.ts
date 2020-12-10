@@ -14,13 +14,13 @@ import * as TENSOR_FLOW from '@tensorflow/tfjs-node';
 import { ActivationIdentifier } from '@tensorflow/tfjs-layers/dist/keras_format/activation_config';
 
 
-import * as Types from '../ts_types/Grid';
+import * as Types from './types';
 
 
 import * as Axis				from './Axis';
 import { AxisSet }				from './AxisSet';
 import { AxisSetTraverser }		from './AxisSetTraverser';
-import * as EpochStats			from './EpochStats';
+import { EpochStats, REPORT_HEADER as EpochStatsReportHeader } from './EpochStats'; //TOD: ugly; built it into the class
 import { FileIO }				from './FileIO';
 import { GridOptions }			from './GridOptions';
 import { GridRunStats }			from './GridRunStats';
@@ -28,14 +28,14 @@ import { IterationResult }		from './IterationResult';
 import { ModelParams }			from './ModelParams';
 import { ModelStatics }			from './ModelStatics';
 import { ModelTestStats }		from './ModelTestStats';
+import { PredictionEvaluation } from './PredictionEvaluation';
 import { SessionData }			from './SessionData';
 import { Utils }				from './Utils';
-import { PredictionEvaluation } from './PredictionEvaluation';
 
 
 class Grid {
 	private _axisSetTraverser: AxisSetTraverser;
-	private _epochStats!: EpochStats.EpochStats;
+	private _epochStats!: EpochStats;
 	private _gridOptions: GridOptions;
 	private _timeStartBatch = 0;
 	private _timeStartEpoch = 0;
@@ -45,11 +45,11 @@ class Grid {
 	constructor(axisSet: AxisSet,
 				private _modelStatics: ModelStatics,
 				private _sessionData: SessionData,
-				private _callbackEvaluatePrediction: Types.CallbackEvaluatePrediction,
+				private _callbackEvaluatePrediction: CallbackEvaluatePrediction,
 				private _userGridOptions?: GridOptions,
-				private _callbackReportIteration?: Types.CallbackReportIteration,
-				private _callbackReportEpoch?: Types.CallbackReportEpoch,
-				private _callbackReportBatch?: Types.CallbackReportBatch) {
+				private _callbackReportIteration?: CallbackReportIteration,
+				private _callbackReportEpoch?: CallbackReportEpoch,
+				private _callbackReportBatch?: CallbackReportBatch) {
 
 		console.log('\n' + 'Instantiating Grid...');
 
@@ -139,7 +139,7 @@ class Grid {
 
 		const EPOCH_STATS_DEPTH = Number(this._gridOptions.GetOption('epochStatsDepth'));
 
-		this._epochStats = new EpochStats.EpochStats(EPOCH_STATS_DEPTH);
+		this._epochStats = new EpochStats(EPOCH_STATS_DEPTH);
 	}
 
 	async Run(): Promise<void> {
@@ -397,7 +397,7 @@ class Grid {
 									}
 
 									if (epoch === 0) {
-										console.log(EpochStats.REPORT_HEADER);
+										console.log(EpochStatsReportHeader);
 									}
 
 									console.log((1 + epoch) + '/' + TOTAL_EPOCHS, this._epochStats.WriteReport());
@@ -407,6 +407,23 @@ class Grid {
 	}
 }
 
+
+type CallbackEvaluatePrediction = (	target: Types.ArrayOrder1,
+									prediction: Types.ArrayOrder1) => PredictionEvaluation;
+
+type CallbackReportBatch = (duration: number,
+							batch: number,
+							logs: TENSOR_FLOW.Logs | undefined) => void;
+
+type CallbackReportEpoch = (duration: number,
+							epoch: number,
+							logs: TENSOR_FLOW.Logs | undefined,
+							epochStats: EpochStats) => void;
+
+type CallbackReportIteration = (duration: number,
+								predictions: Types.ArrayOrder2,
+								proofInputs: Types.TFNestedArray,
+								proofTargets: Types.ArrayOrder2) => void;
 
 Object.freeze(Grid);
 

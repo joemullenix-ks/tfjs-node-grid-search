@@ -4,7 +4,7 @@
 import * as TENSOR_FLOW from '@tensorflow/tfjs-node';
 
 
-import { ArrayOrder2, TFArrayStack, TFNestedArray } from '../ts_types/Grid';
+import { ArrayOrder2, TFArrayStack, TFNestedArray } from './types';
 
 
 import { DataSet } from './DataSet';

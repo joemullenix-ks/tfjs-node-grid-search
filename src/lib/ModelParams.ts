@@ -1,7 +1,7 @@
 'use strict';
 
 
-import * as Types from '../ts_types/common';
+import * as Types from './types';
 
 
 import { Utils } from './Utils';

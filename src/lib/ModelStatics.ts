@@ -11,7 +11,7 @@ import * as TF_INITIALIZERS from '@tensorflow/tfjs-layers/dist/initializers'
 import { FailureMessage } from './FailureMessage';
 
 
-import * as Types from '../ts_types/common';
+import * as Types from './types';
 
 
 import * as Axis from './Axis';

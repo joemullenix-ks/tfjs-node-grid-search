@@ -39,7 +39,7 @@ exports.Grid = void 0;
 const TENSOR_FLOW = __importStar(require("@tensorflow/tfjs-node"));
 const Axis = __importStar(require("./Axis"));
 const AxisSetTraverser_1 = require("./AxisSetTraverser");
-const EpochStats = __importStar(require("./EpochStats"));
+const EpochStats_1 = require("./EpochStats"); //TOD: ugly; built it into the class
 const FileIO_1 = require("./FileIO");
 const GridOptions_1 = require("./GridOptions");
 const GridRunStats_1 = require("./GridRunStats");
@@ -131,7 +131,7 @@ class Grid {
         //NOTE: This is currently only used by the reporting callback. It's contents, however, will be critical to tracking
         //		overfit and stuck situations, as well as things like Smart Start(tm) (restarting unlucky iterations).
         const EPOCH_STATS_DEPTH = Number(this._gridOptions.GetOption('epochStatsDepth'));
-        this._epochStats = new EpochStats.EpochStats(EPOCH_STATS_DEPTH);
+        this._epochStats = new EpochStats_1.EpochStats(EPOCH_STATS_DEPTH);
     }
     Run() {
         return __awaiter(this, void 0, void 0, function* () {
@@ -302,7 +302,7 @@ class Grid {
                             return;
                         }
                         if (epoch === 0) {
-                            console.log(EpochStats.REPORT_HEADER);
+                            console.log(EpochStats_1.REPORT_HEADER);
                         }
                         console.log((1 + epoch) + '/' + TOTAL_EPOCHS, this._epochStats.WriteReport());
                     }
