@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="utf-8">
+    <title>lib/IterationResult.js - Documentation</title>
+    
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+    <script src="scripts/nav.js" defer></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav >
+    
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Axis.html">Axis</a><ul class='methods'><li data-type='method'><a href="Axis.html#.AttemptValidateParameter">AttemptValidateParameter</a></li><li data-type='method'><a href="Axis.html#.AttemptValidateProgression">AttemptValidateProgression</a></li><li data-type='method'><a href="Axis.html#.LookupTypeName">LookupTypeName</a></li><li data-type='method'><a href="Axis.html#Advance">Advance</a></li><li data-type='method'><a href="Axis.html#CalculatePosition">CalculatePosition</a></li><li data-type='method'><a href="Axis.html#CheckComplete">CheckComplete</a></li><li data-type='method'><a href="Axis.html#Reset">Reset</a></li><li data-type='method'><a href="Axis.html#WriteReport">WriteReport</a></li></ul></li><li><a href="AxisSet.html">AxisSet</a><ul class='methods'><li data-type='method'><a href="AxisSet.html#AdvanceAxis">AdvanceAxis</a></li><li data-type='method'><a href="AxisSet.html#CheckAxisComplete">CheckAxisComplete</a></li><li data-type='method'><a href="AxisSet.html#CreateParams">CreateParams</a></li><li data-type='method'><a href="AxisSet.html#GetTotalAxes">GetTotalAxes</a></li><li data-type='method'><a href="AxisSet.html#ResetAxis">ResetAxis</a></li><li data-type='method'><a href="AxisSet.html#ValidateIndex">ValidateIndex</a></li><li data-type='method'><a href="AxisSet.html#Walk">Walk</a></li><li data-type='method'><a href="AxisSet.html#WriteAxisReport">WriteAxisReport</a></li></ul></li><li><a href="AxisSetTraverser.html">AxisSetTraverser</a><ul class='methods'><li data-type='method'><a href="AxisSetTraverser.html#Advance">Advance</a></li><li data-type='method'><a href="AxisSetTraverser.html#CreateIterationParams">CreateIterationParams</a></li><li data-type='method'><a href="AxisSetTraverser.html#ExamineAxisNames">ExamineAxisNames</a></li><li data-type='method'><a href="AxisSetTraverser.html#LookupIterationDescriptor">LookupIterationDescriptor</a></li><li data-type='method'><a href="AxisSetTraverser.html#WriteReport">WriteReport</a></li></ul></li><li><a href="DataSet.html">DataSet</a></li><li><a href="DataSetFetcher.html">DataSetFetcher</a><ul class='methods'><li data-type='method'><a href="DataSetFetcher.html#Fetch">Fetch</a></li></ul></li><li><a href="EpochStats.html">EpochStats</a><ul class='methods'><li data-type='method'><a href="EpochStats.html#.WriteReportHeader">WriteReportHeader</a></li><li data-type='method'><a href="EpochStats.html#Update">Update</a></li><li data-type='method'><a href="EpochStats.html#WriteReport">WriteReport</a></li></ul></li><li><a href="ExponentialProgression.html">ExponentialProgression</a><ul class='methods'><li data-type='method'><a href="ExponentialProgression.html#Advance">Advance</a></li><li data-type='method'><a href="ExponentialProgression.html#Reset">Reset</a></li></ul></li><li><a href="FailureMessage.html">FailureMessage</a></li><li><a href="FibonacciProgression.html">FibonacciProgression</a><ul class='methods'><li data-type='method'><a href="FibonacciProgression.html#Advance">Advance</a></li><li data-type='method'><a href="FibonacciProgression.html#Reset">Reset</a></li></ul></li><li><a href="FileIOResult.html">FileIOResult</a></li><li><a href="Grid.html">Grid</a><ul class='methods'><li data-type='method'><a href="Grid.html#CreateModel">CreateModel</a></li><li data-type='method'><a href="Grid.html#ResetEpochStats">ResetEpochStats</a></li><li data-type='method'><a href="Grid.html#ResolveModelDefinition">ResolveModelDefinition</a></li><li data-type='method'><a href="Grid.html#Run">Run</a></li><li data-type='method'><a href="Grid.html#TestModel">TestModel</a></li><li data-type='method'><a href="Grid.html#TrainModel">TrainModel</a></li></ul></li><li><a href="GridOptions.html">GridOptions</a><ul class='methods'><li data-type='method'><a href="GridOptions.html#GetOption">GetOption</a></li></ul></li><li><a href="GridRunStats.html">GridRunStats</a><ul class='methods'><li data-type='method'><a href="GridRunStats.html#AddIterationResult">AddIterationResult</a></li><li data-type='method'><a href="GridRunStats.html#WriteCSV">WriteCSV</a></li><li data-type='method'><a href="GridRunStats.html#WriteReport">WriteReport</a></li></ul></li><li><a href="IterationResult.html">IterationResult</a><ul class='methods'><li data-type='method'><a href="IterationResult.html#WriteEpochStatsHeader">WriteEpochStatsHeader</a></li><li data-type='method'><a href="IterationResult.html#WriteEpochStatsValues">WriteEpochStatsValues</a></li><li data-type='method'><a href="IterationResult.html#WriteModelParamHeader">WriteModelParamHeader</a></li><li data-type='method'><a href="IterationResult.html#WriteModelParamValues">WriteModelParamValues</a></li><li data-type='method'><a href="IterationResult.html#WriteReport">WriteReport</a></li><li data-type='method'><a href="IterationResult.html#WriteTestStatsHeader">WriteTestStatsHeader</a></li><li data-type='method'><a href="IterationResult.html#WriteTestStatsValues">WriteTestStatsValues</a></li></ul></li><li><a href="LinearProgression.html">LinearProgression</a><ul class='methods'><li data-type='method'><a href="LinearProgression.html#Advance">Advance</a></li><li data-type='method'><a href="LinearProgression.html#Reset">Reset</a></li></ul></li><li><a href="ModelParams.html">ModelParams</a><ul class='methods'><li data-type='method'><a href="ModelParams.html#GetBooleanParam">GetBooleanParam</a></li><li data-type='method'><a href="ModelParams.html#GetNumericParam">GetNumericParam</a></li><li data-type='method'><a href="ModelParams.html#GetTextParam">GetTextParam</a></li><li data-type='method'><a href="ModelParams.html#ValidateParamKey">ValidateParamKey</a></li></ul></li><li><a href="ModelTestStats.html">ModelTestStats</a><ul class='methods'><li data-type='method'><a href="ModelTestStats.html#CalculateScore">CalculateScore</a></li></ul></li><li><a href="PredictionEvaluation.html">PredictionEvaluation</a></li><li><a href="Progression.html">Progression</a><ul class='methods'><li data-type='method'><a href="Progression.html#Reset">Reset</a></li></ul></li></ul><h3>Modules</h3><ul><li><a href="module-FileIO.html">FileIO</a><ul class='methods'><li data-type='method'><a href="module-FileIO.html#~ProduceResultsFilename">ProduceResultsFilename</a></li><li data-type='method'><a href="module-FileIO.html#~ReadDataFile">ReadDataFile</a></li><li data-type='method'><a href="module-FileIO.html#~WriteResultsFile">WriteResultsFile</a></li></ul></li><li><a href="module-main.html">main</a></li></ul>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">lib/IterationResult.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>'use strict';
+import { ModelTestStats } from './ModelTestStats';
+/**
+ * Gathers all of the information we have for a single model run (aka
+ * "iteration" or "grid cell").
+ */
+class IterationResult {
+    /**
+     * Creates an instance of IterationResult.
+     * @param {number} _iteration The grid's current iteration counter.
+     * @param {string} _descriptor A small, one-line bit of text with the
+     *	dynamic axes (and their bounds) that define this iteration.
+     * @param {EpochStats} _epochStats Stats from the iteration's training
+     *	epochs.
+     * @param {ModelParams} _modelParams The config used to create the
+     *	iteration's model.
+     * @param {ModelTestStats} _modelTestStats The right/wrong totals and
+     *	accuracy/quality deltas from the iteration's testing phase.
+     * @param {number} _repetition This grid's current repeat count for this
+     *	iteration.
+     * @param {number} _runDuration Execution time in milliseconds.
+     */
+    constructor(_iteration, _descriptor, _epochStats, _modelParams, _modelTestStats, _repetition, _runDuration) {
+        this._iteration = _iteration;
+        this._descriptor = _descriptor;
+        this._epochStats = _epochStats;
+        this._modelParams = _modelParams;
+        this._modelTestStats = _modelTestStats;
+        this._repetition = _repetition;
+        this._runDuration = _runDuration;
+        this._score = 0;
+        console.assert(this._iteration >= 0);
+        console.assert(Math.floor(this._iteration) === this._iteration);
+        console.assert(this._descriptor !== '');
+        console.assert(this._modelTestStats instanceof ModelTestStats);
+        console.assert(this._repetition >= 0);
+        console.assert(this._repetition === Math.floor(this._repetition));
+        console.assert(this._runDuration >= 0);
+        console.assert(this._runDuration === Math.floor(this._runDuration));
+        this._score = this._modelTestStats.CalculateScore();
+    }
+    get iteration() { return this._iteration; }
+    get repetition() { return this._repetition; }
+    get runDuration() { return this._runDuration; }
+    get score() { return this._score; }
+    //TODO: These WriteHeader/Values methods have duplicate structure and usage.
+    //		Enforce them with a CSVSource interface.
+    //		...or maybe abstract into a base type.
+    /**
+     * Gets the header for the {@link EpochStats} section of the CSV table.
+     * @return {string}
+     */
+    WriteEpochStatsHeader() {
+        return this._epochStats.WriteCSVLineKeys();
+    }
+    /**
+     * Gets the body for the {@link EpochStats} section of the CSV table.
+     * @return {string}
+     */
+    WriteEpochStatsValues() {
+        return this._epochStats.WriteCSVLineValues();
+    }
+    /**
+     * Gets the header for the {@link ModelParams} section of the CSV table.
+     * @return {string}
+     */
+    WriteModelParamHeader() {
+        return this._modelParams.WriteCSVLineKeys();
+    }
+    /**
+     * Gets the body for the {@link ModelParams} section of the CSV table.
+     * @return {string}
+     */
+    WriteModelParamValues() {
+        return this._modelParams.WriteCSVLineValues();
+    }
+    /**
+     * Gets the header for the {@link ModelTestStats} section of the CSV table.
+     * @return {string}
+     */
+    WriteTestStatsHeader() {
+        return this._modelTestStats.WriteCSVLineKeys();
+    }
+    /**
+     * Gets the body for the {@link ModelTestStats} section of the CSV table.
+     * @return {string}
+     */
+    WriteTestStatsValues() {
+        return this._modelTestStats.WriteCSVLineValues();
+    }
+    /**
+     * Gets the console logging report for this model run.
+     * @return {string}
+     */
+    WriteReport() {
+        return 'Iteration: ' + this._iteration + ', '
+            + 'Repetition: ' + this._repetition + ', '
+            + 'Score: ' + (100 * this._score).toFixed(1) + '%, '
+            + 'Dynamics: ' + this._descriptor;
+    }
+}
+Object.freeze(IterationResult);
+export { IterationResult };
+//# sourceMappingURL=IterationResult.js.map</code></pre>
+        </article>
+    </section>
+
+
+
+
+    
+    
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.6</a> on Fri Dec 11 2020 13:35:12 GMT-1000 (Hawaii-Aleutian Standard Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+
+
+</body>
+</html>

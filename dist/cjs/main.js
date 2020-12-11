@@ -46,7 +46,6 @@ var EpochStats_1 = require("./lib/EpochStats");
 Object.defineProperty(exports, "EpochStats", { enumerable: true, get: function () { return EpochStats_1.EpochStats; } });
 var FailureMessage_1 = require("./lib/FailureMessage");
 Object.defineProperty(exports, "FailureMessage", { enumerable: true, get: function () { return FailureMessage_1.FailureMessage; } });
-// export { FileIO }					from './lib/FileIO';
 exports.FileIO = __importStar(require("./lib/FileIO"));
 var FileIOResult_1 = require("./lib/FileIOResult");
 Object.defineProperty(exports, "FileIOResult", { enumerable: true, get: function () { return FileIOResult_1.FileIOResult; } });

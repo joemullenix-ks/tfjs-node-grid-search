@@ -9,10 +9,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 import { DataSet } from './DataSet';
-// import { FileIO } from './FileIO';
 import * as FileIO from './FileIO';
 import { FileIOResult } from './FileIOResult';
-//TODO: Add more techniques, e.g. fetch via url (see below). When we make that pass, refactor this into an abstract
+//TODO: Add more techniques, e.g. fetch via url (example below). When we make that pass, refactor this into an abstract
 //		base, then implement dedicated fetchers e.g. URLDataSetFetcher, LocalFilesDataSetFetcher, etc...
 //
 // 	async function getData() {

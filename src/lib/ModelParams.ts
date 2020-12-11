@@ -7,9 +7,18 @@ import * as Types from './types';
 import { Utils } from './Utils';
 
 
+/**
+ * Merges two sets of params, dynamic and static, that will be used to create
+ * a network model.
+ */
 class ModelParams {
 	private _mergedParams: Types.StringKeyedSimpleObject = {};
 
+	/**
+	 * Creates an instance of ModelParams.
+	 * @param {Types.StringKeyedSimpleObject} _dynamicParams
+	 * @param {Types.StringKeyedSimpleObject} _staticParams
+	 */
 	constructor(private _dynamicParams: Types.StringKeyedSimpleObject,
 				private _staticParams: Types.StringKeyedSimpleObject) {
 		// start off with a (shallow) clone of the statics...
@@ -25,6 +34,11 @@ class ModelParams {
 		}
 	}
 
+	/**
+	 * Retrieve a Boolean param's value.
+	 * @param {string} key
+	 * @return {boolean}
+	 */
 	GetBooleanParam(key: string): boolean {
 		this.ValidateParamKey(key);
 
@@ -35,6 +49,11 @@ class ModelParams {
 		return Boolean(this._mergedParams[key]);
 	}
 
+	/**
+	 * Retrieve a number param's value.
+	 * @param {string} key
+	 * @return {number}
+	 */
 	GetNumericParam(key: string): number {
 		this.ValidateParamKey(key);
 
@@ -45,6 +64,11 @@ class ModelParams {
 		return Number(this._mergedParams[key]);
 	}
 
+	/**
+	 * Retrieve a string param's value.
+	 * @param {string} key
+	 * @return {string}
+	 */
 	GetTextParam(key: string): string {
 		this.ValidateParamKey(key);
 
@@ -55,6 +79,11 @@ class ModelParams {
 		return String(this._mergedParams[key]);
 	}
 
+	/**
+	 * Throws if a param key is not supported. This is exceptional because the
+	 * objects our constructor takes are not user input. They've been processed.
+	 * @param {string} key
+	 */
 	ValidateParamKey(key: string): void {
 		console.assert(key !== '');
 

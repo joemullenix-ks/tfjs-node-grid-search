@@ -112,7 +112,7 @@ class EpochStats {
 	 * Generates a one-line text report with the following:
 	 * <ul>
 	 *   <li>all of the trailing averages</li>
-	 *   <li>the slope of each of the four categories</li>
+	 *   <li>the slope of each average (accuracy, loss, validation-accuracy and validation-loss)</li>
 	 *   <li>relevant deltas between the training and validation values</li>
 	 * <ul>
 	 * @return {string}

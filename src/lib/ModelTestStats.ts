@@ -1,7 +1,20 @@
 'use strict';
 
 
+/**
+ * Gathers the scores (right/wrong and accuracy delta) for a model run. These
+ * are determined via callback, during the search iteration's testing phase.
+ */
 class ModelTestStats {
+	/**
+	 * Creates an instance of ModelTestStats.
+	 * @param {number} _deltaCorrect Aggregate accuracy deltas for the cases
+	 *	with 'correct' predictions.
+	 * @param {number} _deltaIncorrect Aggregate accuracy deltas for the cases
+	 *	with 'incorrect' predictions.
+	 * @param {number} _totalCorrect Sum of cases with 'correct' predictions.
+	 * @param {number} _totalCases Sum of cases used to test (aka proof cases).
+	 */
 	constructor(private _deltaCorrect: number,
 				private _deltaIncorrect: number,
 				private _totalCorrect: number,
@@ -11,6 +24,10 @@ class ModelTestStats {
 		console.assert(Math.floor(this._totalCases) === this._totalCases);
 	}
 
+	/**
+	 * Gets correct / total.
+	 * @return {number}
+	 */
 	CalculateScore(): number {
 		return this._totalCorrect / this._totalCases;
 	}

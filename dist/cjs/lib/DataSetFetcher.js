@@ -30,10 +30,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.DataSetFetcher = void 0;
 const DataSet_1 = require("./DataSet");
-// import { FileIO } from './FileIO';
 const FileIO = __importStar(require("./FileIO"));
 const FileIOResult_1 = require("./FileIOResult");
-//TODO: Add more techniques, e.g. fetch via url (see below). When we make that pass, refactor this into an abstract
+//TODO: Add more techniques, e.g. fetch via url (example below). When we make that pass, refactor this into an abstract
 //		base, then implement dedicated fetchers e.g. URLDataSetFetcher, LocalFilesDataSetFetcher, etc...
 //
 // 	async function getData() {
