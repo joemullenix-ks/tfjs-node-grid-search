@@ -4,6 +4,8 @@
     <?js if (!env.conf.docdash) { env.conf.docdash = {};} ?>
     <meta charset="utf-8">
     <title><?js= title ?> - <?js= ((env.conf.docdash.meta && env.conf.docdash.meta.title) || "Documentation") ?></title>
+    <link rel="icon" type="image/png" href="favicon.png"/>
+
     <?js if (env.conf.docdash.meta) { ?>
     <?js if (env.conf.docdash.meta.description) { ?><meta name="description" content="<?js= env.conf.docdash.meta.description ?>" /><?js } ?>
     <?js if (env.conf.docdash.meta.keyword) { ?>
@@ -50,7 +52,7 @@
     <?js } ?>
 
     <?js= content ?>
-    
+
     <?js if (env.conf.docdash.disqus) { ?>
     <div id="disqus_thread"></div>
     <script>

@@ -1,7 +1,4 @@
 /**
- * @module Utils
- */
-/**
  * Finds the mean of a set of numbers. Array must not be empty.
  * @param {Array<number>} array
  * @return {number}
@@ -9,23 +6,23 @@
 declare const ArrayCalculateAverage: (array: Array<number>) => number;
 /**
  * Finds the largest value in an array of numbers, and returns the index of that
- * value.
+ * value. Array must not be empty.
  * @param {Array<number>} values
  * @return {number}
  */
 declare const ArrayFindIndexOfHighestValue: (values: Array<number>) => number;
-/**
- * Returns true if x is a positive integer or zero.
- * @param {number} x
- * @return {boolean}
- */
-declare const CheckNonNegativeInteger: (x: number) => boolean;
 /**
  * Returns true if x is in the range { 0 < x < 1 }.
  * @param {number} x
  * @return {boolean}
  */
 declare const CheckFloat0to1Exclusive: (x: number) => boolean;
+/**
+ * Returns true if x is a positive integer or zero.
+ * @param {number} x
+ * @return {boolean}
+ */
+declare const CheckNonNegativeInteger: (x: number) => boolean;
 /**
  * Returns true if x is an integer greater than zero.
  * @param {number} x
