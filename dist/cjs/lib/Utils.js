@@ -14,8 +14,10 @@ const ArrayCalculateAverage = (array) => {
     if (array.length === 0) {
         throw new Error('Cannot calculate average. Array is empty.');
     }
-    //PERF: This can be done more efficiently w/ a little math. Don't walk the whole set. Instead, discount a running average (which
-    //		we'll keep separately and pass in), by (droppedSample / total), then add (newSample / total).
+    //TODO: Move into EpochStats, where these can be done more efficiently.
+    //PERF: Don't walk the whole set. Instead, discount a running average (which
+    //		we'll keep separately and pass in), by (droppedSample / total), then
+    //		add (addedSample / total).
     const SUM = array.reduce((previous, current) => { return previous + current; }, 0);
     return SUM / array.length;
 };
