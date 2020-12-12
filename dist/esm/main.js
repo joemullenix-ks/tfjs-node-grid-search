@@ -3,6 +3,7 @@
  * tfjs-node-grid-search
  * @module main
  */
+export * from './lib/types';
 //TDOO: Axis becomes abstract with subs, eliminating the enums
 export { Axis, AxisDefaults, AxisNames, AxisTypes } from './lib/Axis';
 export { AxisSet } from './lib/AxisSet';
@@ -11,7 +12,7 @@ export { DataSet } from './lib/DataSet';
 export { DataSetFetcher } from './lib/DataSetFetcher';
 export { EpochStats } from './lib/EpochStats';
 export { FailureMessage } from './lib/FailureMessage';
-export { FileIO } from './lib/FileIO';
+export * as FileIO from './lib/FileIO';
 export { FileIOResult } from './lib/FileIOResult';
 export { Grid } from './lib/Grid';
 export { GridOptions } from './lib/GridOptions';
@@ -26,5 +27,5 @@ export { ExponentialProgression } from './lib/progression/ExponentialProgression
 export { FibonacciProgression } from './lib/progression/FibonacciProgression';
 export { LinearProgression } from './lib/progression/LinearProgression';
 export { SessionData } from './lib/SessionData';
-export { Utils } from './lib/Utils';
+export * as Utils from './lib/Utils';
 //# sourceMappingURL=main.js.map

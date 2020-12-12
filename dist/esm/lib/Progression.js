@@ -105,7 +105,6 @@ class Progression {
     get value() { return this._value; }
     /**
      * Puts the progression in its initial state (_value = 0).
-     * @memberof Progression
      */
     Reset() {
         this._value = 0;

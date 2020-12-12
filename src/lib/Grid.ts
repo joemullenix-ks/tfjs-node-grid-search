@@ -14,42 +14,88 @@ import * as TENSOR_FLOW from '@tensorflow/tfjs-node';
 import { ActivationIdentifier } from '@tensorflow/tfjs-layers/dist/keras_format/activation_config';
 
 
-import * as Types from '../ts_types/Grid';
+import * as Types from './types';
 
 
 import * as Axis				from './Axis';
 import { AxisSet }				from './AxisSet';
 import { AxisSetTraverser }		from './AxisSetTraverser';
-import * as EpochStats			from './EpochStats';
-import { FileIO }				from './FileIO';
+import { EpochStats }			from './EpochStats';
+import * as FileIO				from './FileIO';
 import { GridOptions }			from './GridOptions';
 import { GridRunStats }			from './GridRunStats';
 import { IterationResult }		from './IterationResult';
 import { ModelParams }			from './ModelParams';
 import { ModelStatics }			from './ModelStatics';
 import { ModelTestStats }		from './ModelTestStats';
-import { SessionData }			from './SessionData';
-import { Utils }				from './Utils';
 import { PredictionEvaluation } from './PredictionEvaluation';
+import { SessionData }			from './SessionData';
+import * as Utils				from './Utils';
 
 
+/**
+ * Performs the grid search.<br>
+ * Grid takes the data set, static params, dynamic params (axes), and a set of
+ * options. It also takes a callback that lets the user 'score' each model.<br>
+ * There are optional callbacks that give the user updates over the course
+ * of the search. You may send handlers for end-of-batch, end-of-epoch
+ * and end-of-iteration (<i>iteration</i> meaning one model's train and test
+ * sequence).
+ */
 class Grid {
 	private _axisSetTraverser: AxisSetTraverser;
-	private _epochStats!: EpochStats.EpochStats;
+	private _epochStats!: EpochStats;
 	private _gridOptions: GridOptions;
 	private _timeStartBatch = 0;
 	private _timeStartEpoch = 0;
 	private _timeStartGrid = 0;
 	private _timeStartIteration = 0;
 
+	/**
+	 * Creates an instance of Grid.
+	 * @param {AxisSet} axisSet The hyperparameter ranges to search.
+	 * @param {ModelStatics} _modelStatics The parameters that will be the same
+	 *	for every model.
+	 * @param {SessionData} _sessionData The data set to be used for training
+	 *	and testing each model.
+	 * @param {function} _callbackEvaluatePrediction
+	 *	A function which takes a prediction for a case's inputs, and that case's
+	 *	actual targets. The function returns a score for the prediction.
+	 *	These scores determine the 'quality' of each model.<br>
+	 *  <b>Arguments:</b> target: number[], prediction: number[]<br>
+	 *  <b>Returns:</b> {@link PredictionEvaluation}
+	 * @param {GridOptions} [_userGridOptions] Settings for the search.
+	 * @param {function} [_callbackReportIteration] A function
+	 *	invoked at the end of every model's train-and-test sequence.<br>
+	 *  <b>Arguments:</b> duration: number, predictions: number[][], proofInputs: Array<unknown>, proofTargets: number[][]<br>
+	 *  <b>Returns:</b> void
+	 * @param {function} [_callbackReportEpoch] A function invoked
+	 *	at the end of every training epoch. If this is not included (i.e. it's
+	 *	null or undefined), default reporting will be logged every epoch. See
+	 *	{@link EpochStats#WriteReport} for the default report's format.<br>
+	 *  <b>Arguments:</b> duration: number, epoch: number, logs: tf.Logs, epochStats: {@link EpochStats}<br>
+	 *  <b>Returns:</b> void
+	 * @param {function} [_callbackReportBatch] A function invoked
+	 *	at the end of every train epoch. Note that this can get <i>very</i>
+	 *	spammy!<br>
+	 *  <b>Arguments:</b> duration: number, predictions: number[][], proofInputs: Array<unknown>, proofTargets: number[][]<br>
+	 *  <b>Returns:</b> void
+	 * @example
+	 * // Sample CallbackEvaluatePrediction
+	 * function EvaluatePrediction(target: number[], prediction: number[]) {
+	 *   // your logic here; determine whether the prediction is correct
+	 *
+     *   return new tngs.PredictionEvaluation(correct);
+	 * }
+	 */
 	constructor(axisSet: AxisSet,
 				private _modelStatics: ModelStatics,
 				private _sessionData: SessionData,
-				private _callbackEvaluatePrediction: Types.CallbackEvaluatePrediction,
+				private _callbackEvaluatePrediction: CallbackEvaluatePrediction,
 				private _userGridOptions?: GridOptions,
-				private _callbackReportIteration?: Types.CallbackReportIteration,
-				private _callbackReportEpoch?: Types.CallbackReportEpoch,
-				private _callbackReportBatch?: Types.CallbackReportBatch) {
+				private _callbackReportIteration?: CallbackReportIteration,
+				private _callbackReportEpoch?: CallbackReportEpoch,
+				private _callbackReportBatch?: CallbackReportBatch) {
 
 		console.log('\n' + 'Instantiating Grid...');
 
@@ -67,6 +113,11 @@ class Grid {
 		this.ResolveModelDefinition();
 	}
 
+	/**
+	 * Produces a compiled instance of TF's Sequential model, ready to train.
+	 * @param {ModelParams} modelParams The config of the model to create.
+	 * @return {TENSOR_FLOW.Sequential}
+	 */
 	CreateModel(modelParams: ModelParams): TENSOR_FLOW.Sequential {
 		const TOTAL_INPUT_NEURONS = this._sessionData.totalInputNeurons;
 		const TOTAL_OUTPUT_NEURONS = this._sessionData.totalOutputNeurons;
@@ -131,6 +182,9 @@ class Grid {
 		return TF_MODEL;
 	}
 
+	/**
+	 * Clears the stats tracker from the last iteration, and creates a new one.
+	 */
 	ResetEpochStats(): void {
 		console.assert(this._gridOptions.GetOption('epochStatsDepth') !== undefined);
 
@@ -139,9 +193,13 @@ class Grid {
 
 		const EPOCH_STATS_DEPTH = Number(this._gridOptions.GetOption('epochStatsDepth'));
 
-		this._epochStats = new EpochStats.EpochStats(EPOCH_STATS_DEPTH);
+		this._epochStats = new EpochStats(EPOCH_STATS_DEPTH);
 	}
 
+	/**
+	 * Begins the grid search. Async for the TF model.fit() {@link https://js.tensorflow.org/api/latest/#tf.Sequential.fit}
+	 * @return {Promise<void>}
+	 */
 	async Run(): Promise<void> {
 		const GRID_RUN_STATS = new GridRunStats();
 
@@ -233,10 +291,16 @@ class Grid {
 		}
 	}
 
+	/**
+	 * Merges the static and dynamic model hyperparameters, warning in the event
+	 * of collision. If any param is set as both static and dynamic (i.e. it's
+	 * included in {@link ModelStatics} and it has an {@link Axis}), the
+	 * dynamic values are used.
+	 */
 	ResolveModelDefinition(): void {
 //NOTE: TODO: I'm not entirely happy with this. It feels like access breaking, to reach in via callback.
 //			  It would be better to just produce a list of axis keys. That's all we want, anyway.
-//			  ...will leave this pending the completion of the supported axes. There may be more
+//			  ...will leave this on hold, pending the completion of the supported axes. There may be more
 //			  to consider when it comes to complex axes like activator-schedules.
 
 		// ensure the static and dynamic model parameters have no overlap, by stripping any dupes from the statics
@@ -245,8 +309,20 @@ class Grid {
 		});
 	}
 
-//TODO: This model type might be too strict. Consider the lower-level TF LayersModel.
+	/**
+	 * Runs generalization tests on a model, to determine its 'quality'.<br>
+	 * A portion of the data set is reserved; never used in training. This is
+	 * called the "proof set". After a model has been trained, it's used to
+	 * make a prediction for each case in the proof set. The user provides an
+	 * accuracy score for each prediction via callback.
+	 * @param {TENSOR_FLOW.Sequential} model The trained model to test.
+	 * @param {ModelParams} modelParams The config used to create the model.
+	 * @param {number} duration The duration of the training process.
+	 * @return {ModelTestStats}
+	 */
 	TestModel(model: TENSOR_FLOW.Sequential, modelParams: ModelParams, duration: number): ModelTestStats {
+//TODO: This model type might be too strict. Consider the lower-level TF LayersModel.
+
 		console.assert(model.built);
 		console.assert(duration >= 0);
 
@@ -314,8 +390,16 @@ class Grid {
 		return MODEL_TEST_STATS;
 	}
 
-//TODO: This model type might be too strict. Consider the lower-level TF LayersModel.
+	/**
+	 * Runs model.fit() using the training data, tracks stats and invokes the
+	 * optional reporting callbacks.
+	 * @param {TENSOR_FLOW.Sequential} model A compiled model to train.
+	 * @param {ModelParams} modelParams The config used to create the model.
+	 * @return {Promise<void>}
+	 */
 	async TrainModel(model: TENSOR_FLOW.Sequential, modelParams: ModelParams): Promise<void> {
+//TODO: This model type might be too strict. Consider the lower-level TF LayersModel.
+
 		console.assert(model.built);
 
 		this.ResetEpochStats()
@@ -397,7 +481,7 @@ class Grid {
 									}
 
 									if (epoch === 0) {
-										console.log(EpochStats.REPORT_HEADER);
+										console.log(EpochStats.WriteReportHeader());
 									}
 
 									console.log((1 + epoch) + '/' + TOTAL_EPOCHS, this._epochStats.WriteReport());
@@ -406,6 +490,24 @@ class Grid {
 						});
 	}
 }
+
+
+type CallbackEvaluatePrediction = (	target: Types.ArrayOrder1,
+									prediction: Types.ArrayOrder1) => PredictionEvaluation;
+
+type CallbackReportBatch = (duration: number,
+							batch: number,
+							logs: TENSOR_FLOW.Logs | undefined) => void;
+
+type CallbackReportEpoch = (duration: number,
+							epoch: number,
+							logs: TENSOR_FLOW.Logs | undefined,
+							epochStats: EpochStats) => void;
+
+type CallbackReportIteration = (duration: number,
+								predictions: Types.ArrayOrder2,
+								proofInputs: Types.TFNestedArray,
+								proofTargets: Types.ArrayOrder2) => void;
 
 
 Object.freeze(Grid);

@@ -1,14 +1,25 @@
 'use strict';
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AxisSetTraverser = void 0;
+/**
+ * Manages an {@link AxisSet}.
+ * Performs the selection of hyperparameter values during the grid search.
+ */
 class AxisSetTraverser {
+    /**
+     * Creates an instance of AxisSetTraverser.
+     * @param {AxisSet} _axisSet The collection of {@link Axis} that define the
+     *							 grid (parameter space) to be searched. Each
+     *							 axis is associated with one hyperparameter.
+     */
     constructor(_axisSet) {
         this._axisSet = _axisSet;
         this._totalAxes = 0;
         this._traversed = false;
         this._iterationDescriptorsByIndex = {};
         this._totalIterations = 0;
-        this._totalAxes = this._axisSet.GetTotalAxes(); // cache this; it doesn't change
+        // save off our axis count, which never changes
+        this._totalAxes = this._axisSet.GetTotalAxes();
         this._traversed = false;
         //NOTE: This function is buried in the c'tor because it actually runs the traversal (advances the axes).
         //		It cleans up after itself, resetting to a pristine state on the way out.
@@ -33,6 +44,11 @@ class AxisSetTraverser {
     }
     get totalIterations() { return this._totalIterations; }
     get traversed() { return this._traversed; }
+    /**
+     * Iterates the grid. Called after each 'cell' (i.e. unique
+     * combination of hyperparameters) is trained and tested. Once all axes
+     * are complete, we mark ourselves as traversed (or done).
+     */
     Advance() {
         console.assert(!this._traversed);
         let resetCounter = 0;
@@ -52,20 +68,40 @@ class AxisSetTraverser {
         // this advance completed the traversal; reset
         this._traversed = true;
     }
+    /**
+     * Produces a simple key: value mapping of the axes current positions,
+     * keyed by their names.
+     * @return {StringKeyedNumbersObject}
+     */
     CreateIterationParams() {
         return this._axisSet.CreateParams();
     }
+    /**
+     * Traverses the axis set, invoking a callback with the name of each axis.
+     * @param {function(string): void} callback The function to be invoked.
+     */
     ExamineAxisNames(callback) {
         this._axisSet.Walk((axis) => {
             callback(axis.typeName);
         });
     }
+    /**
+     * Gets the descriptor for a requested axis. We build these simple strings
+     * in the constructor.
+     * @param {number} index The axis to be described.
+     * @return {string}
+     */
     LookupIterationDescriptor(index) {
         if (this._iterationDescriptorsByIndex[index] === undefined) {
             throw new Error('Attempted to lookup descriptor for unknown iteration: ' + index);
         }
         return this._iterationDescriptorsByIndex[index];
     }
+    /**
+     * Gets a combined report of every axis' status.
+     * @param {boolean} compact Whether to get a detailed report.
+     * @return {string}
+     */
     WriteReport(compact) {
         let reportText = '';
         for (let i = 0; i < this._totalAxes; ++i) {

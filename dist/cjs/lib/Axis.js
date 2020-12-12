@@ -1,8 +1,27 @@
 'use strict';
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AxisTypes = exports.AxisNames = exports.AxisDefaults = exports.Axis = void 0;
 const FailureMessage_1 = require("./FailureMessage");
-const Utils_1 = require("./Utils");
+const Utils = __importStar(require("./Utils"));
 /**
  * Manages one hyperparameter over the course of the search.
  * It uses a bounded range, and a progression across that range, to define
@@ -74,7 +93,6 @@ class Axis {
     get typeName() { return this._typeName; }
     /**
     * Moves the progression to its next position.
-    * @memberof Axis
     */
     Advance() {
         this._progression.Advance();
@@ -83,7 +101,6 @@ class Axis {
      * Gets the current value of this axis, defined as (_boundBegin +
      * _progression.value).
      * @return {number} The hyperparameter's value in the active model.
-     * @memberof Axis
      */
     CalculatePosition() {
         const PROGRESSION_VALUE = this._progression.value;
@@ -92,7 +109,6 @@ class Axis {
     /**
      * Determines whether this axis is at or beyond the end of its range.
      * @return {boolean}
-     * @memberof Axis
      */
     CheckComplete() {
         return (this._forward
@@ -101,7 +117,6 @@ class Axis {
     }
     /**
      * Moves the progression to its initial position.
-     * @memberof Axis
      */
     Reset() {
         this._progression.Reset();
@@ -111,7 +126,6 @@ class Axis {
     * for details on the progression.
     * @param {boolean} compact If false, bounds and progression are included.
     * @return {string}
-    * @memberof Axis
     */
     WriteReport(compact) {
         const POSITION_TEXT = this._progression.integerBased
@@ -135,7 +149,6 @@ class Axis {
      * @param {number} value The number to validated against this hyperparameter.
      * @param {FailureMessage} failureMessage Explanatory faliure text is written to this object.
      * @return {boolean}
-     * @memberof Axis
      */
     static AttemptValidateParameter(key, value, failureMessage) {
         //NOTE: It's important to gracefully handle bad inputs here, with explanations and recommendations in the failure text.
@@ -146,7 +159,7 @@ class Axis {
             case AxisNames.EPOCHS:
             case AxisNames.NEURONS:
                 {
-                    if (Utils_1.Utils.CheckPositiveInteger(value)) {
+                    if (Utils.CheckPositiveInteger(value)) {
                         return true;
                     }
                     errorSuffix = ERROR_TEXT_POSITIVE_INTEGER;
@@ -155,7 +168,7 @@ class Axis {
             case AxisNames.LAYERS:
                 {
                     // zero is allowed
-                    if (Utils_1.Utils.CheckNonNegativeInteger(value)) {
+                    if (Utils.CheckNonNegativeInteger(value)) {
                         return true;
                     }
                     errorSuffix = ERROR_TEXT_NON_NEGATIVE_INTEGER;
@@ -165,7 +178,7 @@ class Axis {
             case AxisNames.VALIDATION_SPLIT:
                 { // << zero and one disable TF validation
                     // zero and one are not allowed
-                    if (Utils_1.Utils.CheckFloat0to1Exclusive(value)) {
+                    if (Utils.CheckFloat0to1Exclusive(value)) {
                         return true;
                     }
                     errorSuffix = ERROR_TEXT_EXCLUSIVE_UNIT_SCALAR;
@@ -187,7 +200,6 @@ class Axis {
      * @param {FailureMessage} failureMessage Explanatory faliure text is written to this object.
 
      * @return {boolean}
-     * @memberof Axis
      */
     static AttemptValidateProgression(key, progression, failureMessage) {
         //NOTE: It's important to gracefully handle bad inputs here, with explanations and recommendations in the failure text.
@@ -228,7 +240,6 @@ class Axis {
      * @static
      * @param {number} type An entry from the [AxisTypes]{@link Axis.AxisTypes} enum.
      * @return {string} An entry from the [AxisNames]{@link Axis.AxisNames} enum.
-     * @memberof Axis
      */
     static LookupTypeName(type) {
         switch (type) {

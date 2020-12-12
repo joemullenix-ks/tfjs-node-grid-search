@@ -49,7 +49,6 @@ class ExponentialProgression extends Progression {
 
 	/**
 	 * Moves to the next value in the series.
-	 * @memberof ExponentialProgression
 	 */
 	Advance(): void {
 		this._value = this._scale * Math.pow(this._base, this._step);

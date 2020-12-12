@@ -1,6 +1,6 @@
 import * as TENSOR_FLOW from '@tensorflow/tfjs-node';
 import * as TF_INITIALIZERS from '@tensorflow/tfjs-layers/dist/initializers';
-import * as Types from '../ts_types/common';
+import * as Types from './types';
 declare class ModelStatics {
     private _userStatics;
     private _staticParams;

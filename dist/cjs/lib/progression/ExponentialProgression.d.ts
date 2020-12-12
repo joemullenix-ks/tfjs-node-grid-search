@@ -22,7 +22,6 @@ declare class ExponentialProgression extends Progression {
     constructor(base: number, scale: number);
     /**
      * Moves to the next value in the series.
-     * @memberof ExponentialProgression
      */
     Advance(): void;
     Reset(): void;

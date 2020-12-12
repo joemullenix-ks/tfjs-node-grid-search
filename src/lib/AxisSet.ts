@@ -1,13 +1,20 @@
 'use strict';
 
 
-import { StringKeyedNullsObject, StringKeyedNumbersObject } from '../ts_types/common';
+import { StringKeyedNullsObject, StringKeyedNumbersObject } from './types';
 
 
 import { Axis } from './Axis';
 
 
+/**
+ * Manages a collection of {@link Axis}.
+ */
 class AxisSet {
+	/**
+	 * Creates an instance of AxisSet.
+	 * @param {Array<Axis>} _axes An array of {@link Axis}. Each axis must have a unique hyperparameter.
+	 */
 	constructor(private _axes: Array<Axis>) {
 		// validate the incoming axes
 
@@ -23,58 +30,95 @@ class AxisSet {
 		});
 	}
 
+	/**
+	 * Pass-through to advance an axis.
+	 * @param {number} index The axis to advance.
+	 */
 	AdvanceAxis(index: number): void {
 		this.ValidateIndex(index);
 
 		this._axes[index].Advance();
 	}
 
+	/**
+	 * Pass-through to check completion.
+	 * @param {number} index The axis to check.
+	 * @return {boolean}
+	 */
 	CheckAxisComplete(index: number): boolean {
 		this.ValidateIndex(index);
 
 		return this._axes[index].CheckComplete();
 	}
 
+	/**
+	 * Builds a simple map in the format "{ axis0-name: axis0-value, ... }"
+	 * @return {StringKeyedNumbersObject}
+	 */
 	CreateParams(): StringKeyedNumbersObject {
 		const PARAMS: StringKeyedNumbersObject = {};
 
 		for (let i = 0; i < this._axes.length; ++i) {
 			const AXIS = this._axes[i];
 
-//TODO: Should we do these by index or key?? This isn't particularly perf-intensive, and keys are much friendlier
-//		to write and debug.
-//		This will be revisited when I implement minification.
 			PARAMS[AXIS.typeName] = AXIS.CalculatePosition();
 		}
 
 		return PARAMS;
 	}
 
+	/**
+	 * Gets the collection size.
+	 * @return {number}
+	 */
 	GetTotalAxes(): number {
 		return this._axes.length;
 	}
 
+	/**
+	 * Pass-through to reset an axis.
+	 * @param {number} index The axis to reset.
+	 */
 	ResetAxis(index: number): void {
 		this.ValidateIndex(index);
 
 		this._axes[index].Reset();
 	}
 
+	/**
+	 * Fails if an axis index is out-of-bounds.
+	 * @param {number} index The axis index to validate.
+	 */
 	ValidateIndex(index: number): void {
 		console.assert(index >= 0);
 		console.assert(index < this._axes.length);
 	}
 
-	Walk(callback: (axis: Axis) => void): void {
+	/**
+	 * Traverses the axis collection, invoking a callback for each.
+	 * @param {function(Axis): void} callback The function to be invoked with an instance of {@link Axis}.
+	 */
+	Walk(callback: CallbackDoSomethingWithAxis): void {
 		this._axes.forEach(callback);
 	}
 
+	/**
+	 * Pass-through to get axis reports.
+	 * @param {number} index The axis to report.
+	 * @param {boolean} compact Whether to get a detailed report.
+	 * @return {string}
+	 */
 	WriteAxisReport(index: number, compact: boolean): string {
 		this.ValidateIndex(index);
 
 		return this._axes[index].WriteReport(compact);
 	}
 }
+
+
+//NOTE: This is only here for JSDoc, which has a hard time parsing the
+//		signature. It's not hurting anyone. Yet.
+type CallbackDoSomethingWithAxis = (axis: Axis) => void;
 
 
 Object.freeze(AxisSet);

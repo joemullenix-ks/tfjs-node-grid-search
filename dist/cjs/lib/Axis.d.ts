@@ -1,7 +1,7 @@
 /**
  * @module Axis
  */
-import { StringKeyedNumbersObject, StringKeyedStringsObject } from '../ts_types/common';
+import { StringKeyedNumbersObject, StringKeyedStringsObject } from './types';
 import { FailureMessage } from './FailureMessage';
 import { Progression } from './Progression';
 /**
@@ -39,25 +39,21 @@ declare class Axis {
     get typeName(): string;
     /**
     * Moves the progression to its next position.
-    * @memberof Axis
     */
     Advance(): void;
     /**
      * Gets the current value of this axis, defined as (_boundBegin +
      * _progression.value).
      * @return {number} The hyperparameter's value in the active model.
-     * @memberof Axis
      */
     CalculatePosition(): number;
     /**
      * Determines whether this axis is at or beyond the end of its range.
      * @return {boolean}
-     * @memberof Axis
      */
     CheckComplete(): boolean;
     /**
      * Moves the progression to its initial position.
-     * @memberof Axis
      */
     Reset(): void;
     /**
@@ -65,7 +61,6 @@ declare class Axis {
     * for details on the progression.
     * @param {boolean} compact If false, bounds and progression are included.
     * @return {string}
-    * @memberof Axis
     */
     WriteReport(compact: boolean): string;
     /**
@@ -76,7 +71,6 @@ declare class Axis {
      * @param {number} value The number to validated against this hyperparameter.
      * @param {FailureMessage} failureMessage Explanatory faliure text is written to this object.
      * @return {boolean}
-     * @memberof Axis
      */
     static AttemptValidateParameter(key: string, value: number, failureMessage: FailureMessage): boolean;
     /**
@@ -88,7 +82,6 @@ declare class Axis {
      * @param {FailureMessage} failureMessage Explanatory faliure text is written to this object.
 
      * @return {boolean}
-     * @memberof Axis
      */
     static AttemptValidateProgression(key: string, progression: Progression, failureMessage: FailureMessage): boolean;
     /**
@@ -96,7 +89,6 @@ declare class Axis {
      * @static
      * @param {number} type An entry from the [AxisTypes]{@link Axis.AxisTypes} enum.
      * @return {string} An entry from the [AxisNames]{@link Axis.AxisNames} enum.
-     * @memberof Axis
      */
     static LookupTypeName(type: number): string;
 }

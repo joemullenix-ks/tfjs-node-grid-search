@@ -173,6 +173,7 @@ tt, code, kbd, samp {
   line-height: 140%;
   margin-bottom: 1em;
   margin-top: 1em;
+  max-width: 1000px;
 }
 
 .class-description:empty {

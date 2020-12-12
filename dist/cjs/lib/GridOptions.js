@@ -21,12 +21,27 @@ var __importStar = (this && this.__importStar) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.GridOptions = void 0;
 const FS = __importStar(require("fs"));
-const Utils_1 = require("./Utils");
+const Utils = __importStar(require("./Utils"));
 //NOTE: TODO: Not entirely thrilled with this class. It has a lot in common with ModelStatics, but the two
 //			  are implemented very differently. Part of that is due to ModelStatics's dependence on baked-in
 //			  TensorFlow keys, but it's also due to project churn and the TypeScript conversion process.
 //			  Revisit both classes, and settle on a common approach.
+/**
+ * The config of a grid search. Takes all settings that are not hyperparameters
+ * or parts of a network model, all of them optional.
+ */
 class GridOptions {
+    /**
+     * Creates an instance of GridOptions.
+     * @param {Types.StringKeyedSimpleObject} [userOptions]
+     * @example
+     * new tngs.GridOptions({
+     *   epochStatsDepth: 10,         // Length of the trailing average; default 5
+     *   repetitions: 3,              // Number of times to repeat each iteration of the grid; default 1
+     *   validationSetSizeMin: 50,    // Fewer than x validation cases triggers a warning; default 100
+     *   writeResultsToDirectory: ''  // Directory in which a results file is written; off by default (do not write CSV)
+     * });
+     */
     constructor(userOptions) {
         this._options = {};
         if (typeof userOptions !== 'object') {
@@ -74,7 +89,7 @@ class GridOptions {
                         if (typeof OPTION !== 'number') {
                             throw new Error(ERROR_PREFIX + '"' + k + '" must be a number.');
                         }
-                        if (!Utils_1.Utils.CheckPositiveInteger(OPTION)) {
+                        if (!Utils.CheckPositiveInteger(OPTION)) {
                             throw new Error(ERROR_PREFIX + '"' + k + '" must be a positive integer.');
                         }
                     }
@@ -118,6 +133,12 @@ class GridOptions {
         // now save this processed object; NOTE: It's not a private c'tor member because it's optional
         this._options = userOptions;
     }
+    /**
+     * Returns the value for a setting key, or undefined, if none was supplied
+     * to the constructor.
+     * @param {string} key
+     * @return {(string | number | boolean | undefined)}
+     */
     GetOption(key) {
         switch (key) {
             case 'epochStatsDepth':
@@ -136,16 +157,6 @@ class GridOptions {
     }
 }
 exports.GridOptions = GridOptions;
-//KEEP: TODO: (low-pri until TS conversion) Instead of hard-coding the option keys, implement this enum.
-//			  Also, I believe we'll use it to replace ALL_AVAILABLE_OPTIONS.
-//
-// enum Names { << TS can't export "const enum", btw; see Axis.ts for a workable
-// 				<< example (now with JSDoc!).
-// 	EPOCH_STATS_DEPTH			= 'epochStatsDepth',
-// 	REPETITIONS					= 'repetitions',
-// 	VALIDATION_SET_SIZE_MIN		= 'validationSetSizeMin',
-// 	WRITE_RESULTS_TO_DIRECTORY	= 'writeResultsToDirectory'
-// }
 const ALL_AVAILABLE_OPTIONS = {
     epochStatsDepth: null,
     repetitions: null,

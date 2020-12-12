@@ -37,11 +37,30 @@ const TENSOR_FLOW = __importStar(require("@tensorflow/tfjs-node"));
 //				> SessionDataStandardized
 //				> SessionDataStandardizedFaster
 //				> SessionDataStandardizedSmaller
+/**
+ * Manages the data set used to train and test models during the grid search.
+ */
 class SessionData {
-    constructor(proofPercentage, dataSet, _useDefaultStandardization, _callbackStandardize, _callbackUnstandardize) {
+    /**
+     * Creates an instance of SessionData.
+     * @param {number} proofPercentage A value 0-1 exclusive used to determine
+     *	the number of cases reserved for generalization testing. These cases
+     *	are never seen by the model during training.<br>
+     *	A common value is 0.2 (20%).
+     * @param {DataSet} dataSet The data used to train and test models.
+     * @param {boolean} _useDefaultStandardization If true, the input values
+     *	will be modified internally such that each feature has a mean of zero
+     *	and a variance of one.<br>
+     *	If standardization callbacks are supplied, this argument is ignored.
+     * @param {function} [_callbackStandardize] A function invoked with the
+     *	input data prior to the grid search. It provides an opportunity to
+     *	preprocess the data internally before it's transformed into tensors.<br>
+     *  <b>Arguments:</b> unstandardizedInputs: Array<unknown><br>
+     *  <b>Returns:</b> void
+     */
+    constructor(proofPercentage, dataSet, _useDefaultStandardization, _callbackStandardize) {
         this._useDefaultStandardization = _useDefaultStandardization;
         this._callbackStandardize = _callbackStandardize;
-        this._callbackUnstandardize = _callbackUnstandardize;
         this._totalInputNeurons = 0;
         this._totalOutputNeurons = 0;
         this._totalTrainingCases = 0;
@@ -129,23 +148,30 @@ class SessionData {
     get totalTrainingCases() { return this._totalTrainingCases; }
     get trainingInputsTensor() { return this._trainingInputsTensor; }
     get trainingTargetsTensor() { return this._trainingTargetsTensor; }
+    /**
+     * Determines the standardization scheme to be used.
+     */
     SetupStandardization() {
         if (!this._callbackStandardize) {
-            if (!this._callbackUnstandardize) {
-                // no callbacks; useDefaultStandardization will drive the behavior
-                return;
-            }
-            throw new Error('Invalid standardization callbacks; received "callbackUnstandardize" but not "callbackStandardize".');
+            // no callback; useDefaultStandardization will drive the behavior
+            return;
         }
-        // if the arguments indicate both standardization techniques (stock and custom), we use custom, i.e. the user's callback(s)
+        // if the arguments indicate both standardization techniques (stock and custom), we use custom, i.e. the user's callback
         if (this._useDefaultStandardization) {
             console.warn('Standardization callbacks supplied, so default standardization will be ignored.');
             this._useDefaultStandardization = false;
         }
     }
+    /**
+     * Throws unless the input data is comprised of arrays of numbers, only.
+     * The arrays may be nested.
+     * @static
+     * @param {TFNestedArray} raw
+     */
     static ValidateRawData(raw) {
-        //NOTE: The top level of 'raw' must be an array, otherwise a lone Number would pass validation. This is no longer
+        //NOTE: The top level of 'raw' must be an array, otherwise a lone Number would pass as valid. This is no longer
         //		a problem under TypeScript, but it's worth keeping in mind.
+        //TODO: Add checks that the array depths are consistent, i.e. valid tensors.
         let recursionKillswitch = false;
         const CHECK_ARRAYS_OF_NUMBERS_RECURSIVELY = (a) => {
             if (recursionKillswitch) {
@@ -186,6 +212,11 @@ exports.SessionData = SessionData;
 //vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
 //TODO: This standardization code moves into a separate lib, and/or gets replaced by simple-statistics(tm).
 //		It also has a few generic tensor tools; unsure whether TF or simple-statistics has either, but probably.
+/**
+ * Returns the length of the most deeply nested array.
+ * @param {TFNestedArray} inputData
+ * @memberof SessionData
+ */
 function CountLeafElements(inputData) {
     console.assert(inputData.length > 0);
     // find the lowest level of these (potentially) nested arrays
@@ -196,6 +227,12 @@ function CountLeafElements(inputData) {
     }
     return deepestArray.length;
 }
+/**
+ * Calculate the average of a set of numbers.
+ * @param {Array<number>} data
+ * @return {number}
+ * @memberof SessionData
+ */
 function FindMean(data) {
     console.assert(data.length > 0);
     let sum = 0;
@@ -205,6 +242,13 @@ function FindMean(data) {
     const MEAN = sum / data.length;
     return MEAN;
 }
+/**
+ * Calculate the standard deviation of a set of numbers.
+ * @param {Array<number>} data
+ * @param {number} mean
+ * @return {number}
+ * @memberof SessionData
+ */
 function FindStandardDeviation(data, mean) {
     // for each sample, subtract the mean and square the result
     const SQUARED_MEAN_DELTAS = data.map((x) => { return Math.pow(x - mean, 2); });
@@ -212,6 +256,12 @@ function FindStandardDeviation(data, mean) {
     const STDEV = Math.sqrt(MEAN_OF_ALL_THAT);
     return STDEV;
 }
+/**
+ * Adjusts input data such that each feature has a mean of zero and a variance
+ * of one.
+ * @param {TFNestedArray} inputData
+ * @memberof SessionData
+ */
 function StandardizeInputs(inputData) {
     console.assert(inputData.length > 0);
     // find the lowest level of these (potentially) nested arrays

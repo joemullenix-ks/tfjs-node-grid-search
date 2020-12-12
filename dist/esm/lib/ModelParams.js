@@ -1,6 +1,15 @@
 'use strict';
-import { Utils } from './Utils';
+import * as Utils from './Utils';
+/**
+ * Merges two sets of params, dynamic and static, that will be used to create
+ * a network model.
+ */
 class ModelParams {
+    /**
+     * Creates an instance of ModelParams.
+     * @param {Types.StringKeyedSimpleObject} _dynamicParams
+     * @param {Types.StringKeyedSimpleObject} _staticParams
+     */
     constructor(_dynamicParams, _staticParams) {
         this._dynamicParams = _dynamicParams;
         this._staticParams = _staticParams;
@@ -15,6 +24,11 @@ class ModelParams {
             this._mergedParams[k] = this._dynamicParams[k];
         }
     }
+    /**
+     * Retrieve a Boolean param's value.
+     * @param {string} key
+     * @return {boolean}
+     */
     GetBooleanParam(key) {
         this.ValidateParamKey(key);
         if (typeof this._mergedParams[key] !== 'boolean') {
@@ -22,6 +36,11 @@ class ModelParams {
         }
         return Boolean(this._mergedParams[key]);
     }
+    /**
+     * Retrieve a number param's value.
+     * @param {string} key
+     * @return {number}
+     */
     GetNumericParam(key) {
         this.ValidateParamKey(key);
         if (typeof this._mergedParams[key] !== 'number') {
@@ -29,6 +48,11 @@ class ModelParams {
         }
         return Number(this._mergedParams[key]);
     }
+    /**
+     * Retrieve a string param's value.
+     * @param {string} key
+     * @return {string}
+     */
     GetTextParam(key) {
         this.ValidateParamKey(key);
         if (typeof this._mergedParams[key] !== 'string') {
@@ -36,6 +60,11 @@ class ModelParams {
         }
         return String(this._mergedParams[key]);
     }
+    /**
+     * Throws if a param key is not supported. This is exceptional because the
+     * objects our constructor takes are not user input. They've been processed.
+     * @param {string} key
+     */
     ValidateParamKey(key) {
         console.assert(key !== '');
         if (this._mergedParams[key] === undefined) {
@@ -56,7 +85,7 @@ class ModelParams {
         let textOut = '';
         for (const k in this._mergedParams) {
             // check every string for file-breakers, while we're here
-            //PERF: This is potentially overkill (we validate these early on in their lifecycle), and it _could_ matter.
+            //PERF: This is potentially overkill (we validate these early on in their lifecycle).
             //		I'm keeping it because that initial validation is not done w/ CSV writes in mind. It's much more focused
             //		on proper uint/bool/string.
             //		Redundancy is good, but if our file writes become perceptibly slower, this can go.

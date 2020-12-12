@@ -9,9 +9,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 import { DataSet } from './DataSet';
-import { FileIO } from './FileIO';
+import * as FileIO from './FileIO';
 import { FileIOResult } from './FileIOResult';
-//TODO: Add more techniques, e.g. fetch via url (see below). When we make that pass, refactor this into an abstract
+//TODO: Add more techniques, e.g. fetch via url (example below). When we make that pass, refactor this into an abstract
 //		base, then implement dedicated fetchers e.g. URLDataSetFetcher, LocalFilesDataSetFetcher, etc...
 //
 // 	async function getData() {
@@ -19,7 +19,22 @@ import { FileIOResult } from './FileIOResult';
 // 		const data = await dataResponse.json();
 // 		return data;
 // 	}
+/**
+ * Retrieves the data to be used for training and testing, and uses that data to
+ * create an instance of {@link DataSet}. Currently limited to fetching from
+ * local files. The file reads are done asynchronously.
+ * Note: Fetching via URL is coming soon!
+ */
 class DataSetFetcher {
+    /**
+     * Creates an instance of DataSetFetcher.
+     * @param {Array<string>} nodeLaunchArguments An array of strings, in which
+     *											  the 3rd and 4th are the input
+     *											  and target file paths,
+     *											  respectively. This is written
+     *											  specifically to take the Node
+     *											  launch params (process.argv).
+     */
     constructor(nodeLaunchArguments) {
         this._pathInputs = '';
         this._pathTargets = '';
@@ -35,6 +50,10 @@ class DataSetFetcher {
         this._pathInputs = nodeLaunchArguments[2];
         this._pathTargets = nodeLaunchArguments[3];
     }
+    /**
+     * Loads the data asynchronously. Throws if a file path is missing/invalid.
+     * @return {Promise<DataSet>}
+     */
     Fetch() {
         return __awaiter(this, void 0, void 0, function* () {
             try {
@@ -46,6 +65,11 @@ class DataSetFetcher {
             }
         });
     }
+    /**
+     * Handles the file reads, and returns a {@link DataSet} with the results.
+     * @private
+     * @return {Promise<DataSet>}
+     */
     ReadDataFiles() {
         return __awaiter(this, void 0, void 0, function* () {
             console.log('Attempting to read data from the following files:' + '\n'

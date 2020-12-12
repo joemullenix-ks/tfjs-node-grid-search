@@ -4,7 +4,7 @@
 import * as TENSOR_FLOW from '@tensorflow/tfjs-node';
 
 
-import { ArrayOrder2, TFArrayStack, TFNestedArray } from '../ts_types/Grid';
+import { ArrayOrder2, TFArrayStack, TFNestedArray } from './types';
 
 
 import { DataSet } from './DataSet';
@@ -28,6 +28,9 @@ import { DataSet } from './DataSet';
 //				> SessionDataStandardizedSmaller
 
 
+/**
+ * Manages the data set used to train and test models during the grid search.
+ */
 class SessionData {
 	private _rawInputsProof: TFNestedArray;
 	private _rawInputsTraining: TFNestedArray;
@@ -39,11 +42,27 @@ class SessionData {
 	private _trainingInputsTensor: TENSOR_FLOW.Tensor;
 	private _trainingTargetsTensor: TENSOR_FLOW.Tensor;
 
+	/**
+	 * Creates an instance of SessionData.
+	 * @param {number} proofPercentage A value 0-1 exclusive used to determine
+	 *	the number of cases reserved for generalization testing. These cases
+	 *	are never seen by the model during training.<br>
+	 *	A common value is 0.2 (20%).
+	 * @param {DataSet} dataSet The data used to train and test models.
+	 * @param {boolean} _useDefaultStandardization If true, the input values
+	 *	will be modified internally such that each feature has a mean of zero
+	 *	and a variance of one.<br>
+	 *	If standardization callbacks are supplied, this argument is ignored.
+	 * @param {function} [_callbackStandardize] A function invoked with the
+	 *	input data prior to the grid search. It provides an opportunity to
+	 *	preprocess the data internally before it's transformed into tensors.<br>
+	 *  <b>Arguments:</b> unstandardizedInputs: Array<unknown><br>
+	 *  <b>Returns:</b> void
+	 */
 	constructor(proofPercentage: number,
 				dataSet: DataSet,
 				private _useDefaultStandardization: boolean,
-				private _callbackStandardize?: (unstandardizedInputs: TFNestedArray) => void,
-				private _callbackUnstandardize?: (standardizedInputs: TFNestedArray) => void) {
+				private _callbackStandardize?: (unstandardizedInputs: TFNestedArray) => void) {
 		console.assert(proofPercentage > 0.0);
 		console.assert(proofPercentage < 1.0);
 
@@ -160,17 +179,16 @@ class SessionData {
 	get trainingInputsTensor(): TENSOR_FLOW.Tensor { return this._trainingInputsTensor; }
 	get trainingTargetsTensor(): TENSOR_FLOW.Tensor { return this._trainingTargetsTensor; }
 
+	/**
+	 * Determines the standardization scheme to be used.
+	 */
 	SetupStandardization(): void {
 		if (!this._callbackStandardize) {
-			if (!this._callbackUnstandardize) {
-				// no callbacks; useDefaultStandardization will drive the behavior
-				return;
-			}
-
-			throw new Error('Invalid standardization callbacks; received "callbackUnstandardize" but not "callbackStandardize".');
+			// no callback; useDefaultStandardization will drive the behavior
+			return;
 		}
 
-		// if the arguments indicate both standardization techniques (stock and custom), we use custom, i.e. the user's callback(s)
+		// if the arguments indicate both standardization techniques (stock and custom), we use custom, i.e. the user's callback
 		if (this._useDefaultStandardization) {
 			console.warn('Standardization callbacks supplied, so default standardization will be ignored.');
 
@@ -178,9 +196,17 @@ class SessionData {
 		}
 	}
 
+	/**
+	 * Throws unless the input data is comprised of arrays of numbers, only.
+	 * The arrays may be nested.
+	 * @static
+	 * @param {TFNestedArray} raw
+	 */
 	static ValidateRawData(raw: TFNestedArray): void {
-//NOTE: The top level of 'raw' must be an array, otherwise a lone Number would pass validation. This is no longer
+//NOTE: The top level of 'raw' must be an array, otherwise a lone Number would pass as valid. This is no longer
 //		a problem under TypeScript, but it's worth keeping in mind.
+
+//TODO: Add checks that the array depths are consistent, i.e. valid tensors.
 
 		let recursionKillswitch = false;
 
@@ -236,6 +262,12 @@ class SessionData {
 
 //TODO: This standardization code moves into a separate lib, and/or gets replaced by simple-statistics(tm).
 //		It also has a few generic tensor tools; unsure whether TF or simple-statistics has either, but probably.
+
+/**
+ * Returns the length of the most deeply nested array.
+ * @param {TFNestedArray} inputData
+ * @memberof SessionData
+ */
 function CountLeafElements(inputData: TFNestedArray) {
 	console.assert(inputData.length > 0);
 
@@ -251,6 +283,12 @@ function CountLeafElements(inputData: TFNestedArray) {
 	return deepestArray.length;
 }
 
+/**
+ * Calculate the average of a set of numbers.
+ * @param {Array<number>} data
+ * @return {number}
+ * @memberof SessionData
+ */
 function FindMean(data: Array<number>) {
 	console.assert(data.length > 0);
 
@@ -265,6 +303,13 @@ function FindMean(data: Array<number>) {
 	return MEAN;
 }
 
+/**
+ * Calculate the standard deviation of a set of numbers.
+ * @param {Array<number>} data
+ * @param {number} mean
+ * @return {number}
+ * @memberof SessionData
+ */
 function FindStandardDeviation(data: Array<number>, mean: number) {
 	// for each sample, subtract the mean and square the result
 	const SQUARED_MEAN_DELTAS = data.map((x) => {return Math.pow(x - mean, 2);});
@@ -276,6 +321,12 @@ function FindStandardDeviation(data: Array<number>, mean: number) {
 	return STDEV;
 }
 
+/**
+ * Adjusts input data such that each feature has a mean of zero and a variance
+ * of one.
+ * @param {TFNestedArray} inputData
+ * @memberof SessionData
+ */
 function StandardizeInputs(inputData: TFNestedArray) {
 	console.assert(inputData.length > 0);
 
