@@ -42,7 +42,7 @@ const PATH_LIB = __importStar(require("path"));
 //		"This module can only be referenced with ECMAScript imports/exports by turning on
 //		the 'esModuleInterop' flag and referencing its default export.ts(2497)"
 const slash_1 = __importDefault(require("slash"));
-const Utils_1 = require("./Utils");
+const Utils = __importStar(require("./Utils"));
 /**
  * Generates a search-output file name in the format "Results_&ltTIMESTAMP&gt.csv".
  * @return {string}
@@ -69,7 +69,7 @@ const ReadDataFile = (path, result) => __awaiter(void 0, void 0, void 0, functio
         return;
     }
     catch (e) {
-        Utils_1.Utils.ThrowCaughtUnknown('Failed to read file: ' + path + '\n', e);
+        Utils.ThrowCaughtUnknown('Failed to read file: ' + path + '\n', e);
     }
 });
 exports.ReadDataFile = ReadDataFile;
@@ -95,7 +95,7 @@ const WriteResultsFile = (fileName, directory, dataToWrite) => __awaiter(void 0,
         return;
     }
     catch (e) {
-        Utils_1.Utils.ThrowCaughtUnknown('Failed to write file: ' + WRITE_PATH, e);
+        Utils.ThrowCaughtUnknown('Failed to write file: ' + WRITE_PATH, e);
     }
 });
 exports.WriteResultsFile = WriteResultsFile;

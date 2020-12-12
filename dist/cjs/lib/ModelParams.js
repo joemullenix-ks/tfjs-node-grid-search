@@ -1,7 +1,26 @@
 'use strict';
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ModelParams = void 0;
-const Utils_1 = require("./Utils");
+const Utils = __importStar(require("./Utils"));
 /**
  * Merges two sets of params, dynamic and static, that will be used to create
  * a network model.
@@ -87,11 +106,11 @@ class ModelParams {
         let textOut = '';
         for (const k in this._mergedParams) {
             // check every string for file-breakers, while we're here
-            //PERF: This is potentially overkill (we validate these early on in their lifecycle), and it _could_ matter.
+            //PERF: This is potentially overkill (we validate these early on in their lifecycle).
             //		I'm keeping it because that initial validation is not done w/ CSV writes in mind. It's much more focused
             //		on proper uint/bool/string.
             //		Redundancy is good, but if our file writes become perceptibly slower, this can go.
-            Utils_1.Utils.ValidateTextForCSV(this._mergedParams[k]);
+            Utils.ValidateTextForCSV(this._mergedParams[k]);
             textOut += this._mergedParams[k] + ',';
         }
         // drop the trailing comma

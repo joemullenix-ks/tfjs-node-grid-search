@@ -1,26 +1,49 @@
-'use strict';
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.SessionData = void 0;
-const TENSOR_FLOW = __importStar(require("@tensorflow/tfjs-node"));
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="utf-8">
+    <title>lib/SessionData.js - Documentation</title>
+    
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+    <script src="scripts/nav.js" defer></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav >
+    
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Axis.html">Axis</a><ul class='methods'><li data-type='method'><a href="Axis.html#.AttemptValidateParameter">AttemptValidateParameter</a></li><li data-type='method'><a href="Axis.html#.AttemptValidateProgression">AttemptValidateProgression</a></li><li data-type='method'><a href="Axis.html#.LookupTypeName">LookupTypeName</a></li><li data-type='method'><a href="Axis.html#Advance">Advance</a></li><li data-type='method'><a href="Axis.html#CalculatePosition">CalculatePosition</a></li><li data-type='method'><a href="Axis.html#CheckComplete">CheckComplete</a></li><li data-type='method'><a href="Axis.html#Reset">Reset</a></li><li data-type='method'><a href="Axis.html#WriteReport">WriteReport</a></li></ul></li><li><a href="AxisSet.html">AxisSet</a><ul class='methods'><li data-type='method'><a href="AxisSet.html#AdvanceAxis">AdvanceAxis</a></li><li data-type='method'><a href="AxisSet.html#CheckAxisComplete">CheckAxisComplete</a></li><li data-type='method'><a href="AxisSet.html#CreateParams">CreateParams</a></li><li data-type='method'><a href="AxisSet.html#GetTotalAxes">GetTotalAxes</a></li><li data-type='method'><a href="AxisSet.html#ResetAxis">ResetAxis</a></li><li data-type='method'><a href="AxisSet.html#ValidateIndex">ValidateIndex</a></li><li data-type='method'><a href="AxisSet.html#Walk">Walk</a></li><li data-type='method'><a href="AxisSet.html#WriteAxisReport">WriteAxisReport</a></li></ul></li><li><a href="AxisSetTraverser.html">AxisSetTraverser</a><ul class='methods'><li data-type='method'><a href="AxisSetTraverser.html#Advance">Advance</a></li><li data-type='method'><a href="AxisSetTraverser.html#CreateIterationParams">CreateIterationParams</a></li><li data-type='method'><a href="AxisSetTraverser.html#ExamineAxisNames">ExamineAxisNames</a></li><li data-type='method'><a href="AxisSetTraverser.html#LookupIterationDescriptor">LookupIterationDescriptor</a></li><li data-type='method'><a href="AxisSetTraverser.html#WriteReport">WriteReport</a></li></ul></li><li><a href="DataSet.html">DataSet</a></li><li><a href="DataSetFetcher.html">DataSetFetcher</a><ul class='methods'><li data-type='method'><a href="DataSetFetcher.html#Fetch">Fetch</a></li></ul></li><li><a href="EpochStats.html">EpochStats</a><ul class='methods'><li data-type='method'><a href="EpochStats.html#.WriteReportHeader">WriteReportHeader</a></li><li data-type='method'><a href="EpochStats.html#Update">Update</a></li><li data-type='method'><a href="EpochStats.html#WriteReport">WriteReport</a></li></ul></li><li><a href="ExponentialProgression.html">ExponentialProgression</a><ul class='methods'><li data-type='method'><a href="ExponentialProgression.html#Advance">Advance</a></li><li data-type='method'><a href="ExponentialProgression.html#Reset">Reset</a></li></ul></li><li><a href="FailureMessage.html">FailureMessage</a></li><li><a href="FibonacciProgression.html">FibonacciProgression</a><ul class='methods'><li data-type='method'><a href="FibonacciProgression.html#Advance">Advance</a></li><li data-type='method'><a href="FibonacciProgression.html#Reset">Reset</a></li></ul></li><li><a href="FileIOResult.html">FileIOResult</a></li><li><a href="Grid.html">Grid</a><ul class='methods'><li data-type='method'><a href="Grid.html#CreateModel">CreateModel</a></li><li data-type='method'><a href="Grid.html#ResetEpochStats">ResetEpochStats</a></li><li data-type='method'><a href="Grid.html#ResolveModelDefinition">ResolveModelDefinition</a></li><li data-type='method'><a href="Grid.html#Run">Run</a></li><li data-type='method'><a href="Grid.html#TestModel">TestModel</a></li><li data-type='method'><a href="Grid.html#TrainModel">TrainModel</a></li></ul></li><li><a href="GridOptions.html">GridOptions</a><ul class='methods'><li data-type='method'><a href="GridOptions.html#GetOption">GetOption</a></li></ul></li><li><a href="GridRunStats.html">GridRunStats</a><ul class='methods'><li data-type='method'><a href="GridRunStats.html#AddIterationResult">AddIterationResult</a></li><li data-type='method'><a href="GridRunStats.html#WriteCSV">WriteCSV</a></li><li data-type='method'><a href="GridRunStats.html#WriteReport">WriteReport</a></li></ul></li><li><a href="IterationResult.html">IterationResult</a><ul class='methods'><li data-type='method'><a href="IterationResult.html#WriteEpochStatsHeader">WriteEpochStatsHeader</a></li><li data-type='method'><a href="IterationResult.html#WriteEpochStatsValues">WriteEpochStatsValues</a></li><li data-type='method'><a href="IterationResult.html#WriteModelParamHeader">WriteModelParamHeader</a></li><li data-type='method'><a href="IterationResult.html#WriteModelParamValues">WriteModelParamValues</a></li><li data-type='method'><a href="IterationResult.html#WriteReport">WriteReport</a></li><li data-type='method'><a href="IterationResult.html#WriteTestStatsHeader">WriteTestStatsHeader</a></li><li data-type='method'><a href="IterationResult.html#WriteTestStatsValues">WriteTestStatsValues</a></li></ul></li><li><a href="LinearProgression.html">LinearProgression</a><ul class='methods'><li data-type='method'><a href="LinearProgression.html#Advance">Advance</a></li><li data-type='method'><a href="LinearProgression.html#Reset">Reset</a></li></ul></li><li><a href="ModelParams.html">ModelParams</a><ul class='methods'><li data-type='method'><a href="ModelParams.html#GetBooleanParam">GetBooleanParam</a></li><li data-type='method'><a href="ModelParams.html#GetNumericParam">GetNumericParam</a></li><li data-type='method'><a href="ModelParams.html#GetTextParam">GetTextParam</a></li><li data-type='method'><a href="ModelParams.html#ValidateParamKey">ValidateParamKey</a></li></ul></li><li><a href="ModelTestStats.html">ModelTestStats</a><ul class='methods'><li data-type='method'><a href="ModelTestStats.html#CalculateScore">CalculateScore</a></li></ul></li><li><a href="PredictionEvaluation.html">PredictionEvaluation</a></li><li><a href="Progression.html">Progression</a><ul class='methods'><li data-type='method'><a href="Progression.html#Reset">Reset</a></li></ul></li><li><a href="SessionData.html">SessionData</a><ul class='methods'><li data-type='method'><a href="SessionData.html#.CountLeafElements">CountLeafElements</a></li><li data-type='method'><a href="SessionData.html#.FindMean">FindMean</a></li><li data-type='method'><a href="SessionData.html#.FindStandardDeviation">FindStandardDeviation</a></li><li data-type='method'><a href="SessionData.html#.StandardizeInputs">StandardizeInputs</a></li><li data-type='method'><a href="SessionData.html#.ValidateRawData">ValidateRawData</a></li><li data-type='method'><a href="SessionData.html#SetupStandardization">SetupStandardization</a></li></ul></li></ul><h3>Modules</h3><ul><li><a href="module-FileIO.html">FileIO</a><ul class='methods'><li data-type='method'><a href="module-FileIO.html#~ProduceResultsFilename">ProduceResultsFilename</a></li><li data-type='method'><a href="module-FileIO.html#~ReadDataFile">ReadDataFile</a></li><li data-type='method'><a href="module-FileIO.html#~WriteResultsFile">WriteResultsFile</a></li></ul></li><li><a href="module-main.html">main</a></li><li><a href="module-Utils.html">Utils</a><ul class='methods'><li data-type='method'><a href="module-Utils.html#~ArrayCalculateAverage">ArrayCalculateAverage</a></li><li data-type='method'><a href="module-Utils.html#~ArrayFindIndexOfHighestValue">ArrayFindIndexOfHighestValue</a></li><li data-type='method'><a href="module-Utils.html#~CheckFloat0to1Exclusive">CheckFloat0to1Exclusive</a></li><li data-type='method'><a href="module-Utils.html#~CheckNonNegativeInteger">CheckNonNegativeInteger</a></li><li data-type='method'><a href="module-Utils.html#~CheckPositiveInteger">CheckPositiveInteger</a></li><li data-type='method'><a href="module-Utils.html#~QueueRotate">QueueRotate</a></li><li data-type='method'><a href="module-Utils.html#~ThrowCaughtUnknown">ThrowCaughtUnknown</a></li><li data-type='method'><a href="module-Utils.html#~ValidateTextForCSV">ValidateTextForCSV</a></li><li data-type='method'><a href="module-Utils.html#~WriteDurationReport">WriteDurationReport</a></li></ul></li></ul>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">lib/SessionData.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>'use strict';
+import * as TENSOR_FLOW from '@tensorflow/tfjs-node';
 //TODO: PERF: This class will get a memory-hit upgrade. It carries duplicates of the inputs, because most runs will need
 //			  them as both TF tensors and raw arrays; problematic under a bad RAM:data ratio.
 //
@@ -45,18 +68,18 @@ class SessionData {
      * Creates an instance of SessionData.
      * @param {number} proofPercentage A value 0-1 exclusive used to determine
      *	the number of cases reserved for generalization testing. These cases
-     *	are never seen by the model during training.<br>
+     *	are never seen by the model during training.&lt;br>
      *	A common value is 0.2 (20%).
      * @param {DataSet} dataSet The data used to train and test models.
      * @param {boolean} _useDefaultStandardization If true, the input values
      *	will be modified internally such that each feature has a mean of zero
-     *	and a variance of one.<br>
+     *	and a variance of one.&lt;br>
      *	If standardization callbacks are supplied, this argument is ignored.
      * @param {function} [_callbackStandardize] A function invoked with the
      *	input data prior to the grid search. It provides an opportunity to
-     *	preprocess the data internally before it's transformed into tensors.<br>
-     *  <b>Arguments:</b> unstandardizedInputs: Array<unknown><br>
-     *  <b>Returns:</b> void
+     *	preprocess the data internally before it's transformed into tensors.&lt;br>
+     *  &lt;b>Arguments:&lt;/b> unstandardizedInputs: Array&lt;unknown>&lt;br>
+     *  &lt;b>Returns:&lt;/b> void
      */
     constructor(proofPercentage, dataSet, _useDefaultStandardization, _callbackStandardize) {
         this._useDefaultStandardization = _useDefaultStandardization;
@@ -65,7 +88,7 @@ class SessionData {
         this._totalOutputNeurons = 0;
         this._totalTrainingCases = 0;
         console.assert(proofPercentage > 0.0);
-        console.assert(proofPercentage < 1.0);
+        console.assert(proofPercentage &lt; 1.0);
         const rawInputs = dataSet.inputs;
         const rawTargets = dataSet.targets;
         SessionData.ValidateRawData(rawInputs);
@@ -95,7 +118,7 @@ class SessionData {
         const TOTAL_CASES = rawInputs.length;
         const PROOF_COUNT = Math.round(TOTAL_CASES * proofPercentage);
         console.log('total cases: ' + TOTAL_CASES + ', with ' + PROOF_COUNT + ' reserved for generalization tests');
-        if (PROOF_COUNT < 1) {
+        if (PROOF_COUNT &lt; 1) {
             throw new Error('The provided proofPercentage is too low. Zero cases moved from the training set.');
         }
         if (PROOF_COUNT >= TOTAL_CASES) {
@@ -105,7 +128,7 @@ class SessionData {
         //		array shift/push calls. This would have to be initialized to the depth of the user input, which is
         //		unknown (ha!) at compile time. I could measure it outsie, and create a generic class/interface of some
         //		kind (in lieu of six differnet support objects (at least), and gobs of duplication).
-        //TODO: (low-pri, but good exercise) Look into a generic class, e.g. DeepTrainingData::Array<T>.
+        //TODO: (low-pri, but good exercise) Look into a generic class, e.g. DeepTrainingData::Array&lt;T>.
         const PROOF_INPUTS = [];
         const PROOF_TARGETS = [];
         // we also carry a copy of the proof subset, in its original, unstandardized form
@@ -114,7 +137,7 @@ class SessionData {
         //			PROOF_INPUTS.length === _rawInputsProof.length
         //			rawInputs.length === _rawInputsTraining.length
         this._rawInputsProof = [];
-        for (let i = 0; i < PROOF_COUNT; ++i) {
+        for (let i = 0; i &lt; PROOF_COUNT; ++i) {
             if (rawInputs.length === 0) {
                 throw new Error('Inputs array emptied prematurely');
             }
@@ -122,7 +145,7 @@ class SessionData {
                 throw new Error('Targets array emptied prematurely');
             }
             //NOTE: This assign-first-then-shift approach is not ideal, and it's only done as a workaround to the conversion
-            //		problems I had w/ TFNestedArray; possibly alleviated by the Array<unknown> change, but that's also
+            //		problems I had w/ TFNestedArray; possibly alleviated by the Array&lt;unknown> change, but that's also
             //		an unacceptable solution, long term.
             PROOF_INPUTS[i] = rawInputs[0];
             PROOF_TARGETS[i] = rawTargets[0];
@@ -183,7 +206,7 @@ class SessionData {
             }
             if (Array.isArray(a)) {
                 if (a.length > 0) {
-                    for (let i = 0; i < a.length; ++i) {
+                    for (let i = 0; i &lt; a.length; ++i) {
                         if (CHECK_ARRAYS_OF_NUMBERS_RECURSIVELY(a[i])) {
                             continue;
                         }
@@ -207,7 +230,6 @@ class SessionData {
         throw new Error('Invalid raw data. Inputs and targets must be supplied as arrays of numbers, flat or nested.');
     }
 }
-exports.SessionData = SessionData;
 //vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
 //vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
 //TODO: This standardization code moves into a separate lib, and/or gets replaced by simple-statistics(tm).
@@ -229,14 +251,14 @@ function CountLeafElements(inputData) {
 }
 /**
  * Calculate the average of a set of numbers.
- * @param {Array<number>} data
+ * @param {Array&lt;number>} data
  * @return {number}
  * @memberof SessionData
  */
 function FindMean(data) {
     console.assert(data.length > 0);
     let sum = 0;
-    for (let i = 0; i < data.length; ++i) {
+    for (let i = 0; i &lt; data.length; ++i) {
         sum += data[i];
     }
     const MEAN = sum / data.length;
@@ -244,7 +266,7 @@ function FindMean(data) {
 }
 /**
  * Calculate the standard deviation of a set of numbers.
- * @param {Array<number>} data
+ * @param {Array&lt;number>} data
  * @param {number} mean
  * @return {number}
  * @memberof SessionData
@@ -276,7 +298,7 @@ function StandardizeInputs(inputData) {
     const TOTAL_FEATURES = deepestArray.length;
     console.log('Standardizing ' + tensorDimensions + ' dimension tensor with ' + TOTAL_FEATURES + ' features.');
     const FEATURE_VALUE_TABLE = [];
-    for (let i = 0; i < TOTAL_FEATURES; ++i) {
+    for (let i = 0; i &lt; TOTAL_FEATURES; ++i) {
         FEATURE_VALUE_TABLE.push([]);
     }
     // walk this set of (potentially nested) arrays, tabulating the feature values at the bottom
@@ -300,7 +322,7 @@ function StandardizeInputs(inputData) {
     // find mean and standard deviation for each feature
     const MEANS = [];
     const STANDARD_DEVIATIONS = [];
-    for (let i = 0; i < TOTAL_FEATURES; ++i) {
+    for (let i = 0; i &lt; TOTAL_FEATURES; ++i) {
         const FEATURE_MEAN = FindMean(FEATURE_VALUE_TABLE[i]);
         const FEATURE_STDEV = FindStandardDeviation(FEATURE_VALUE_TABLE[i], FEATURE_MEAN);
         MEANS.push(FEATURE_MEAN);
@@ -323,7 +345,7 @@ function StandardizeInputs(inputData) {
             //		does not like my TFInputsArray type. That type was written to handle nested arrays, but it's causing other
             //		problems, primarily within this file.
             //
-            //TODO: This can be 'solved' with this cast: "const NUMBER_ARRAY = array as Array<number>;", but that seems as
+            //TODO: This can be 'solved' with this cast: "const NUMBER_ARRAY = array as Array&lt;number>;", but that seems as
             //		ugly as this, if not uglier. I need further investigation of map/reduce/filter/forEach/etc in TS.
             let sample = Number(array[index]);
             // shift left by the mean, to 'center' everything on zero
@@ -357,4 +379,29 @@ function StandardizeInputs(inputData) {
 //^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 //^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Object.freeze(SessionData);
-//# sourceMappingURL=SessionData.js.map
+export { SessionData };
+//# sourceMappingURL=SessionData.js.map</code></pre>
+        </article>
+    </section>
+
+
+
+
+    
+    
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.6</a> on Fri Dec 11 2020 16:16:47 GMT-1000 (Hawaii-Aleutian Standard Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+
+
+</body>
+</html>

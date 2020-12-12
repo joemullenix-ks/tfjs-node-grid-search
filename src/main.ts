@@ -32,4 +32,4 @@ export { ExponentialProgression }	from './lib/progression/ExponentialProgression
 export { FibonacciProgression }		from './lib/progression/FibonacciProgression';
 export { LinearProgression } 		from './lib/progression/LinearProgression';
 export { SessionData }				from './lib/SessionData';
-export { Utils } 					from './lib/Utils';
+export * as Utils 					from './lib/Utils';

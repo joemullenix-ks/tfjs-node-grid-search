@@ -7,7 +7,7 @@ import { Logs } from '@tensorflow/tfjs-node';
 import { linearRegression } from 'simple-statistics';
 
 
-import { Utils } from './Utils';
+import * as Utils from './Utils';
 
 
 //NOTE: This depends on simple-statistics(tm), which doesn't use a type for its basic line object.

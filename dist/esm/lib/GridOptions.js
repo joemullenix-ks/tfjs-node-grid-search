@@ -1,6 +1,6 @@
 'use strict';
 import * as FS from 'fs';
-import { Utils } from './Utils';
+import * as Utils from './Utils';
 //NOTE: TODO: Not entirely thrilled with this class. It has a lot in common with ModelStatics, but the two
 //			  are implemented very differently. Part of that is due to ModelStatics's dependence on baked-in
 //			  TensorFlow keys, but it's also due to project churn and the TypeScript conversion process.

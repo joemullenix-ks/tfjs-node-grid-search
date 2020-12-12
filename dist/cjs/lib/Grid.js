@@ -46,7 +46,7 @@ const GridRunStats_1 = require("./GridRunStats");
 const IterationResult_1 = require("./IterationResult");
 const ModelParams_1 = require("./ModelParams");
 const ModelTestStats_1 = require("./ModelTestStats");
-const Utils_1 = require("./Utils");
+const Utils = __importStar(require("./Utils"));
 /**
  * Performs the grid search.<br>
  * Grid takes the data set, static params, dynamic params (axes), and a set of
@@ -225,7 +225,7 @@ class Grid {
             }
             const GRID_TIME_END = Date.now();
             const GRID_DURATION = GRID_TIME_END - this._timeStartGrid;
-            console.log('\n' + '<< GRID SEARCH COMPLETE >>', '\n', '\n' + 'started @ ' + (new Date(this._timeStartGrid)).toLocaleString(), '\n' + '  ended @ ' + (new Date(GRID_TIME_END)).toLocaleString(), '\n' + 'duration: ' + Utils_1.Utils.WriteDurationReport(GRID_DURATION), '\n');
+            console.log('\n' + '<< GRID SEARCH COMPLETE >>', '\n', '\n' + 'started @ ' + (new Date(this._timeStartGrid)).toLocaleString(), '\n' + '  ended @ ' + (new Date(GRID_TIME_END)).toLocaleString(), '\n' + 'duration: ' + Utils.WriteDurationReport(GRID_DURATION), '\n');
             console.log('Results (sorted by score)');
             console.log(GRID_RUN_STATS.WriteReport(true));
             const WRITE_RESULTS_OPTION = this._gridOptions.GetOption('writeResultsToDirectory');

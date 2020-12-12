@@ -18,7 +18,7 @@ import * as PATH_LIB from 'path';
 //		"This module can only be referenced with ECMAScript imports/exports by turning on
 //		the 'esModuleInterop' flag and referencing its default export.ts(2497)"
 import SLASH from 'slash';
-import { Utils } from './Utils';
+import * as Utils from './Utils';
 /**
  * Generates a search-output file name in the format "Results_&ltTIMESTAMP&gt.csv".
  * @return {string}

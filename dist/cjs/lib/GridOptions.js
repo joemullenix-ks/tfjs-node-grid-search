@@ -21,7 +21,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.GridOptions = void 0;
 const FS = __importStar(require("fs"));
-const Utils_1 = require("./Utils");
+const Utils = __importStar(require("./Utils"));
 //NOTE: TODO: Not entirely thrilled with this class. It has a lot in common with ModelStatics, but the two
 //			  are implemented very differently. Part of that is due to ModelStatics's dependence on baked-in
 //			  TensorFlow keys, but it's also due to project churn and the TypeScript conversion process.
@@ -89,7 +89,7 @@ class GridOptions {
                         if (typeof OPTION !== 'number') {
                             throw new Error(ERROR_PREFIX + '"' + k + '" must be a number.');
                         }
-                        if (!Utils_1.Utils.CheckPositiveInteger(OPTION)) {
+                        if (!Utils.CheckPositiveInteger(OPTION)) {
                             throw new Error(ERROR_PREFIX + '"' + k + '" must be a positive integer.');
                         }
                     }

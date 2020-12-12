@@ -1,6 +1,6 @@
 'use strict';
 import { FailureMessage } from './FailureMessage';
-import { Utils } from './Utils';
+import * as Utils from './Utils';
 /**
  * Manages one hyperparameter over the course of the search.
  * It uses a bounded range, and a progression across that range, to define

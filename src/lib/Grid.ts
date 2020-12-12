@@ -30,7 +30,7 @@ import { ModelStatics }			from './ModelStatics';
 import { ModelTestStats }		from './ModelTestStats';
 import { PredictionEvaluation } from './PredictionEvaluation';
 import { SessionData }			from './SessionData';
-import { Utils }				from './Utils';
+import * as Utils				from './Utils';
 
 
 /**

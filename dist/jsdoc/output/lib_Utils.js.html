@@ -3,7 +3,7 @@
 <head>
     
     <meta charset="utf-8">
-    <title>lib/progression/ExponentialProgression.js - Documentation</title>
+    <title>lib/Utils.js - Documentation</title>
     
     
     <script src="scripts/prettify/prettify.js"></script>
@@ -32,7 +32,7 @@
 
 <div id="main">
     
-    <h1 class="page-title">lib/progression/ExponentialProgression.js</h1>
+    <h1 class="page-title">lib/Utils.js</h1>
     
 
     
@@ -43,60 +43,151 @@
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>'use strict';
-import { Progression } from '../Progression';
-const PROGRESSION_TYPENAME = 'Exponential';
+//TODO: Merge these into the f lib, once that's integrated.
 /**
- * Defines a series of steps that increase exponentially.
- * @extends Progression
- * @example
- * // Exponential progression with base 2, scale 1
- * new tngs.ExponentialProgression(2, 1) // 0, 1, 2, 4, 8, ...
- *
- * // Exponential progression with base 1.5, scale 0.5
- * new tngs.ExponentialProgression(1.5, 0.5) // 0.0, 0.5, 0.75, 1.125, 1.6875, ...
+ * @module Utils
  */
-class ExponentialProgression extends Progression {
-    /**
-     * Creates an instance of ExponentialProgression. The series is calculated
-     * like this: { 0, base ^ 0 * scale, base ^ 1 * scale, base ^ 2 * scale, ... }.
-     * @param {number} base The base of the function. Must be > 1.0.
-     * @param {number} scale The scale of the function. Must be > 0.0.
-     */
-    constructor(base, scale) {
-        super(base === Math.floor(base) &amp;&amp; scale === Math.floor(scale), // i.e. are these integers?
-        PROGRESSION_TYPENAME);
-        //NOTE: These are not constructor-privates because we need to send the constructor's args into super().
-        this._base = 0;
-        this._scale = 0;
-        this._step = 0;
-        // these rules prevent the progression going flat (infinite) or negative (yikes)
-        //NOTE: We could support whackier curves, and will if requested. I don't anticipate that desire, but who knows.
-        //		Also, the user may create a negative progression by inverting their Axis bounds, i.e. use boundBegin > boundEnd.
-        console.assert(base > 1.0);
-        console.assert(scale > 0.0);
-        this._base = base;
-        this._scale = scale;
-        // this initializes '_step'
-        this.ResetStep();
+/**
+ * Finds the mean of a set of numbers. Array must not be empty.
+ * @param {Array&lt;number>} array
+ * @return {number}
+ */
+const ArrayCalculateAverage = (array) => {
+    if (array.length === 0) {
+        throw new Error('Cannot calculate average. Array is empty.');
     }
-    /**
-     * Moves to the next value in the series.
-     */
-    Advance() {
-        this._value = this._scale * Math.pow(this._base, this._step);
-        ++this._step;
+    //PERF: This can be done more efficiently w/ a little math. Don't walk the whole set. Instead, discount a running average (which
+    //		we'll keep separately and pass in), by (droppedSample / total), then add (newSample / total).
+    const SUM = array.reduce((previous, current) => { return previous + current; }, 0);
+    return SUM / array.length;
+};
+/**
+ * Finds the largest value in an array of numbers, and returns the index of that
+ * value.
+ * @param {Array&lt;number>} values
+ * @return {number}
+ */
+const ArrayFindIndexOfHighestValue = (values) => {
+    console.assert(values.length > 0);
+    let indexOfHighest = 0;
+    let highestValue = Number.MIN_VALUE;
+    for (let p = 0; p &lt; values.length; ++p) {
+        if (values[p] &lt; highestValue) {
+            continue;
+        }
+        indexOfHighest = p;
+        highestValue = values[p];
     }
-    Reset() {
-        super.Reset();
-        this.ResetStep();
+    return indexOfHighest;
+};
+/**
+ * Returns true if x is a positive integer or zero.
+ * @param {number} x
+ * @return {boolean}
+ */
+const CheckNonNegativeInteger = (x) => {
+    if (x &lt; 0) {
+        return false;
     }
-    ResetStep() {
-        this._step = 0;
+    if (x !== Math.floor(x)) {
+        return false;
     }
-}
-Object.freeze(ExponentialProgression);
-export { ExponentialProgression };
-//# sourceMappingURL=ExponentialProgression.js.map</code></pre>
+    return true;
+};
+/**
+ * Returns true if x is in the range { 0 &lt; x &lt; 1 }.
+ * @param {number} x
+ * @return {boolean}
+ */
+const CheckFloat0to1Exclusive = (x) => {
+    if (x &lt;= 0) {
+        return false;
+    }
+    if (x >= 1) {
+        return false;
+    }
+    return true;
+};
+/**
+ * Returns true if x is an integer greater than zero.
+ * @param {number} x
+ * @return {boolean}
+ */
+const CheckPositiveInteger = (x) => {
+    if (!CheckNonNegativeInteger(x)) {
+        return false;
+    }
+    if (x &lt; 1) {
+        return false;
+    }
+    return true;
+};
+/**
+ * Fills a queue with numbers up to a length limit. Once that limit has been
+ * reached, it drops the oldest first (does a dequeue before the enqueue).
+ * @param {Array&lt;number>} queue The set of numbers.
+ * @param {number} newSample The number to add.
+ * @param {number} count The queue max-size limit.
+ */
+const QueueRotate = (queue, newSample, count) => {
+    console.assert(count >= 1);
+    queue.push(newSample);
+    if (queue.length &lt;= count) {
+        return;
+    }
+    queue.shift();
+};
+/**
+ * Throws a relayed exception, with logic that checks the type of the
+ * caught object in order produce a cleaner error message.&lt;br>
+ * Note: This is done because TypeScript does not yet have typed catch().
+ * @param {string} messagePrefix A short message to prepend to the thrown error.
+ * @param {unknown} errorOrException The object originally caught.
+ */
+const ThrowCaughtUnknown = (messagePrefix, errorOrException) => {
+    if (typeof errorOrException === 'string') {
+        throw new Error(messagePrefix + errorOrException);
+    }
+    if (errorOrException instanceof Error) {
+        throw new Error(messagePrefix + errorOrException.message);
+    }
+    throw new Error(messagePrefix + 'unknown exception type');
+};
+/**
+ * Takes arguments in a variety of types, converts them to strings, and checks
+ * whether those string representations will break CSV formatting. Specifically,
+ * it throws in the event it finds a comma or newline. Otherwise it returns
+ * silently.
+ * @param {(string | number | boolean)} x
+ */
+const ValidateTextForCSV = (x) => {
+    //NOTE: Add whichever (just not TS any) input type. That's the point, here. We're looking at the argument
+    //		after it's been cast to string, to ensure we have cleanly CSV-able information for file write().
+    const AS_STRING = x.toString();
+    if (AS_STRING.indexOf(',') === -1 &amp;&amp; AS_STRING.indexOf('\n') === -1) {
+        return;
+    }
+    throw new Error('Value contains comma or newline (which interferes with CSV): ' + x + ', ' + AS_STRING);
+};
+/**
+ * Creates a string that represents a duration in milliseconds, and variations
+ * of the same in seconds, minutes and hours.
+ * @param {number} durationMS The time in milliseconds
+ * @return {string} Example: "15000 ms / 15.00 sec / 0.25 min / 0.0 hr"
+ */
+const WriteDurationReport = (durationMS) => {
+    console.assert(durationMS >= 0);
+    //TODO: (low-pri) Bring in time-reporting from the f lib, which has smart duration-category picking.
+    return durationMS + ' ms'
+        + ' / '
+        + (durationMS / 1000).toFixed(2) + ' sec'
+        + ' / '
+        + (durationMS / 60 / 1000).toFixed(2) + ' min'
+        + ' / '
+        + (durationMS / 60 / 60 / 1000).toFixed(1) + ' hr';
+};
+export { ArrayCalculateAverage, ArrayFindIndexOfHighestValue, CheckNonNegativeInteger, CheckFloat0to1Exclusive, CheckPositiveInteger, QueueRotate, ThrowCaughtUnknown, ValidateTextForCSV, WriteDurationReport };
+//# sourceMappingURL=Utils.js.map</code></pre>
         </article>
     </section>
 

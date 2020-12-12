@@ -18,7 +18,7 @@ import SLASH from 'slash';
 
 
 import { FileIOResult } from './FileIOResult';
-import { Utils } from './Utils';
+import * as Utils from './Utils';
 
 
 /**

@@ -7,7 +7,7 @@ import * as Types from './types';
 import * as FS from 'fs';
 
 
-import { Utils } from './Utils';
+import * as Utils from './Utils';
 
 
 //NOTE: TODO: Not entirely thrilled with this class. It has a lot in common with ModelStatics, but the two

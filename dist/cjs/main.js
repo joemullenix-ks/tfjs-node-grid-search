@@ -75,6 +75,5 @@ var LinearProgression_1 = require("./lib/progression/LinearProgression");
 Object.defineProperty(exports, "LinearProgression", { enumerable: true, get: function () { return LinearProgression_1.LinearProgression; } });
 var SessionData_1 = require("./lib/SessionData");
 Object.defineProperty(exports, "SessionData", { enumerable: true, get: function () { return SessionData_1.SessionData; } });
-var Utils_1 = require("./lib/Utils");
-Object.defineProperty(exports, "Utils", { enumerable: true, get: function () { return Utils_1.Utils; } });
+exports.Utils = __importStar(require("./lib/Utils"));
 //# sourceMappingURL=main.js.map

@@ -1,8 +1,27 @@
 'use strict';
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.EpochStats = void 0;
 const simple_statistics_1 = require("simple-statistics");
-const Utils_1 = require("./Utils");
+const Utils = __importStar(require("./Utils"));
 /**
  * Manages the training statistics for one model. TensorFlow produces stats each
  * epoch. This class records them, and maintains trailing averages to smooth
@@ -53,14 +72,14 @@ class EpochStats {
         console.assert(epoch >= 0);
         console.assert(Math.floor(epoch) === epoch);
         console.assert(typeof logs === 'object');
-        Utils_1.Utils.QueueRotate(this._samplesAccuracy, logs.acc, this._trailDepth);
-        Utils_1.Utils.QueueRotate(this._samplesLoss, logs.loss, this._trailDepth);
-        Utils_1.Utils.QueueRotate(this._samplesValidationAccuracy, logs.val_acc, this._trailDepth);
-        Utils_1.Utils.QueueRotate(this._samplesValidationLoss, logs.val_loss, this._trailDepth);
-        this._averageAccuracy = Utils_1.Utils.ArrayCalculateAverage(this._samplesAccuracy);
-        this._averageLoss = Utils_1.Utils.ArrayCalculateAverage(this._samplesLoss);
-        this._averageValidationAccuracy = Utils_1.Utils.ArrayCalculateAverage(this._samplesValidationAccuracy);
-        this._averageValidationLoss = Utils_1.Utils.ArrayCalculateAverage(this._samplesValidationLoss);
+        Utils.QueueRotate(this._samplesAccuracy, logs.acc, this._trailDepth);
+        Utils.QueueRotate(this._samplesLoss, logs.loss, this._trailDepth);
+        Utils.QueueRotate(this._samplesValidationAccuracy, logs.val_acc, this._trailDepth);
+        Utils.QueueRotate(this._samplesValidationLoss, logs.val_loss, this._trailDepth);
+        this._averageAccuracy = Utils.ArrayCalculateAverage(this._samplesAccuracy);
+        this._averageLoss = Utils.ArrayCalculateAverage(this._samplesLoss);
+        this._averageValidationAccuracy = Utils.ArrayCalculateAverage(this._samplesValidationAccuracy);
+        this._averageValidationLoss = Utils.ArrayCalculateAverage(this._samplesValidationLoss);
         const TRAILING_ACC_AS_XY = this._samplesAccuracy.map((value, index) => { return [index, value]; });
         const TRAILING_LOSS_AS_XY = this._samplesLoss.map((value, index) => { return [index, value]; });
         const TRAILING_VAL_ACC_AS_XY = this._samplesValidationAccuracy.map((value, index) => { return [index, value]; });

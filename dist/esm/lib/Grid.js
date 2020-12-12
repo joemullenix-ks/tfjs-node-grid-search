@@ -25,7 +25,7 @@ import { GridRunStats } from './GridRunStats';
 import { IterationResult } from './IterationResult';
 import { ModelParams } from './ModelParams';
 import { ModelTestStats } from './ModelTestStats';
-import { Utils } from './Utils';
+import * as Utils from './Utils';
 /**
  * Performs the grid search.<br>
  * Grid takes the data set, static params, dynamic params (axes), and a set of

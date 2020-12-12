@@ -1,6 +1,6 @@
 'use strict';
 import { linearRegression } from 'simple-statistics';
-import { Utils } from './Utils';
+import * as Utils from './Utils';
 /**
  * Manages the training statistics for one model. TensorFlow produces stats each
  * epoch. This class records them, and maintains trailing averages to smooth

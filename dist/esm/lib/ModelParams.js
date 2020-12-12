@@ -1,5 +1,5 @@
 'use strict';
-import { Utils } from './Utils';
+import * as Utils from './Utils';
 /**
  * Merges two sets of params, dynamic and static, that will be used to create
  * a network model.
@@ -85,7 +85,7 @@ class ModelParams {
         let textOut = '';
         for (const k in this._mergedParams) {
             // check every string for file-breakers, while we're here
-            //PERF: This is potentially overkill (we validate these early on in their lifecycle), and it _could_ matter.
+            //PERF: This is potentially overkill (we validate these early on in their lifecycle).
             //		I'm keeping it because that initial validation is not done w/ CSV writes in mind. It's much more focused
             //		on proper uint/bool/string.
             //		Redundancy is good, but if our file writes become perceptibly slower, this can go.
