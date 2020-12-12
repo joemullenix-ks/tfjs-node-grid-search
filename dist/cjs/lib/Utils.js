@@ -6,6 +6,19 @@ exports.WriteDurationReport = exports.ValidateTextForCSV = exports.ThrowCaughtUn
  * @module Utils
  */
 /**
+ * Standard assertion. Throws if condition is false.<br>
+ * Note: Todo: To better merge w/ Jest, I'll propagate this throughout, and
+ * build in a preprocessor switch, driven by Node launch arg.
+ * @param {boolean} condition
+ * @return {void}
+ */
+const ASSERT = (condition) => {
+    if (condition) {
+        return;
+    }
+    throw new Error('assertion failed');
+};
+/**
  * Finds the mean of a set of numbers. Array must not be empty.
  * @param {Array<number>} array
  * @return {number}
@@ -24,12 +37,14 @@ const ArrayCalculateAverage = (array) => {
 exports.ArrayCalculateAverage = ArrayCalculateAverage;
 /**
  * Finds the largest value in an array of numbers, and returns the index of that
- * value.
+ * value. Array must not be empty.
  * @param {Array<number>} values
  * @return {number}
  */
 const ArrayFindIndexOfHighestValue = (values) => {
-    console.assert(values.length > 0);
+    if (values.length === 0) {
+        throw new Error('Cannot find highest. Array is empty.');
+    }
     let indexOfHighest = 0;
     let highestValue = Number.MIN_VALUE;
     for (let p = 0; p < values.length; ++p) {
@@ -42,21 +57,6 @@ const ArrayFindIndexOfHighestValue = (values) => {
     return indexOfHighest;
 };
 exports.ArrayFindIndexOfHighestValue = ArrayFindIndexOfHighestValue;
-/**
- * Returns true if x is a positive integer or zero.
- * @param {number} x
- * @return {boolean}
- */
-const CheckNonNegativeInteger = (x) => {
-    if (x < 0) {
-        return false;
-    }
-    if (x !== Math.floor(x)) {
-        return false;
-    }
-    return true;
-};
-exports.CheckNonNegativeInteger = CheckNonNegativeInteger;
 /**
  * Returns true if x is in the range { 0 < x < 1 }.
  * @param {number} x
@@ -72,6 +72,21 @@ const CheckFloat0to1Exclusive = (x) => {
     return true;
 };
 exports.CheckFloat0to1Exclusive = CheckFloat0to1Exclusive;
+/**
+ * Returns true if x is a positive integer or zero.
+ * @param {number} x
+ * @return {boolean}
+ */
+const CheckNonNegativeInteger = (x) => {
+    if (x < 0) {
+        return false;
+    }
+    if (x !== Math.floor(x)) {
+        return false;
+    }
+    return true;
+};
+exports.CheckNonNegativeInteger = CheckNonNegativeInteger;
 /**
  * Returns true if x is an integer greater than zero.
  * @param {number} x
@@ -95,7 +110,9 @@ exports.CheckPositiveInteger = CheckPositiveInteger;
  * @param {number} count The queue max-size limit.
  */
 const QueueRotate = (queue, newSample, count) => {
-    console.assert(count >= 1);
+    if (count < 1) {
+        throw new Error('queue length limit must be >= 1 :' + count);
+    }
     queue.push(newSample);
     if (queue.length <= count) {
         return;
@@ -130,6 +147,10 @@ exports.ThrowCaughtUnknown = ThrowCaughtUnknown;
 const ValidateTextForCSV = (x) => {
     //NOTE: Add whichever (just not TS any) input type. That's the point, here. We're looking at the argument
     //		after it's been cast to string, to ensure we have cleanly CSV-able information for file write().
+    //
+    //UPDATE: Now that this takes primitives only, it should likely be string-only.
+    //		  There is a growing case to toss it entirely. Stay tuned for the
+    //		  complex axes (e.g. activation functions, etc...).
     const AS_STRING = x.toString();
     if (AS_STRING.indexOf(',') === -1 && AS_STRING.indexOf('\n') === -1) {
         return;
@@ -144,7 +165,7 @@ exports.ValidateTextForCSV = ValidateTextForCSV;
  * @return {string} Example: "15000 ms / 15.00 sec / 0.25 min / 0.0 hr"
  */
 const WriteDurationReport = (durationMS) => {
-    console.assert(durationMS >= 0);
+    ASSERT(durationMS >= 0);
     //TODO: (low-pri) Bring in time-reporting from the f lib, which has smart duration-category picking.
     return durationMS + ' ms'
         + ' / '
