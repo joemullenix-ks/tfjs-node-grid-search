@@ -9,14 +9,20 @@
   },
   "dependencies": {
     "@tensorflow/tfjs-node": "^2.7.0",
+    "@types/jest": "^26.0.19",
     "docdash": "^1.2.0",
     "simple-statistics": "^7.3.1",
     "slash": "^3.0.0"
   },
   "devDependencies": {
+    "@babel/core": "^7.12.10",
+    "@babel/preset-env": "^7.12.10",
+    "@babel/preset-typescript": "^7.12.7",
     "@typescript-eslint/eslint-plugin": "^4.8.2",
     "@typescript-eslint/parser": "^4.8.2",
+    "babel-jest": "^26.6.3",
     "eslint": "^7.14.0",
+    "jest": "^26.6.3",
     "typescript": "^4.1.2"
   },
   "files": [
@@ -26,7 +32,7 @@
     "build": "npm run tsc && npm run jsdoc-docdash",
     "jsdoc": "jsdoc -c jsdoc\\conf.json --debug",
     "jsdoc-docdash": "jsdoc -c jsdoc\\conf.json -t jsdoc\\themes\\docdash --debug",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
     "tsc": "tsc -p tsconfig.json && tsc -p tsconfig-cjs.json",
     "prepare": "npm run tsc"
   },
