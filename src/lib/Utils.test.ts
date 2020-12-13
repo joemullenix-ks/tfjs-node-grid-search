@@ -6,22 +6,6 @@
 import * as Utils from './Utils';
 
 
-/*NOTE: Consider wrapping test sections like this:
-            describe('QueueRotate tests', () => {
-              test('low count throws', () => {
-                expect(() => {
-                  Utils.QueueRotate([], 0, 1);
-                }).toThrow();
-              });
-            });
-
-        It produces a prefix in the event the test fails; very lovely.
-
-TODO:   I'm not sold on duplicating the symbols at this level ... yet. Well see
-        once one of the bigger manager classes is testified.
-*/
-
-
 test('average of [0, 7] is 3.5', () => {
   expect(Utils.ArrayCalculateAverage([0, 7])).toBe(3.5);
 });
