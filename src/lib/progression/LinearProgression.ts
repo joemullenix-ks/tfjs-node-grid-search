@@ -2,6 +2,7 @@
 
 
 import { Progression } from '../Progression';
+import * as Utils from '../Utils';
 
 
 const PROGRESSION_TYPENAME = 'Linear';
@@ -28,6 +29,8 @@ class LinearProgression extends Progression {
 	constructor(step: number) {
 		super(	step === Math.floor(step),	// i.e. is this an integer?
 				PROGRESSION_TYPENAME);
+
+		Utils.Assert(step > 0);
 
 		this._step = step;
 	}

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 'use strict';
 
 
@@ -5,6 +6,20 @@ import { Progression } from '../src/lib/Progression';
 
 
 test('implementation; instantiation; read-onlys; advance and reset', () => {
+	class EmptyNameConcreteProgression extends Progression {
+		constructor() {
+			super(false, '');
+		}
+
+		Advance(): void {
+			++this._value;
+		}
+	}
+
+	expect(() => {
+		const emptyNameConcreteProgression = new EmptyNameConcreteProgression();
+	}).toThrow();
+
 	const INTEGER_BASED = false;
 	const TYPE_NAME = 'unused;'
 

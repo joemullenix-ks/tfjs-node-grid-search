@@ -1,7 +1,27 @@
 'use strict';
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ExponentialProgression = void 0;
 const Progression_1 = require("../Progression");
+const Utils = __importStar(require("../Utils"));
 const PROGRESSION_TYPENAME = 'Exponential';
 /**
  * Defines a series of steps that increase exponentially.
@@ -30,8 +50,8 @@ class ExponentialProgression extends Progression_1.Progression {
         // these rules prevent the progression going flat (infinite) or negative (yikes)
         //NOTE: We could support whackier curves, and will if requested. I don't anticipate that desire, but who knows.
         //		Also, the user may create a negative progression by inverting their Axis bounds, i.e. use boundBegin > boundEnd.
-        console.assert(base > 1.0);
-        console.assert(scale > 0.0);
+        Utils.Assert(base > 1.0);
+        Utils.Assert(scale > 0.0);
         this._base = base;
         this._scale = scale;
         // this initializes '_step'

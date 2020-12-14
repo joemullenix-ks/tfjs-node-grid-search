@@ -1,4 +1,7 @@
 /**
+ * @module Utils
+ */
+/**
  * Finds the mean of a set of numbers. Array must not be empty.
  * @param {Array<number>} array
  * @return {number}
@@ -11,6 +14,14 @@ declare const ArrayCalculateAverage: (array: Array<number>) => number;
  * @return {number}
  */
 declare const ArrayFindIndexOfHighestValue: (values: Array<number>) => number;
+/**
+ * Standard assertion. Throws if condition is false.<br>
+ * Note: Todo: To better merge w/ Jest, I'll propagate this throughout, and
+ * build in a preprocessor switch, driven by Node launch arg.
+ * @param {boolean} condition
+ * @return {void}
+ */
+declare const Assert: (condition: boolean) => void;
 /**
  * Returns true if x is in the range { 0 < x < 1 }.
  * @param {number} x
@@ -60,4 +71,4 @@ declare const ValidateTextForCSV: (x: string | number | boolean) => void;
  * @return {string} Example: "15000 ms / 15.00 sec / 0.25 min / 0.0 hr"
  */
 declare const WriteDurationReport: (durationMS: number) => string;
-export { ArrayCalculateAverage, ArrayFindIndexOfHighestValue, CheckNonNegativeInteger, CheckFloat0to1Exclusive, CheckPositiveInteger, QueueRotate, ThrowCaughtUnknown, ValidateTextForCSV, WriteDurationReport };
+export { ArrayCalculateAverage, ArrayFindIndexOfHighestValue, Assert, CheckNonNegativeInteger, CheckFloat0to1Exclusive, CheckPositiveInteger, QueueRotate, ThrowCaughtUnknown, ValidateTextForCSV, WriteDurationReport };

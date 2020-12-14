@@ -2,6 +2,7 @@
 
 
 import { Progression } from '../Progression';
+import * as Utils from '../Utils';
 
 
 const PROGRESSION_TYPENAME = 'Exponential';
@@ -37,8 +38,8 @@ class ExponentialProgression extends Progression {
 
 //NOTE: We could support whackier curves, and will if requested. I don't anticipate that desire, but who knows.
 //		Also, the user may create a negative progression by inverting their Axis bounds, i.e. use boundBegin > boundEnd.
-		console.assert(base > 1.0);
-		console.assert(scale > 0.0);
+		Utils.Assert(base > 1.0);
+		Utils.Assert(scale > 0.0);
 
 		this._base = base;
 		this._scale = scale;

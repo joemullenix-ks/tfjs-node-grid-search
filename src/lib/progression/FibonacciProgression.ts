@@ -2,6 +2,7 @@
 
 
 import { Progression } from '../Progression';
+import * as Utils from '../Utils';
 
 
 const PROGRESSION_TYPENAME = 'Fibonacci';
@@ -42,8 +43,13 @@ class FibonacciProgression extends Progression {
 		super(	true, // always integer based (no need to overcomplicate)
 				PROGRESSION_TYPENAME);
 
-		console.assert(this._initiator >= 0);
-		console.assert(this._initiator === Math.floor(this._initiator));
+		Utils.Assert(this._initiator >= 0);
+
+		if (this._initiator !== Math.floor(this._initiator)) {
+			this._initiator = Math.round(this._initiator);
+
+			console.warn('Fibonacci initiator cast to integer: ' + this._initiator);
+		}
 
 		// we special case the first few values, to avoid grid iterations that don't differ, e.g. 0, 1, 1, 2, ...
 		if (this._initiator <= 1) {

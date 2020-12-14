@@ -1,23 +1,10 @@
 'use strict';
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.WriteDurationReport = exports.ValidateTextForCSV = exports.ThrowCaughtUnknown = exports.QueueRotate = exports.CheckPositiveInteger = exports.CheckFloat0to1Exclusive = exports.CheckNonNegativeInteger = exports.ArrayFindIndexOfHighestValue = exports.ArrayCalculateAverage = void 0;
+exports.WriteDurationReport = exports.ValidateTextForCSV = exports.ThrowCaughtUnknown = exports.QueueRotate = exports.CheckPositiveInteger = exports.CheckFloat0to1Exclusive = exports.CheckNonNegativeInteger = exports.Assert = exports.ArrayFindIndexOfHighestValue = exports.ArrayCalculateAverage = void 0;
 //TODO: Merge these into the f lib, once that's integrated.
 /**
  * @module Utils
  */
-/**
- * Standard assertion. Throws if condition is false.<br>
- * Note: Todo: To better merge w/ Jest, I'll propagate this throughout, and
- * build in a preprocessor switch, driven by Node launch arg.
- * @param {boolean} condition
- * @return {void}
- */
-const ASSERT = (condition) => {
-    if (condition) {
-        return;
-    }
-    throw new Error('assertion failed');
-};
 /**
  * Finds the mean of a set of numbers. Array must not be empty.
  * @param {Array<number>} array
@@ -57,6 +44,20 @@ const ArrayFindIndexOfHighestValue = (values) => {
     return indexOfHighest;
 };
 exports.ArrayFindIndexOfHighestValue = ArrayFindIndexOfHighestValue;
+/**
+ * Standard assertion. Throws if condition is false.<br>
+ * Note: Todo: To better merge w/ Jest, I'll propagate this throughout, and
+ * build in a preprocessor switch, driven by Node launch arg.
+ * @param {boolean} condition
+ * @return {void}
+ */
+const Assert = (condition) => {
+    if (condition) {
+        return;
+    }
+    throw new Error('assertion failed');
+};
+exports.Assert = Assert;
 /**
  * Returns true if x is in the range { 0 < x < 1 }.
  * @param {number} x
@@ -165,7 +166,7 @@ exports.ValidateTextForCSV = ValidateTextForCSV;
  * @return {string} Example: "15000 ms / 15.00 sec / 0.25 min / 0.0 hr"
  */
 const WriteDurationReport = (durationMS) => {
-    ASSERT(durationMS >= 0);
+    Assert(durationMS >= 0);
     //TODO: (low-pri) Bring in time-reporting from the f lib, which has smart duration-category picking.
     return durationMS + ' ms'
         + ' / '

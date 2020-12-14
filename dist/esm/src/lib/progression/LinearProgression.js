@@ -1,5 +1,6 @@
 'use strict';
 import { Progression } from '../Progression';
+import * as Utils from '../Utils';
 const PROGRESSION_TYPENAME = 'Linear';
 /**
  * Defines a series of steps with a fixed interval.
@@ -21,6 +22,7 @@ class LinearProgression extends Progression {
         PROGRESSION_TYPENAME);
         //NOTE: This is not a constructor-private because we need to send the constructor arg into super().
         this._step = 0;
+        Utils.Assert(step > 0);
         this._step = step;
     }
     /**

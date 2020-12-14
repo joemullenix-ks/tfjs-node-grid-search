@@ -1,7 +1,27 @@
 'use strict';
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.FibonacciProgression = void 0;
 const Progression_1 = require("../Progression");
+const Utils = __importStar(require("../Utils"));
 const PROGRESSION_TYPENAME = 'Fibonacci';
 /**
  * Defines a series of steps starting from an arbitrary point in the Fibonacci
@@ -36,8 +56,11 @@ class FibonacciProgression extends Progression_1.Progression {
         this._fiboB = 0;
         this._initFiboA = 0;
         this._initFiboB = 0;
-        console.assert(this._initiator >= 0);
-        console.assert(this._initiator === Math.floor(this._initiator));
+        Utils.Assert(this._initiator >= 0);
+        if (this._initiator !== Math.floor(this._initiator)) {
+            this._initiator = Math.round(this._initiator);
+            console.warn('Fibonacci initiator cast to integer: ' + this._initiator);
+        }
         // we special case the first few values, to avoid grid iterations that don't differ, e.g. 0, 1, 1, 2, ...
         if (this._initiator <= 1) {
             this._initFiboA = 0;
