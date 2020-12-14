@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">14.29% </span>
+                <span class="strong">25% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>1/7</span>
+                <span class='fraction'>3/12</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">14.29% </span>
+                <span class="strong">25% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>1/7</span>
+                <span class='fraction'>3/12</span>
             </div>
         
             
@@ -126,41 +126,41 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">'use strict';
 &nbsp;
 &nbsp;
@@ -178,29 +178,29 @@ class ModelTestStats {
 	 * @param {number} _totalCorrect Sum of cases with 'correct' predictions.
 	 * @param {number} _totalCases Sum of cases used to test (aka proof cases).
 	 */
-<span class="fstat-no" title="function not covered" >	co</span>nstructor(private _deltaCorrect: number,
-				private _deltaIncorrect: number,
-				private _totalCorrect: number,
-				private _totalCases: number) {
+<span class="fstat-no" title="function not covered" >	constructor(private <span class="cstat-no" title="statement not covered" >_</span>deltaCorrect: number,</span>
+				private <span class="cstat-no" title="statement not covered" >_deltaIncorrect: number,</span>
+				private <span class="cstat-no" title="statement not covered" >_totalCorrect: number,</span>
+				private <span class="cstat-no" title="statement not covered" >_totalCases: number)</span> {
 <span class="cstat-no" title="statement not covered" >		console.assert(Math.floor(this._totalCorrect) === this._totalCorrect);</span>
 <span class="cstat-no" title="statement not covered" >		console.assert(this._totalCases &gt;= this._totalCorrect);</span>
-<span class="cstat-no" title="statement not covered" >		console.assert(Math.floor(this._totalCases) === this._totalCases);</span>
+		console.assert(Math.floor(this._totalCases) === this._totalCases);
 	}
 &nbsp;
 	/**
 	 * Gets correct / total.
 	 * @return {number}
 	 */
-<span class="fstat-no" title="function not covered" >	Ca</span>lculateScore(): number {
+<span class="fstat-no" title="function not covered" >	CalculateScore(</span>): number {
 <span class="cstat-no" title="statement not covered" >		return this._totalCorrect / this._totalCases;</span>
 	}
 &nbsp;
 //vv TODO: These move into a CSVSource interface
-<span class="fstat-no" title="function not covered" >	Wr</span>iteCSVLineKeys(): string {
+<span class="fstat-no" title="function not covered" >	WriteCSVLineKeys(</span>): string {
 <span class="cstat-no" title="statement not covered" >		return 'deltaCorrect,deltaIncorrect,totalCorrect,totalCases';</span>
 	}
 &nbsp;
-<span class="fstat-no" title="function not covered" >	Wr</span>iteCSVLineValues(): string {
+<span class="fstat-no" title="function not covered" >	WriteCSVLineValues(</span>): string {
 <span class="cstat-no" title="statement not covered" >		return this._deltaCorrect</span>
 				+ ',' + this._deltaIncorrect
 				+ ',' + this._totalCorrect
@@ -220,7 +220,7 @@ export { ModelTestStats };
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Sun Dec 13 2020 11:54:04 GMT-1000 (Hawaii-Aleutian Standard Time)
+                at Mon Dec 14 2020 10:07:19 GMT-1000 (Hawaii-Aleutian Standard Time)
             </div>
         </div>
         <script src="../../prettify.js"></script>

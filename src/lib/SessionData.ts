@@ -72,11 +72,6 @@ class SessionData {
 		SessionData.ValidateRawData(rawInputs);
 		SessionData.ValidateRawData(rawTargets);
 
-		if (rawInputs.length !== rawTargets.length) {
-			throw new Error('Session data invalid. The number of inputs (' + rawInputs.length + ') does not match the '
-							+ 'number of targets (' + rawTargets.length + ') .');
-		}
-
 		this._totalInputNeurons = CountLeafElements(rawInputs);
 		this._totalOutputNeurons = CountLeafElements(rawTargets);
 
@@ -181,8 +176,9 @@ class SessionData {
 
 	/**
 	 * Determines the standardization scheme to be used.
+	 * @private
 	 */
-	SetupStandardization(): void {
+	private SetupStandardization(): void {
 		if (!this._callbackStandardize) {
 			// no callback; useDefaultStandardization will drive the behavior
 			return;
@@ -199,10 +195,15 @@ class SessionData {
 	/**
 	 * Throws unless the input data is comprised of arrays of numbers, only.
 	 * The arrays may be nested.
+	 * @private
 	 * @static
 	 * @param {TFNestedArray} raw
 	 */
-	static ValidateRawData(raw: TFNestedArray): void {
+	private static ValidateRawData(raw: TFNestedArray): void {
+//TODO: Refactor this into DataSet, _if_ it's still even needed. Run some
+//		boundary checks after we integrate the TF array types. It may be that
+//		they already error on everything we're checking.
+
 //NOTE: The top level of 'raw' must be an array, otherwise a lone Number would pass as valid. This is no longer
 //		a problem under TypeScript, but it's worth keeping in mind.
 
@@ -262,6 +263,8 @@ class SessionData {
 
 //TODO: This standardization code moves into a separate lib, and/or gets replaced by simple-statistics(tm).
 //		It also has a few generic tensor tools; unsure whether TF or simple-statistics has either, but probably.
+//
+//TODO: Also, they still need tests (all the more reason to find existing!).
 
 /**
  * Returns the length of the most deeply nested array.

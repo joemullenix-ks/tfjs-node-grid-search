@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">14.29% </span>
+                <span class="strong">30% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>1/7</span>
+                <span class='fraction'>3/10</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">14.29% </span>
+                <span class="strong">30% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>1/7</span>
+                <span class='fraction'>3/10</span>
             </div>
         
             
@@ -283,32 +283,32 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">'use strict';
 &nbsp;
 &nbsp;
@@ -409,22 +409,22 @@ abstract class Progression {
 	 *								  floating-point).
 	 * @param {string} _typeName A simple label for logging.
 	 */
-<span class="fstat-no" title="function not covered" >	co</span>nstructor(private _integerBased: boolean, // "integerBased" as opposed to floating point
-				private _typeName: string) {
+<span class="fstat-no" title="function not covered" >	constructor(private <span class="cstat-no" title="statement not covered" >_</span>integerBased: boolean,</span> // "integerBased" as opposed to floating point
+				private <span class="cstat-no" title="statement not covered" >_typeName: string)</span> {
 <span class="cstat-no" title="statement not covered" >		console.assert(this._typeName !== '');</span>
 &nbsp;
 //NOTE: All progressions begin at zero, because the bounds of the range we traverse are inclusive.
 <span class="cstat-no" title="statement not covered" >		this._value = 0;</span>
 	}
 &nbsp;
-<span class="fstat-no" title="function not covered" >	ge</span>t integerBased(): boolean { <span class="cstat-no" title="statement not covered" >return this._integerBased; </span>}
-<span class="fstat-no" title="function not covered" >	ge</span>t typeName(): string { <span class="cstat-no" title="statement not covered" >return this._typeName; </span>}
-<span class="fstat-no" title="function not covered" >	ge</span>t value(): number { <span class="cstat-no" title="statement not covered" >return this._value; </span>}
+<span class="fstat-no" title="function not covered" >	get i</span>ntegerBased(): boolean { <span class="cstat-no" title="statement not covered" >return this._integerBased; </span>}
+<span class="fstat-no" title="function not covered" >	get t</span>ypeName(): string { <span class="cstat-no" title="statement not covered" >return this._typeName; </span>}
+<span class="fstat-no" title="function not covered" >	get v</span>alue(): number { return this._value; }
 &nbsp;
 	/**
 	 * Puts the progression in its initial state (_value = 0).
 	 */
-<span class="fstat-no" title="function not covered" >	Re</span>set(): void {
+<span class="fstat-no" title="function not covered" >	Reset(</span>): void {
 <span class="cstat-no" title="statement not covered" >		this._value = 0;</span>
 	}
 &nbsp;
@@ -442,7 +442,7 @@ export { Progression };
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Sun Dec 13 2020 11:54:04 GMT-1000 (Hawaii-Aleutian Standard Time)
+                at Mon Dec 14 2020 10:07:19 GMT-1000 (Hawaii-Aleutian Standard Time)
             </div>
         </div>
         <script src="../../prettify.js"></script>
