@@ -10,22 +10,6 @@
 
 
 /**
- * Standard assertion. Throws if condition is false.<br>
- * Note: Todo: To better merge w/ Jest, I'll propagate this throughout, and
- * build in a preprocessor switch, driven by Node launch arg.
- * @param {boolean} condition
- * @return {void}
- */
-const ASSERT = (condition: boolean): void => {
-	if (condition) {
-		return;
-	}
-
-	throw new Error('assertion failed');
-};
-
-
-/**
  * Finds the mean of a set of numbers. Array must not be empty.
  * @param {Array<number>} array
  * @return {number}
@@ -70,6 +54,21 @@ const ArrayFindIndexOfHighestValue = (values: Array<number>): number => {
 	}
 
 	return indexOfHighest;
+};
+
+/**
+ * Standard assertion. Throws if condition is false.<br>
+ * Note: Todo: To better merge w/ Jest, I'll propagate this throughout, and
+ * build in a preprocessor switch, driven by Node launch arg.
+ * @param {boolean} condition
+ * @return {void}
+ */
+const Assert = (condition: boolean): void => {
+	if (condition) {
+		return;
+	}
+
+	throw new Error('assertion failed');
 };
 
 /**
@@ -195,7 +194,7 @@ const ValidateTextForCSV = (x: string | number | boolean): void => {
  * @return {string} Example: "15000 ms / 15.00 sec / 0.25 min / 0.0 hr"
  */
 const WriteDurationReport = (durationMS: number): string => {
-	ASSERT(durationMS >= 0);
+	Assert(durationMS >= 0);
 
 //TODO: (low-pri) Bring in time-reporting from the f lib, which has smart duration-category picking.
 	return durationMS + ' ms'
@@ -211,6 +210,7 @@ const WriteDurationReport = (durationMS: number): string => {
 export {
 	ArrayCalculateAverage,
 	ArrayFindIndexOfHighestValue,
+	Assert,
 	CheckNonNegativeInteger,
 	CheckFloat0to1Exclusive,
 	CheckPositiveInteger,

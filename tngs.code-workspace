@@ -10,7 +10,8 @@
 			"minimap.background": "#666"
 		},
 	    "editor.rulers": [80, 120],
-		"docthis.includeMemberOfOnClassMembers": false
+		"docthis.includeMemberOfOnClassMembers": false,
+		"typescript.tsdk": "node_modules\\typescript\\lib"
 
 /*REF
 "docthis.includeTypes": true, // When enabled, type information is added to comment tags.

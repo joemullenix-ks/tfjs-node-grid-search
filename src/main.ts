@@ -27,7 +27,7 @@ export { ModelParams } 				from './lib/ModelParams';
 export { ModelStatics } 			from './lib/ModelStatics';
 export { ModelTestStats } 			from './lib/ModelTestStats';
 export { PredictionEvaluation } 	from './lib/PredictionEvaluation';
-export { Progression }				from './lib/Progression';
+export { Progression }				from './lib/progression/Progression';
 export { ExponentialProgression }	from './lib/progression/ExponentialProgression';
 export { FibonacciProgression }		from './lib/progression/FibonacciProgression';
 export { LinearProgression } 		from './lib/progression/LinearProgression';

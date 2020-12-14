@@ -15,7 +15,7 @@ import { StringKeyedNumbersObject, StringKeyedStringsObject } from './types';
 
 
 import { FailureMessage } from './FailureMessage';
-import { Progression } from './Progression';
+import { Progression } from './progression/Progression';
 import * as Utils from './Utils';
 
 

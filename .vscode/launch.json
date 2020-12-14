@@ -11,7 +11,7 @@
 			"skipFiles": [
 				"<node_internals>/**"
 			],
-			"program": "${workspaceFolder}\\dist\\cjs\\all.js"
+			"program": "${workspaceFolder}\\dist\\cjs\\src\\all.js"
 		},
 		{
 			"type": "node",
@@ -20,7 +20,7 @@
 			"skipFiles": [
 				"<node_internals>/**"
 			],
-			"program": "${workspaceFolder}\\dist\\esm\\all.js"
+			"program": "${workspaceFolder}\\dist\\esm\\src\\all.js"
 		},
 		{
 			"type": "node",

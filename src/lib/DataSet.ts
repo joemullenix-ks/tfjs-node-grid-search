@@ -31,7 +31,13 @@ class DataSet {
 	 */
 	constructor(private _inputs: TFNestedArray, private _targets: ArrayOrder2) {
 		console.assert(this._inputs.length > 0);
-		console.assert(this._inputs.length === this._targets.length);
+
+		if (this._inputs.length !== this._targets.length) {
+			throw new Error('Data invalid. The number of inputs ('
+							+ this._inputs.length + ') does not match the '
+							+ 'number of targets (' + this._targets.length
+							+ ') .');
+		}
 	}
 
 	get inputs(): TFNestedArray { return this._inputs; }
