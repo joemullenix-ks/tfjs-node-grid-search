@@ -7,7 +7,6 @@ example_ts.txt
 example_plainNode.txt
 *.bak
 jsdoc theme color adjustments.txt
-
 coverage\clover.xml
 coverage\coverage-final.json
 coverage\lcov.info
