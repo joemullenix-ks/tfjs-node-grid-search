@@ -1,6 +1,9 @@
 'use strict';
 
 
+import * as Utils from './Utils';
+
+
 /**
  * Gathers the scores (right/wrong and accuracy delta) for a model run. These
  * are determined via callback, during the search iteration's testing phase.
@@ -19,9 +22,9 @@ class ModelTestStats {
 				private _deltaIncorrect: number,
 				private _totalCorrect: number,
 				private _totalCases: number) {
-		console.assert(Math.floor(this._totalCorrect) === this._totalCorrect);
-		console.assert(this._totalCases >= this._totalCorrect);
-		console.assert(Math.floor(this._totalCases) === this._totalCases);
+		Utils.Assert(Math.floor(this._totalCorrect) === this._totalCorrect);
+		Utils.Assert(this._totalCases >= this._totalCorrect);
+		Utils.Assert(Math.floor(this._totalCases) === this._totalCases);
 	}
 
 	/**

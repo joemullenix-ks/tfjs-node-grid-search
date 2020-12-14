@@ -45,6 +45,7 @@
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>'use strict';
+import * as Utils from './Utils';
 /**
  * Gathers the scores (right/wrong and accuracy delta) for a model run. These
  * are determined via callback, during the search iteration's testing phase.
@@ -64,9 +65,9 @@ class ModelTestStats {
         this._deltaIncorrect = _deltaIncorrect;
         this._totalCorrect = _totalCorrect;
         this._totalCases = _totalCases;
-        console.assert(Math.floor(this._totalCorrect) === this._totalCorrect);
-        console.assert(this._totalCases >= this._totalCorrect);
-        console.assert(Math.floor(this._totalCases) === this._totalCases);
+        Utils.Assert(Math.floor(this._totalCorrect) === this._totalCorrect);
+        Utils.Assert(this._totalCases >= this._totalCorrect);
+        Utils.Assert(Math.floor(this._totalCases) === this._totalCases);
     }
     /**
      * Gets correct / total.

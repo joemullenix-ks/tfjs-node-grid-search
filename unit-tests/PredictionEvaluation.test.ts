@@ -11,6 +11,8 @@ test('instantiation; readonlys', () => {
 
 	const predictionEvaluation = new PredictionEvaluation(CORRECT, DELTA);
 
+	expect(predictionEvaluation).toBeInstanceOf(PredictionEvaluation);
+
 	expect(predictionEvaluation.correct).toBe(CORRECT);
 	expect(predictionEvaluation.delta).toBe(DELTA);
 });
