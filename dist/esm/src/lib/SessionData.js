@@ -191,6 +191,8 @@ class SessionData {
 //vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
 //TODO: This standardization code moves into a separate lib, and/or gets replaced by simple-statistics(tm).
 //		It also has a few generic tensor tools; unsure whether TF or simple-statistics has either, but probably.
+//
+//TODO: Also, they still need tests (all the more reason to find existing!).
 /**
  * Returns the length of the most deeply nested array.
  * @param {TFNestedArray} inputData
