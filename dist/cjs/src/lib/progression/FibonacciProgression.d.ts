@@ -1,4 +1,4 @@
-import { Progression } from '../Progression';
+import { Progression } from './Progression';
 /**
  * Defines a series of steps starting from an arbitrary point in the Fibonacci
  * sequence.

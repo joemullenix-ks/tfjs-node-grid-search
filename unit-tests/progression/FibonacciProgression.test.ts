@@ -2,7 +2,7 @@
 'use strict';
 
 
-import { FibonacciProgression } from '../src/lib/progression/FibonacciProgression';
+import { FibonacciProgression } from '../../src/lib/progression/FibonacciProgression';
 
 
 test('instantiation; advance and reset', () => {

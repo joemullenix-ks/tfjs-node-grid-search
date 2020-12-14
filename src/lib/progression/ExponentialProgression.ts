@@ -1,7 +1,7 @@
 'use strict';
 
 
-import { Progression } from '../Progression';
+import { Progression } from './Progression';
 import * as Utils from '../Utils';
 
 

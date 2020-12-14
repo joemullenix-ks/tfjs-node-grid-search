@@ -2,7 +2,7 @@
 'use strict';
 
 
-import { Progression } from '../src/lib/Progression';
+import { Progression } from '../../src/lib/progression/Progression';
 
 
 test('implementation; instantiation; read-onlys; advance and reset', () => {

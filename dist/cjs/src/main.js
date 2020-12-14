@@ -65,7 +65,7 @@ var ModelTestStats_1 = require("./lib/ModelTestStats");
 Object.defineProperty(exports, "ModelTestStats", { enumerable: true, get: function () { return ModelTestStats_1.ModelTestStats; } });
 var PredictionEvaluation_1 = require("./lib/PredictionEvaluation");
 Object.defineProperty(exports, "PredictionEvaluation", { enumerable: true, get: function () { return PredictionEvaluation_1.PredictionEvaluation; } });
-var Progression_1 = require("./lib/Progression");
+var Progression_1 = require("./lib/progression/Progression");
 Object.defineProperty(exports, "Progression", { enumerable: true, get: function () { return Progression_1.Progression; } });
 var ExponentialProgression_1 = require("./lib/progression/ExponentialProgression");
 Object.defineProperty(exports, "ExponentialProgression", { enumerable: true, get: function () { return ExponentialProgression_1.ExponentialProgression; } });

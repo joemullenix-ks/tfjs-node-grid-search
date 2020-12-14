@@ -1,7 +1,7 @@
 'use strict';
 
 
-import * as Utils from './Utils';
+import * as Utils from '../Utils';
 
 
 /**

@@ -1,4 +1,4 @@
-import { Progression } from '../Progression';
+import { Progression } from './Progression';
 /**
  * Defines a series of steps with a fixed interval.
  * @extends Progression

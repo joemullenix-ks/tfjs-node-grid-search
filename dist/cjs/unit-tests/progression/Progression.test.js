@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 'use strict';
 Object.defineProperty(exports, "__esModule", { value: true });
-const Progression_1 = require("../src/lib/Progression");
+const Progression_1 = require("../../src/lib/progression/Progression");
 test('implementation; instantiation; read-onlys; advance and reset', () => {
     class EmptyNameConcreteProgression extends Progression_1.Progression {
         constructor() {

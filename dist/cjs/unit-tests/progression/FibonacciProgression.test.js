@@ -1,13 +1,14 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 'use strict';
-import { FibonacciProgression } from '../src/lib/progression/FibonacciProgression';
+Object.defineProperty(exports, "__esModule", { value: true });
+const FibonacciProgression_1 = require("../../src/lib/progression/FibonacciProgression");
 test('instantiation; advance and reset', () => {
     expect(() => {
         const INVALID_INITIATOR = -1;
-        const fibonacciProgression = new FibonacciProgression(INVALID_INITIATOR);
+        const fibonacciProgression = new FibonacciProgression_1.FibonacciProgression(INVALID_INITIATOR);
     }).toThrow();
-    const fibonacciProgression = new FibonacciProgression(0);
-    expect(fibonacciProgression).toBeInstanceOf(FibonacciProgression);
+    const fibonacciProgression = new FibonacciProgression_1.FibonacciProgression(0);
+    expect(fibonacciProgression).toBeInstanceOf(FibonacciProgression_1.FibonacciProgression);
     expect(fibonacciProgression.value).toBe(0);
     fibonacciProgression.Advance();
     expect(fibonacciProgression.value).toBe(1);
@@ -21,8 +22,8 @@ test('instantiation; advance and reset', () => {
     expect(fibonacciProgression.value).toBe(0);
 });
 test('float rounds to proper value', () => {
-    const fibonacciProgression = new FibonacciProgression(2.5);
-    expect(fibonacciProgression).toBeInstanceOf(FibonacciProgression);
+    const fibonacciProgression = new FibonacciProgression_1.FibonacciProgression(2.5);
+    expect(fibonacciProgression).toBeInstanceOf(FibonacciProgression_1.FibonacciProgression);
     expect(fibonacciProgression.value).toBe(0);
     fibonacciProgression.Advance();
     expect(fibonacciProgression.value).toBe(3);
@@ -30,8 +31,8 @@ test('float rounds to proper value', () => {
     expect(fibonacciProgression.value).toBe(5);
 });
 test('midpoint falls to proper value', () => {
-    const fibonacciProgression = new FibonacciProgression(10);
-    expect(fibonacciProgression).toBeInstanceOf(FibonacciProgression);
+    const fibonacciProgression = new FibonacciProgression_1.FibonacciProgression(10);
+    expect(fibonacciProgression).toBeInstanceOf(FibonacciProgression_1.FibonacciProgression);
     expect(fibonacciProgression.value).toBe(0);
     fibonacciProgression.Advance();
     expect(fibonacciProgression.value).toBe(8);
@@ -39,8 +40,8 @@ test('midpoint falls to proper value', () => {
     expect(fibonacciProgression.value).toBe(13);
 });
 test('midpoint rises to proper value', () => {
-    const fibonacciProgression = new FibonacciProgression(11);
-    expect(fibonacciProgression).toBeInstanceOf(FibonacciProgression);
+    const fibonacciProgression = new FibonacciProgression_1.FibonacciProgression(11);
+    expect(fibonacciProgression).toBeInstanceOf(FibonacciProgression_1.FibonacciProgression);
     expect(fibonacciProgression.value).toBe(0);
     fibonacciProgression.Advance();
     expect(fibonacciProgression.value).toBe(13);

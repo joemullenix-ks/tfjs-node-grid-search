@@ -2,7 +2,7 @@
 'use strict';
 
 
-import { LinearProgression } from '../src/lib/progression/LinearProgression';
+import { LinearProgression } from '../../src/lib/progression/LinearProgression';
 
 
 test('instantiation; advance and reset', () => {

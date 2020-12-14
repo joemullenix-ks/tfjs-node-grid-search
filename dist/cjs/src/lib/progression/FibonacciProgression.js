@@ -20,7 +20,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.FibonacciProgression = void 0;
-const Progression_1 = require("../Progression");
+const Progression_1 = require("./Progression");
 const Utils = __importStar(require("../Utils"));
 const PROGRESSION_TYPENAME = 'Fibonacci';
 /**

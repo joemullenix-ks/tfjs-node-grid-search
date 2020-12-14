@@ -3,7 +3,7 @@
  */
 import { StringKeyedNumbersObject, StringKeyedStringsObject } from './types';
 import { FailureMessage } from './FailureMessage';
-import { Progression } from './Progression';
+import { Progression } from './progression/Progression';
 /**
  * Manages one hyperparameter over the course of the search.
  * It uses a bounded range, and a progression across that range, to define

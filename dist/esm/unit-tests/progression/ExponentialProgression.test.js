@@ -1,18 +1,17 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 'use strict';
-Object.defineProperty(exports, "__esModule", { value: true });
-const ExponentialProgression_1 = require("../src/lib/progression/ExponentialProgression");
+import { ExponentialProgression } from '../../src/lib/progression/ExponentialProgression';
 test('instantiation; advance and reset', () => {
     expect(() => {
         const INVALID_BASE = 1;
-        const exponentialProgression = new ExponentialProgression_1.ExponentialProgression(INVALID_BASE, 1);
+        const exponentialProgression = new ExponentialProgression(INVALID_BASE, 1);
     }).toThrow();
     expect(() => {
         const INVALID_SCALE = -1;
-        const exponentialProgression = new ExponentialProgression_1.ExponentialProgression(2, INVALID_SCALE);
+        const exponentialProgression = new ExponentialProgression(2, INVALID_SCALE);
     }).toThrow();
-    const exponentialProgression = new ExponentialProgression_1.ExponentialProgression(2, 1);
-    expect(exponentialProgression).toBeInstanceOf(ExponentialProgression_1.ExponentialProgression);
+    const exponentialProgression = new ExponentialProgression(2, 1);
+    expect(exponentialProgression).toBeInstanceOf(ExponentialProgression);
     expect(exponentialProgression.value).toBe(0);
     exponentialProgression.Advance();
     expect(exponentialProgression.value).toBe(1);
