@@ -1,6 +1,6 @@
 {
   "name": "tfjs-node-grid-search",
-  "version": "0.6.2",
+  "version": "0.6.3",
   "description": "",
   "main": "./dist/cjs/main.js",
   "module": "./dist/esm/main.js",
@@ -30,7 +30,9 @@
     "dist"
   ],
   "OFFjest": {
-    "testMatch": ["C:\\Users\\joeku\\OneDrive\\_junk\\ks\\tfjs-node-grid-search\\unit-tests\\IterationResult.test.ts"]
+    "testMatch": [
+      "C:\\Users\\joeku\\OneDrive\\_junk\\ks\\tfjs-node-grid-search\\unit-tests\\IterationResult.test.ts"
+    ]
   },
   "scripts": {
     "build": "npm run tsc && npm run test && npm run jsdoc-docdash",
