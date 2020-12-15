@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 'use strict';
-import { ModelTestStats } from '../src/lib/ModelTestStats';
+import { ModelTestStats } from '../src/main';
 const VALID_DELTA_CORRECT = 0;
 const VALID_DELTA_INCORRECT = 0;
 const VALID_TOTAL_CASES = 2;
@@ -23,6 +23,11 @@ test('instantiation throws on too many correct', () => {
 test('instantiation throws on float cases', () => {
     expect(() => {
         const modelTestStats = new ModelTestStats(VALID_DELTA_CORRECT, VALID_DELTA_INCORRECT, VALID_DELTA_CORRECT, 2.5);
+    }).toThrow();
+});
+test('instantiation throws on too few cases', () => {
+    expect(() => {
+        const modelTestStats = new ModelTestStats(VALID_DELTA_CORRECT, VALID_DELTA_INCORRECT, VALID_DELTA_CORRECT, 0);
     }).toThrow();
 });
 //# sourceMappingURL=ModelTestStats.test.js.map

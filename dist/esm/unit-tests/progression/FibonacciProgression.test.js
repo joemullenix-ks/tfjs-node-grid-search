@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 'use strict';
-import { FibonacciProgression } from '../../src/lib/progression/FibonacciProgression';
+import { FibonacciProgression } from '../../src/main';
 test('instantiation; advance and reset', () => {
     expect(() => {
         const INVALID_INITIATOR = -1;

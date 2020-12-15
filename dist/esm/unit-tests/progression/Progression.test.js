@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 'use strict';
-import { Progression } from '../../src/lib/progression/Progression';
+// import { Progression } from '../../src/lib/progression/Progression';
+import { Progression } from '../../src/main';
 test('implementation; instantiation; read-onlys; advance and reset', () => {
     class EmptyNameConcreteProgression extends Progression {
         constructor() {

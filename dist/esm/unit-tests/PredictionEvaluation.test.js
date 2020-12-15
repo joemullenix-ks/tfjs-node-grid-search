@@ -1,6 +1,5 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 'use strict';
-import { PredictionEvaluation } from '../src/lib/PredictionEvaluation';
+import { PredictionEvaluation } from '../src/main';
 test('instantiation; readonlys', () => {
     const CORRECT = true;
     const DELTA = -10;

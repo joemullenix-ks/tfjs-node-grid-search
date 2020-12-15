@@ -34,9 +34,10 @@ declare class ModelParams {
     /**
      * Throws if a param key is not supported. This is exceptional because the
      * objects our constructor takes are not user input. They've been processed.
+     * @private
      * @param {string} key
      */
-    ValidateParamKey(key: string): void;
+    private ValidateParamKey;
     WriteCSVLineKeys(): string;
     WriteCSVLineValues(): string;
 }

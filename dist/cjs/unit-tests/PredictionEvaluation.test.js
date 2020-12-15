@@ -1,12 +1,11 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 'use strict';
 Object.defineProperty(exports, "__esModule", { value: true });
-const PredictionEvaluation_1 = require("../src/lib/PredictionEvaluation");
+const main_1 = require("../src/main");
 test('instantiation; readonlys', () => {
     const CORRECT = true;
     const DELTA = -10;
-    const predictionEvaluation = new PredictionEvaluation_1.PredictionEvaluation(CORRECT, DELTA);
-    expect(predictionEvaluation).toBeInstanceOf(PredictionEvaluation_1.PredictionEvaluation);
+    const predictionEvaluation = new main_1.PredictionEvaluation(CORRECT, DELTA);
+    expect(predictionEvaluation).toBeInstanceOf(main_1.PredictionEvaluation);
     expect(predictionEvaluation.correct).toBe(CORRECT);
     expect(predictionEvaluation.delta).toBe(DELTA);
 });

@@ -2,7 +2,7 @@
 'use strict';
 
 
-import { ExponentialProgression } from '../../src/lib/progression/ExponentialProgression';
+import { ExponentialProgression } from '../../src/main';
 
 
 test('instantiation; advance and reset', () => {

@@ -1,7 +1,26 @@
 'use strict';
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.IterationResult = void 0;
-const ModelTestStats_1 = require("./ModelTestStats");
+const Utils = __importStar(require("./Utils"));
 /**
  * Gathers all of the information we have for a single model run (aka
  * "iteration" or "grid cell").
@@ -31,14 +50,13 @@ class IterationResult {
         this._repetition = _repetition;
         this._runDuration = _runDuration;
         this._score = 0;
-        console.assert(this._iteration >= 0);
-        console.assert(Math.floor(this._iteration) === this._iteration);
-        console.assert(this._descriptor !== '');
-        console.assert(this._modelTestStats instanceof ModelTestStats_1.ModelTestStats);
-        console.assert(this._repetition >= 0);
-        console.assert(this._repetition === Math.floor(this._repetition));
-        console.assert(this._runDuration >= 0);
-        console.assert(this._runDuration === Math.floor(this._runDuration));
+        Utils.Assert(this._iteration >= 0);
+        Utils.Assert(Math.floor(this._iteration) === this._iteration);
+        Utils.Assert(this._descriptor !== '');
+        Utils.Assert(this._repetition >= 0);
+        Utils.Assert(this._repetition === Math.floor(this._repetition));
+        Utils.Assert(this._runDuration >= 0);
+        Utils.Assert(this._runDuration === Math.floor(this._runDuration));
         this._score = this._modelTestStats.CalculateScore();
     }
     get iteration() { return this._iteration; }

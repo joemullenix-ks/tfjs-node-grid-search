@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 'use strict';
-import { DataSet } from '../src/lib/DataSet';
-import { SessionData } from '../src/lib/SessionData';
+import { DataSet, SessionData } from '../src/main';
 test('instantiation; callback is used; read-only are set', () => {
     const dataSetTwoZeroes = new DataSet([0, 0], [[0], [0]]);
     const standardizationCallback = jest.fn();
