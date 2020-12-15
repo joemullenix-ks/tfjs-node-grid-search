@@ -116,3 +116,29 @@ test('bad instantiations throw', () => {
                                                     0.5);
   }).toThrow();
 });
+
+test('CSV header & body write helpers', () => {
+  const epochStats = new EpochStats(0);
+
+  const modelParams = new ModelParams({}, {});
+
+  const modelTestStats = new ModelTestStats(0, 0, 0, 1);
+
+  const iterationResult = new IterationResult(	1,
+                                                VALID_DESCRIPTOR,
+                                                epochStats,
+                                                modelParams,
+                                                modelTestStats,
+                                                2,
+                                                3);
+
+  expect(typeof iterationResult.WriteEpochStatsHeader()).toBe('string');
+  expect(typeof iterationResult.WriteEpochStatsValues()).toBe('string');
+  expect(typeof iterationResult.WriteModelParamHeader()).toBe('string');
+  expect(typeof iterationResult.WriteModelParamValues()).toBe('string');
+  expect(typeof iterationResult.WriteTestStatsHeader()).toBe('string');
+  expect(typeof iterationResult.WriteTestStatsValues()).toBe('string');
+
+  expect(typeof iterationResult.WriteReport()).toBe('string');
+});
+
