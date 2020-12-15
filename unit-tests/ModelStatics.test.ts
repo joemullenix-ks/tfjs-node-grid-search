@@ -4,16 +4,8 @@
 
 import { ModelStatics } from '../src/lib/ModelStatics';
 
-/*
 test('instantiation; readonlys', () => {
-	const CORRECT = true;
-	const DELTA = -10;
-
-	const predictionEvaluation = new ModelStatics(CORRECT, DELTA);
-
-	expect(predictionEvaluation).toBeInstanceOf(PredictionEvaluation);
-
-	expect(predictionEvaluation.correct).toBe(CORRECT);
-	expect(predictionEvaluation.delta).toBe(DELTA);
+//TEMP: satisfy the builder (this is up next)
+	const tempinst = new ModelStatics({});
+	expect(tempinst).toBeInstanceOf(ModelStatics);
 });
-*/
