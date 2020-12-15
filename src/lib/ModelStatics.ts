@@ -8,13 +8,14 @@ import * as TF_INITIALIZERS from '@tensorflow/tfjs-layers/dist/initializers'
 //				   preclude all of that Array<unknown> nonsense. Woot!
 
 
-import { FailureMessage } from './FailureMessage';
-
-
 import * as Types from './types';
 
 
 import * as Axis from './Axis';
+		//TODO: Sub these ^^ in: export { Axis, AxisDefaults, AxisNames, AxisTypes };
+
+import { FailureMessage } from './FailureMessage';
+import * as Utils from './Utils';
 
 
 /**
@@ -50,7 +51,7 @@ class ModelStatics {
 		for (const k in this._userStatics) {
 			if (!Axis.Axis.AttemptValidateParameter(k, this._userStatics[k], FAILURE_MESSAGE)) {
 				// fatal, so that users don't kick off a (potentially very long) grid search with a bad model config
-				throw new Error('There was a problem with the static model this._userStatics. ' + FAILURE_MESSAGE.text);
+				throw new Error('There was a problem with the static model params. ' + FAILURE_MESSAGE.text);
 			}
 		}
 
@@ -65,7 +66,7 @@ class ModelStatics {
 	 * @param {string} paramKey
 	 */
 	AttemptStripParam(paramKey: string): void {
-		console.assert(paramKey !== '');
+		Utils.Assert(paramKey !== '');
 
 		if (this._staticParams[paramKey] === undefined) {
 			// nothing to strip
@@ -125,8 +126,8 @@ class ModelStatics {
 	GenerateOptimizer(learnRate: number): TENSOR_FLOW.Optimizer {
 //NOTE: See https://js.tensorflow.org/api/2.7.0/#tf.LayersModel.compile
 
-		console.assert(learnRate > 0.0);
-		console.assert(learnRate < 1.0);
+		Utils.Assert(learnRate > 0.0);
+		Utils.Assert(learnRate < 1.0);
 
 		return TENSOR_FLOW.train.adam(learnRate);
 	}

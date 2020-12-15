@@ -21,11 +21,10 @@ var __importStar = (this && this.__importStar) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ModelStatics = void 0;
 const TENSOR_FLOW = __importStar(require("@tensorflow/tfjs-node"));
-//TODO: IMPORTANT: The import of this separate module (tfjs-layers) is probably the solution we need for the
-//				   nested arrays issue in Grid types (and related files). Getting TF's native types in should
-//				   preclude all of that Array<unknown> nonsense. Woot!
-const FailureMessage_1 = require("./FailureMessage");
 const Axis = __importStar(require("./Axis"));
+//TODO: Sub these ^^ in: export { Axis, AxisDefaults, AxisNames, AxisTypes };
+const FailureMessage_1 = require("./FailureMessage");
+const Utils = __importStar(require("./Utils"));
 /**
  * Manages the hyperparameters that do <i>not</i> change over the course of
  * the grid search (i.e. those not governed by an {@link Axis}).
@@ -56,7 +55,7 @@ class ModelStatics {
         for (const k in this._userStatics) {
             if (!Axis.Axis.AttemptValidateParameter(k, this._userStatics[k], FAILURE_MESSAGE)) {
                 // fatal, so that users don't kick off a (potentially very long) grid search with a bad model config
-                throw new Error('There was a problem with the static model this._userStatics. ' + FAILURE_MESSAGE.text);
+                throw new Error('There was a problem with the static model params. ' + FAILURE_MESSAGE.text);
             }
         }
         // params are valid; write the working set, backfilling w/ defaults for any the user left out
@@ -68,7 +67,7 @@ class ModelStatics {
      * @param {string} paramKey
      */
     AttemptStripParam(paramKey) {
-        console.assert(paramKey !== '');
+        Utils.Assert(paramKey !== '');
         if (this._staticParams[paramKey] === undefined) {
             // nothing to strip
             return;
@@ -117,8 +116,8 @@ class ModelStatics {
      */
     GenerateOptimizer(learnRate) {
         //NOTE: See https://js.tensorflow.org/api/2.7.0/#tf.LayersModel.compile
-        console.assert(learnRate > 0.0);
-        console.assert(learnRate < 1.0);
+        Utils.Assert(learnRate > 0.0);
+        Utils.Assert(learnRate < 1.0);
         return TENSOR_FLOW.train.adam(learnRate);
     }
     /**
