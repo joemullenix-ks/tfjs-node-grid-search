@@ -2,23 +2,23 @@
 'use strict';
 
 
-//NOTE: TODO: Still not 100% on the folder structure. This is better.
-import * as tngs from '../src/main';
+import { DataSet } from '../src/lib/DataSet';
+import { SessionData } from '../src/lib/SessionData';
 
 
 test('instantiation; callback is used; read-only are set', () => {
-  const dataSetTwoZeroes = new tngs.DataSet([0, 0], [[0], [0]]);
+  const dataSetTwoZeroes = new DataSet([0, 0], [[0], [0]]);
 
   const standardizationCallback = jest.fn();
 
-  const sessionData = new tngs.SessionData(
+  const sessionData = new SessionData(
     0.5,
     dataSetTwoZeroes,
     false,
     standardizationCallback
   );
 
-  expect(sessionData).toBeInstanceOf(tngs.SessionData);
+  expect(sessionData).toBeInstanceOf(SessionData);
   expect(standardizationCallback).toHaveBeenCalled();
 
   expect(sessionData.proofInputsTensor).toBeDefined();
@@ -32,11 +32,11 @@ test('instantiation; callback is used; read-only are set', () => {
 });
 
 test('treats callback as override', () => {
-  const dataSetTwoZeroes = new tngs.DataSet([0, 0], [[0], [0]]);
+  const dataSetTwoZeroes = new DataSet([0, 0], [[0], [0]]);
 
   const standardizationCallback = jest.fn();
 
-  const sessionData = new tngs.SessionData(
+  const sessionData = new SessionData(
     0.5,
     dataSetTwoZeroes,
     true,
@@ -47,10 +47,10 @@ test('treats callback as override', () => {
 });
 
 test('throws on proof too low', () => {
-  const dataSetTwoZeroes = new tngs.DataSet([0, 0], [[0], [0]]);
+  const dataSetTwoZeroes = new DataSet([0, 0], [[0], [0]]);
 
   expect(() => {
-    const sessionData = new tngs.SessionData(
+    const sessionData = new SessionData(
       0.01,
       dataSetTwoZeroes,
       false
@@ -59,10 +59,10 @@ test('throws on proof too low', () => {
 });
 
 test('throws on proof too high', () => {
-  const dataSetTwoZeroes = new tngs.DataSet([0, 0], [[0], [0]]);
+  const dataSetTwoZeroes = new DataSet([0, 0], [[0], [0]]);
 
   expect(() => {
-    const sessionData = new tngs.SessionData(
+    const sessionData = new SessionData(
       0.99,
       dataSetTwoZeroes,
       false

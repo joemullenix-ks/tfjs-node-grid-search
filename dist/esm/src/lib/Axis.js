@@ -249,42 +249,50 @@ class Axis {
 //
 //			  ...more to come!
 //NOTE: These can (and should!) be "const enum", but that causes a failure when packaging for npm. Further, the
-//		TypeScript enum doesn't get exported (in any useful way) by JSDoc. Thus this hodgepodge workaround.
-//		The const issue a limitation of TypeScript. Enums are preprocessor'd, like #define in C. They're
+//		TypeScript enum doesn't get exported (in any useful way) by JSDoc, thus this hodgepodge workaround.
+//		The const issue is a limitation of TypeScript. Enums are preprocessor'd, like #define in C. They're
 //		implemented pre-transpile, and have no run time aliases, ergo they can't be exported.
 //		When they're _not_ const, apparently they have aliases. Why anyone would want an enum that isn't
 //		constant is beyond me ... but there we are.
 /**
- * Enumeration of the hyperparameter default values.
+ * Enumeration of the hyperparameter default values.<br>
+ * See [AxisTypes]{@link Axis.AxisTypes} for details on each hyperparameter.
  * @enum {number}
  * @memberof Axis
  */
 const AxisDefaults = {
-    /**
-     * See [AxisTypes]{@link Axis.AxisTypes} for details on each hyperparameter.
-     */
+    /** 10 */
     BATCH_SIZE: 10,
+    /** 50 */
     EPOCHS: 50,
+    /** 2 */
     LAYERS: 2,
+    /** 0.001 */
     LEARN_RATE: 0.001,
+    /** 16 */
     NEURONS: 16,
+    /** 0.2 */
     VALIDATION_SPLIT: 0.2
 };
 Object.freeze(AxisDefaults);
 /**
- * Enumeration of the hyperparameter names.
+ * Enumeration of the hyperparameter names.<br>
+ * See [AxisTypes]{@link Axis.AxisTypes} for details on each hyperparameter.
  * @enum {string}
  * @memberof Axis
  */
 const AxisNames = {
-    /**
-     * See [AxisTypes]{@link Axis.AxisTypes} for details on each hyperparameter.
-     */
+    /** batchSize */
     BATCH_SIZE: 'batchSize',
+    /** epochs */
     EPOCHS: 'epochs',
+    /** hiddenLayers */
     LAYERS: 'hiddenLayers',
+    /** learnRate */
     LEARN_RATE: 'learnRate',
+    /** neuronsPerHiddenLayer */
     NEURONS: 'neuronsPerHiddenLayer',
+    /** validationSplit */
     VALIDATION_SPLIT: 'validationSplit'
 };
 Object.freeze(AxisNames);

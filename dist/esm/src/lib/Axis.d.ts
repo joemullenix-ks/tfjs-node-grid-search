@@ -93,13 +93,15 @@ declare class Axis {
     static LookupTypeName(type: number): string;
 }
 /**
- * Enumeration of the hyperparameter default values.
+ * Enumeration of the hyperparameter default values.<br>
+ * See [AxisTypes]{@link Axis.AxisTypes} for details on each hyperparameter.
  * @enum {number}
  * @memberof Axis
  */
 declare const AxisDefaults: StringKeyedNumbersObject;
 /**
- * Enumeration of the hyperparameter names.
+ * Enumeration of the hyperparameter names.<br>
+ * See [AxisTypes]{@link Axis.AxisTypes} for details on each hyperparameter.
  * @enum {string}
  * @memberof Axis
  */

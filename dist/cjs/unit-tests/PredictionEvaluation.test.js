@@ -6,6 +6,7 @@ test('instantiation; readonlys', () => {
     const CORRECT = true;
     const DELTA = -10;
     const predictionEvaluation = new PredictionEvaluation_1.PredictionEvaluation(CORRECT, DELTA);
+    expect(predictionEvaluation).toBeInstanceOf(PredictionEvaluation_1.PredictionEvaluation);
     expect(predictionEvaluation.correct).toBe(CORRECT);
     expect(predictionEvaluation.delta).toBe(DELTA);
 });
