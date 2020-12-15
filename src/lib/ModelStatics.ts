@@ -38,7 +38,7 @@ class ModelStatics {
 		this.WriteStaticParams();
 	}
 
-	AttemptStripParam(paramKey: string): void {
+	private AttemptStripParam(paramKey: string): void {
 		console.assert(paramKey !== '');
 
 		if (this._staticParams[paramKey] === undefined) {
@@ -88,7 +88,7 @@ class ModelStatics {
 		return Object.assign({}, this._staticParams);
 	}
 
-	WriteStaticParams(): void {
+	private WriteStaticParams(): void {
 		// set the user's value, or take the program default (these are optional from the user's point-of-view)
 
 		this._staticParams[Axis.AxisNames.BATCH_SIZE] =
