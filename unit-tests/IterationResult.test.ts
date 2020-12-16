@@ -141,4 +141,3 @@ test('CSV header & body write helpers', () => {
 
   expect(typeof iterationResult.WriteReport()).toBe('string');
 });
-

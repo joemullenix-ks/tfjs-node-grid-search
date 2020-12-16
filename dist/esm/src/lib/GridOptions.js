@@ -12,50 +12,50 @@ import * as Utils from './Utils';
 class GridOptions {
     /**
      * Creates an instance of GridOptions.
-     * @param {Types.StringKeyedSimpleObject} [userOptions]
+     * @param {Types.StringKeyedSimpleObject} userOptions
      * @example
      * new tngs.GridOptions({
      *   epochStatsDepth: 10,         // Length of the trailing average; default 5
      *   repetitions: 3,              // Number of times to repeat each iteration of the grid; default 1
      *   validationSetSizeMin: 50,    // Fewer than x validation cases triggers a warning; default 100
-     *   writeResultsToDirectory: ''  // Directory in which a results file is written; off by default (do not write CSV)
+     *   writeResultsToDirectory: ''  // Directory in which a results file is written; default './' (current directory)<br>
+     *                                // NOTE: To disable the CSV file, omit writeResultsToDirectory.
      * });
      */
     constructor(userOptions) {
         this._options = {};
-        if (typeof userOptions !== 'object') {
-            console.assert(userOptions === null || userOptions === undefined);
-        }
+        let keysFound = false;
         // merge the user-supplied options w/ the default options
         for (const k in userOptions) {
+            keysFound = true;
             if (ALL_AVAILABLE_OPTIONS[k] !== undefined) {
                 continue;
             }
             //NOTE: This complex error report is here to help the user, because looking up config params in documentation sucks.
             //		This way, we're explicit about what's actually supported (in this version).
             // First we console-error, to get the actual problem out of the way...
-            const ERROR_TEXT = 'Unknown option encountered: ' + k;
+            const ERROR_TEXT = 'Unknown grid-options parameter encountered: ' + k;
             //NOTE: If the IDE/terminal is set to break on these - before we get our details out - so be it (that's likely a power-user anyway).
             console.error(ERROR_TEXT);
             // ...next we print the list of available option keys...
-            console.log('The following options are suppored:');
+            console.log('The following parameter are suppored:');
             for (const l in ALL_AVAILABLE_OPTIONS) {
+                //TODO: Include defaults with these.
                 console.log(l);
             }
             // ...then we throw, having given the user the exact information they need.
             throw new Error(ERROR_TEXT);
         }
         const DEFAULT_OPTIONS = {
-            epochStatsDepth: 5,
-            repetitions: 1,
-            validationSetSizeMin: 100
-            // These properties are intentionally left out (i.e. off by default):
-            // writeResultsToDirectory: '<PATH>'
+            epochStatsDepth: GridOptions.DEFAULT_EPOCH_STATS_DEPTH,
+            repetitions: GridOptions.DEFAULT_REPETITIONS,
+            validationSetSizeMin: GridOptions.DEFAULT_VALIDATION_SET_SIZE_MIN,
+            writeResultsToDirectory: GridOptions.DEFAULT_WRITE_RESULTS_TO_DIRECTORY
         };
-        if (userOptions === null || userOptions === undefined) {
-            // nothing received; set defaults
+        if (!keysFound) {
+            // empty object received; set defaults
             userOptions = DEFAULT_OPTIONS;
-            // send the defaults through validation, to double-check these values, and especially future changes.
+            // send the defaults through validation, to double-check our values (especially future changes!)
         }
         const ERROR_PREFIX = 'Grid option ';
         for (const k in userOptions) {
@@ -135,6 +135,10 @@ class GridOptions {
         }
     }
 }
+GridOptions.DEFAULT_EPOCH_STATS_DEPTH = 5;
+GridOptions.DEFAULT_REPETITIONS = 1;
+GridOptions.DEFAULT_VALIDATION_SET_SIZE_MIN = 100;
+GridOptions.DEFAULT_WRITE_RESULTS_TO_DIRECTORY = './';
 const ALL_AVAILABLE_OPTIONS = {
     epochStatsDepth: null,
     repetitions: null,

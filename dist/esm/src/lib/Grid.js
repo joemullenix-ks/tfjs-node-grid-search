@@ -88,7 +88,7 @@ class Grid {
         console.log('\n' + 'Instantiating Grid...');
         // take the user's options block, if supplied, otherwise setup defaults
         if (!this._userGridOptions) {
-            this._gridOptions = new GridOptions();
+            this._gridOptions = new GridOptions({});
         }
         else {
             this._gridOptions = this._userGridOptions;

@@ -47,4 +47,17 @@ test('bad instantiations throw', () => {
         const iterationResult = new main_1.IterationResult(0, VALID_DESCRIPTOR, epochStats, modelParams, modelTestStats, 0, 0.5);
     }).toThrow();
 });
+test('CSV header & body write helpers', () => {
+    const epochStats = new main_1.EpochStats(0);
+    const modelParams = new main_1.ModelParams({}, {});
+    const modelTestStats = new main_1.ModelTestStats(0, 0, 0, 1);
+    const iterationResult = new main_1.IterationResult(1, VALID_DESCRIPTOR, epochStats, modelParams, modelTestStats, 2, 3);
+    expect(typeof iterationResult.WriteEpochStatsHeader()).toBe('string');
+    expect(typeof iterationResult.WriteEpochStatsValues()).toBe('string');
+    expect(typeof iterationResult.WriteModelParamHeader()).toBe('string');
+    expect(typeof iterationResult.WriteModelParamValues()).toBe('string');
+    expect(typeof iterationResult.WriteTestStatsHeader()).toBe('string');
+    expect(typeof iterationResult.WriteTestStatsValues()).toBe('string');
+    expect(typeof iterationResult.WriteReport()).toBe('string');
+});
 //# sourceMappingURL=IterationResult.test.js.map

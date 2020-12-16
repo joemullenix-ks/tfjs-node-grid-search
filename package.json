@@ -31,7 +31,7 @@
   ],
   "OFFjest": {
     "testMatch": [
-      "C:\\Users\\joeku\\OneDrive\\_junk\\ks\\tfjs-node-grid-search\\unit-tests\\IterationResult.test.ts"
+      "C:\\Users\\joeku\\OneDrive\\_junk\\ks\\tfjs-node-grid-search\\unit-tests\\GridOptions.test.ts"
     ]
   },
   "scripts": {

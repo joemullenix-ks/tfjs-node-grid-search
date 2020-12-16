@@ -5,6 +5,7 @@ import { IterationResult } from './IterationResult';
  */
 declare class GridRunStats {
     private _iterationResults;
+    static readonly _noData = "no data";
     /**
      * Creates an instance of GridRunStats.
      */
