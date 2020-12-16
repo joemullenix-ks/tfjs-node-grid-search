@@ -25,7 +25,6 @@ class GridRunStats {
      */
     WriteCSV() {
         if (this._iterationResults.length === 0) {
-            // return 'no data';
             return GridRunStats._noData;
         }
         // write the header of the CSV table

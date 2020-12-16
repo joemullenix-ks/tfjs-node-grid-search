@@ -111,11 +111,6 @@ describe('user supplied values', () => {
     });
 });
 test('GetOption returns all types, and throws', () => {
-    //TODO: These will be pulled from GridOptions (once they're defined).
-    // const DEFAULT_EPOCH_STATS_DEPTH = 5;
-    // const DEFAULT_REPETITIONS = 1;
-    // const DEFAULT_VALIDATION_SET_SIZE_MIN = 100;
-    // const DEFAULT_WRITE_RESULTS_TO_DIRECTORY = '';
     const gridOptionsDefaults = new main_1.GridOptions({
         epochStatsDepth: main_1.GridOptions.DEFAULT_EPOCH_STATS_DEPTH,
         repetitions: main_1.GridOptions.DEFAULT_REPETITIONS,
