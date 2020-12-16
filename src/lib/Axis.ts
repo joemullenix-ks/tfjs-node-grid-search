@@ -50,10 +50,10 @@ class Axis {
 				private _boundBegin: number,
 				private _boundEnd: number,
 				private _progression: Progression) {
-		console.assert(_typeEnum >= 0 && _typeEnum < AxisTypes._TOTAL);
+		Utils.Assert(_typeEnum >= 0 && _typeEnum < AxisTypes._TOTAL);
 
-		console.assert(_boundEnd >= 0);
-		console.assert(_boundBegin >= 0);
+		Utils.Assert(_boundEnd >= 0);
+		Utils.Assert(_boundBegin >= 0);
 
 		this._typeName = Axis.LookupTypeName(this._typeEnum);
 

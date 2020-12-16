@@ -1,6 +1,17 @@
 'use strict';
 
 
+//NOTE: TODO: Due to a redesign, this level isn't needed. We can simply pass an
+//			  into Grid's constructor.
+//			  The pass-throughs are dropped, and the helpers become methods of
+//			  AxisSetTraverser.
+//			  Good effort, though.
+//
+//    UPDATE: This is pending the implementation of Schedules/Recipes, which
+//			  are alternate methods of defining the grid. This may play a role
+//			  after all.
+
+
 import { StringKeyedNullsObject, StringKeyedNumbersObject } from './types';
 
 

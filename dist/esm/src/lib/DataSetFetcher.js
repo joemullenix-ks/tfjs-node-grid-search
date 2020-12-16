@@ -38,14 +38,15 @@ class DataSetFetcher {
     constructor(nodeLaunchArguments) {
         this._pathInputs = '';
         this._pathTargets = '';
-        if (nodeLaunchArguments.length < 4) {
+        if (nodeLaunchArguments.length < 4
+            || nodeLaunchArguments[2] === nodeLaunchArguments[3]) {
             // show the user a template in 'warning' color, since this is a potential barrier to entry
             console.warn('Missing launch param(s)!' + '\n'
                 + 'Example command line:' + '\n'
                 + '  node my-tngs-app.js data_inputs.txt data_targets.txt' + '\n'
                 + 'Example launch.json config:' + '\n'
                 + '  "args": ["data_inputs.txt", "data_targets.txt"]' + '\n');
-            throw new Error('Expecting two paths, the first to the input data, the  second to the targets.');
+            throw new Error('Expecting two paths, the first to the input data, the second to the targets.');
         }
         this._pathInputs = nodeLaunchArguments[2];
         this._pathTargets = nodeLaunchArguments[3];

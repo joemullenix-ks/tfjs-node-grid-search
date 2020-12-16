@@ -2,8 +2,8 @@
   "name": "tfjs-node-grid-search",
   "version": "0.6.4",
   "description": "",
-  "main": "./dist/cjs/main.js",
-  "module": "./dist/esm/main.js",
+  "main": "./dist/cjs/src/main.js",
+  "module": "./dist/esm/src/main.js",
   "directories": {
     "lib": "lib"
   },
@@ -31,7 +31,7 @@
   ],
   "OFFjest": {
     "testMatch": [
-      "C:\\Users\\joeku\\OneDrive\\_junk\\ks\\tfjs-node-grid-search\\unit-tests\\DataSetFetcher.test.ts"
+      "C:\\Users\\joeku\\OneDrive\\_junk\\ks\\tfjs-node-grid-search\\unit-tests\\Axis.test.ts"
     ]
   },
   "scripts": {

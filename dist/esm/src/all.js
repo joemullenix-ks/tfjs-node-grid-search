@@ -22,7 +22,7 @@ const main = () => __awaiter(void 0, void 0, void 0, function* () {
     axes.push(new tngs.Axis(tngs.AxisTypes.BATCH_SIZE, 8, 16, new tngs.LinearProgression(4)));
     // test nuerons-per-hidden-layer from 10 to 18 inclusive, using the beginning
     // of the Fibonacci sequence (10, 11, 12, 13, 15, 18)
-    axes.push(new tngs.Axis(tngs.AxisTypes.NEURONS, 10, 18, new tngs.FibonacciProgression(-1)));
+    axes.push(new tngs.Axis(tngs.AxisTypes.NEURONS, 10, 18, new tngs.FibonacciProgression(0)));
     const axisSet = new tngs.AxisSet(axes);
     // Next, we define the static parameters. That is, those params that never
     // change during our grid search.
