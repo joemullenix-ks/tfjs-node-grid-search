@@ -1,4 +1,5 @@
 'use strict';
+import * as Utils from './Utils';
 /**
  * Simple class for saving data from file reads.
  */
@@ -12,7 +13,7 @@ class FileIOResult {
     }
     get data() { return this._data; }
     set data(data) {
-        console.assert(data !== '');
+        Utils.Assert(data !== '');
         this._data = data;
     }
 }

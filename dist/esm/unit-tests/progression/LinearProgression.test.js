@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 'use strict';
-import { LinearProgression } from '../../src/lib/progression/LinearProgression';
+import { LinearProgression } from '../../src/main';
 test('instantiation; advance and reset', () => {
     expect(() => {
         const INVALID_STEP = 0;

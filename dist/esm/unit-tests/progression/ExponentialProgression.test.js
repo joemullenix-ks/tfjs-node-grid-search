@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 'use strict';
-import { ExponentialProgression } from '../../src/lib/progression/ExponentialProgression';
+import { ExponentialProgression } from '../../src/main';
 test('instantiation; advance and reset', () => {
     expect(() => {
         const INVALID_BASE = 1;

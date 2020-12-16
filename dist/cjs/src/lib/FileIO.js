@@ -63,7 +63,7 @@ exports.ProduceResultsFilename = ProduceResultsFilename;
  * @return {Promise<void>}
  */
 const ReadDataFile = (path, result) => __awaiter(void 0, void 0, void 0, function* () {
-    console.assert(path !== '');
+    Utils.Assert(path !== '');
     try {
         result.data = yield FS_PROMISES.readFile(path, 'utf8');
         return;
@@ -83,7 +83,7 @@ exports.ReadDataFile = ReadDataFile;
  * @return {Promise<void>}
  */
 const WriteResultsFile = (fileName, directory, dataToWrite) => __awaiter(void 0, void 0, void 0, function* () {
-    console.assert(fileName !== '');
+    Utils.Assert(fileName !== '');
     const WRITE_PATH = PATH_LIB.join(directory, fileName);
     // correct for Unix/Windows path format
     slash_1.default(WRITE_PATH);

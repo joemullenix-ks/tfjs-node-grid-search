@@ -25,6 +25,7 @@ class ModelTestStats {
 		Utils.Assert(Math.floor(this._totalCorrect) === this._totalCorrect);
 		Utils.Assert(this._totalCases >= this._totalCorrect);
 		Utils.Assert(Math.floor(this._totalCases) === this._totalCases);
+		Utils.Assert(this._totalCases > 0);
 	}
 
 	/**

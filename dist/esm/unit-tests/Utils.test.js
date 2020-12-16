@@ -1,7 +1,5 @@
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-unsafe-call */
 'use strict';
-import * as Utils from '../src/lib/Utils';
+import { Utils } from '../src/main';
 test('average of [0, 7] is 3.5', () => {
     expect(Utils.ArrayCalculateAverage([0, 7])).toBe(3.5);
 });

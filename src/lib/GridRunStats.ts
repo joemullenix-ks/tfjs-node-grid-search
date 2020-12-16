@@ -11,6 +11,8 @@ import { IterationResult } from './IterationResult';
 class GridRunStats {
 	private _iterationResults: Array<IterationResult> = [];
 
+	static readonly _noData = 'no data';
+
 	/**
 	 * Creates an instance of GridRunStats.
 	 */
@@ -33,7 +35,7 @@ class GridRunStats {
 	 */
 	WriteCSV(): string {
 		if (this._iterationResults.length === 0) {
-			return 'no data';
+			return GridRunStats._noData;
 		}
 
 		// write the header of the CSV table

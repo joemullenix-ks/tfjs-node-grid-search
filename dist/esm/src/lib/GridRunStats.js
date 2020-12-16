@@ -25,7 +25,7 @@ class GridRunStats {
      */
     WriteCSV() {
         if (this._iterationResults.length === 0) {
-            return 'no data';
+            return GridRunStats._noData;
         }
         // write the header of the CSV table
         const HEADER_TEXT = 'pass,iteration,repetition,score,duration,'
@@ -75,6 +75,7 @@ class GridRunStats {
         return outgoingText;
     }
 }
+GridRunStats._noData = 'no data';
 Object.freeze(GridRunStats);
 export { GridRunStats };
 //# sourceMappingURL=GridRunStats.js.map

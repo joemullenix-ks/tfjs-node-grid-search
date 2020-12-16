@@ -4,7 +4,7 @@
 import { EpochStats } from './EpochStats';
 import { ModelParams } from './ModelParams';
 import { ModelTestStats } from './ModelTestStats';
-
+import * as Utils from './Utils';
 
 /**
  * Gathers all of the information we have for a single model run (aka
@@ -35,14 +35,13 @@ class IterationResult {
 				private _modelTestStats: ModelTestStats,
 				private _repetition: number,
 				private _runDuration: number) {
-		console.assert(this._iteration >= 0);
-		console.assert(Math.floor(this._iteration) === this._iteration);
-		console.assert(this._descriptor !== '');
-		console.assert(this._modelTestStats instanceof ModelTestStats);
-		console.assert(this._repetition >= 0);
-		console.assert(this._repetition === Math.floor(this._repetition));
-		console.assert(this._runDuration >= 0);
-		console.assert(this._runDuration === Math.floor(this._runDuration));
+		Utils.Assert(this._iteration >= 0);
+		Utils.Assert(Math.floor(this._iteration) === this._iteration);
+		Utils.Assert(this._descriptor !== '');
+		Utils.Assert(this._repetition >= 0);
+		Utils.Assert(this._repetition === Math.floor(this._repetition));
+		Utils.Assert(this._runDuration >= 0);
+		Utils.Assert(this._runDuration === Math.floor(this._runDuration));
 
 		this._score = this._modelTestStats.CalculateScore();
 	}

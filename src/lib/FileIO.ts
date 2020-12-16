@@ -42,7 +42,7 @@ const ProduceResultsFilename = (): string => {
  * @return {Promise<void>}
  */
 const ReadDataFile = async (path: string, result: FileIOResult): Promise<void> => {
-	console.assert(path !== '');
+	Utils.Assert(path !== '');
 
 	try {
 		result.data = await FS_PROMISES.readFile(path, 'utf8');
@@ -65,7 +65,7 @@ const ReadDataFile = async (path: string, result: FileIOResult): Promise<void> =
 const WriteResultsFile = async (fileName: string,
 								directory: string,
 								dataToWrite: string): Promise<void> => {
-	console.assert(fileName !== '');
+	Utils.Assert(fileName !== '');
 
 	const WRITE_PATH = PATH_LIB.join(directory, fileName);
 
@@ -77,10 +77,9 @@ const WriteResultsFile = async (fileName: string,
 	}
 
 	try {
-		await FS_PROMISES.writeFile(
-						WRITE_PATH,
-						dataToWrite,
-						'utf8');
+		await FS_PROMISES.writeFile(WRITE_PATH,
+									dataToWrite,
+									'utf8');
 
 		return;
 	}

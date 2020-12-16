@@ -2,7 +2,7 @@
 'use strict';
 
 
-import { ModelTestStats } from '../src/lib/ModelTestStats';
+import { ModelTestStats } from '../src/main';
 
 
 const VALID_DELTA_CORRECT = 0;
@@ -46,5 +46,14 @@ test('instantiation throws on float cases', () => {
 													VALID_DELTA_INCORRECT,
 													VALID_DELTA_CORRECT,
 													2.5);
+	}).toThrow();
+});
+
+test('instantiation throws on too few cases', () => {
+	expect(() => {
+		const modelTestStats = new ModelTestStats(	VALID_DELTA_CORRECT,
+													VALID_DELTA_INCORRECT,
+													VALID_DELTA_CORRECT,
+													0);
 	}).toThrow();
 });

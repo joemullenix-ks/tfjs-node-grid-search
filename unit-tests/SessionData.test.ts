@@ -2,8 +2,7 @@
 'use strict';
 
 
-import { DataSet } from '../src/lib/DataSet';
-import { SessionData } from '../src/lib/SessionData';
+import { DataSet, SessionData } from '../src/main';
 
 
 test('instantiation; callback is used; read-only are set', () => {

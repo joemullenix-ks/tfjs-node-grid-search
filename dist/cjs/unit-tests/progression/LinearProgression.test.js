@@ -1,15 +1,15 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 'use strict';
 Object.defineProperty(exports, "__esModule", { value: true });
-const LinearProgression_1 = require("../../src/lib/progression/LinearProgression");
+const main_1 = require("../../src/main");
 test('instantiation; advance and reset', () => {
     expect(() => {
         const INVALID_STEP = 0;
-        const linearProgression = new LinearProgression_1.LinearProgression(INVALID_STEP);
+        const linearProgression = new main_1.LinearProgression(INVALID_STEP);
     }).toThrow();
     const VALID_STEP = 1;
-    const linearProgression = new LinearProgression_1.LinearProgression(VALID_STEP);
-    expect(linearProgression).toBeInstanceOf(LinearProgression_1.LinearProgression);
+    const linearProgression = new main_1.LinearProgression(VALID_STEP);
+    expect(linearProgression).toBeInstanceOf(main_1.LinearProgression);
     expect(linearProgression.value).toBe(0);
     linearProgression.Advance();
     expect(linearProgression.value).toBe(VALID_STEP);
