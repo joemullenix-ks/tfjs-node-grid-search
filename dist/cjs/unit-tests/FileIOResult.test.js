@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 'use strict';
 Object.defineProperty(exports, "__esModule", { value: true });
 const main_1 = require("../src/main");

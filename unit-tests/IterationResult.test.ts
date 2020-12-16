@@ -9,7 +9,7 @@ const VALID_DESCRIPTOR = 'desc';
 
 
 test('instantiation; readonlys', () => {
-  const epochStats = new EpochStats(0);
+  const epochStats = new EpochStats(1);
 
   const modelParams = new ModelParams({}, {});
 
@@ -33,7 +33,7 @@ test('instantiation; readonlys', () => {
 });
 
 test('bad instantiations throw', () => {
-  const epochStats = new EpochStats(0);
+  const epochStats = new EpochStats(1);
 
   const modelParams = new ModelParams({}, {});
 
@@ -118,7 +118,7 @@ test('bad instantiations throw', () => {
 });
 
 test('CSV header & body write helpers', () => {
-  const epochStats = new EpochStats(0);
+  const epochStats = new EpochStats(1);
 
   const modelParams = new ModelParams({}, {});
 

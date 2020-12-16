@@ -74,8 +74,8 @@ class EpochStats {
         this._lineLoss = { m: 0, b: 0 };
         this._lineValidationAccuracy = { m: 0, b: 0 };
         this._lineValidationLoss = { m: 0, b: 0 };
-        console.assert(this._trailDepth > 0);
-        console.assert(Math.floor(this._trailDepth) === this._trailDepth);
+        Utils.Assert(this._trailDepth > 0);
+        Utils.Assert(Math.floor(this._trailDepth) === this._trailDepth);
     }
     get averageAccuracy() { return this._averageAccuracy; }
     get averageLoss() { return this._averageLoss; }
@@ -94,9 +94,8 @@ class EpochStats {
      *					  validation-loss.
      */
     Update(epoch, logs) {
-        console.assert(epoch >= 0);
-        console.assert(Math.floor(epoch) === epoch);
-        console.assert(typeof logs === 'object');
+        Utils.Assert(epoch >= 0);
+        Utils.Assert(Math.floor(epoch) === epoch);
         Utils.QueueRotate(this._samplesAccuracy, logs.acc, this._trailDepth);
         Utils.QueueRotate(this._samplesLoss, logs.loss, this._trailDepth);
         Utils.QueueRotate(this._samplesValidationAccuracy, logs.val_acc, this._trailDepth);

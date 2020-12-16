@@ -11,7 +11,7 @@ test('instantiation', () => {
 });
 
 test('adding an iteration result and write reports', () => {
-  const epochStats = new EpochStats(0);
+  const epochStats = new EpochStats(1);
 
   const modelParams = new ModelParams({}, {});
 

@@ -57,7 +57,7 @@ declare class Axis {
      */
     Reset(): void;
     /**
-    * Gets a description of the axis's type and position. Set 'compact' to true
+    * Gets a description of the axis's type and position. Set 'compact' to false
     * for details on the progression.
     * @param {boolean} compact If false, bounds and progression are included.
     * @return {string}

@@ -31,7 +31,7 @@
   ],
   "OFFjest": {
     "testMatch": [
-      "C:\\Users\\joeku\\OneDrive\\_junk\\ks\\tfjs-node-grid-search\\unit-tests\\FileIO.test.ts"
+      "C:\\Users\\joeku\\OneDrive\\_junk\\ks\\tfjs-node-grid-search\\unit-tests\\EpochStats.test.ts"
     ]
   },
   "scripts": {

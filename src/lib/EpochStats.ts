@@ -42,8 +42,8 @@ class EpochStats {
 	 * @param {number} _trailDepth Total samples in a (simple) trailing average.
 	 */
 	constructor(private _trailDepth: number) {
-		console.assert(this._trailDepth > 0);
-		console.assert(Math.floor(this._trailDepth) === this._trailDepth);
+		Utils.Assert(this._trailDepth > 0);
+		Utils.Assert(Math.floor(this._trailDepth) === this._trailDepth);
 	}
 
 	get averageAccuracy(): number { return this._averageAccuracy; }
@@ -64,9 +64,8 @@ class EpochStats {
 	 *					  validation-loss.
 	 */
 	Update(epoch: number, logs: Logs): void {
-		console.assert(epoch >= 0);
-		console.assert(Math.floor(epoch) === epoch);
-		console.assert(typeof logs === 'object');
+		Utils.Assert(epoch >= 0);
+		Utils.Assert(Math.floor(epoch) === epoch);
 
 		Utils.QueueRotate(this._samplesAccuracy, logs.acc, this._trailDepth);
 		Utils.QueueRotate(this._samplesLoss, logs.loss, this._trailDepth);

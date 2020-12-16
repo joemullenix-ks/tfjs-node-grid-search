@@ -4,7 +4,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const main_1 = require("../src/main");
 const VALID_DESCRIPTOR = 'desc';
 test('instantiation; readonlys', () => {
-    const epochStats = new main_1.EpochStats(0);
+    const epochStats = new main_1.EpochStats(1);
     const modelParams = new main_1.ModelParams({}, {});
     const modelTestStats = new main_1.ModelTestStats(0, 0, 0, 1);
     const iterationResult = new main_1.IterationResult(1, VALID_DESCRIPTOR, epochStats, modelParams, modelTestStats, 2, 3);
@@ -15,7 +15,7 @@ test('instantiation; readonlys', () => {
     expect(iterationResult.score).toBe(0);
 });
 test('bad instantiations throw', () => {
-    const epochStats = new main_1.EpochStats(0);
+    const epochStats = new main_1.EpochStats(1);
     const modelParams = new main_1.ModelParams({}, {});
     const modelTestStats = new main_1.ModelTestStats(0, 0, 0, 1);
     // negative iteration
@@ -48,7 +48,7 @@ test('bad instantiations throw', () => {
     }).toThrow();
 });
 test('CSV header & body write helpers', () => {
-    const epochStats = new main_1.EpochStats(0);
+    const epochStats = new main_1.EpochStats(1);
     const modelParams = new main_1.ModelParams({}, {});
     const modelTestStats = new main_1.ModelTestStats(0, 0, 0, 1);
     const iterationResult = new main_1.IterationResult(1, VALID_DESCRIPTOR, epochStats, modelParams, modelTestStats, 2, 3);
