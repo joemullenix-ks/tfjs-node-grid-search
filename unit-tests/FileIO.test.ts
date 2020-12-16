@@ -86,7 +86,8 @@ describe('async file write', () => {
 //TODO: Once we're finished, make another pass through all async/await tests.
 		try {
 			expect(await FileIO.WriteResultsFile(FILE_VALID, '', OUTPUT_DATA)).toBeUndefined();
-		} catch (e) {
+		}
+		catch (e) {
 			console.log('write-file-return-check threw', e);
 		}
 	});

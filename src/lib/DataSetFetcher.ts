@@ -39,7 +39,8 @@ class DataSetFetcher {
 	 *											  launch params (process.argv).
 	 */
 	constructor(nodeLaunchArguments: Array<string>) {
-		if (nodeLaunchArguments.length < 4) {
+		if (nodeLaunchArguments.length < 4
+			|| nodeLaunchArguments[2] === nodeLaunchArguments[3]) {
 			// show the user a template in 'warning' color, since this is a potential barrier to entry
 			console.warn('Missing launch param(s)!' + '\n'
 							+ 'Example command line:' + '\n'
@@ -47,7 +48,7 @@ class DataSetFetcher {
 							+ 'Example launch.json config:' + '\n'
 							+ '  "args": ["data_inputs.txt", "data_targets.txt"]' + '\n');
 
-			throw new Error('Expecting two paths, the first to the input data, the  second to the targets.');
+			throw new Error('Expecting two paths, the first to the input data, the second to the targets.');
 		}
 
 		this._pathInputs = nodeLaunchArguments[2];
