@@ -12,7 +12,7 @@ export type StringKeyedStringsObject	= { [key: string]: string; };
 //		TypeScript is perfectly happy with the 'array stack' union, but ESLint is not. I tried a few templated,
 //		generic and/or recursive approaches, with varying degrees of success, but nothing clean enough.
 //
-//		The next approach will use TF's built in types (e.g. TensorLike). See: ModelStatics.ts
+//		The next approach will use TF's built-in types (e.g. TensorLike). See: ModelStatics.ts
 
 //NOTE: TensorFlow's Tensor classes go up to six, thus these defines. If you need seven, by all means extend.
 export type ArrayOrder1 = Array<number>;
