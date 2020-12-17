@@ -72,8 +72,6 @@ describe('valid instantiation; method failures', () => {
             epochStatsDepth: 3,
             validationSetSizeMin: 1
         });
-        // const dataSet = new DataSet([[0, 2, 0, 4], [9, 2, 9, 6], [3, 5, 7, 1], [0, 2, 0, 4], [9, 2, 9, 6], [3, 5, 7, 1]],
-        // 							[[1, 0, 0], [0, 1, 0], [0, 0, 1], [1, 0, 0], [0, 1, 0], [0, 0, 1]]);
         const dataSet = new DataSet([[0, 2, 0, 4], [9, 2, 9, 6], [3, 5, 7, 1], [0, 2, 0, 4], [9, 2, 9, 6], [3, 5, 7, 1], [0, 2, 0, 4], [9, 2, 9, 6], [3, 5, 7, 1], [0, 2, 0, 4], [9, 2, 9, 6], [3, 5, 7, 1], [0, 2, 0, 4], [9, 2, 9, 6], [3, 5, 7, 1], [0, 2, 0, 4], [9, 2, 9, 6], [3, 5, 7, 1], [0, 2, 0, 4], [9, 2, 9, 6], [3, 5, 7, 1], [0, 2, 0, 4], [9, 2, 9, 6], [3, 5, 7, 1]], [[1, 0, 0], [0, 1, 0], [0, 0, 1], [1, 0, 0], [0, 1, 0], [0, 0, 1], [1, 0, 0], [0, 1, 0], [0, 0, 1], [1, 0, 0], [0, 1, 0], [0, 0, 1], [1, 0, 0], [0, 1, 0], [0, 0, 1], [1, 0, 0], [0, 1, 0], [0, 0, 1], [1, 0, 0], [0, 1, 0], [0, 0, 1], [1, 0, 0], [0, 1, 0], [0, 0, 1]]);
         const sessionData = new SessionData(0.5, dataSet, false);
         // send back true and false evaluations, to hit both code paths
@@ -81,24 +79,14 @@ describe('valid instantiation; method failures', () => {
         const evaluatePrediction = (_target, _prediction) => {
             return new PredictionEvaluation(correctToggler++ % 2 === 0);
         };
-        let d_g_hardglobal = 0;
         const reportIteration = (duration, predictions, proofInputs, proofTargets) => {
-            const before = d_g_hardglobal;
             console.log('reportIteration', duration, predictions, proofInputs, proofTargets);
-            ++d_g_hardglobal;
-            expect(d_g_hardglobal).toBe(before + 1);
         };
         const reportEpoch = (duration, epoch, logs, epochStats) => {
-            const before = d_g_hardglobal;
             console.log('reportEpoch', duration, epoch, logs, epochStats);
-            ++d_g_hardglobal;
-            expect(d_g_hardglobal).toBe(before + 1);
         };
         const reportBatch = (duration, batch, logs) => {
-            const before = d_g_hardglobal;
             console.log('reportBatch', duration, batch, logs);
-            ++d_g_hardglobal;
-            expect(d_g_hardglobal).toBe(before + 1);
         };
         const grid = new Grid(axisSet, modelStatics, sessionData, evaluatePrediction, gridOptions, reportIteration, reportEpoch, reportBatch);
         try {

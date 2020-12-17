@@ -163,35 +163,24 @@ describe('valid instantiation; method failures', () => {
 			return new PredictionEvaluation(correctToggler++ % 2 === 0);
 		};
 
-let d_g_hardglobal = 0;
-
 		const reportIteration = (	duration: number,
 									predictions: number[][],
 									proofInputs: TFNestedArray,
 									proofTargets: number[][]): void => {
-const before = d_g_hardglobal;
 			console.log('reportIteration', duration, predictions, proofInputs, proofTargets);
-++d_g_hardglobal;
-expect(d_g_hardglobal).toBe(before + 1);
 		};
 
 		const reportEpoch = (	duration: number,
 								epoch: number,
 								logs: TENSOR_FLOW.Logs | undefined,
 								epochStats: EpochStats): void => {
-const before = d_g_hardglobal;
 			console.log('reportEpoch', duration, epoch, logs, epochStats);
-++d_g_hardglobal;
-expect(d_g_hardglobal).toBe(before + 1);
 		};
 
 		const reportBatch = (	duration: number,
 								batch: number,
 								logs: TENSOR_FLOW.Logs | undefined): void => {
-const before = d_g_hardglobal;
 			console.log('reportBatch', duration, batch, logs);
-++d_g_hardglobal;
-expect(d_g_hardglobal).toBe(before + 1);
 		};
 
 		const grid = new Grid(
