@@ -1,6 +1,6 @@
 {
   "name": "tfjs-node-grid-search",
-  "version": "0.6.5",
+  "version": "0.6.6",
   "description": "",
   "main": "./dist/cjs/src/main.js",
   "module": "./dist/esm/src/main.js",
@@ -29,8 +29,7 @@
   "files": [
     "dist"
   ],
-  "jest": {
-  },
+  "jest": {},
   "scripts": {
     "build": "npm run tsc && npm run test && npm run jsdoc-docdash",
     "build-no-test": "npm run tsc && npm run jsdoc-docdash",
