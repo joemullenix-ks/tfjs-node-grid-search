@@ -13,3 +13,10 @@ coverage/lcov.info
 urgent task for you 12 15.txt
 unit-test-file-write.txt
 jestbox*
+dist/*/*/all.d.ts
+dist/*/*/all.js
+dist/*/*/all.js.map
+dist/*/*/jestbox.d.ts
+dist/*/*/jestbox.js
+dist/*/*/jestbox.js.map
+Results_*.csv
