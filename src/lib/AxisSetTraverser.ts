@@ -5,6 +5,7 @@ import { NumberKeyedStringsObject, StringKeyedNumbersObject } from './types';
 
 
 import { AxisSet } from './AxisSet';
+import * as Utils from './Utils';
 
 
 /**
@@ -70,7 +71,7 @@ class AxisSetTraverser {
 	 * are complete, we mark ourselves as traversed (or done).
 	 */
 	Advance(): void {
-		console.assert(!this._traversed);
+		Utils.Assert(!this._traversed);
 
 		let resetCounter = 0;
 
@@ -92,7 +93,7 @@ class AxisSetTraverser {
 			return;
 		}
 
-		console.assert(resetCounter === this._totalAxes);
+		Utils.Assert(resetCounter === this._totalAxes);
 
 		// this advance completed the traversal; reset
 
