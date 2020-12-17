@@ -22,7 +22,7 @@ describe('valid instantiation; method failures', () => {
         const dataSet = new main_1.DataSet([[0, 2, 0, 4], [9, 2, 9, 6], [3, 5, 7, 1]], [[1, 0, 0], [0, 1, 0], [0, 0, 1]]);
         const sessionData = new main_1.SessionData(0.35, dataSet, false);
         const evaluatePrediction = (_target, _prediction) => {
-            return new main_1.PredictionEvaluation(false, 0.0);
+            return new main_1.PredictionEvaluation(false);
         };
         expect(() => __awaiter(void 0, void 0, void 0, function* () {
             const grid = new main_1.Grid(axisSet, modelStatics, sessionData, evaluatePrediction);
@@ -49,7 +49,7 @@ describe('valid instantiation; method failures', () => {
         const dataSet = new main_1.DataSet([[0, 2, 0, 4], [9, 2, 9, 6], [3, 5, 7, 1], [0, 2, 0, 4], [9, 2, 9, 6], [3, 5, 7, 1]], [[1, 0, 0], [0, 1, 0], [0, 0, 1], [1, 0, 0], [0, 1, 0], [0, 0, 1]]);
         const sessionData = new main_1.SessionData(0.25, dataSet, false);
         const evaluatePrediction = (_target, _prediction) => {
-            return new main_1.PredictionEvaluation(true, 0.0);
+            return new main_1.PredictionEvaluation(true);
         };
         expect(() => __awaiter(void 0, void 0, void 0, function* () {
             const grid = new main_1.Grid(axisSet, modelStatics, sessionData, evaluatePrediction, gridOptions);
@@ -76,7 +76,7 @@ describe('valid instantiation; method failures', () => {
         // send back true and false evaluations, to hit both code paths
         let correctToggler = 0;
         const evaluatePrediction = (_target, _prediction) => {
-            return new main_1.PredictionEvaluation(correctToggler++ % 2 === 0, 0.0);
+            return new main_1.PredictionEvaluation(correctToggler++ % 2 === 0);
         };
         const reportIteration = (duration, predictions, proofInputs, proofTargets) => {
             expect(1).toBe(1);

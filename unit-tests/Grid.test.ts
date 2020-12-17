@@ -50,7 +50,7 @@ describe('valid instantiation; method failures', () => {
 		);
 
 		const evaluatePrediction = (_target: number[], _prediction: number[]) => {
-			return new PredictionEvaluation(false, 0.0);
+			return new PredictionEvaluation(false);
 		};
 
 		expect(async () => {
@@ -104,7 +104,7 @@ describe('valid instantiation; method failures', () => {
 		);
 
 		const evaluatePrediction = (_target: number[], _prediction: number[]) => {
-			return new PredictionEvaluation(true, 0.0);
+			return new PredictionEvaluation(true);
 		};
 
 		expect(async () => {
@@ -160,7 +160,7 @@ describe('valid instantiation; method failures', () => {
 		let correctToggler = 0;
 
 		const evaluatePrediction = (_target: number[], _prediction: number[]) => {
-			return new PredictionEvaluation(correctToggler++ % 2 === 0, 0.0);
+			return new PredictionEvaluation(correctToggler++ % 2 === 0);
 		};
 
 		const reportIteration = (	duration: number,

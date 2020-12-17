@@ -57,8 +57,8 @@ const main = () => __awaiter(void 0, void 0, void 0, function* () {
     const gridOptions = new tngs.GridOptions({
         epochStatsDepth: 3,
         repetitions: 2,
-        validationSetSizeMin: 1000,
-        writeResultsToDirectory: ''
+        validationSetSizeMin: 1000 /*,
+        writeResultsToDirectory: ''*/
     });
     // Now we load and configure the data set. A fresh copy of this data will be
     // used to train and test each 'iteration' of the grid search (i.e. each

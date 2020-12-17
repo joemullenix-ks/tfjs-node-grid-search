@@ -16,6 +16,9 @@ describe('valid instantiation', () => {
         expect(fibonacciAxis.typeName).toBe(AxisNames.NEURONS);
         expect(exponentialAxis.typeName).toBe(AxisNames.LAYERS);
     });
+    expect(() => {
+        const singleStepAxis = new Axis(AxisTypes.LAYERS, 1, 1, new LinearProgression(1));
+    }).not.toThrow();
 });
 describe('invalid instantiation', () => {
     test('bad type enum', () => {

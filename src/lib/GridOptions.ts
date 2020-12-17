@@ -43,7 +43,7 @@ class GridOptions {
 	constructor(userOptions: Types.StringKeyedSimpleObject) {
 		let keysFound = false;
 
-		// merge the user-supplied options w/ the default options
+		// validate each key supplied by the user
 		for (const k in userOptions) {
 			keysFound = true;
 
@@ -82,14 +82,17 @@ class GridOptions {
 																};
 
 		if (!keysFound) {
-			// empty object received; set defaults
+			// empty object received; set pure defaults
 			userOptions = DEFAULT_OPTIONS;
 
-			// send the defaults through validation, to double-check our values (especially future changes!)
+//NOTE: We send these defaults through validation, to double-check our values,
+//		and (especially) catch bad edits in the future.
+//PERF: It's technically an unnecessary hit, but it's negligible.
 		}
 
 		const ERROR_PREFIX = 'Grid option ';
 
+		// validate each value supplied by the user
 		for (const k in userOptions) {
 			const OPTION = userOptions[k];
 
@@ -149,6 +152,12 @@ class GridOptions {
 		// now merge the defaults into the user's options; any for which we provide a value, but the user sent nothing
 		for (const k in DEFAULT_OPTIONS) {
 			if (userOptions[k] === undefined) {
+				if (OPTIONS_DISABLED_VIA_OMISSION[k] !== undefined)
+				{
+					// by omitting this option, the user chose to disable it
+					continue;
+				}
+
 				userOptions[k] = DEFAULT_OPTIONS[k];
 			}
 		}
@@ -189,6 +198,24 @@ const ALL_AVAILABLE_OPTIONS: Types.StringKeyedNullsObject =	{
 																validationSetSizeMin: null,
 																writeResultsToDirectory: null
 															};
+
+//TODO: The need for this map is a shortcoming. Instead, split write-path into
+//		two options: "writeCSV" and "CSVResultsPath". That will resolve the
+//		issues with the defaults, cleanly pruning OPTIONS_DISABLED_VIA_OMISSION.
+const OPTIONS_DISABLED_VIA_OMISSION: Types.StringKeyedNullsObject =	{
+																		writeResultsToDirectory: null
+																	};
+
+// double-check that we didn't put any unknown keys in the omission  map
+for (const k in OPTIONS_DISABLED_VIA_OMISSION) {
+	if (ALL_AVAILABLE_OPTIONS[k] !== undefined) {
+		// this key matches; we're good
+		continue;
+	}
+
+	/* istanbul ignore next */
+	throw new Error('uknown key in the disable-via-omission map; must be part of all-available: ' + k);
+}
 
 
 Object.freeze(GridOptions);

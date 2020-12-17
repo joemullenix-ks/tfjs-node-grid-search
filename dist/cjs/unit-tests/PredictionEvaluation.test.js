@@ -8,5 +8,9 @@ test('instantiation; readonlys', () => {
     expect(predictionEvaluation).toBeInstanceOf(main_1.PredictionEvaluation);
     expect(predictionEvaluation.correct).toBe(CORRECT);
     expect(predictionEvaluation.delta).toBe(DELTA);
+    const predictionEvaluationNoDelta = new main_1.PredictionEvaluation(CORRECT);
+    expect(predictionEvaluationNoDelta).toBeInstanceOf(main_1.PredictionEvaluation);
+    expect(predictionEvaluationNoDelta.correct).toBe(CORRECT);
+    expect(predictionEvaluationNoDelta.delta).toBe(0);
 });
 //# sourceMappingURL=PredictionEvaluation.test.js.map

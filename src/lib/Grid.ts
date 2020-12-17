@@ -188,7 +188,7 @@ class Grid {
 	 * @private
 	 */
 	private ResetEpochStats(): void {
-		console.assert(this._gridOptions.GetOption('epochStatsDepth') !== undefined);
+		Utils.Assert(this._gridOptions.GetOption('epochStatsDepth') !== undefined);
 
 //NOTE: This is currently only used by the reporting callback. It's contents, however, will be critical to tracking
 //		overfit and stuck situations, as well as things like Smart Start(tm) (restarting unlucky iterations).
@@ -327,8 +327,8 @@ class Grid {
 	private TestModel(model: TENSOR_FLOW.Sequential, modelParams: ModelParams, duration: number): ModelTestStats {
 //TODO: This model type might be too strict. Consider the lower-level TF LayersModel.
 
-		console.assert(model.built);
-		console.assert(duration >= 0);
+		Utils.Assert(model.built);
+		Utils.Assert(duration >= 0);
 
 		console.log('Testing...');
 
@@ -358,7 +358,7 @@ class Grid {
 
 		const PROOF_TARGETS = this._sessionData.proofTargets;
 
-		console.assert(PROOF_TARGETS.length === PREDICTIONS.length); // sanity-check
+		Utils.Assert(PROOF_TARGETS.length === PREDICTIONS.length); // sanity-check
 
 		if (this._callbackReportIteration) {
 			this._callbackReportIteration(duration, PREDICTIONS, PROOF_INPUTS, PROOF_TARGETS);
@@ -406,7 +406,7 @@ class Grid {
 	private async TrainModel(model: TENSOR_FLOW.Sequential, modelParams: ModelParams): Promise<void> {
 //TODO: This model type might be too strict. Consider the lower-level TF LayersModel.
 
-		console.assert(model.built);
+		Utils.Assert(model.built);
 
 		this.ResetEpochStats()
 
