@@ -30,7 +30,7 @@ const main = async () => {
       tngs.AxisTypes.NEURONS,
       10,
       18,
-      new tngs.FibonacciProgression(-1)
+      new tngs.FibonacciProgression(0)
     )
   );
 

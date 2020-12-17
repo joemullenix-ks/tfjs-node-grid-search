@@ -3,9 +3,7 @@ import * as Types from './types';
 import { AxisSet } from './AxisSet';
 import { EpochStats } from './EpochStats';
 import { GridOptions } from './GridOptions';
-import { ModelParams } from './ModelParams';
 import { ModelStatics } from './ModelStatics';
-import { ModelTestStats } from './ModelTestStats';
 import { PredictionEvaluation } from './PredictionEvaluation';
 import { SessionData } from './SessionData';
 /**
@@ -72,14 +70,16 @@ declare class Grid {
     constructor(axisSet: AxisSet, _modelStatics: ModelStatics, _sessionData: SessionData, _callbackEvaluatePrediction: CallbackEvaluatePrediction, _userGridOptions?: GridOptions | undefined, _callbackReportIteration?: CallbackReportIteration | undefined, _callbackReportEpoch?: CallbackReportEpoch | undefined, _callbackReportBatch?: CallbackReportBatch | undefined);
     /**
      * Produces a compiled instance of TF's Sequential model, ready to train.
+     * @private
      * @param {ModelParams} modelParams The config of the model to create.
      * @return {TENSOR_FLOW.Sequential}
      */
-    CreateModel(modelParams: ModelParams): TENSOR_FLOW.Sequential;
+    private CreateModel;
     /**
      * Clears the stats tracker from the last iteration, and creates a new one.
+     * @private
      */
-    ResetEpochStats(): void;
+    private ResetEpochStats;
     /**
      * Begins the grid search. Async for the TF model.fit() {@link https://js.tensorflow.org/api/latest/#tf.Sequential.fit}
      * @return {Promise<void>}
@@ -90,28 +90,31 @@ declare class Grid {
      * of collision. If any param is set as both static and dynamic (i.e. it's
      * included in {@link ModelStatics} and it has an {@link Axis}), the
      * dynamic values are used.
+     * @private
      */
-    ResolveModelDefinition(): void;
+    private ResolveModelDefinition;
     /**
      * Runs generalization tests on a model, to determine its 'quality'.<br>
      * A portion of the data set is reserved; never used in training. This is
      * called the "proof set". After a model has been trained, it's used to
      * make a prediction for each case in the proof set. The user provides an
      * accuracy score for each prediction via callback.
+     * @private
      * @param {TENSOR_FLOW.Sequential} model The trained model to test.
      * @param {ModelParams} modelParams The config used to create the model.
      * @param {number} duration The duration of the training process.
      * @return {ModelTestStats}
      */
-    TestModel(model: TENSOR_FLOW.Sequential, modelParams: ModelParams, duration: number): ModelTestStats;
+    private TestModel;
     /**
      * Runs model.fit() using the training data, tracks stats and invokes the
      * optional reporting callbacks.
+     * @private
      * @param {TENSOR_FLOW.Sequential} model A compiled model to train.
      * @param {ModelParams} modelParams The config used to create the model.
      * @return {Promise<void>}
      */
-    TrainModel(model: TENSOR_FLOW.Sequential, modelParams: ModelParams): Promise<void>;
+    private TrainModel;
 }
 declare type CallbackEvaluatePrediction = (target: Types.ArrayOrder1, prediction: Types.ArrayOrder1) => PredictionEvaluation;
 declare type CallbackReportBatch = (duration: number, batch: number, logs: TENSOR_FLOW.Logs | undefined) => void;

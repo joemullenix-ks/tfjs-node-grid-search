@@ -53,9 +53,10 @@ class Axis {
         this._progression = _progression;
         this._forward = false;
         this._typeName = '';
-        console.assert(_typeEnum >= 0 && _typeEnum < AxisTypes._TOTAL);
-        console.assert(_boundEnd >= 0);
-        console.assert(_boundBegin >= 0);
+        Utils.Assert(_typeEnum === Math.floor(_typeEnum));
+        Utils.Assert(_typeEnum >= 0 && _typeEnum < AxisTypes._TOTAL);
+        Utils.Assert(_boundEnd >= 0);
+        Utils.Assert(_boundBegin >= 0);
         this._typeName = Axis.LookupTypeName(this._typeEnum);
         //NOTE: We strictly validate these bounds. Invalid input is fatal, so that users don't kick off (potentially
         //		very long) grid searches with a doomed model config. It may not fail until the end.
@@ -122,7 +123,7 @@ class Axis {
         this._progression.Reset();
     }
     /**
-    * Gets a description of the axis's type and position. Set 'compact' to true
+    * Gets a description of the axis's type and position. Set 'compact' to false
     * for details on the progression.
     * @param {boolean} compact If false, bounds and progression are included.
     * @return {string}
@@ -218,7 +219,7 @@ class Axis {
                     errorSuffix = ERROR_TEXT_POSITIVE_INTEGER;
                 }
                 break;
-            // floating-point progressions allowed
+            // floating-point progressions required
             case AxisNames.LEARN_RATE:
             case AxisNames.VALIDATION_SPLIT:
                 {

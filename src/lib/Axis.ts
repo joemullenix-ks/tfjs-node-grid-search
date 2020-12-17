@@ -50,10 +50,11 @@ class Axis {
 				private _boundBegin: number,
 				private _boundEnd: number,
 				private _progression: Progression) {
-		console.assert(_typeEnum >= 0 && _typeEnum < AxisTypes._TOTAL);
+		Utils.Assert(_typeEnum === Math.floor(_typeEnum));
+		Utils.Assert(_typeEnum >= 0 && _typeEnum < AxisTypes._TOTAL);
 
-		console.assert(_boundEnd >= 0);
-		console.assert(_boundBegin >= 0);
+		Utils.Assert(_boundEnd >= 0);
+		Utils.Assert(_boundBegin >= 0);
 
 		this._typeName = Axis.LookupTypeName(this._typeEnum);
 
@@ -137,7 +138,7 @@ class Axis {
 	}
 
 	/**
-	* Gets a description of the axis's type and position. Set 'compact' to true
+	* Gets a description of the axis's type and position. Set 'compact' to false
 	* for details on the progression.
 	* @param {boolean} compact If false, bounds and progression are included.
 	* @return {string}
@@ -247,7 +248,7 @@ class Axis {
 			}
 			break;
 
-			// floating-point progressions allowed
+			// floating-point progressions required
 			case AxisNames.LEARN_RATE:
 			case AxisNames.VALIDATION_SPLIT: {
 				if (!progression.integerBased) {

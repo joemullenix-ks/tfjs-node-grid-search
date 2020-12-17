@@ -24,7 +24,7 @@ describe('async file read', () => {
 		}).not.toThrow();
 	});
 
-//KEEP: Although thisis very similar to the next test, it doesn't work. The
+//KEEP: Although this is very similar to the next test, it doesn't work. The
 //		differences are very subtle. Namely, we ned to the return the expect()
 //		result (which is a promise, I believe), and we we need to chain a
 //		'rejects' before requiring the throw.
@@ -86,7 +86,8 @@ describe('async file write', () => {
 //TODO: Once we're finished, make another pass through all async/await tests.
 		try {
 			expect(await FileIO.WriteResultsFile(FILE_VALID, '', OUTPUT_DATA)).toBeUndefined();
-		} catch (e) {
+		}
+		catch (e) {
 			console.log('write-file-return-check threw', e);
 		}
 	});

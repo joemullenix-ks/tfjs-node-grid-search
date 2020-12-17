@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 'use strict';
 import { FileIOResult } from '../src/main';
 test('instantiation', () => {

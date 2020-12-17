@@ -3,7 +3,7 @@
 import { EpochStats, IterationResult, ModelParams, ModelTestStats } from '../src/main';
 const VALID_DESCRIPTOR = 'desc';
 test('instantiation; readonlys', () => {
-    const epochStats = new EpochStats(0);
+    const epochStats = new EpochStats(1);
     const modelParams = new ModelParams({}, {});
     const modelTestStats = new ModelTestStats(0, 0, 0, 1);
     const iterationResult = new IterationResult(1, VALID_DESCRIPTOR, epochStats, modelParams, modelTestStats, 2, 3);
@@ -14,7 +14,7 @@ test('instantiation; readonlys', () => {
     expect(iterationResult.score).toBe(0);
 });
 test('bad instantiations throw', () => {
-    const epochStats = new EpochStats(0);
+    const epochStats = new EpochStats(1);
     const modelParams = new ModelParams({}, {});
     const modelTestStats = new ModelTestStats(0, 0, 0, 1);
     // negative iteration
@@ -47,7 +47,7 @@ test('bad instantiations throw', () => {
     }).toThrow();
 });
 test('CSV header & body write helpers', () => {
-    const epochStats = new EpochStats(0);
+    const epochStats = new EpochStats(1);
     const modelParams = new ModelParams({}, {});
     const modelTestStats = new ModelTestStats(0, 0, 0, 1);
     const iterationResult = new IterationResult(1, VALID_DESCRIPTOR, epochStats, modelParams, modelTestStats, 2, 3);

@@ -7,5 +7,9 @@ test('instantiation; readonlys', () => {
     expect(predictionEvaluation).toBeInstanceOf(PredictionEvaluation);
     expect(predictionEvaluation.correct).toBe(CORRECT);
     expect(predictionEvaluation.delta).toBe(DELTA);
+    const predictionEvaluationNoDelta = new PredictionEvaluation(CORRECT);
+    expect(predictionEvaluationNoDelta).toBeInstanceOf(PredictionEvaluation);
+    expect(predictionEvaluationNoDelta.correct).toBe(CORRECT);
+    expect(predictionEvaluationNoDelta.delta).toBe(0);
 });
 //# sourceMappingURL=PredictionEvaluation.test.js.map

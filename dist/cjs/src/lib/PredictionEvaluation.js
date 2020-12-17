@@ -10,11 +10,15 @@ class PredictionEvaluation {
     /**
      * Creates an instance of PredictionEvaluation.
      * @param {boolean} _correct Whether the prediction is acceptable.
-     * @param {number} _delta The accuracy or quality of the prediction.
+     * @param {number} [delta] The accuracy or quality of the prediction.
      */
-    constructor(_correct, _delta) {
+    constructor(_correct, delta) {
         this._correct = _correct;
-        this._delta = _delta;
+        this._delta = 0.0;
+        if (typeof delta !== 'number') {
+            return;
+        }
+        this._delta = delta;
     }
     get correct() { return this._correct; }
     get delta() { return this._delta; }

@@ -120,6 +120,7 @@ class Grid {
     }
     /**
      * Produces a compiled instance of TF's Sequential model, ready to train.
+     * @private
      * @param {ModelParams} modelParams The config of the model to create.
      * @return {TENSOR_FLOW.Sequential}
      */
@@ -179,9 +180,10 @@ class Grid {
     }
     /**
      * Clears the stats tracker from the last iteration, and creates a new one.
+     * @private
      */
     ResetEpochStats() {
-        console.assert(this._gridOptions.GetOption('epochStatsDepth') !== undefined);
+        Utils.Assert(this._gridOptions.GetOption('epochStatsDepth') !== undefined);
         //NOTE: This is currently only used by the reporting callback. It's contents, however, will be critical to tracking
         //		overfit and stuck situations, as well as things like Smart Start(tm) (restarting unlucky iterations).
         const EPOCH_STATS_DEPTH = Number(this._gridOptions.GetOption('epochStatsDepth'));
@@ -232,8 +234,9 @@ class Grid {
             if (typeof WRITE_RESULTS_OPTION === 'string') {
                 const FILENAME = FileIO.ProduceResultsFilename();
                 yield FileIO.WriteResultsFile(FILENAME, WRITE_RESULTS_OPTION, GRID_RUN_STATS.WriteCSV());
-                //TODO: Look into Node's os/platform library. Gotta be a way to pull the appropriate slashes.
+                //TODO: Make these slashes platform-correct (look at FileIO).
                 //		...and on the same pass, lookup and print the root directory.
+                /* istanbul ignore next */
                 console.log('\n'
                     + 'Results file written as '
                     + (WRITE_RESULTS_OPTION === ''
@@ -248,6 +251,7 @@ class Grid {
      * of collision. If any param is set as both static and dynamic (i.e. it's
      * included in {@link ModelStatics} and it has an {@link Axis}), the
      * dynamic values are used.
+     * @private
      */
     ResolveModelDefinition() {
         //NOTE: TODO: I'm not entirely happy with this. It feels like access breaking, to reach in via callback.
@@ -265,6 +269,7 @@ class Grid {
      * called the "proof set". After a model has been trained, it's used to
      * make a prediction for each case in the proof set. The user provides an
      * accuracy score for each prediction via callback.
+     * @private
      * @param {TENSOR_FLOW.Sequential} model The trained model to test.
      * @param {ModelParams} modelParams The config used to create the model.
      * @param {number} duration The duration of the training process.
@@ -272,13 +277,14 @@ class Grid {
      */
     TestModel(model, modelParams, duration) {
         //TODO: This model type might be too strict. Consider the lower-level TF LayersModel.
-        console.assert(model.built);
-        console.assert(duration >= 0);
+        Utils.Assert(model.built);
+        Utils.Assert(duration >= 0);
         console.log('Testing...');
         //NOTE: This rule (limitation) is for the arraySync() done on PREDICTIONS_TENSOR.
         //		"model.predict()" is dual mode. It outputs an array of Tensors when given an array of Tensors
-        //		as input. Our evaluation and scoring logic is not yet ready to support multiple ins/outs.
-        //TODO: ...but it will.
+        //		as input. Our evaluate-and-score logic is not yet ready to support multiple ins/outs.
+        //TODO: ...but it will! Until then, ignoring the path vis-a-vis unit coverage.
+        /* istanbul ignore next */
         if (!(this._sessionData.proofInputsTensor instanceof TENSOR_FLOW.Tensor)) {
             throw new Error('Invalid proof inputs; multi-input models are not yet supported.');
         }
@@ -293,7 +299,7 @@ class Grid {
         // pull the unstandardized proof cases (again, for the human-friendly report)
         const PROOF_INPUTS = this._sessionData.rawInputsProof;
         const PROOF_TARGETS = this._sessionData.proofTargets;
-        console.assert(PROOF_TARGETS.length === PREDICTIONS.length); // sanity-check
+        Utils.Assert(PROOF_TARGETS.length === PREDICTIONS.length); // sanity-check
         if (this._callbackReportIteration) {
             this._callbackReportIteration(duration, PREDICTIONS, PROOF_INPUTS, PROOF_TARGETS);
         }
@@ -319,6 +325,7 @@ class Grid {
     /**
      * Runs model.fit() using the training data, tracks stats and invokes the
      * optional reporting callbacks.
+     * @private
      * @param {TENSOR_FLOW.Sequential} model A compiled model to train.
      * @param {ModelParams} modelParams The config used to create the model.
      * @return {Promise<void>}
@@ -326,7 +333,7 @@ class Grid {
     TrainModel(model, modelParams) {
         return __awaiter(this, void 0, void 0, function* () {
             //TODO: This model type might be too strict. Consider the lower-level TF LayersModel.
-            console.assert(model.built);
+            Utils.Assert(model.built);
             this.ResetEpochStats();
             const TOTAL_CASES = this._sessionData.totalTrainingCases;
             //NOTE: ceil() is how TF performs this same split, as of v2.7.0.
@@ -383,6 +390,7 @@ class Grid {
                             this._callbackReportEpoch(DURATION_EPOCH, epoch, logs, this._epochStats);
                             return;
                         }
+                        /* istanbul ignore next */
                         if (epoch === 0) {
                             console.log(EpochStats_1.EpochStats.WriteReportHeader());
                         }

@@ -65,6 +65,7 @@ class AxisSet {
     }
     /**
      * Fails if an axis index is out-of-bounds.
+     * @private
      * @param {number} index The axis index to validate.
      */
     ValidateIndex(index) {

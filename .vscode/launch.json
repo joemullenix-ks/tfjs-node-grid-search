@@ -11,7 +11,8 @@
 			"skipFiles": [
 				"<node_internals>/**"
 			],
-			"program": "${workspaceFolder}\\dist\\cjs\\src\\all.js"
+			"program": "${workspaceFolder}\\dist\\cjs\\src\\all.js",
+			"args": ["data_inputs.txt", "data_targets.txt"]
 		},
 		{
 			"type": "node",
@@ -20,7 +21,8 @@
 			"skipFiles": [
 				"<node_internals>/**"
 			],
-			"program": "${workspaceFolder}\\dist\\esm\\src\\all.js"
+			"program": "${workspaceFolder}\\dist\\esm\\src\\all.js",
+			"args": ["data_inputs.txt", "data_targets.txt"]
 		},
 		{
 			"type": "node",
@@ -29,7 +31,18 @@
 			"skipFiles": [
 				"<node_internals>/**"
 			],
-			"program": "${workspaceFolder}\\src\\all.ts"
+			"program": "${workspaceFolder}\\src\\all.ts",
+			"args": ["data_inputs.txt", "data_targets.txt"]
+		},
+		{
+			"type": "node",
+			"request": "launch",
+			"name": "Launch trans JESTBOX",
+			"skipFiles": [
+				"<node_internals>/**"
+			],
+			"program": "${workspaceFolder}\\dist\\cjs\\src\\jestbox.js",
+			"args": ["data_inputs.txt", "data_targets.txt"]
 		}
 	]
 }

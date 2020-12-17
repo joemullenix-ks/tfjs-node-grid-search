@@ -6,7 +6,7 @@ test('instantiation', () => {
     expect(gridRunStats).toBeInstanceOf(main_1.GridRunStats);
 });
 test('adding an iteration result and write reports', () => {
-    const epochStats = new main_1.EpochStats(0);
+    const epochStats = new main_1.EpochStats(1);
     const modelParams = new main_1.ModelParams({}, {});
     const modelTestStats = new main_1.ModelTestStats(0, 0, 0, 1);
     const iterationResult = new main_1.IterationResult(1, 'descriptor', epochStats, modelParams, modelTestStats, 2, 3);

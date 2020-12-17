@@ -1,4 +1,5 @@
 'use strict';
+import * as Utils from './Utils';
 /**
  * Manages an {@link AxisSet}.
  * Performs the selection of hyperparameter values during the grid search.
@@ -48,7 +49,7 @@ class AxisSetTraverser {
      * are complete, we mark ourselves as traversed (or done).
      */
     Advance() {
-        console.assert(!this._traversed);
+        Utils.Assert(!this._traversed);
         let resetCounter = 0;
         for (let i = 0; i < this._totalAxes; ++i) {
             this._axisSet.AdvanceAxis(i);
@@ -62,7 +63,7 @@ class AxisSetTraverser {
             }
             return;
         }
-        console.assert(resetCounter === this._totalAxes);
+        Utils.Assert(resetCounter === this._totalAxes);
         // this advance completed the traversal; reset
         this._traversed = true;
     }

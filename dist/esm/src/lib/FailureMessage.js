@@ -1,4 +1,5 @@
 'use strict';
+import * as Utils from './Utils';
 /**
  * Simple class for retrieving details/info/instructions from a failed check.
  */
@@ -12,7 +13,7 @@ class FailureMessage {
     }
     get text() { return this._text; }
     set text(text) {
-        console.assert(text !== '');
+        Utils.Assert(text !== '');
         this._text = text;
     }
 }
