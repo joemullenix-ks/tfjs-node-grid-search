@@ -3,6 +3,7 @@
 
 import {
 	Axis,
+	AxisNames,
 	AxisSet,
 	AxisTypes,
 	ExponentialProgression,
@@ -11,7 +12,7 @@ import {
 } from '../src/main';
 
 
-describe('instantiation and readonlys', () => {
+describe('valid instantiation', () => {
 	const linearAxis = new Axis(
 		AxisTypes.BATCH_SIZE,
 		8,
@@ -43,74 +44,119 @@ describe('instantiation and readonlys', () => {
 
 	test('basic creation', () => {
 		expect(axisSet).toBeInstanceOf(AxisSet);
-		// expect(axisSetTraverser.traversed).toBe(false);
-		// expect(axisSetTraverser.totalIterations).toBe(18);
-	});
-
-
-/*
-	test('creation w/ random strings', () => {
-		expect(new AxisSetTraverser(['0', '1', '2', '3'])).toBeInstanceOf(AxisSetTraverser);
-	});
-
-	test('creation w/ extra strings (supported)', () => {
-		expect(new AxisSetTraverser(['0', '1', '2', '3', '4'])).toBeInstanceOf(AxisSetTraverser);
-	});
-
-	test('under-count throws', () => {
-		expect(() => {
-			new AxisSetTraverser(['0', '1', '2']);
-		}).toThrow();
-	});
-
-	test('duplicate paths throw', () => {
-		expect(() => {
-			new AxisSetTraverser(['0', '1', '2', '2']);
-		}).toThrow();
-	});
-*/
-});
-
-/*
-describe('async file retrieval', () => {
-	const PATH_INPUTS = 'data_inputs.txt';
-	const PATH_TARGETS = 'data_targets.txt';
-
-	const PATH_INVALID = 'should not exist.bad';
-
-	test('fetches files and returns a DataSet', async () => {
-		const dataSetFetcher = new DataSetFetcher(['n/a', 'n/a', PATH_INPUTS, PATH_TARGETS]);
-
-		try {
-			const dataSet = await dataSetFetcher.Fetch();
-
-			expect(dataSet).toBeInstanceOf(DataSet);
-		}
-		catch (e) {
-			console.log('file fetch threw', e);
-		}
-	});
-
-	test('throws on bad inputs path', async () => {
-		const dataSetFetcher = new DataSetFetcher(['n/a', 'n/a', PATH_INVALID, PATH_TARGETS]);
-
-		try {
-			expect(await dataSetFetcher.Fetch()).toThrow();
-		}
-		catch (e) {
-			console.log('jest forced error', e);
-		}
-	});
-
-	test('throws on bad targets path', async () => {
-		const dataSetFetcher = new DataSetFetcher(['n/a', 'n/a', PATH_INPUTS, PATH_INVALID]);
-
-		try {
-			expect(await dataSetFetcher.Fetch()).toThrow();
-		}
-		catch (e) {
-			console.log('jest forced error', e);
-		}
 	});
 });
-*/
+
+describe('invalid instantiation', () => {
+	const batchAxisA = new Axis(
+		AxisTypes.BATCH_SIZE,
+		8,
+		16,
+		new LinearProgression(4)
+	);
+
+	const batchAxisB = new Axis(
+		AxisTypes.BATCH_SIZE,
+		8,
+		16,
+		new LinearProgression(4)
+	);
+
+	const axes:Array<Axis> = [];
+
+	axes.push(batchAxisA);
+	axes.push(batchAxisB);
+
+	test('duplicate axes throw', () => {
+		expect(() => {
+			new AxisSet(axes);
+		}).toThrow();
+	});
+});
+
+describe('non-walk methods', () => {
+	const linearAxis = new Axis(
+		AxisTypes.BATCH_SIZE,
+		1,
+		3,
+		new LinearProgression(2)
+	);
+
+	const axes = [];
+
+	axes.push(linearAxis);
+
+	const axisSet = new AxisSet(axes);
+
+	test('get length', () => {
+		expect(axisSet.GetTotalAxes()).toBe(1);
+	});
+
+	test('advance, check complete, reset, report', () => {
+		const AXIS_INDEX = 0;
+
+		expect(axisSet.CheckAxisComplete(AXIS_INDEX)).toBe(false);
+
+		axisSet.AdvanceAxis(AXIS_INDEX);
+
+		expect(axisSet.CheckAxisComplete(AXIS_INDEX)).toBe(false);
+
+		axisSet.AdvanceAxis(AXIS_INDEX);
+
+		expect(axisSet.CheckAxisComplete(AXIS_INDEX)).toBe(true);
+
+		axisSet.ResetAxis(AXIS_INDEX);
+
+		expect(axisSet.CheckAxisComplete(AXIS_INDEX)).toBe(false);
+
+		const reportCompact = axisSet.WriteAxisReport(AXIS_INDEX, false);
+
+		expect(typeof reportCompact).toBe('string');
+		expect(reportCompact).not.toBe('');
+
+		const reportNormal = axisSet.WriteAxisReport(AXIS_INDEX, false);
+
+		expect(typeof reportNormal).toBe('string');
+		expect(reportNormal).not.toBe('');
+
+		expect(reportCompact.length <= reportNormal.length).toBe(true);
+	});
+
+	test('create params', () => {
+		const paramsMap = axisSet.CreateParams();
+
+		expect(typeof paramsMap).toBe('object');
+		expect(paramsMap[AxisNames.BATCH_SIZE]).toBe(1);
+	});
+});
+
+describe('walk axes', () => {
+	const axis1 = new Axis(
+		AxisTypes.BATCH_SIZE,
+		1,
+		3,
+		new LinearProgression(2)
+	);
+
+	const axis2 = new Axis(
+		AxisTypes.EPOCHS,
+		1,
+		3,
+		new LinearProgression(2)
+	);
+
+	const axes = [];
+
+	axes.push(axis1);
+	axes.push(axis2);
+
+	const axisSet = new AxisSet(axes);
+
+	test('touch each axis', () => {
+		const callbackTouch = (axis: Axis) => {
+			expect(axis).toBeDefined();
+		};
+
+		axisSet.Walk(callbackTouch);
+	});
+});

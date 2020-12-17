@@ -50,6 +50,7 @@ class Axis {
 				private _boundBegin: number,
 				private _boundEnd: number,
 				private _progression: Progression) {
+		Utils.Assert(_typeEnum === Math.floor(_typeEnum));
 		Utils.Assert(_typeEnum >= 0 && _typeEnum < AxisTypes._TOTAL);
 
 		Utils.Assert(_boundEnd >= 0);
@@ -247,7 +248,7 @@ class Axis {
 			}
 			break;
 
-			// floating-point progressions allowed
+			// floating-point progressions required
 			case AxisNames.LEARN_RATE:
 			case AxisNames.VALIDATION_SPLIT: {
 				if (!progression.integerBased) {

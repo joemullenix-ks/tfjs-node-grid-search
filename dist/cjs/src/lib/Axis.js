@@ -53,6 +53,7 @@ class Axis {
         this._progression = _progression;
         this._forward = false;
         this._typeName = '';
+        Utils.Assert(_typeEnum === Math.floor(_typeEnum));
         Utils.Assert(_typeEnum >= 0 && _typeEnum < AxisTypes._TOTAL);
         Utils.Assert(_boundEnd >= 0);
         Utils.Assert(_boundBegin >= 0);
@@ -218,7 +219,7 @@ class Axis {
                     errorSuffix = ERROR_TEXT_POSITIVE_INTEGER;
                 }
                 break;
-            // floating-point progressions allowed
+            // floating-point progressions required
             case AxisNames.LEARN_RATE:
             case AxisNames.VALIDATION_SPLIT:
                 {

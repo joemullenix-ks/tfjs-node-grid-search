@@ -38,9 +38,10 @@ declare class AxisSet {
     ResetAxis(index: number): void;
     /**
      * Fails if an axis index is out-of-bounds.
+     * @private
      * @param {number} index The axis index to validate.
      */
-    ValidateIndex(index: number): void;
+    private ValidateIndex;
     /**
      * Traverses the axis collection, invoking a callback for each.
      * @param {function(Axis): void} callback The function to be invoked with an instance of {@link Axis}.

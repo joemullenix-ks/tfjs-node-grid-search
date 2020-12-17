@@ -98,9 +98,10 @@ class AxisSet {
 
 	/**
 	 * Fails if an axis index is out-of-bounds.
+	 * @private
 	 * @param {number} index The axis index to validate.
 	 */
-	ValidateIndex(index: number): void {
+	private ValidateIndex(index: number): void {
 		console.assert(index >= 0);
 		console.assert(index < this._axes.length);
 	}
