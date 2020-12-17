@@ -46,7 +46,6 @@ class GridOptions {
     constructor(userOptions) {
         this._options = {};
         let keysFound = false;
-        //!! merge the user-supplied options w/ the default options
         // validate each key supplied by the user
         for (const k in userOptions) {
             keysFound = true;
@@ -187,6 +186,7 @@ for (const k in OPTIONS_DISABLED_VIA_OMISSION) {
         // this key matches; we're good
         continue;
     }
+    /* istanbul ignore next */
     throw new Error('uknown key in the disable-via-omission map; must be part of all-available: ' + k);
 }
 Object.freeze(GridOptions);

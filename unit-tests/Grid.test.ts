@@ -58,8 +58,7 @@ describe('valid instantiation; method failures', () => {
 				axisSet,
 				modelStatics,
 				sessionData,
-				evaluatePrediction
-			);
+				evaluatePrediction);
 
 			try {
 				await grid.Run();
@@ -90,8 +89,8 @@ describe('valid instantiation; method failures', () => {
 		});
 
 		const gridOptions = new GridOptions({
-			epochStatsDepth: 3
-			// writeResultsToDirectory: './'
+			epochStatsDepth: 3,
+			validationSetSizeMin: 2
 		});
 
 		const dataSet = new DataSet([[0, 2, 0, 4], [9, 2, 9, 6], [3, 5, 7, 1], [0, 2, 0, 4], [9, 2, 9, 6], [3, 5, 7, 1]],
@@ -113,8 +112,7 @@ describe('valid instantiation; method failures', () => {
 				modelStatics,
 				sessionData,
 				evaluatePrediction,
-				gridOptions
-			);
+				gridOptions);
 
 			try {
 				await grid.Run();
@@ -131,8 +129,8 @@ describe('valid instantiation; method failures', () => {
 		axes.push(
 			new Axis(
 				AxisTypes.BATCH_SIZE,
-				10,
-				10,
+				1,
+				1,
 				new LinearProgression(1)
 			)
 		);
@@ -140,18 +138,20 @@ describe('valid instantiation; method failures', () => {
 		const axisSet = new AxisSet(axes);
 
 		const modelStatics = new ModelStatics({
-			epochs: 1
+			epochs: 2,
+			validationSplit: 0.9
 		});
 
 		const gridOptions = new GridOptions({
-			epochStatsDepth: 3
+			epochStatsDepth: 3,
+			validationSetSizeMin: 1
 		});
 
-		const dataSet = new DataSet([[0, 2, 0, 4], [9, 2, 9, 6], [3, 5, 7, 1], [0, 2, 0, 4], [9, 2, 9, 6], [3, 5, 7, 1]],
-									[[1, 0, 0], [0, 1, 0], [0, 0, 1], [1, 0, 0], [0, 1, 0], [0, 0, 1]]);
+		const dataSet = new DataSet([[0, 2, 0, 4], [9, 2, 9, 6], [3, 5, 7, 1], [0, 2, 0, 4], [9, 2, 9, 6], [3, 5, 7, 1], [0, 2, 0, 4], [9, 2, 9, 6], [3, 5, 7, 1], [0, 2, 0, 4], [9, 2, 9, 6], [3, 5, 7, 1], [0, 2, 0, 4], [9, 2, 9, 6], [3, 5, 7, 1], [0, 2, 0, 4], [9, 2, 9, 6], [3, 5, 7, 1], [0, 2, 0, 4], [9, 2, 9, 6], [3, 5, 7, 1], [0, 2, 0, 4], [9, 2, 9, 6], [3, 5, 7, 1]],
+									[[1, 0, 0], [0, 1, 0], [0, 0, 1], [1, 0, 0], [0, 1, 0], [0, 0, 1], [1, 0, 0], [0, 1, 0], [0, 0, 1], [1, 0, 0], [0, 1, 0], [0, 0, 1], [1, 0, 0], [0, 1, 0], [0, 0, 1], [1, 0, 0], [0, 1, 0], [0, 0, 1], [1, 0, 0], [0, 1, 0], [0, 0, 1], [1, 0, 0], [0, 1, 0], [0, 0, 1]]);
 
 		const sessionData = new SessionData(
-			0.25,
+			0.5,
 			dataSet,
 			false
 		);
@@ -163,27 +163,35 @@ describe('valid instantiation; method failures', () => {
 			return new PredictionEvaluation(correctToggler++ % 2 === 0);
 		};
 
+let d_g_hardglobal = 0;
+
 		const reportIteration = (	duration: number,
 									predictions: number[][],
 									proofInputs: TFNestedArray,
 									proofTargets: number[][]): void => {
-			expect(1).toBe(1);
+const before = d_g_hardglobal;
 			console.log('reportIteration', duration, predictions, proofInputs, proofTargets);
+++d_g_hardglobal;
+expect(d_g_hardglobal).toBe(before + 1);
 		};
 
 		const reportEpoch = (	duration: number,
 								epoch: number,
 								logs: TENSOR_FLOW.Logs | undefined,
 								epochStats: EpochStats): void => {
-			expect(2).toBe(2);
+const before = d_g_hardglobal;
 			console.log('reportEpoch', duration, epoch, logs, epochStats);
+++d_g_hardglobal;
+expect(d_g_hardglobal).toBe(before + 1);
 		};
 
 		const reportBatch = (	duration: number,
 								batch: number,
 								logs: TENSOR_FLOW.Logs | undefined): void => {
-			expect(3).toBe(3);
+const before = d_g_hardglobal;
 			console.log('reportBatch', duration, batch, logs);
+++d_g_hardglobal;
+expect(d_g_hardglobal).toBe(before + 1);
 		};
 
 		const grid = new Grid(
@@ -194,8 +202,7 @@ describe('valid instantiation; method failures', () => {
 			gridOptions,
 			reportIteration,
 			reportEpoch,
-			reportBatch
-		);
+			reportBatch);
 
 		try {
 			await grid.Run();

@@ -42,8 +42,8 @@ describe('valid instantiation; method failures', () => {
             hiddenLayers: 0
         });
         const gridOptions = new GridOptions({
-            epochStatsDepth: 3
-            // writeResultsToDirectory: './'
+            epochStatsDepth: 3,
+            validationSetSizeMin: 2
         });
         const dataSet = new DataSet([[0, 2, 0, 4], [9, 2, 9, 6], [3, 5, 7, 1], [0, 2, 0, 4], [9, 2, 9, 6], [3, 5, 7, 1]], [[1, 0, 0], [0, 1, 0], [0, 0, 1], [1, 0, 0], [0, 1, 0], [0, 0, 1]]);
         const sessionData = new SessionData(0.25, dataSet, false);
@@ -62,32 +62,43 @@ describe('valid instantiation; method failures', () => {
     });
     test('create with options and reporting callbacks', () => __awaiter(void 0, void 0, void 0, function* () {
         const axes = [];
-        axes.push(new Axis(AxisTypes.BATCH_SIZE, 10, 10, new LinearProgression(1)));
+        axes.push(new Axis(AxisTypes.BATCH_SIZE, 1, 1, new LinearProgression(1)));
         const axisSet = new AxisSet(axes);
         const modelStatics = new ModelStatics({
-            epochs: 1
+            epochs: 2,
+            validationSplit: 0.9
         });
         const gridOptions = new GridOptions({
-            epochStatsDepth: 3
+            epochStatsDepth: 3,
+            validationSetSizeMin: 1
         });
-        const dataSet = new DataSet([[0, 2, 0, 4], [9, 2, 9, 6], [3, 5, 7, 1], [0, 2, 0, 4], [9, 2, 9, 6], [3, 5, 7, 1]], [[1, 0, 0], [0, 1, 0], [0, 0, 1], [1, 0, 0], [0, 1, 0], [0, 0, 1]]);
-        const sessionData = new SessionData(0.25, dataSet, false);
+        // const dataSet = new DataSet([[0, 2, 0, 4], [9, 2, 9, 6], [3, 5, 7, 1], [0, 2, 0, 4], [9, 2, 9, 6], [3, 5, 7, 1]],
+        // 							[[1, 0, 0], [0, 1, 0], [0, 0, 1], [1, 0, 0], [0, 1, 0], [0, 0, 1]]);
+        const dataSet = new DataSet([[0, 2, 0, 4], [9, 2, 9, 6], [3, 5, 7, 1], [0, 2, 0, 4], [9, 2, 9, 6], [3, 5, 7, 1], [0, 2, 0, 4], [9, 2, 9, 6], [3, 5, 7, 1], [0, 2, 0, 4], [9, 2, 9, 6], [3, 5, 7, 1], [0, 2, 0, 4], [9, 2, 9, 6], [3, 5, 7, 1], [0, 2, 0, 4], [9, 2, 9, 6], [3, 5, 7, 1], [0, 2, 0, 4], [9, 2, 9, 6], [3, 5, 7, 1], [0, 2, 0, 4], [9, 2, 9, 6], [3, 5, 7, 1]], [[1, 0, 0], [0, 1, 0], [0, 0, 1], [1, 0, 0], [0, 1, 0], [0, 0, 1], [1, 0, 0], [0, 1, 0], [0, 0, 1], [1, 0, 0], [0, 1, 0], [0, 0, 1], [1, 0, 0], [0, 1, 0], [0, 0, 1], [1, 0, 0], [0, 1, 0], [0, 0, 1], [1, 0, 0], [0, 1, 0], [0, 0, 1], [1, 0, 0], [0, 1, 0], [0, 0, 1]]);
+        const sessionData = new SessionData(0.5, dataSet, false);
         // send back true and false evaluations, to hit both code paths
         let correctToggler = 0;
         const evaluatePrediction = (_target, _prediction) => {
             return new PredictionEvaluation(correctToggler++ % 2 === 0);
         };
+        let d_g_hardglobal = 0;
         const reportIteration = (duration, predictions, proofInputs, proofTargets) => {
-            expect(1).toBe(1);
+            const before = d_g_hardglobal;
             console.log('reportIteration', duration, predictions, proofInputs, proofTargets);
+            ++d_g_hardglobal;
+            expect(d_g_hardglobal).toBe(before + 1);
         };
         const reportEpoch = (duration, epoch, logs, epochStats) => {
-            expect(2).toBe(2);
+            const before = d_g_hardglobal;
             console.log('reportEpoch', duration, epoch, logs, epochStats);
+            ++d_g_hardglobal;
+            expect(d_g_hardglobal).toBe(before + 1);
         };
         const reportBatch = (duration, batch, logs) => {
-            expect(3).toBe(3);
+            const before = d_g_hardglobal;
             console.log('reportBatch', duration, batch, logs);
+            ++d_g_hardglobal;
+            expect(d_g_hardglobal).toBe(before + 1);
         };
         const grid = new Grid(axisSet, modelStatics, sessionData, evaluatePrediction, gridOptions, reportIteration, reportEpoch, reportBatch);
         try {

@@ -282,14 +282,16 @@ class Grid {
 											WRITE_RESULTS_OPTION,
 											GRID_RUN_STATS.WriteCSV());
 
-//TODO: Look into Node's os/platform library. Gotta be a way to pull the appropriate slashes.
+//TODO: Make these slashes platform-correct (look at FileIO).
 //		...and on the same pass, lookup and print the root directory.
+			/* istanbul ignore next */
 			console.log('\n'
 						+ 'Results file written as '
 						+ (WRITE_RESULTS_OPTION === ''
 							? './'
 							: WRITE_RESULTS_OPTION + '/')
 						+ FILENAME);
+
 		}
 	}
 
@@ -336,8 +338,8 @@ class Grid {
 //		"model.predict()" is dual mode. It outputs an array of Tensors when given an array of Tensors
 //		as input. Our evaluate-and-score logic is not yet ready to support multiple ins/outs.
 //TODO: ...but it will! Until then, ignoring the path vis-a-vis unit coverage.
+		/* istanbul ignore next */
 		if (!(this._sessionData.proofInputsTensor instanceof TENSOR_FLOW.Tensor)) {
-			/* istanbul ignore next */
 			throw new Error('Invalid proof inputs; multi-input models are not yet supported.');
 		}
 
@@ -486,6 +488,7 @@ class Grid {
 										return;
 									}
 
+									/* istanbul ignore next */
 									if (epoch === 0) {
 										console.log(EpochStats.WriteReportHeader());
 									}
