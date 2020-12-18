@@ -143,7 +143,7 @@ describe('valid instantiation; method failures', () => {
 		});
 
 		const gridOptions = new GridOptions({
-			epochStatsDepth: 3,
+			epochStatsDepth: 2,
 			validationSetSizeMin: 1
 		});
 

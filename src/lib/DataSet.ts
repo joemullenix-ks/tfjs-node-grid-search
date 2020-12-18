@@ -4,6 +4,9 @@
 import { ArrayOrder2, TFNestedArray } from './types';
 
 
+import * as Utils from './Utils';
+
+
 /**
  * The inputs and targets that will be used to train and test network models.
  */
@@ -30,7 +33,7 @@ class DataSet {
 	 * // "odd".
 	 */
 	constructor(private _inputs: TFNestedArray, private _targets: ArrayOrder2) {
-		console.assert(this._inputs.length > 0);
+		Utils.Assert(this._inputs.length > 0);
 
 		if (this._inputs.length !== this._targets.length) {
 			throw new Error('Data invalid. The number of inputs ('

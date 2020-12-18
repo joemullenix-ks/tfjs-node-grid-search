@@ -45,6 +45,69 @@ test('treats callback as override', () => {
   expect(standardizationCallback).toHaveBeenCalled();
 });
 
+test('uses normal standardization w/o callback', () => {
+  const dataSetTwoZeroes = new DataSet([0, 0], [[0], [0]]);
+
+  expect(() => {
+    const sessionData = new SessionData(
+      0.5,
+      dataSetTwoZeroes,
+      true
+    );
+  }).not.toThrowError();
+});
+
+test('deeper tensors do not throw', () => {
+  const dataSetTwoZeroes = new DataSet([[1, 2], [3, 4]], [[0], [1]]);
+
+  expect(() => {
+    const sessionData = new SessionData(
+      0.5,
+      dataSetTwoZeroes,
+      true
+    );
+  }).not.toThrowError();
+});
+
+test('throws on invalid dataset A', () => {
+  const dataSetInvalid = new DataSet( [[], [[1, 2], [3, 4], [5, '6']], [[1, 2], [3, 4], [5, false]]],
+                                      [[0], [0], [0]]);
+
+  expect(() => {
+    const sessionData = new SessionData(
+      0.5,
+      dataSetInvalid,
+      true
+    );
+  }).toThrowError();
+});
+
+test('throws on invalid dataset B', () => {
+  const dataSetInvalid = new DataSet( [[0, 0], [[1, 2], [3, 4], [5, '6']], [[1, 2], [3, 4], [5, false]]],
+                                      [[0], [0], [0]]);
+
+  expect(() => {
+    const sessionData = new SessionData(
+      0.5,
+      dataSetInvalid,
+      true
+    );
+  }).toThrowError();
+});
+
+test('throws on invalid dataset C', () => {
+  const dataSetInvalid = new DataSet( [[['1', 2]], [[3, 4]], [[5, 6]]],
+                                      [[0], [0], [0]]);
+
+  expect(() => {
+    const sessionData = new SessionData(
+      0.5,
+      dataSetInvalid,
+      true
+    );
+  }).toThrowError();
+});
+
 test('throws on proof too low', () => {
   const dataSetTwoZeroes = new DataSet([0, 0], [[0], [0]]);
 

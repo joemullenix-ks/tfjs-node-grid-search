@@ -17,6 +17,18 @@ test('instantiation w bad param value', () => {
         const modelStatics = new ModelStatics_1.ModelStatics({ batchSize: 0 });
     }).toThrow();
 });
+test('instantiation w all available params', () => {
+    expect(() => {
+        const modelStatics = new ModelStatics_1.ModelStatics({
+            batchSize: 5,
+            epochs: 5,
+            hiddenLayers: 5,
+            learnRate: 0.5,
+            neuronsPerHiddenLayer: 5,
+            validationSplit: 0.5
+        });
+    }).not.toThrow();
+});
 test('stripping param keys and cloning', () => {
     const CREATION_OBJECT = {};
     CREATION_OBJECT[Axis_1.AxisNames.BATCH_SIZE] = 1;

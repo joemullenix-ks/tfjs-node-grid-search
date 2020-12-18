@@ -115,8 +115,8 @@ class EpochStats {
      */
     WriteReport() {
         //NOTE: These '< 0' ternaries add a space before each positive number. This is
-        //		done to maintain float alignement on the ".". This is useful when
-        //		examing numeric details in a large Matrix-waterfall of digits.
+        //		done to maintain column alignment on the periods. This is useful when
+        //		scrutinizing numeric details in a large Matrix-waterfall of digits.
         const TEXT_OUT = this._averageLoss.toFixed(REPORTING_DIGITS_STAT)
             + '(' + this._averageValidationLoss.toFixed(REPORTING_DIGITS_STAT) + ') '
             + 'Δ ' + (this._averageLossDelta < 0 ? '' : ' ') + this._averageLossDelta.toFixed(2) + ', '

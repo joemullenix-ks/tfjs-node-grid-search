@@ -67,7 +67,7 @@ class ModelParams {
      * @param {string} key
      */
     ValidateParamKey(key) {
-        console.assert(key !== '');
+        Utils.Assert(key !== '');
         if (this._mergedParams[key] === undefined) {
             throw new Error('ModelParams key not found: ' + key);
         }

@@ -20,3 +20,4 @@ dist/*/*/jestbox.d.ts
 dist/*/*/jestbox.js
 dist/*/*/jestbox.js.map
 Results_*.csv
+tensor validity tool.txt

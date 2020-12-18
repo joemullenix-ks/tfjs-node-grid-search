@@ -72,6 +72,7 @@ class FibonacciProgression extends Progression_1.Progression {
             this._initFiboA = FIND_NEAREST_FIBONACCI_NUMBER(FIRST_PICK * APPROXIMATE_FIBONACCI_RATIO * APPROXIMATE_FIBONACCI_RATIO);
             this._initFiboB = FIND_NEAREST_FIBONACCI_NUMBER(FIRST_PICK * APPROXIMATE_FIBONACCI_RATIO);
         }
+        /* istanbul ignore next */ //[FUTURE PROOFING]
         if (this._initFiboB < this._initFiboA
             || (this._initFiboA === this._initFiboB && this._initFiboA !== 1)) {
             throw new Error('invalid Fibonacci sequence initiator (' + this._initiator + '). Please choose another value.');
@@ -107,7 +108,7 @@ const FIND_NEAREST_FIBONACCI_NUMBER = (n, x = 0, y = 1) => {
     //NOTE: Although this looks dangerously unbounded, I've tested it up to max-integers, and it only goes ~80 calls deep.
     //		The limits in browsers are all 20k plus, and VSCode 64k; not in the realm of reasonable worry.
     //		...just ensure non-negative!
-    console.assert(n >= 0);
+    Utils.Assert(n >= 0);
     return y < n
         ? FIND_NEAREST_FIBONACCI_NUMBER(n, y, x + y)
         : y - n > n - x

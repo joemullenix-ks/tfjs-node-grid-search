@@ -17,9 +17,16 @@ describe('valid instantiation', () => {
         expect(fibonacciAxis.typeName).toBe(main_1.AxisNames.NEURONS);
         expect(exponentialAxis.typeName).toBe(main_1.AxisNames.LAYERS);
     });
-    expect(() => {
-        const singleStepAxis = new main_1.Axis(main_1.AxisTypes.LAYERS, 1, 1, new main_1.LinearProgression(1));
-    }).not.toThrow();
+    test('single-step (useless) progression', () => {
+        expect(() => {
+            const singleStepAxis = new main_1.Axis(main_1.AxisTypes.LAYERS, 1, 1, new main_1.LinearProgression(1));
+        }).not.toThrow();
+    });
+    test('reverse progression', () => {
+        expect(() => {
+            const singleStepAxis = new main_1.Axis(main_1.AxisTypes.LAYERS, 2, 1, new main_1.LinearProgression(1));
+        }).not.toThrow();
+    });
 });
 describe('invalid instantiation', () => {
     test('bad type enum', () => {
@@ -164,7 +171,54 @@ describe('methods', () => {
         // same-size reports are fine
         expect(reportLarge.length >= reportSmall.length).toBe(true);
     });
+    test('previous test steps with a reverse axis', () => {
+        const REVERSE_BEGIN = 5;
+        const REVERSE_END = 1;
+        const reverseLinearAxis = new main_1.Axis(main_1.AxisTypes.BATCH_SIZE, REVERSE_BEGIN, REVERSE_END, new main_1.LinearProgression(STEP));
+        expect(reverseLinearAxis.CalculatePosition()).toBe(REVERSE_BEGIN);
+        reverseLinearAxis.Advance();
+        expect(reverseLinearAxis.CalculatePosition()).toBe(REVERSE_BEGIN - STEP);
+        expect(reverseLinearAxis.CheckComplete()).toBe(false);
+        reverseLinearAxis.Advance();
+        expect(reverseLinearAxis.CalculatePosition()).toBe(REVERSE_BEGIN - STEP - STEP);
+        expect(reverseLinearAxis.CheckComplete()).toBe(false);
+        reverseLinearAxis.Advance();
+        expect(reverseLinearAxis.CalculatePosition()).toBe(REVERSE_BEGIN - STEP - STEP - STEP);
+        expect(reverseLinearAxis.CheckComplete()).toBe(true);
+        reverseLinearAxis.Reset();
+        expect(reverseLinearAxis.CalculatePosition()).toBe(REVERSE_BEGIN);
+        expect(reverseLinearAxis.CheckComplete()).toBe(false);
+        const reportSmall = reverseLinearAxis.WriteReport(true);
+        expect(typeof reportSmall).toBe('string');
+        const reportLarge = reverseLinearAxis.WriteReport(false);
+        expect(typeof reportLarge).toBe('string');
+        // same-size reports are fine
+        expect(reportLarge.length >= reportSmall.length).toBe(true);
+    });
+    test('reverse steps with a non-integer axis', () => {
+        const REVERSE_BEGIN = 0.95;
+        const REVERSE_END = 0.05;
+        const FLOAT_STEP = 0.6;
+        const reverseLinearAxis = new main_1.Axis(main_1.AxisTypes.LEARN_RATE, REVERSE_BEGIN, REVERSE_END, new main_1.LinearProgression(FLOAT_STEP));
+        expect(reverseLinearAxis.CalculatePosition()).toBe(REVERSE_BEGIN);
+        reverseLinearAxis.Advance();
+        expect(reverseLinearAxis.CalculatePosition()).toBe(REVERSE_BEGIN - FLOAT_STEP);
+        expect(reverseLinearAxis.CheckComplete()).toBe(false);
+        reverseLinearAxis.Advance();
+        expect(reverseLinearAxis.CalculatePosition()).toBe(REVERSE_BEGIN - FLOAT_STEP - FLOAT_STEP);
+        expect(reverseLinearAxis.CheckComplete()).toBe(true);
+        reverseLinearAxis.Reset();
+        expect(reverseLinearAxis.CalculatePosition()).toBe(REVERSE_BEGIN);
+        expect(reverseLinearAxis.CheckComplete()).toBe(false);
+        const reportSmall = reverseLinearAxis.WriteReport(true);
+        expect(typeof reportSmall).toBe('string');
+        const reportLarge = reverseLinearAxis.WriteReport(false);
+        expect(typeof reportLarge).toBe('string');
+        // same-size reports are fine
+        expect(reportLarge.length >= reportSmall.length).toBe(true);
+    });
 });
+//TODO: Revisit these; we can write them more cleanly now.
 describe('special tests for Jest misses', () => {
     test('param validator case defaults', () => {
         const failureMessageA = new main_1.FailureMessage();
@@ -191,6 +245,16 @@ describe('special tests for Jest misses', () => {
         expect(() => {
             main_1.Axis.LookupTypeName(-1);
         }).toThrowError();
+    });
+});
+describe('default values', () => {
+    test('all numbers', () => {
+        expect(typeof main_1.AxisDefaults.BATCH_SIZE).toBe('number');
+        expect(typeof main_1.AxisDefaults.EPOCHS).toBe('number');
+        expect(typeof main_1.AxisDefaults.LAYERS).toBe('number');
+        expect(typeof main_1.AxisDefaults.LEARN_RATE).toBe('number');
+        expect(typeof main_1.AxisDefaults.NEURONS).toBe('number');
+        expect(typeof main_1.AxisDefaults.VALIDATION_SPLIT).toBe('number');
     });
 });
 //# sourceMappingURL=Axis.test.js.map

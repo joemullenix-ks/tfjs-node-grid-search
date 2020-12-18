@@ -4,6 +4,7 @@
 
 import {
 	Axis,
+	AxisDefaults,
 	AxisNames,
 	AxisTypes,
 	ExponentialProgression,
@@ -49,14 +50,27 @@ describe('valid instantiation', () => {
 		expect(exponentialAxis.typeName).toBe(AxisNames.LAYERS);
 	});
 
-	expect(() => {
-		const singleStepAxis = new Axis(
-			AxisTypes.LAYERS,
-			1,
-			1,
-			new LinearProgression(1)
-		);
-	}).not.toThrow();
+	test('single-step (useless) progression', () => {
+		expect(() => {
+			const singleStepAxis = new Axis(
+				AxisTypes.LAYERS,
+				1,
+				1,
+				new LinearProgression(1)
+			);
+		}).not.toThrow();
+	});
+
+	test('reverse progression', () => {
+		expect(() => {
+			const singleStepAxis = new Axis(
+				AxisTypes.LAYERS,
+				2,
+				1,
+				new LinearProgression(1)
+			);
+		}).not.toThrow();
+	});
 });
 
 describe('invalid instantiation', () => {
@@ -365,8 +379,103 @@ describe('methods', () => {
 		// same-size reports are fine
 		expect(reportLarge.length >= reportSmall.length).toBe(true);
 	});
+
+	test('previous test steps with a reverse axis', () => {
+		const REVERSE_BEGIN = 5;
+		const REVERSE_END = 1;
+
+		const reverseLinearAxis = new Axis(
+			AxisTypes.BATCH_SIZE,
+			REVERSE_BEGIN,
+			REVERSE_END,
+			new LinearProgression(STEP)
+		);
+
+		expect(reverseLinearAxis.CalculatePosition()).toBe(REVERSE_BEGIN);
+
+		reverseLinearAxis.Advance();
+
+		expect(reverseLinearAxis.CalculatePosition()).toBe(REVERSE_BEGIN - STEP);
+
+		expect(reverseLinearAxis.CheckComplete()).toBe(false);
+
+		reverseLinearAxis.Advance();
+
+		expect(reverseLinearAxis.CalculatePosition()).toBe(REVERSE_BEGIN - STEP - STEP);
+
+		expect(reverseLinearAxis.CheckComplete()).toBe(false);
+
+		reverseLinearAxis.Advance();
+
+		expect(reverseLinearAxis.CalculatePosition()).toBe(REVERSE_BEGIN - STEP - STEP - STEP);
+
+		expect(reverseLinearAxis.CheckComplete()).toBe(true);
+
+		reverseLinearAxis.Reset();
+
+		expect(reverseLinearAxis.CalculatePosition()).toBe(REVERSE_BEGIN);
+
+		expect(reverseLinearAxis.CheckComplete()).toBe(false);
+
+		const reportSmall = reverseLinearAxis.WriteReport(true);
+
+		expect(typeof reportSmall).toBe('string');
+
+		const reportLarge = reverseLinearAxis.WriteReport(false);
+
+		expect(typeof reportLarge).toBe('string');
+
+		// same-size reports are fine
+		expect(reportLarge.length >= reportSmall.length).toBe(true);
+	});
+
+	test('reverse steps with a non-integer axis', () => {
+		const REVERSE_BEGIN = 0.95;
+		const REVERSE_END = 0.05;
+
+		const FLOAT_STEP = 0.6;
+
+		const reverseLinearAxis = new Axis(
+			AxisTypes.LEARN_RATE,
+			REVERSE_BEGIN,
+			REVERSE_END,
+			new LinearProgression(FLOAT_STEP)
+		);
+
+		expect(reverseLinearAxis.CalculatePosition()).toBe(REVERSE_BEGIN);
+
+		reverseLinearAxis.Advance();
+
+		expect(reverseLinearAxis.CalculatePosition()).toBe(REVERSE_BEGIN - FLOAT_STEP);
+
+		expect(reverseLinearAxis.CheckComplete()).toBe(false);
+
+		reverseLinearAxis.Advance();
+
+		expect(reverseLinearAxis.CalculatePosition()).toBe(REVERSE_BEGIN - FLOAT_STEP - FLOAT_STEP);
+
+		expect(reverseLinearAxis.CheckComplete()).toBe(true);
+
+		reverseLinearAxis.Reset();
+
+		expect(reverseLinearAxis.CalculatePosition()).toBe(REVERSE_BEGIN);
+
+		expect(reverseLinearAxis.CheckComplete()).toBe(false);
+
+		const reportSmall = reverseLinearAxis.WriteReport(true);
+
+		expect(typeof reportSmall).toBe('string');
+
+		const reportLarge = reverseLinearAxis.WriteReport(false);
+
+		expect(typeof reportLarge).toBe('string');
+
+		// same-size reports are fine
+		expect(reportLarge.length >= reportSmall.length).toBe(true);
+	});
 });
 
+//TODO: Revisit these; we can write them more cleanly now.
 describe('special tests for Jest misses', () => {
 	test('param validator case defaults', () => {
 		const failureMessageA = new FailureMessage();
@@ -419,3 +528,13 @@ describe('special tests for Jest misses', () => {
 	});
 });
 
+describe('default values', () => {
+	test('all numbers', () => {
+		expect(typeof AxisDefaults.BATCH_SIZE).toBe('number');
+		expect(typeof AxisDefaults.EPOCHS).toBe('number');
+		expect(typeof AxisDefaults.LAYERS).toBe('number');
+		expect(typeof AxisDefaults.LEARN_RATE).toBe('number');
+		expect(typeof AxisDefaults.NEURONS).toBe('number');
+		expect(typeof AxisDefaults.VALIDATION_SPLIT).toBe('number');
+	});
+});

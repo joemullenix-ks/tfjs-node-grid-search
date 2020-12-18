@@ -56,7 +56,7 @@ test('pulls numeric params; throws on invalid', () => {
         modelParams.GetNumericParam(KEY_NUMERIC_INVALID_STRING);
     }).toThrow();
 });
-test('pulls text params; throws on invalid', () => {
+test('pulls text params; throws on invalid and unknown', () => {
     const KEY_TEXT_LEFT = 'textEmpty';
     const KEY_TEXT_RIGHT = 'textPotatoesWithNewline';
     const KEY_TEXT_INVALID_BOOLEAN = 'textInvalidBoolean';
@@ -75,6 +75,9 @@ test('pulls text params; throws on invalid', () => {
     }).toThrow();
     expect(() => {
         modelParams.GetTextParam(KEY_TEXT_INVALID_NUMBER);
+    }).toThrow();
+    expect(() => {
+        modelParams.GetTextParam('neverAdded');
     }).toThrow();
 });
 //# sourceMappingURL=ModelParams.test.js.map

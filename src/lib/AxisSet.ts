@@ -16,6 +16,7 @@ import { StringKeyedNullsObject, StringKeyedNumbersObject } from './types';
 
 
 import { Axis } from './Axis';
+import * as Utils from './Utils';
 
 
 /**
@@ -102,8 +103,8 @@ class AxisSet {
 	 * @param {number} index The axis index to validate.
 	 */
 	private ValidateIndex(index: number): void {
-		console.assert(index >= 0);
-		console.assert(index < this._axes.length);
+		Utils.Assert(index >= 0);
+		Utils.Assert(index < this._axes.length);
 	}
 
 	/**

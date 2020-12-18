@@ -50,6 +50,9 @@ declare class SessionData {
     /**
      * Throws unless the input data is comprised of arrays of numbers, only.
      * The arrays may be nested.
+     * Note that we do <i>not</i> enforce full tensor validity. TF will happily
+     * throw on invalid data. This is a quick step to catch more obvious issues
+     * before training/testing, and communicate them in a more friendly manner.
      * @private
      * @static
      * @param {TFNestedArray} raw

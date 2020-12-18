@@ -70,7 +70,7 @@ describe('async file write', () => {
         })).rejects.toThrow();
     });
     test('returns cleanly', () => __awaiter(void 0, void 0, void 0, function* () {
-        //NOTE: Took a flyer on this, and it came out much more cleanly than our
+        //NOTE: Took another approach here, and it came out much more cleanly than our
         //		previous asynchronous tests (the reads, too).
         //
         //TODO: Once we're finished, make another pass through all async/await tests.
@@ -79,6 +79,14 @@ describe('async file write', () => {
         }
         catch (e) {
             console.log('write-file-return-check threw', e);
+        }
+    }));
+    test('does not throw on empty data', () => __awaiter(void 0, void 0, void 0, function* () {
+        try {
+            expect(yield FileIO.WriteResultsFile(FILE_VALID, '', '')).not.toThrow();
+        }
+        catch (e) {
+            console.log('write-empty-file threw', e);
         }
     }));
 });
