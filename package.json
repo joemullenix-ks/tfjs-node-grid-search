@@ -29,7 +29,11 @@
   "files": [
     "dist"
   ],
-  "jest": {},
+  "ZZjest": {
+    "testMatch": [
+      "C:\\Users\\joeku\\OneDrive\\_junk\\ks\\tfjs-node-grid-search\\unit-tests\\SessionData.test.ts"
+    ]
+  },
   "scripts": {
     "build": "npm run tsc && npm run test && npm run jsdoc-docdash",
     "build-no-test": "npm run tsc && npm run jsdoc-docdash",

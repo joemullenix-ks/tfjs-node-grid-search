@@ -101,6 +101,7 @@ class GridOptions {
                         }
                     }
                     break;
+                /* istanbul ignore next */ //[FUTURE PROOFING]
                 default: {
                     throw new Error('unsupported GridOptions key: ' + k);
                 }
@@ -160,11 +161,12 @@ const OPTIONS_DISABLED_VIA_OMISSION = {
 };
 // double-check that we didn't put any unknown keys in the omission  map
 for (const k in OPTIONS_DISABLED_VIA_OMISSION) {
+    /* istanbul ignore next */ //[FUTURE PROOFING]
     if (ALL_AVAILABLE_OPTIONS[k] !== undefined) {
         // this key matches; we're good
         continue;
     }
-    /* istanbul ignore next */
+    /* istanbul ignore next */ //[FUTURE PROOFING]
     throw new Error('uknown key in the disable-via-omission map; must be part of all-available: ' + k);
 }
 Object.freeze(GridOptions);

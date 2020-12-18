@@ -1,4 +1,5 @@
 'use strict';
+import * as Utils from './Utils';
 /**
  * The inputs and targets that will be used to train and test network models.
  */
@@ -27,7 +28,7 @@ class DataSet {
     constructor(_inputs, _targets) {
         this._inputs = _inputs;
         this._targets = _targets;
-        console.assert(this._inputs.length > 0);
+        Utils.Assert(this._inputs.length > 0);
         if (this._inputs.length !== this._targets.length) {
             throw new Error('Data invalid. The number of inputs ('
                 + this._inputs.length + ') does not match the '

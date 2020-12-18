@@ -91,7 +91,7 @@ test('pulls numeric params; throws on invalid', () => {
   }).toThrow();
 });
 
-test('pulls text params; throws on invalid', () => {
+test('pulls text params; throws on invalid and unknown', () => {
   const KEY_TEXT_LEFT = 'textEmpty';
   const KEY_TEXT_RIGHT = 'textPotatoesWithNewline';
 
@@ -120,5 +120,9 @@ test('pulls text params; throws on invalid', () => {
 
   expect(() => {
     modelParams.GetTextParam(KEY_TEXT_INVALID_NUMBER);
+  }).toThrow();
+
+  expect(() => {
+    modelParams.GetTextParam('neverAdded');
   }).toThrow();
 });

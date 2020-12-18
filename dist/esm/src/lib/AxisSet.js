@@ -1,4 +1,5 @@
 'use strict';
+import * as Utils from './Utils';
 /**
  * Manages a collection of {@link Axis}.
  */
@@ -69,8 +70,8 @@ class AxisSet {
      * @param {number} index The axis index to validate.
      */
     ValidateIndex(index) {
-        console.assert(index >= 0);
-        console.assert(index < this._axes.length);
+        Utils.Assert(index >= 0);
+        Utils.Assert(index < this._axes.length);
     }
     /**
      * Traverses the axis collection, invoking a callback for each.

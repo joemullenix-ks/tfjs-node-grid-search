@@ -8,6 +8,7 @@ import { ArrayOrder2, TFArrayStack, TFNestedArray } from './types';
 
 
 import { DataSet } from './DataSet';
+import * as Utils from './Utils';
 
 
 //TODO: PERF: This class will get a memory-hit upgrade. It carries duplicates of the inputs, because most runs will need
@@ -63,8 +64,8 @@ class SessionData {
 				dataSet: DataSet,
 				private _useDefaultStandardization: boolean,
 				private _callbackStandardize?: (unstandardizedInputs: TFNestedArray) => void) {
-		console.assert(proofPercentage > 0.0);
-		console.assert(proofPercentage < 1.0);
+		Utils.Assert(proofPercentage > 0.0);
+		Utils.Assert(proofPercentage < 1.0);
 
 		const rawInputs = dataSet.inputs;
 		const rawTargets = dataSet.targets;
@@ -129,10 +130,12 @@ class SessionData {
 		this._rawInputsProof = [];
 
 		for (let i = 0; i < PROOF_COUNT; ++i) {
+			/* istanbul ignore next */ //[FUTURE PROOFING]
 			if (rawInputs.length === 0) {
 				throw new Error('Inputs array emptied prematurely');
 			}
 
+			/* istanbul ignore next */ //[FUTURE PROOFING]
 			if (rawTargets.length === 0) {
 				throw new Error('Targets array emptied prematurely');
 			}
@@ -195,57 +198,39 @@ class SessionData {
 	/**
 	 * Throws unless the input data is comprised of arrays of numbers, only.
 	 * The arrays may be nested.
+	 * Note that we do <i>not</i> enforce full tensor validity. TF will happily
+	 * throw on invalid data. This is a quick step to catch more obvious issues
+	 * before training/testing, and communicate them in a more friendly manner.
 	 * @private
 	 * @static
 	 * @param {TFNestedArray} raw
 	 */
 	private static ValidateRawData(raw: TFNestedArray): void {
-//TODO: Refactor this into DataSet, _if_ it's still even needed. Run some
-//		boundary checks after we integrate the TF array types. It may be that
-//		they already error on everything we're checking.
-
-//NOTE: The top level of 'raw' must be an array, otherwise a lone Number would pass as valid. This is no longer
-//		a problem under TypeScript, but it's worth keeping in mind.
-
-//TODO: Add checks that the array depths are consistent, i.e. valid tensors.
-
-		let recursionKillswitch = false;
-
 		const CHECK_ARRAYS_OF_NUMBERS_RECURSIVELY = (a: unknown) => {
-			if (recursionKillswitch) {
-				// this raw data has already failed
-				return false;
+			if (Array.isArray(a)) {
+				if (a.length < 1) {
+					console.warn('bad empty array', a);
+
+					return false;
+				}
+
+				for (let i = 0; i < a.length; ++i) {
+					if (CHECK_ARRAYS_OF_NUMBERS_RECURSIVELY(a[i])) {
+						continue;
+					}
+
+					return false;
+				}
+
+				return true; // PASS as Array
 			}
 
 			if (typeof a === 'number') {
 				return true; // PASS as Number
 			}
 
-			if (Array.isArray(a)) {
-				if (a.length > 0) {
-					for (let i = 0; i < a.length; ++i) {
-						if (CHECK_ARRAYS_OF_NUMBERS_RECURSIVELY(a[i])) {
-							continue;
-						}
+			console.warn('bad type: ' + (typeof a) + '; (requires number or array)');
 
-						console.warn('bad nested value', a[i]);
-
-						recursionKillswitch = true;
-						return false;
-					}
-
-					return true; // PASS as Array
-				}
-
-				console.warn('bad empty array', a);
-
-				recursionKillswitch = true;
-				return false;
-			}
-
-			console.warn('bad type (requires number or array)', (typeof a));
-
-			recursionKillswitch = true;
 			return false;
 		};
 
@@ -272,13 +257,13 @@ class SessionData {
  * @memberof SessionData
  */
 function CountLeafElements(inputData: TFNestedArray) {
-	console.assert(inputData.length > 0);
+	Utils.Assert(inputData.length > 0);
 
 	// find the lowest level of these (potentially) nested arrays
 	let deepestArray = inputData;
 
 	while (Array.isArray(deepestArray[0])) {
-		console.assert(deepestArray.length > 0);
+		Utils.Assert(deepestArray.length > 0);
 
 		deepestArray = deepestArray[0];
 	}
@@ -292,8 +277,8 @@ function CountLeafElements(inputData: TFNestedArray) {
  * @return {number}
  * @memberof SessionData
  */
-function FindMean(data: Array<number>) {
-	console.assert(data.length > 0);
+function FindMean(data: Array<number>): number {
+	Utils.Assert(data.length > 0);
 
 	let sum = 0;
 
@@ -313,7 +298,7 @@ function FindMean(data: Array<number>) {
  * @return {number}
  * @memberof SessionData
  */
-function FindStandardDeviation(data: Array<number>, mean: number) {
+function FindStandardDeviation(data: Array<number>, mean: number): number {
 	// for each sample, subtract the mean and square the result
 	const SQUARED_MEAN_DELTAS = data.map((x) => {return Math.pow(x - mean, 2);});
 
@@ -331,7 +316,7 @@ function FindStandardDeviation(data: Array<number>, mean: number) {
  * @memberof SessionData
  */
 function StandardizeInputs(inputData: TFNestedArray) {
-	console.assert(inputData.length > 0);
+	Utils.Assert(inputData.length > 0);
 
 	// find the lowest level of these (potentially) nested arrays
 	let deepestArray = inputData;
@@ -339,7 +324,7 @@ function StandardizeInputs(inputData: TFNestedArray) {
 	let tensorDimensions = 1;
 
 	while (Array.isArray(deepestArray[0])) {
-		console.assert(deepestArray.length > 0);
+		Utils.Assert(deepestArray.length > 0);
 
 		deepestArray = deepestArray[0];
 
@@ -363,7 +348,7 @@ function StandardizeInputs(inputData: TFNestedArray) {
 //NOTE: TODO: This is actually a basic tensor tool, I'm now realizing. Find a good tensor lib, or start one.
 //			  ...after you check TF's own utils, or course!
 	const RECURSIVELY_TABULATE_FEATURES = (a: TFNestedArray) => {
-		console.assert(a.length > 0);
+		Utils.Assert(a.length > 0);
 
 		a.forEach((value: unknown, index: number) => {
 			if (Array.isArray(value)) {
@@ -371,6 +356,7 @@ function StandardizeInputs(inputData: TFNestedArray) {
 				return;
 			}
 
+			/* istanbul ignore next */ //[FUTURE PROOFING]
 			if (typeof value !== 'number') {
 				throw new Error('Invalid type found while tabulating features ' + (typeof value));
 			}
@@ -401,7 +387,7 @@ function StandardizeInputs(inputData: TFNestedArray) {
 	// walk this set of (potentially) nested arrays, adjusting each feature set to mean zero and variance one
 
 	const RECURSIVELY_STANDARDIZE_FEATURES = (a: TFNestedArray) => {
-		console.assert(a.length > 0);
+		Utils.Assert(a.length > 0);
 
 		// a.forEach((value: TFNestedArray | number, index: number, array: TFNestedArray) => {
 		a.forEach((value: unknown, index: number, array: TFNestedArray) => {
@@ -410,6 +396,7 @@ function StandardizeInputs(inputData: TFNestedArray) {
 				return;
 			}
 
+			/* istanbul ignore next */ //[FUTURE PROOFING]
 			if (typeof value !== 'number') {
 				throw new Error('Invalid type found during default standardization ' + (typeof value));
 			}
@@ -421,7 +408,7 @@ function StandardizeInputs(inputData: TFNestedArray) {
 //		problems, primarily within this file.
 //
 //TODO: This can be 'solved' with this cast: "const NUMBER_ARRAY = array as Array<number>;", but that seems as
-//		ugly as this, if not uglier. I need further investigation of map/reduce/filter/forEach/etc in TS.
+//		ugly as this, if not uglier. I need further investigation of map/reduce/filter/forEach signatures in TS.
 
 			let sample = Number(array[index]);
 

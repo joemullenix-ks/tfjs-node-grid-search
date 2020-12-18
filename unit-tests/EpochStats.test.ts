@@ -117,3 +117,36 @@ test('report helpers write strings', () => {
 
 	expect(typeof EpochStats.WriteReportHeader()).toBe('string');
 });
+
+test('reports with negative values', () => {
+	const epochStats = new EpochStats(3);
+
+	let hit = 0;
+
+	epochStats.Update(hit, {
+		acc: -0.45,
+		loss: -0.35,
+		val_acc: -0.25,
+		val_loss: -0.15
+	});
+
+	++hit;
+
+	epochStats.Update(hit, {
+		acc: -0.5,
+		loss: -0.5,
+		val_acc: -0.5,
+		val_loss: -0.5
+	});
+
+	++hit;
+
+	epochStats.Update(hit, {
+		acc: -1.5,
+		loss: -1.5,
+		val_acc: -1.5,
+		val_loss: -1.5
+	});
+
+	expect(typeof epochStats.WriteReport()).toBe('string');
+});

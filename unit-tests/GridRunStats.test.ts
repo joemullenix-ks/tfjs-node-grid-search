@@ -10,18 +10,18 @@ test('instantiation', () => {
   expect(gridRunStats).toBeInstanceOf(GridRunStats);
 });
 
-test('adding an iteration result and write reports', () => {
+test('adding an iteration result and writing reports', () => {
   const epochStats = new EpochStats(1);
 
   const modelParams = new ModelParams({}, {});
 
-  const modelTestStats = new ModelTestStats(0, 0, 0, 1);
+  const modelTestStatsA = new ModelTestStats(0, 0, 0, 1);
 
-  const iterationResult = new IterationResult(	1,
-                                                'descriptor',
+  const iterationResultA = new IterationResult(	1,
+                                                'descriptorA',
                                                 epochStats,
                                                 modelParams,
-                                                modelTestStats,
+                                                modelTestStatsA,
                                                 2,
                                                 3);
 
@@ -36,7 +36,7 @@ test('adding an iteration result and write reports', () => {
 
   // and an entry to the _iterationResults array...
 
-  expect(gridRunStats.AddIterationResult(iterationResult)).toBe(undefined);
+  expect(gridRunStats.AddIterationResult(iterationResultA)).toBe(undefined);
 
   // ...and write the reports again
 
@@ -46,6 +46,23 @@ test('adding an iteration result and write reports', () => {
 
   expect(typeof gridRunStats.WriteReport(true)).toBe('string');
   expect(typeof gridRunStats.WriteReport(false)).toBe('string');
+  expect(gridRunStats.WriteReport(true)).not.toBe('');
+  expect(gridRunStats.WriteReport(false)).not.toBe('');
+
+  // and another entry, and re-run the reports (need > 1 for sorting)
+
+  const modelTestStatsB = new ModelTestStats(2, 2, 2, 2);
+
+  const iterationResultB = new IterationResult(	2,
+                                                'descriptorB',
+                                                epochStats,
+                                                modelParams,
+                                                modelTestStatsB,
+                                                4,
+                                                5);
+
+  expect(gridRunStats.AddIterationResult(iterationResultB)).toBe(undefined);
+
   expect(gridRunStats.WriteReport(true)).not.toBe('');
   expect(gridRunStats.WriteReport(false)).not.toBe('');
 });

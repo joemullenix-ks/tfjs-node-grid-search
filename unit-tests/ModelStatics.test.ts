@@ -27,6 +27,19 @@ test('instantiation w bad param value', () => {
 	}).toThrow();
 });
 
+test('instantiation w all available params', () => {
+	expect(() => {
+		const modelStatics = new ModelStatics({
+			batchSize: 5,
+			epochs: 5,
+			hiddenLayers: 5,
+			learnRate: 0.5,
+			neuronsPerHiddenLayer: 5,
+			validationSplit: 0.5
+		});
+	}).not.toThrow();
+});
+
 test('stripping param keys and cloning', () => {
 	const CREATION_OBJECT:StringKeyedNumbersObject = {};
 
