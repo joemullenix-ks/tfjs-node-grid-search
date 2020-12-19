@@ -32,6 +32,7 @@
   "jest": {},
   "scripts": {
     "build": "npm run tsc && npm run test && npm run jsdoc-docdash",
+    "build-minimal": "tsc -p tsconfig.json",
     "build-no-test": "npm run tsc && npm run jsdoc-docdash",
     "jsdoc": "jsdoc -c jsdoc\\conf.json --debug",
     "jsdoc-docdash": "jsdoc -c jsdoc\\conf.json -t jsdoc\\themes\\docdash --debug",
