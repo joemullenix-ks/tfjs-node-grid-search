@@ -1,5 +1,12 @@
 # tfjs-node-grid-search &middot; [![npm version](https://img.shields.io/npm/v/tfjs-node-grid-search.svg?style=flat)](https://www.npmjs.com/package/tfjs-node-grid-search)
 
+
+![Coverage lines](https://img.shields.io/badge/Coverage:lines-100-green.svg)
+![Coverage functions](https://img.shields.io/badge/Coverage:functions-100-green.svg)
+![Coverage branches](https://img.shields.io/badge/Coverage:branches-100-green.svg)
+![Coverage statements](https://img.shields.io/badge/Coverage:statements-100-green.svg)
+
+
 **tfjs-node-grid-search (TNGS)** is a grid search utility for TensorFLow.js in Node.js.
 Simply define ranges of hyperparameters. For each combination, TNGS will create a model, train it and test it using your data set. Results are logged and (optionally) written as a CSV file.
 
@@ -11,7 +18,7 @@ npm i tfjs-node-grid-search
 ```
 
 ## Examples
-> :warning: tfjs-node currently has an installation problem on Windows. [See details](https://github.com/tensorflow/tfjs/issues/4052)
+> :warning: tfjs-node v2.7.0 has an installation problem on Windows. [See details](https://github.com/tensorflow/tfjs/issues/4052)
 >
 >           TLDR, here's the workaround:
 >
