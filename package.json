@@ -1,6 +1,6 @@
 {
   "name": "tfjs-node-grid-search",
-  "version": "0.6.9",
+  "version": "0.6.10",
   "description": "",
   "main": "./dist/cjs/src/main.js",
   "module": "./dist/esm/src/main.js",
@@ -29,8 +29,7 @@
   "files": [
     "dist"
   ],
-  "jest": {
-  },
+  "jest": {},
   "scripts": {
     "copy-icon": "copy jsdoc\\favicon.png dist\\jsdoc\\output",
     "build": "npm run tsc && npm run test && npm run jsdoc-docdash && npm run copy-icon",
