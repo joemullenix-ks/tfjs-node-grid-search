@@ -29,7 +29,8 @@
   "files": [
     "dist"
   ],
-  "jest": {},
+  "jest": {
+  },
   "scripts": {
     "copy-icon": "copy jsdoc\\favicon.png dist\\jsdoc\\output",
     "build": "npm run tsc && npm run test && npm run jsdoc-docdash && npm run copy-icon",
