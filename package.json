@@ -29,14 +29,20 @@
   "files": [
     "dist"
   ],
-  "jest": {},
+  "XXjest": {
+    "testMatch": [
+      "C:\\Users\\joeku\\OneDrive\\_junk\\ks\\tfjs-node-grid-search\\unit-tests\\Grid.test.ts"
+    ]
+  },
   "scripts": {
     "copy-icon": "copy jsdoc\\favicon.png dist\\jsdoc\\output",
-    "build": "npm run tsc && npm run test && npm run jsdoc-docdash && npm run copy-icon",
-    "build-minimal": "tsc -p tsconfig.json",
-    "build-no-test": "npm run tsc && npm run jsdoc-docdash",
+    "build": "npm run tsc && npm run test && npm run jsdoc-themed && npm run copy-icon",
+    "build-minimal-esm": "tsc -p tsconfig.json",
+    "build-minimal-cjs": "tsc -p tsconfig-cjs.json",
+    "build-no-doc": "npm run tsc && npm run test",
+    "build-no-test": "npm run tsc && npm run jsdoc-themed",
     "jsdoc": "jsdoc -c jsdoc\\conf.json --debug",
-    "jsdoc-docdash": "jsdoc -c jsdoc\\conf.json -t jsdoc\\themes\\docdash --debug",
+    "jsdoc-themed": "jsdoc -c jsdoc\\conf.json -t jsdoc\\themes\\docdash --debug",
     "test": "jest --coverage --silent",
     "test-debug": "jest --debug --coverage",
     "test-verbose": "jest --coverage",

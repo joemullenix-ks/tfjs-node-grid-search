@@ -74,6 +74,16 @@ class GridOptions {
 			throw new Error(ERROR_TEXT);
 		}
 
+
+//TODO: There is an issue here, poor design more that bug, that leads to
+//		confusion. (also mentioned elsewhere; time to act!)
+//		If the user does not want to write CSV, they omit this write param.
+//		However, if they do not supply any options (the argument is optional),
+//		the default is taken, which is 'write to root dir'. They have omitted
+//		the param, technically, but still get a CSV file dropped in their root.
+//		The solution is to split out a 'write?' bool and an 'outputPath' string.
+
+
 		const DEFAULT_OPTIONS:Types.StringKeyedSimpleObject =	{
 																	epochStatsDepth: GridOptions.DEFAULT_EPOCH_STATS_DEPTH,
 																	repetitions: GridOptions.DEFAULT_REPETITIONS,
