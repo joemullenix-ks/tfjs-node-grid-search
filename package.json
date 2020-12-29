@@ -37,6 +37,7 @@
   "scripts": {
     "copy-icon": "copy jsdoc\\favicon.png dist\\jsdoc\\output",
     "build": "npm run tsc && npm run test && npm run jsdoc-themed && npm run copy-icon",
+    "build-local": "npm run tsc && npm run test",
     "build-minimal-esm": "tsc -p tsconfig.json",
     "build-minimal-cjs": "tsc -p tsconfig-cjs.json",
     "build-no-doc": "npm run tsc && npm run test",

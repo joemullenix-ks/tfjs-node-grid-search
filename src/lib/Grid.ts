@@ -291,7 +291,6 @@ class Grid {
 							? './'
 							: RESULTS_DIRECTORY + '/')
 						+ FILENAME);
-
 		}
 	}
 

@@ -9,22 +9,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-// WORKING:
-// 			hi there! We need to
-// 			- find some kind of solution to writing the results file that
-// 			actually works w/ the git hub server
-// 			OR
-// 			- find some kind of system here to mockup having written that
-// 			file (not really a test, is it?)
-// 			OR
-// 			- do this as an integration test, not part of the official build
-// 			...run locally pre-push?
-// 			OR
-// 			- just shut them down until we get that build script happy, then
-// 			come back after it with a VENJ
 import { Axis, AxisSet, AxisTypes, DataSet, Grid, GridOptions, LinearProgression, ModelStatics, PredictionEvaluation, SessionData } from '../src/main';
 describe('valid instantiation; method failures', () => {
-    test('create with minimal arguments', () => {
+    test('create with minimal arguments', () => __awaiter(void 0, void 0, void 0, function* () {
         const axes = [];
         axes.push(new Axis(AxisTypes.BATCH_SIZE, 2, 2, new LinearProgression(1)));
         const axisSet = new AxisSet(axes);
@@ -36,17 +23,10 @@ describe('valid instantiation; method failures', () => {
         const evaluatePrediction = (_target, _prediction) => {
             return new PredictionEvaluation(false);
         };
-        expect(() => __awaiter(void 0, void 0, void 0, function* () {
-            const grid = new Grid(axisSet, modelStatics, sessionData, evaluatePrediction);
-            try {
-                yield grid.Run();
-            }
-            catch (e) {
-                console.log('caught', e);
-            }
-        })).not.toThrow();
-    });
-    test('create with options; zero hidden layers', () => {
+        const grid = new Grid(axisSet, modelStatics, sessionData, evaluatePrediction);
+        yield expect(grid.Run()).resolves.not.toThrow();
+    }));
+    test('create with options; zero hidden layers', () => __awaiter(void 0, void 0, void 0, function* () {
         const axes = [];
         axes.push(new Axis(AxisTypes.BATCH_SIZE, 10, 10, new LinearProgression(1)));
         const axisSet = new AxisSet(axes);
@@ -64,16 +44,9 @@ describe('valid instantiation; method failures', () => {
         const evaluatePrediction = (_target, _prediction) => {
             return new PredictionEvaluation(true);
         };
-        expect(() => __awaiter(void 0, void 0, void 0, function* () {
-            const grid = new Grid(axisSet, modelStatics, sessionData, evaluatePrediction, gridOptions);
-            try {
-                yield grid.Run();
-            }
-            catch (e) {
-                console.log('caught', e);
-            }
-        })).not.toThrow();
-    });
+        const grid = new Grid(axisSet, modelStatics, sessionData, evaluatePrediction, gridOptions);
+        yield expect(grid.Run()).resolves.not.toThrow();
+    }));
     test('create with options and reporting callbacks', () => __awaiter(void 0, void 0, void 0, function* () {
         const axes = [];
         axes.push(new Axis(AxisTypes.BATCH_SIZE, 1, 1, new LinearProgression(1)));
@@ -104,16 +77,11 @@ describe('valid instantiation; method failures', () => {
             console.log('reportBatch', duration, batch, logs);
         };
         const grid = new Grid(axisSet, modelStatics, sessionData, evaluatePrediction, gridOptions, reportIteration, reportEpoch, reportBatch);
-        try {
-            yield grid.Run();
-        }
-        catch (e) {
-            console.log('caught', e);
-        }
+        yield expect(grid.Run()).resolves.not.toThrowError();
     }));
 });
-describe('CSV write', () => {
-    test('include write option', () => {
+describe('CSV write options', () => {
+    test('include write option', () => __awaiter(void 0, void 0, void 0, function* () {
         const axes = [];
         axes.push(new Axis(AxisTypes.BATCH_SIZE, 2, 2, new LinearProgression(1)));
         const axisSet = new AxisSet(axes);
@@ -129,15 +97,8 @@ describe('CSV write', () => {
         const evaluatePrediction = (_target, _prediction) => {
             return new PredictionEvaluation(false);
         };
-        expect(() => __awaiter(void 0, void 0, void 0, function* () {
-            const grid = new Grid(axisSet, modelStatics, sessionData, evaluatePrediction, gridOptions);
-            try {
-                yield grid.Run();
-            }
-            catch (e) {
-                console.log('caught', e);
-            }
-        })).not.toThrow();
-    });
+        const grid = new Grid(axisSet, modelStatics, sessionData, evaluatePrediction, gridOptions);
+        yield expect(grid.Run()).resolves.not.toThrow();
+    }));
 });
 //# sourceMappingURL=Grid.test.js.map

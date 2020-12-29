@@ -5,23 +5,6 @@
 import * as TENSOR_FLOW from '@tensorflow/tfjs-node';
 
 
-
-// WORKING:
-// 			hi there! We need to
-// 			- find some kind of solution to writing the results file that
-// 			actually works w/ the git hub server
-// 			OR
-// 			- find some kind of system here to mockup having written that
-// 			file (not really a test, is it?)
-// 			OR
-// 			- do this as an integration test, not part of the official build
-// 			...run locally pre-push?
-// 			OR
-// 			- just shut them down until we get that build script happy, then
-// 			come back after it with a VENJ
-
-
-
 import {
 	Axis,
 	AxisSet,
@@ -39,7 +22,7 @@ import {
 
 
 describe('valid instantiation; method failures', () => {
-	test('create with minimal arguments', () => {
+	test('create with minimal arguments', async () => {
 		const axes = [];
 
 		axes.push(
@@ -70,32 +53,16 @@ describe('valid instantiation; method failures', () => {
 			return new PredictionEvaluation(false);
 		};
 
+		const grid = new Grid(
+			axisSet,
+			modelStatics,
+			sessionData,
+			evaluatePrediction);
 
-
-const d_GO = new GridOptions({epochStatsDepth: 5});
-console.log('====&&&&&^^^^^^^^^^^^^^^^^^^^^^^^^=====================');
-console.log(d_GO);
-
-		expect(async () => {
-			const grid = new Grid(
-				axisSet,
-				modelStatics,
-				sessionData,
-				evaluatePrediction,
-/**/			d_GO);
-//NOTE: TODO: Do not supply an empty grid options here!! The correct technique is to mockup the file write, at the
-//			  source within FileIO. We already have the false FS, just need to use it there.
-
-			try {
-				await grid.Run();
-			}
-			catch(e) {
-				console.log('caught', e);
-			}
-		}).not.toThrow();
+		await expect(grid.Run()).resolves.not.toThrow();
 	});
 
-	test('create with options; zero hidden layers', () => {
+	test('create with options; zero hidden layers', async () => {
 		const axes = [];
 
 		axes.push(
@@ -133,21 +100,14 @@ console.log(d_GO);
 			return new PredictionEvaluation(true);
 		};
 
-		expect(async () => {
-			const grid = new Grid(
-				axisSet,
-				modelStatics,
-				sessionData,
-				evaluatePrediction,
-				gridOptions);
+		const grid = new Grid(
+			axisSet,
+			modelStatics,
+			sessionData,
+			evaluatePrediction,
+			gridOptions);
 
-			try {
-				await grid.Run();
-			}
-			catch(e) {
-				console.log('caught', e);
-			}
-		}).not.toThrow();
+		await expect(grid.Run()).resolves.not.toThrow();
 	});
 
 	test('create with options and reporting callbacks', async () => {
@@ -221,18 +181,12 @@ console.log(d_GO);
 			reportEpoch,
 			reportBatch);
 
-		try {
-			await grid.Run();
-		}
-		catch(e) {
-			console.log('caught', e);
-		}
+		await expect(grid.Run()).resolves.not.toThrowError();
 	});
 });
 
-/*KEEP: WORKING: This will use a mocked FS, after an upcoming merge.
-describe('CSV write', () => {
-	test('include write option', () => {
+describe('CSV write options', () => {
+	test('include write option', async () => {
 		const axes = [];
 
 		axes.push(
@@ -268,21 +222,13 @@ describe('CSV write', () => {
 			return new PredictionEvaluation(false);
 		};
 
-		expect(async () => {
-			const grid = new Grid(
-				axisSet,
-				modelStatics,
-				sessionData,
-				evaluatePrediction,
-				gridOptions);
+		const grid = new Grid(
+			axisSet,
+			modelStatics,
+			sessionData,
+			evaluatePrediction,
+			gridOptions);
 
-			try {
-				await grid.Run();
-			}
-			catch(e) {
-				console.log('caught', e);
-			}
-		}).not.toThrow();
+		await expect(grid.Run()).resolves.not.toThrow();
 	});
 });
-*/
