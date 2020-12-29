@@ -93,16 +93,6 @@ class Grid {
         else {
             this._gridOptions = this._userGridOptions;
         }
-        /**/
-        console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>   this._gridOptions');
-        console.log(this._gridOptions);
-        if (this._gridOptions.GetOption('writeResultsToDirectory') !== undefined) {
-            throw new Error('STOP INCLUDING THE FILE WRITE! '
-                + (typeof this._gridOptions.GetOption('writeResultsToDirectory'))
-                + '\n'
-                + this._gridOptions.GetOption('writeResultsToDirectory'));
-        }
-        /**/
         this._axisSetTraverser = new AxisSetTraverser(axisSet);
         // prune (and warn about) any model params that are pre-empted by a dynamic axis
         this.ResolveModelDefinition();

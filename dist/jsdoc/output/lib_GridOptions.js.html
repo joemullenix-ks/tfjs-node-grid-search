@@ -163,16 +163,10 @@ class GridOptions {
         }
         // now merge the defaults into the user's options; any for which we provide a value, but the user sent nothing
         for (const k in DEFAULT_OPTIONS) {
-            if (userOptions[k] === undefined) {
-                /*DOOM
-                                if (OPTIONS_DISABLED_VIA_OMISSION[k] !== undefined)
-                                {
-                                    // by omitting this option, the user chose to disable it
-                                    continue;
-                                }
-                */
-                userOptions[k] = DEFAULT_OPTIONS[k];
+            if (userOptions[k] !== undefined) {
+                continue;
             }
+            userOptions[k] = DEFAULT_OPTIONS[k];
         }
         // now save this processed object; NOTE: It's not a private c'tor member because it's optional
         this._options = userOptions;
@@ -204,7 +198,7 @@ GridOptions.DEFAULT_EPOCH_STATS_DEPTH = 5;
 GridOptions.DEFAULT_REPETITIONS = 1;
 GridOptions.DEFAULT_RESULTS_DIRECTORY = './';
 GridOptions.DEFAULT_VALIDATION_SET_SIZE_MIN = 100;
-GridOptions.DEFAULT_WRITE_RESULTS_AS_CSV = true;
+GridOptions.DEFAULT_WRITE_RESULTS_AS_CSV = false;
 const ALL_AVAILABLE_OPTIONS = {
     epochStatsDepth: null,
     repetitions: null,
@@ -212,26 +206,6 @@ const ALL_AVAILABLE_OPTIONS = {
     validationSetSizeMin: null,
     writeResultsAsCSV: null
 };
-/*DOOM
-//TODO: The need for this map is a shortcoming. Instead, split write-path into
-//		two options: "writeCSV" and "CSVResultsPath". That will resolve the
-//		issues with the defaults, cleanly pruning OPTIONS_DISABLED_VIA_OMISSION.
-const OPTIONS_DISABLED_VIA_OMISSION: Types.StringKeyedNullsObject =	{
-                                                                        writeResultsAsCSV: null
-                                                                    };
-
-// double-check that we didn't put any unknown keys in the omission  map
-for (const k in OPTIONS_DISABLED_VIA_OMISSION) {
-    /- istanbul ignore next -/ //[FUTURE PROOFING]
-    if (ALL_AVAILABLE_OPTIONS[k] !== undefined) {
-        // this key matches; we're good
-        continue;
-    }
-
-    /- istanbul ignore next -/ //[FUTURE PROOFING]
-    throw new Error('uknown key in the disable-via-omission map; must be part of all-available: ' + k);
-}
-*/
 Object.freeze(GridOptions);
 export { GridOptions };
 //# sourceMappingURL=GridOptions.js.map</code></pre>

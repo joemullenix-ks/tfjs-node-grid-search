@@ -76,16 +76,6 @@ class GridOptions {
 			throw new Error(ERROR_TEXT);
 		}
 
-
-//TODO: There is an issue here, poor design more that bug, that leads to
-//		confusion. (also mentioned elsewhere; time to act!)
-//		If the user does not want to write CSV, they omit this write param.
-//		However, if they do not supply any options (the argument is optional),
-//		the default is taken, which is 'write to root dir'. They have omitted
-//		the param, technically, but still get a CSV file dropped in their root.
-//		The solution is to split out a 'write?' bool and an 'outputPath' string.
-
-
 		const DEFAULT_OPTIONS:Types.StringKeyedSimpleObject =	{
 																	epochStatsDepth: GridOptions.DEFAULT_EPOCH_STATS_DEPTH,
 																	repetitions: GridOptions.DEFAULT_REPETITIONS,
@@ -172,17 +162,11 @@ class GridOptions {
 
 		// now merge the defaults into the user's options; any for which we provide a value, but the user sent nothing
 		for (const k in DEFAULT_OPTIONS) {
-			if (userOptions[k] === undefined) {
-/*DOOM
-				if (OPTIONS_DISABLED_VIA_OMISSION[k] !== undefined)
-				{
-					// by omitting this option, the user chose to disable it
-					continue;
-				}
-*/
-
-				userOptions[k] = DEFAULT_OPTIONS[k];
+			if (userOptions[k] !== undefined) {
+				continue;
 			}
+
+			userOptions[k] = DEFAULT_OPTIONS[k];
 		}
 
 		// now save this processed object; NOTE: It's not a private c'tor member because it's optional
@@ -222,27 +206,6 @@ const ALL_AVAILABLE_OPTIONS: Types.StringKeyedNullsObject =	{
 																validationSetSizeMin: null,
 																writeResultsAsCSV: null
 															};
-
-/*DOOM
-//TODO: The need for this map is a shortcoming. Instead, split write-path into
-//		two options: "writeCSV" and "CSVResultsPath". That will resolve the
-//		issues with the defaults, cleanly pruning OPTIONS_DISABLED_VIA_OMISSION.
-const OPTIONS_DISABLED_VIA_OMISSION: Types.StringKeyedNullsObject =	{
-																		writeResultsAsCSV: null
-																	};
-
-// double-check that we didn't put any unknown keys in the omission  map
-for (const k in OPTIONS_DISABLED_VIA_OMISSION) {
-	/- istanbul ignore next -/ //[FUTURE PROOFING]
-	if (ALL_AVAILABLE_OPTIONS[k] !== undefined) {
-		// this key matches; we're good
-		continue;
-	}
-
-	/- istanbul ignore next -/ //[FUTURE PROOFING]
-	throw new Error('uknown key in the disable-via-omission map; must be part of all-available: ' + k);
-}
-*/
 
 
 Object.freeze(GridOptions);
