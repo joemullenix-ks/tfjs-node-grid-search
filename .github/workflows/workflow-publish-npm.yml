@@ -17,7 +17,7 @@ jobs:
 
     steps:
     - name: Print script version
-      run: echo '005'
+      run: echo '007'
 
     - name: Checkout code
       uses: actions/checkout@v2
@@ -27,7 +27,7 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         # registry-url: 'https://registry.npmjs.org'  TESTING w/o new path
-        registry-url: 'https://www.npmjs.com/package'
+        # registry-url: 'https://www.npmjs.com/package'
         #FULL >> https://www.npmjs.com/package/tfjs-node-grid-search
 
     - name: Install dependencies
@@ -47,3 +47,5 @@ jobs:
     - run: npm publish
       env:
         NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      with:
+        registry-url: 'https://www.npmjs.com/package'
