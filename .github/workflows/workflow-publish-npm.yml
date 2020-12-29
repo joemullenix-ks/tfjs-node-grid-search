@@ -16,8 +16,7 @@ jobs:
         node-version: [14.x]
 
     steps:
-    # print the script version
-    - run: echo '00009'
+    - run: echo 'script version 00010'
 
     - name: Checkout code
       uses: actions/checkout@v2
@@ -47,6 +46,8 @@ jobs:
 #      be 'stuck'. You'll need to manually sync w/ the repo's semver.
     - name: Bump version
       run: npm version patch
+      env:
+        NODE_AUTH_TOKEN: ${{ secrets.SECRET_PUBLISH_NPM }}
 
     - run: npm publish
       env:
