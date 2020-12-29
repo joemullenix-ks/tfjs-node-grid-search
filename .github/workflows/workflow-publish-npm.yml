@@ -1,7 +1,5 @@
 name: Publish to npm
 
-echo: "001"
-
 on:
   release:
     types: [created]
@@ -18,6 +16,9 @@ jobs:
         node-version: [14.x]
 
     steps:
+    - name: Print script version
+      run: echo '002'
+
     - name: Checkout code
       uses: actions/checkout@v2
 
