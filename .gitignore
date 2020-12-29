@@ -21,3 +21,4 @@ dist/*/*/jestbox.js
 dist/*/*/jestbox.js.map
 Results_*.csv
 tensor validity tool.txt
+coverage

@@ -27,7 +27,7 @@ class GridOptions {
 	static readonly DEFAULT_REPETITIONS = 1;
 	static readonly DEFAULT_RESULTS_DIRECTORY = './';
 	static readonly DEFAULT_VALIDATION_SET_SIZE_MIN = 100;
-	static readonly DEFAULT_WRITE_RESULTS_AS_CSV = true;
+	static readonly DEFAULT_WRITE_RESULTS_AS_CSV = false;
 
 
 	/**

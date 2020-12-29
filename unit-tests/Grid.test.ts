@@ -204,6 +204,7 @@ describe('valid instantiation; method failures', () => {
 	});
 });
 
+/*KEEP: WORKING: This will use a mocked FS, after an upcoming merge.
 describe('CSV write', () => {
 	test('include write option', () => {
 		const axes = [];
@@ -258,3 +259,4 @@ describe('CSV write', () => {
 		}).not.toThrow();
 	});
 });
+*/
