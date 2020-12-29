@@ -13,12 +13,10 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
  */
 import * as FS_PROMISES from 'fs/promises';
 import * as PATH_LIB from 'path';
-//NOTE: Moved this one to ESM for Lint; had hesitated only because it kicks this:
-//
-//		"This module can only be referenced with ECMAScript imports/exports by turning on
-//		the 'esModuleInterop' flag and referencing its default export.ts(2497)"
 import SLASH from 'slash';
 import * as Utils from './Utils';
+//TODO: Expand our supported character sets, when requested.
+const STANDARD_ENCODING = 'utf8';
 /**
  * Generates a search-output file name in the format "Results_&ltTIMESTAMP&gt.csv".
  * @return {string}
@@ -40,7 +38,7 @@ const ProduceResultsFilename = () => {
 const ReadDataFile = (path, result) => __awaiter(void 0, void 0, void 0, function* () {
     Utils.Assert(path !== '');
     try {
-        result.data = yield FS_PROMISES.readFile(path, 'utf8');
+        result.data = yield FS_PROMISES.readFile(path, STANDARD_ENCODING);
         return;
     }
     catch (e) {
@@ -58,19 +56,29 @@ const ReadDataFile = (path, result) => __awaiter(void 0, void 0, void 0, functio
  */
 const WriteResultsFile = (fileName, directory, dataToWrite) => __awaiter(void 0, void 0, void 0, function* () {
     Utils.Assert(fileName !== '');
-    const WRITE_PATH = PATH_LIB.join(directory, fileName);
-    // correct for Unix/Windows path format
-    SLASH(WRITE_PATH);
+    const WRITE_PATH = WriteSystemPath(directory, fileName);
     if (dataToWrite === '') {
         console.warn('Writing empty file: ' + WRITE_PATH);
     }
     try {
-        yield FS_PROMISES.writeFile(WRITE_PATH, dataToWrite, 'utf8');
+        yield FS_PROMISES.writeFile(WRITE_PATH, dataToWrite, STANDARD_ENCODING);
         return;
     }
     catch (e) {
         Utils.ThrowCaughtUnknown('Failed to write file: ' + WRITE_PATH, e);
     }
 });
-export { ProduceResultsFilename, ReadDataFile, WriteResultsFile };
+/**
+ * Assemble a directory and filename with the system-appropriate slashes.
+ * @param {string} directory
+ * @param {string} fileName
+ * @return {string}
+ */
+const WriteSystemPath = (directory, fileName) => {
+    const SYSTEM_PATH = PATH_LIB.join(directory, fileName);
+    // correct for Unix/Windows path format
+    SLASH(SYSTEM_PATH);
+    return SYSTEM_PATH;
+};
+export { ProduceResultsFilename, ReadDataFile, WriteResultsFile, WriteSystemPath, STANDARD_ENCODING };
 //# sourceMappingURL=FileIO.js.map

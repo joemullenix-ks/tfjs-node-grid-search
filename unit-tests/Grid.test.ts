@@ -5,6 +5,23 @@
 import * as TENSOR_FLOW from '@tensorflow/tfjs-node';
 
 
+
+// WORKING:
+// 			hi there! We need to
+// 			- find some kind of solution to writing the results file that
+// 			actually works w/ the git hub server
+// 			OR
+// 			- find some kind of system here to mockup having written that
+// 			file (not really a test, is it?)
+// 			OR
+// 			- do this as an integration test, not part of the official build
+// 			...run locally pre-push?
+// 			OR
+// 			- just shut them down until we get that build script happy, then
+// 			come back after it with a VENJ
+
+
+
 import {
 	Axis,
 	AxisSet,
@@ -53,12 +70,21 @@ describe('valid instantiation; method failures', () => {
 			return new PredictionEvaluation(false);
 		};
 
+
+
+const d_GO = new GridOptions({epochStatsDepth: 5});
+console.log('====&&&&&^^^^^^^^^^^^^^^^^^^^^^^^^=====================');
+console.log(d_GO);
+
 		expect(async () => {
 			const grid = new Grid(
 				axisSet,
 				modelStatics,
 				sessionData,
-				evaluatePrediction);
+				evaluatePrediction,
+/**/			d_GO);
+//NOTE: TODO: Do not supply an empty grid options here!! The correct technique is to mockup the file write, at the
+//			  source within FileIO. We already have the false FS, just need to use it there.
 
 			try {
 				await grid.Run();

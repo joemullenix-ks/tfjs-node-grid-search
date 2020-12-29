@@ -31,18 +31,17 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.WriteResultsFile = exports.ReadDataFile = exports.ProduceResultsFilename = void 0;
+exports.STANDARD_ENCODING = exports.WriteSystemPath = exports.WriteResultsFile = exports.ReadDataFile = exports.ProduceResultsFilename = void 0;
 /**
  * @module FileIO
  */
 const FS_PROMISES = __importStar(require("fs/promises"));
 const PATH_LIB = __importStar(require("path"));
-//NOTE: Moved this one to ESM for Lint; had hesitated only because it kicks this:
-//
-//		"This module can only be referenced with ECMAScript imports/exports by turning on
-//		the 'esModuleInterop' flag and referencing its default export.ts(2497)"
 const slash_1 = __importDefault(require("slash"));
 const Utils = __importStar(require("./Utils"));
+//TODO: Expand our supported character sets, when requested.
+const STANDARD_ENCODING = 'utf8';
+exports.STANDARD_ENCODING = STANDARD_ENCODING;
 /**
  * Generates a search-output file name in the format "Results_&ltTIMESTAMP&gt.csv".
  * @return {string}
@@ -65,7 +64,7 @@ exports.ProduceResultsFilename = ProduceResultsFilename;
 const ReadDataFile = (path, result) => __awaiter(void 0, void 0, void 0, function* () {
     Utils.Assert(path !== '');
     try {
-        result.data = yield FS_PROMISES.readFile(path, 'utf8');
+        result.data = yield FS_PROMISES.readFile(path, STANDARD_ENCODING);
         return;
     }
     catch (e) {
@@ -84,14 +83,12 @@ exports.ReadDataFile = ReadDataFile;
  */
 const WriteResultsFile = (fileName, directory, dataToWrite) => __awaiter(void 0, void 0, void 0, function* () {
     Utils.Assert(fileName !== '');
-    const WRITE_PATH = PATH_LIB.join(directory, fileName);
-    // correct for Unix/Windows path format
-    slash_1.default(WRITE_PATH);
+    const WRITE_PATH = WriteSystemPath(directory, fileName);
     if (dataToWrite === '') {
         console.warn('Writing empty file: ' + WRITE_PATH);
     }
     try {
-        yield FS_PROMISES.writeFile(WRITE_PATH, dataToWrite, 'utf8');
+        yield FS_PROMISES.writeFile(WRITE_PATH, dataToWrite, STANDARD_ENCODING);
         return;
     }
     catch (e) {
@@ -99,4 +96,17 @@ const WriteResultsFile = (fileName, directory, dataToWrite) => __awaiter(void 0,
     }
 });
 exports.WriteResultsFile = WriteResultsFile;
+/**
+ * Assemble a directory and filename with the system-appropriate slashes.
+ * @param {string} directory
+ * @param {string} fileName
+ * @return {string}
+ */
+const WriteSystemPath = (directory, fileName) => {
+    const SYSTEM_PATH = PATH_LIB.join(directory, fileName);
+    // correct for Unix/Windows path format
+    slash_1.default(SYSTEM_PATH);
+    return SYSTEM_PATH;
+};
+exports.WriteSystemPath = WriteSystemPath;
 //# sourceMappingURL=FileIO.js.map
