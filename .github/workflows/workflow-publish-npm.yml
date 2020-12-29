@@ -1,5 +1,7 @@
 name: Publish to npm
 
+echo: "001"
+
 on:
   release:
     types: [created]
@@ -23,12 +25,16 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-        registry-url: 'https://registry.npmjs.org'
+        # registry-url: 'https://registry.npmjs.org'  TESTING w/o THIS PATH
 
     - name: Install dependencies
       run: npm install
 
     - run: npm run build-no-doc
+
+    - name: Bump version
+      run: npm version patch
+
     - run: npm publish
       env:
         NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

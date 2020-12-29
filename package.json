@@ -46,8 +46,7 @@
     "test": "jest --coverage --silent",
     "test-debug": "jest --coverage --debug",
     "test-verbose": "jest --coverage",
-    "tsc": "tsc -p tsconfig.json && tsc -p tsconfig-cjs.json",
-    "prepare": "npm run tsc"
+    "tsc": "tsc -p tsconfig.json && tsc -p tsconfig-cjs.json"
   },
   "repository": {
     "type": "git",
