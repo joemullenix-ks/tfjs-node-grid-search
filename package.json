@@ -1,6 +1,6 @@
 {
   "name": "tfjs-node-grid-search",
-  "version": "0.6.10",
+  "version": "0.6.12",
   "description": "",
   "main": "./dist/cjs/src/main.js",
   "module": "./dist/esm/src/main.js",
@@ -37,7 +37,6 @@
   "scripts": {
     "copy-icon": "copy jsdoc\\favicon.png dist\\jsdoc\\output",
     "build": "npm run tsc && npm run test && npm run jsdoc-themed && npm run copy-icon",
-    "build-local": "npm run tsc && npm run test",
     "build-minimal-esm": "tsc -p tsconfig.json",
     "build-minimal-cjs": "tsc -p tsconfig-cjs.json",
     "build-no-doc": "npm run tsc && npm run test",
@@ -45,7 +44,7 @@
     "jsdoc": "jsdoc -c jsdoc\\conf.json --debug",
     "jsdoc-themed": "jsdoc -c jsdoc\\conf.json -t jsdoc\\themes\\docdash --debug",
     "test": "jest --coverage --silent",
-    "test-debug": "jest --debug --coverage",
+    "test-debug": "jest --coverage --debug",
     "test-verbose": "jest --coverage",
     "tsc": "tsc -p tsconfig.json && tsc -p tsconfig-cjs.json",
     "prepare": "npm run tsc"
