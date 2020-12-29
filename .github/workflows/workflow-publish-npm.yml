@@ -26,7 +26,7 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-        registry-url: 'https://registry.npmjs.org'
+        registry-url: 'https://registry.npmjs.org/'
 
     - name: Install dependencies
       run: npm install
@@ -37,7 +37,7 @@ jobs:
       run: git config user.email "joemullenix@hotmail.com"
 
     - name: Set user name
-      run: git config user.name $GITHUB_ACTOR
+      run: git config user.name "Joe Mullenix"
 
     - name: Bump version
       run: npm version patch
