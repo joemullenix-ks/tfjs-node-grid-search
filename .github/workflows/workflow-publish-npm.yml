@@ -17,7 +17,7 @@ jobs:
 
     steps:
     - name: Print script version
-      run: echo '006'
+      run: echo '007'
 
     - name: Checkout code
       uses: actions/checkout@v2
@@ -47,3 +47,5 @@ jobs:
     - run: npm publish
       env:
         NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      with:
+        registry-url: 'https://www.npmjs.com/package'
