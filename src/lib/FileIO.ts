@@ -8,17 +8,15 @@
 
 import * as FS_PROMISES from 'fs/promises';
 import * as PATH_LIB from 'path';
-
-
-//NOTE: Moved this one to ESM for Lint; had hesitated only because it kicks this:
-//
-//		"This module can only be referenced with ECMAScript imports/exports by turning on
-//		the 'esModuleInterop' flag and referencing its default export.ts(2497)"
 import SLASH from 'slash';
 
 
 import { FileIOResult } from './FileIOResult';
 import * as Utils from './Utils';
+
+
+//TODO: Expand our supported character sets, when requested.
+const STANDARD_ENCODING = 'utf8';
 
 
 /**
@@ -45,7 +43,7 @@ const ReadDataFile = async (path: string, result: FileIOResult): Promise<void> =
 	Utils.Assert(path !== '');
 
 	try {
-		result.data = await FS_PROMISES.readFile(path, 'utf8');
+		result.data = await FS_PROMISES.readFile(path, STANDARD_ENCODING);
 		return;
 	}
 	catch (e) {
@@ -67,10 +65,7 @@ const WriteResultsFile = async (fileName: string,
 								dataToWrite: string): Promise<void> => {
 	Utils.Assert(fileName !== '');
 
-	const WRITE_PATH = PATH_LIB.join(directory, fileName);
-
-	// correct for Unix/Windows path format
-	SLASH(WRITE_PATH);
+	const WRITE_PATH = WriteSystemPath(directory, fileName);
 
 	if (dataToWrite === '') {
 		console.warn('Writing empty file: ' + WRITE_PATH);
@@ -79,7 +74,7 @@ const WriteResultsFile = async (fileName: string,
 	try {
 		await FS_PROMISES.writeFile(WRITE_PATH,
 									dataToWrite,
-									'utf8');
+									STANDARD_ENCODING);
 
 		return;
 	}
@@ -88,5 +83,26 @@ const WriteResultsFile = async (fileName: string,
 	}
 };
 
+/**
+ * Assemble a directory and filename with the system-appropriate slashes.
+ * @param {string} directory
+ * @param {string} fileName
+ * @return {string}
+ */
+const WriteSystemPath = (directory: string, fileName: string): string => {
+	const SYSTEM_PATH = PATH_LIB.join(directory, fileName);
 
-export { ProduceResultsFilename, ReadDataFile, WriteResultsFile };
+	// correct for Unix/Windows path format
+	SLASH(SYSTEM_PATH);
+
+	return SYSTEM_PATH;
+};
+
+
+export	{
+			ProduceResultsFilename,
+			ReadDataFile,
+			WriteResultsFile,
+			WriteSystemPath,
+			STANDARD_ENCODING
+		};

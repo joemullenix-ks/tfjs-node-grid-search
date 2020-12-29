@@ -10,6 +10,19 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+// WORKING:
+// 			hi there! We need to
+// 			- find some kind of solution to writing the results file that
+// 			actually works w/ the git hub server
+// 			OR
+// 			- find some kind of system here to mockup having written that
+// 			file (not really a test, is it?)
+// 			OR
+// 			- do this as an integration test, not part of the official build
+// 			...run locally pre-push?
+// 			OR
+// 			- just shut them down until we get that build script happy, then
+// 			come back after it with a VENJ
 const main_1 = require("../src/main");
 describe('valid instantiation; method failures', () => {
     test('create with minimal arguments', () => {
