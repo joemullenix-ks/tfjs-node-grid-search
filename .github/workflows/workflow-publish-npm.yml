@@ -33,9 +33,13 @@ jobs:
 
     - run: npm run build-no-doc
 
-    - name: Bump version
+    - name: Set user email
       run: git config user.email "joemullenix@hotmail.com"
+
+    - name: Set user name
       run: git config user.name "Joe Mullenix"
+
+    - name: Bump version
       run: npm version patch
 
     - run: npm publish
