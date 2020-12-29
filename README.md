@@ -32,7 +32,7 @@ import * as tngs from 'tfjs-node-grid-search';
 console.log('Welcome to TNGS!');
 
 //NOTE: We wrap the example in an async function, because tfjs's model fit
-//		is asynchronous.
+//      is asynchronous.
 const main = async () => {
   // First, we define the axes for our grid search (the available axis types are
   // enumerated in Axis (with many more coming soon!)).
@@ -118,8 +118,8 @@ const main = async () => {
 
     const predictedIndex = tngs.Utils.ArrayFindIndexOfHighestValue(prediction);
 
-//NOTE: This example is written for a multi-class (one-hot) classification
-//      network.
+//NOTE: This example is written for a multi-class classification network
+//      (one-hot targets).
 
     // if the network chose the correct index, we pass true
     const correct = targettedIndex === predictedIndex;
