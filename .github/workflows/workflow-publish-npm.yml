@@ -16,8 +16,8 @@ jobs:
         node-version: [14.x]
 
     steps:
-    - name: Print script version
-      run: echo '008'
+    # print the script version
+    - run: echo '00009'
 
     - name: Checkout code
       uses: actions/checkout@v2
@@ -27,6 +27,10 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         registry-url: 'https://registry.npmjs.org/'
+#NOTE: This url (^^) unintuitively is not where our package lives. However, do
+#      not update it to "https://www.npmjs.com/package/". I tried that, and it
+#      caused the next step ('Install dependencies') to overflow the stack (on
+#      the GitHub build VM).
 
     - name: Install dependencies
       run: npm install
@@ -39,6 +43,8 @@ jobs:
     - name: Set user name
       run: git config user.name "Joe Mullenix"
 
+#NOTE: If this step succeeds, but the next ('publish') fails, the script will
+#      be 'stuck'. You'll need to manually sync w/ the repo's semver.
     - name: Bump version
       run: npm version patch
 
