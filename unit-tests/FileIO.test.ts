@@ -114,9 +114,8 @@ describe('async file read', () => {
 	});
 
 //KEEP: Although this is very similar to the next test, it doesn't work. The
-//		differences are very subtle. Namely, we ned to the return the expect()
-//		result (which is a promise, I believe), and we we need to chain a
-//		'rejects' before requiring the throw.
+//		differences are very subtle. Namely, we need to return the expect()
+//		promise, and chain a 'rejects' before requiring the throw.
 //
 // 	test('throws on bad filepath', () => {
 // 		const FILE_IO_RESULT = new FileIOResult();

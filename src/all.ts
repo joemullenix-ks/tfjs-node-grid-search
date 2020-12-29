@@ -3,7 +3,7 @@ import * as tngs from './main';
 console.log('Welcome to TNGS!');
 
 //NOTE: We wrap the example in an async function, because tfjs's model fit
-//		is asynchronous.
+//      is asynchronous.
 const main = async () => {
   // First, we define the axes for our grid search (the available axis types are
   // enumerated in Axis (with many more coming soon!)).
@@ -51,7 +51,7 @@ const main = async () => {
   const gridOptions = new tngs.GridOptions({
     epochStatsDepth: 3,
     repetitions: 2,
-    resultsDirectory: './',
+    resultsDirectory: '',
     validationSetSizeMin: 1000,
     writeResultsAsCSV: true
   });
@@ -73,18 +73,6 @@ const main = async () => {
     true
   );
 
-  // This callback is used by the Grid during generalization testing. At the end
-  // of each epoch (after) the network is trained, the Grid makes predictions
-  // using the test data. For each prediction, it calls this function, passing
-  // the known targets and its prediction.
-  // We evaluate each prediction, and return a PredictionEvaluation, which lets
-  // Grid score the network.
-  //	- If the prediction is acceptable, set the first argument ("correct")
-  //    to true.
-  //	- The second argument (which is optional) is "delta", or an arbitrary
-  //    value for the prediction.
-
-
   /**
    *  This callback is used by the Grid during generalization testing. At the end
    *  of each epoch (after) the network is trained, the Grid makes predictions
@@ -104,8 +92,8 @@ const main = async () => {
 
     const predictedIndex = tngs.Utils.ArrayFindIndexOfHighestValue(prediction);
 
-//NOTE: This example is written for a multi-class (one-hot) classification
-//      network.
+//NOTE: This example is written for a multi-class classification network
+//      (one-hot targets).
 
     // if the network chose the correct index, we pass true
     const correct = targettedIndex === predictedIndex;
