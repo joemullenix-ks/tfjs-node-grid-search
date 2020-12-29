@@ -44,7 +44,8 @@ describe('valid instantiation; method failures', () => {
         });
         const gridOptions = new main_1.GridOptions({
             epochStatsDepth: 3,
-            validationSetSizeMin: 2
+            validationSetSizeMin: 2,
+            writeResultsAsCSV: false
         });
         const dataSet = new main_1.DataSet([[0, 2, 0, 4], [9, 2, 9, 6], [3, 5, 7, 1], [0, 2, 0, 4], [9, 2, 9, 6], [3, 5, 7, 1]], [[1, 0, 0], [0, 1, 0], [0, 0, 1], [1, 0, 0], [0, 1, 0], [0, 0, 1]]);
         const sessionData = new main_1.SessionData(0.25, dataSet, false);
@@ -71,7 +72,8 @@ describe('valid instantiation; method failures', () => {
         });
         const gridOptions = new main_1.GridOptions({
             epochStatsDepth: 2,
-            validationSetSizeMin: 1
+            validationSetSizeMin: 1,
+            writeResultsAsCSV: false
         });
         const dataSet = new main_1.DataSet([[0, 2, 0, 4], [9, 2, 9, 6], [3, 5, 7, 1], [0, 2, 0, 4], [9, 2, 9, 6], [3, 5, 7, 1], [0, 2, 0, 4], [9, 2, 9, 6], [3, 5, 7, 1], [0, 2, 0, 4], [9, 2, 9, 6], [3, 5, 7, 1], [0, 2, 0, 4], [9, 2, 9, 6], [3, 5, 7, 1], [0, 2, 0, 4], [9, 2, 9, 6], [3, 5, 7, 1], [0, 2, 0, 4], [9, 2, 9, 6], [3, 5, 7, 1], [0, 2, 0, 4], [9, 2, 9, 6], [3, 5, 7, 1]], [[1, 0, 0], [0, 1, 0], [0, 0, 1], [1, 0, 0], [0, 1, 0], [0, 0, 1], [1, 0, 0], [0, 1, 0], [0, 0, 1], [1, 0, 0], [0, 1, 0], [0, 0, 1], [1, 0, 0], [0, 1, 0], [0, 0, 1], [1, 0, 0], [0, 1, 0], [0, 0, 1], [1, 0, 0], [0, 1, 0], [0, 0, 1], [1, 0, 0], [0, 1, 0], [0, 0, 1]]);
         const sessionData = new main_1.SessionData(0.5, dataSet, false);
@@ -97,5 +99,33 @@ describe('valid instantiation; method failures', () => {
             console.log('caught', e);
         }
     }));
+});
+describe('CSV write', () => {
+    test('include write option', () => {
+        const axes = [];
+        axes.push(new main_1.Axis(main_1.AxisTypes.BATCH_SIZE, 2, 2, new main_1.LinearProgression(1)));
+        const axisSet = new main_1.AxisSet(axes);
+        const modelStatics = new main_1.ModelStatics({
+            epochs: 1
+        });
+        const gridOptions = new main_1.GridOptions({
+            resultsDirectory: '',
+            writeResultsAsCSV: true
+        });
+        const dataSet = new main_1.DataSet([[0, 2, 0, 4], [9, 2, 9, 6], [3, 5, 7, 1]], [[1, 0, 0], [0, 1, 0], [0, 0, 1]]);
+        const sessionData = new main_1.SessionData(0.35, dataSet, false);
+        const evaluatePrediction = (_target, _prediction) => {
+            return new main_1.PredictionEvaluation(false);
+        };
+        expect(() => __awaiter(void 0, void 0, void 0, function* () {
+            const grid = new main_1.Grid(axisSet, modelStatics, sessionData, evaluatePrediction, gridOptions);
+            try {
+                yield grid.Run();
+            }
+            catch (e) {
+                console.log('caught', e);
+            }
+        })).not.toThrow();
+    });
 });
 //# sourceMappingURL=Grid.test.js.map

@@ -29,7 +29,11 @@
   "files": [
     "dist"
   ],
-  "jest": {},
+  "XXjest": {
+    "testMatch": [
+      "C:\\Users\\joeku\\OneDrive\\_junk\\ks\\tfjs-node-grid-search\\unit-tests\\GridOptions.test.ts"
+    ]
+  },
   "scripts": {
     "copy-icon": "copy jsdoc\\favicon.png dist\\jsdoc\\output",
     "build": "npm run tsc && npm run test && npm run jsdoc-docdash && npm run copy-icon",

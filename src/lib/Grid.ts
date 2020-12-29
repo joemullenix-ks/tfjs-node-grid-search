@@ -273,13 +273,13 @@ class Grid {
 		console.log('Results (sorted by score)');
 		console.log(GRID_RUN_STATS.WriteReport(true));
 
-		const WRITE_RESULTS_OPTION = this._gridOptions.GetOption('writeResultsToDirectory');
+		if (this._gridOptions.GetOption('writeResultsAsCSV')) {
+			const RESULTS_DIRECTORY = this._gridOptions.GetOption('resultsDirectory') as string;
 
-		if (typeof WRITE_RESULTS_OPTION === 'string') {
 			const FILENAME = FileIO.ProduceResultsFilename();
 
 			await FileIO.WriteResultsFile(	FILENAME,
-											WRITE_RESULTS_OPTION,
+											RESULTS_DIRECTORY,
 											GRID_RUN_STATS.WriteCSV());
 
 //TODO: Make these slashes platform-correct (look at FileIO).
@@ -287,9 +287,9 @@ class Grid {
 			/* istanbul ignore next */ //TODO: Resolve Console coverage.
 			console.log('\n'
 						+ 'Results file written as '
-						+ (WRITE_RESULTS_OPTION === ''
+						+ (RESULTS_DIRECTORY === ''
 							? './'
-							: WRITE_RESULTS_OPTION + '/')
+							: RESULTS_DIRECTORY + '/')
 						+ FILENAME);
 
 		}
