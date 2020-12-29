@@ -29,7 +29,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const main_1 = require("../src/main");
-//vvvv FILESYSTEM MOCKUP, for Jest
+//vvvv FILESYSTEM MOCKUP (integration tests touch the disk, not unit tests)
 const FS_PROMISES_MOCKUP = __importStar(require("fs/promises"));
 jest.mock('fs/promises');
 //NOTE: This horrendous 'any' cast is for TypeScript's compiler. It's only been
@@ -105,9 +105,8 @@ describe('async file read', () => {
         })).rejects.toThrow();
     });
     //KEEP: Although this is very similar to the next test, it doesn't work. The
-    //		differences are very subtle. Namely, we ned to the return the expect()
-    //		result (which is a promise, I believe), and we we need to chain a
-    //		'rejects' before requiring the throw.
+    //		differences are very subtle. Namely, we need to return the expect()
+    //		promise, and chain a 'rejects' before requiring the throw.
     //
     // 	test('throws on bad filepath', () => {
     // 		const FILE_IO_RESULT = new FileIOResult();

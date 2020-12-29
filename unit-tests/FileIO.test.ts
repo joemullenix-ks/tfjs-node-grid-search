@@ -4,7 +4,7 @@
 import { FileIO, FileIOResult } from '../src/main';
 
 
-//vvvv FILESYSTEM MOCKUP, for Jest
+//vvvv FILESYSTEM MOCKUP (integration tests touch the disk, not unit tests)
 import * as FS_PROMISES_MOCKUP from 'fs/promises';
 
 jest.mock('fs/promises');

@@ -21,6 +21,25 @@ import {
 } from '../src/main';
 
 
+//vvvv FILESYSTEM MOCKUP (integration tests touch the disk, not unit tests)
+import * as FS_PROMISES_MOCKUP from 'fs/promises';
+
+jest.mock('fs/promises');
+
+//NOTE: This horrendous 'any' cast is for TypeScript's compiler. It's only been
+//		permitted because this usage is quarantined within unit tests.
+//
+//TODO: Dig further into Jest. There must be another way.
+(FS_PROMISES_MOCKUP.writeFile as any).mockImplementation((
+	_path: string,
+	_data: string,
+	_encoding: string) => {
+
+	return Promise.resolve('write file mockup pass');
+});
+//^^^^
+
+
 describe('valid instantiation; method failures', () => {
 	test('create with minimal arguments', async () => {
 		const axes = [];

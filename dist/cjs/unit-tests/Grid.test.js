@@ -1,5 +1,24 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 'use strict';
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -11,6 +30,17 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const main_1 = require("../src/main");
+//vvvv FILESYSTEM MOCKUP (integration tests touch the disk, not unit tests)
+const FS_PROMISES_MOCKUP = __importStar(require("fs/promises"));
+jest.mock('fs/promises');
+//NOTE: This horrendous 'any' cast is for TypeScript's compiler. It's only been
+//		permitted because this usage is quarantined within unit tests.
+//
+//TODO: Dig further into Jest. There must be another way.
+FS_PROMISES_MOCKUP.writeFile.mockImplementation((_path, _data, _encoding) => {
+    return Promise.resolve('write file mockup pass');
+});
+//^^^^
 describe('valid instantiation; method failures', () => {
     test('create with minimal arguments', () => __awaiter(void 0, void 0, void 0, function* () {
         const axes = [];

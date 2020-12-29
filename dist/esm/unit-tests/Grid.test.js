@@ -10,6 +10,17 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 import { Axis, AxisSet, AxisTypes, DataSet, Grid, GridOptions, LinearProgression, ModelStatics, PredictionEvaluation, SessionData } from '../src/main';
+//vvvv FILESYSTEM MOCKUP (integration tests touch the disk, not unit tests)
+import * as FS_PROMISES_MOCKUP from 'fs/promises';
+jest.mock('fs/promises');
+//NOTE: This horrendous 'any' cast is for TypeScript's compiler. It's only been
+//		permitted because this usage is quarantined within unit tests.
+//
+//TODO: Dig further into Jest. There must be another way.
+FS_PROMISES_MOCKUP.writeFile.mockImplementation((_path, _data, _encoding) => {
+    return Promise.resolve('write file mockup pass');
+});
+//^^^^
 describe('valid instantiation; method failures', () => {
     test('create with minimal arguments', () => __awaiter(void 0, void 0, void 0, function* () {
         const axes = [];
