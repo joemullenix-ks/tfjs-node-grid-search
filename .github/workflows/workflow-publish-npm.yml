@@ -1,7 +1,5 @@
 name: Publish to npm
 
-echo: "001"
-
 on:
   release:
     types: [created]
@@ -18,6 +16,9 @@ jobs:
         node-version: [14.x]
 
     steps:
+    - name: Print script version
+      run: echo '005'
+
     - name: Checkout code
       uses: actions/checkout@v2
 
@@ -25,12 +26,20 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-        # registry-url: 'https://registry.npmjs.org'  TESTING w/o THIS PATH
+        # registry-url: 'https://registry.npmjs.org'  TESTING w/o new path
+        registry-url: 'https://www.npmjs.com/package'
+        #FULL >> https://www.npmjs.com/package/tfjs-node-grid-search
 
     - name: Install dependencies
       run: npm install
 
     - run: npm run build-no-doc
+
+    - name: Set user email
+      run: git config user.email "joemullenix@hotmail.com"
+
+    - name: Set user name
+      run: git config user.name "Joe Mullenix"
 
     - name: Bump version
       run: npm version patch
