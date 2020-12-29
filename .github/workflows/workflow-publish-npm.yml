@@ -17,7 +17,7 @@ jobs:
 
     steps:
     - name: Print script version
-      run: echo '002'
+      run: echo '003'
 
     - name: Checkout code
       uses: actions/checkout@v2
@@ -34,6 +34,8 @@ jobs:
     - run: npm run build-no-doc
 
     - name: Bump version
+      run: git config user.email "joemullenix@hotmail.com"
+      run: git config user.name "Joe Mullenix"
       run: npm version patch
 
     - run: npm publish
