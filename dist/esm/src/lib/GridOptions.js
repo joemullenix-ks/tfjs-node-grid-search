@@ -17,9 +17,9 @@ class GridOptions {
      * new tngs.GridOptions({
      *   epochStatsDepth: 10,         // Length of the trailing average; default 5
      *   repetitions: 3,              // Number of times to repeat each iteration of the grid; default 1
+     *   resultsDirectory: ''         // Directory in which results files are written; default './' (current directory)
      *   validationSetSizeMin: 50,    // Fewer than x validation cases triggers a warning; default 100
-     *   writeResultsToDirectory: ''  // Directory in which a results file is written; default './' (current directory)<br>
-     *                                // NOTE: To disable the CSV file, omit writeResultsToDirectory.
+     *   writeResultsAsCSV: true      // Whether to output results as a CSV file; default true
      * });
      */
     constructor(userOptions) {
@@ -49,8 +49,9 @@ class GridOptions {
         const DEFAULT_OPTIONS = {
             epochStatsDepth: GridOptions.DEFAULT_EPOCH_STATS_DEPTH,
             repetitions: GridOptions.DEFAULT_REPETITIONS,
+            resultsDirectory: GridOptions.DEFAULT_RESULTS_DIRECTORY,
             validationSetSizeMin: GridOptions.DEFAULT_VALIDATION_SET_SIZE_MIN,
-            writeResultsToDirectory: GridOptions.DEFAULT_WRITE_RESULTS_TO_DIRECTORY
+            writeResultsAsCSV: GridOptions.DEFAULT_WRITE_RESULTS_AS_CSV
         };
         if (!keysFound) {
             // empty object received; set pure defaults
@@ -76,7 +77,7 @@ class GridOptions {
                         }
                     }
                     break;
-                case 'writeResultsToDirectory':
+                case 'resultsDirectory':
                     {
                         if (typeof OPTION !== 'string') {
                             throw new Error(ERROR_PREFIX + '"' + k + '" expects a string (the path of an existing directory).');
@@ -101,6 +102,13 @@ class GridOptions {
                         }
                     }
                     break;
+                case 'writeResultsAsCSV':
+                    {
+                        if (typeof OPTION !== 'boolean') {
+                            throw new Error(ERROR_PREFIX + '"' + k + '" must be true or false.');
+                        }
+                    }
+                    break;
                 /* istanbul ignore next */ //[FUTURE PROOFING]
                 default: {
                     throw new Error('unsupported GridOptions key: ' + k);
@@ -110,10 +118,13 @@ class GridOptions {
         // now merge the defaults into the user's options; any for which we provide a value, but the user sent nothing
         for (const k in DEFAULT_OPTIONS) {
             if (userOptions[k] === undefined) {
-                if (OPTIONS_DISABLED_VIA_OMISSION[k] !== undefined) {
-                    // by omitting this option, the user chose to disable it
-                    continue;
-                }
+                /*DOOM
+                                if (OPTIONS_DISABLED_VIA_OMISSION[k] !== undefined)
+                                {
+                                    // by omitting this option, the user chose to disable it
+                                    continue;
+                                }
+                */
                 userOptions[k] = DEFAULT_OPTIONS[k];
             }
         }
@@ -130,11 +141,11 @@ class GridOptions {
         switch (key) {
             case 'epochStatsDepth':
             case 'repetitions':
+            case 'resultsDirectory':
             case 'validationSetSizeMin':
-            case 'writeResultsToDirectory': {
-                //NOTE: This value may be undefined. That's expected. We enforce that all user-supplied keys be known, but we
-                //		do not require the user to set a value for every possible key.
-                //		For example, if they don't want to save CSV files, they do not send "writeResultsToDirectory".
+            case 'writeResultsAsCSV': {
+                //NOTE: The value may be undefined. That's expected. We enforce that all user-supplied keys be known, but we
+                //		do not require the user to set a value for every possible key. We have defaults for that case.
                 return this._options[key];
             }
             default: {
@@ -145,30 +156,36 @@ class GridOptions {
 }
 GridOptions.DEFAULT_EPOCH_STATS_DEPTH = 5;
 GridOptions.DEFAULT_REPETITIONS = 1;
+GridOptions.DEFAULT_RESULTS_DIRECTORY = './';
 GridOptions.DEFAULT_VALIDATION_SET_SIZE_MIN = 100;
-GridOptions.DEFAULT_WRITE_RESULTS_TO_DIRECTORY = './';
+GridOptions.DEFAULT_WRITE_RESULTS_AS_CSV = true;
 const ALL_AVAILABLE_OPTIONS = {
     epochStatsDepth: null,
     repetitions: null,
+    resultsDirectory: null,
     validationSetSizeMin: null,
-    writeResultsToDirectory: null
+    writeResultsAsCSV: null
 };
+/*DOOM
 //TODO: The need for this map is a shortcoming. Instead, split write-path into
 //		two options: "writeCSV" and "CSVResultsPath". That will resolve the
 //		issues with the defaults, cleanly pruning OPTIONS_DISABLED_VIA_OMISSION.
-const OPTIONS_DISABLED_VIA_OMISSION = {
-    writeResultsToDirectory: null
-};
+const OPTIONS_DISABLED_VIA_OMISSION: Types.StringKeyedNullsObject =	{
+                                                                        writeResultsAsCSV: null
+                                                                    };
+
 // double-check that we didn't put any unknown keys in the omission  map
 for (const k in OPTIONS_DISABLED_VIA_OMISSION) {
-    /* istanbul ignore next */ //[FUTURE PROOFING]
+    /- istanbul ignore next -/ //[FUTURE PROOFING]
     if (ALL_AVAILABLE_OPTIONS[k] !== undefined) {
         // this key matches; we're good
         continue;
     }
-    /* istanbul ignore next */ //[FUTURE PROOFING]
+
+    /- istanbul ignore next -/ //[FUTURE PROOFING]
     throw new Error('uknown key in the disable-via-omission map; must be part of all-available: ' + k);
 }
+*/
 Object.freeze(GridOptions);
 export { GridOptions };
 //# sourceMappingURL=GridOptions.js.map

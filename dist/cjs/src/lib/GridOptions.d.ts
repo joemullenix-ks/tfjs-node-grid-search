@@ -7,8 +7,9 @@ declare class GridOptions {
     private _options;
     static readonly DEFAULT_EPOCH_STATS_DEPTH = 5;
     static readonly DEFAULT_REPETITIONS = 1;
+    static readonly DEFAULT_RESULTS_DIRECTORY = "./";
     static readonly DEFAULT_VALIDATION_SET_SIZE_MIN = 100;
-    static readonly DEFAULT_WRITE_RESULTS_TO_DIRECTORY = "./";
+    static readonly DEFAULT_WRITE_RESULTS_AS_CSV = true;
     /**
      * Creates an instance of GridOptions.
      * @param {Types.StringKeyedSimpleObject} userOptions
@@ -16,9 +17,9 @@ declare class GridOptions {
      * new tngs.GridOptions({
      *   epochStatsDepth: 10,         // Length of the trailing average; default 5
      *   repetitions: 3,              // Number of times to repeat each iteration of the grid; default 1
+     *   resultsDirectory: ''         // Directory in which results files are written; default './' (current directory)
      *   validationSetSizeMin: 50,    // Fewer than x validation cases triggers a warning; default 100
-     *   writeResultsToDirectory: ''  // Directory in which a results file is written; default './' (current directory)<br>
-     *                                // NOTE: To disable the CSV file, omit writeResultsToDirectory.
+     *   writeResultsAsCSV: true      // Whether to output results as a CSV file; default true
      * });
      */
     constructor(userOptions: Types.StringKeyedSimpleObject);

@@ -80,8 +80,9 @@ const main = async () => {
   const gridOptions = new tngs.GridOptions({
     epochStatsDepth: 3,
     repetitions: 2,
+    resultsDirectory: '',
     validationSetSizeMin: 1000,
-    writeResultsToDirectory: ''
+    writeResultsAsCSV: true
   });
 
   // Now we load and configure the data set. A fresh copy of this data will be

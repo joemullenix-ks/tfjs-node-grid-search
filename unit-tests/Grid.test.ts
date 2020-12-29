@@ -90,7 +90,8 @@ describe('valid instantiation; method failures', () => {
 
 		const gridOptions = new GridOptions({
 			epochStatsDepth: 3,
-			validationSetSizeMin: 2
+			validationSetSizeMin: 2,
+			writeResultsAsCSV: false
 		});
 
 		const dataSet = new DataSet([[0, 2, 0, 4], [9, 2, 9, 6], [3, 5, 7, 1], [0, 2, 0, 4], [9, 2, 9, 6], [3, 5, 7, 1]],
@@ -144,7 +145,8 @@ describe('valid instantiation; method failures', () => {
 
 		const gridOptions = new GridOptions({
 			epochStatsDepth: 2,
-			validationSetSizeMin: 1
+			validationSetSizeMin: 1,
+			writeResultsAsCSV: false
 		});
 
 		const dataSet = new DataSet([[0, 2, 0, 4], [9, 2, 9, 6], [3, 5, 7, 1], [0, 2, 0, 4], [9, 2, 9, 6], [3, 5, 7, 1], [0, 2, 0, 4], [9, 2, 9, 6], [3, 5, 7, 1], [0, 2, 0, 4], [9, 2, 9, 6], [3, 5, 7, 1], [0, 2, 0, 4], [9, 2, 9, 6], [3, 5, 7, 1], [0, 2, 0, 4], [9, 2, 9, 6], [3, 5, 7, 1], [0, 2, 0, 4], [9, 2, 9, 6], [3, 5, 7, 1], [0, 2, 0, 4], [9, 2, 9, 6], [3, 5, 7, 1]],
@@ -201,3 +203,60 @@ describe('valid instantiation; method failures', () => {
 		}
 	});
 });
+
+/*KEEP: WORKING: This will use a mocked FS, after an upcoming merge.
+describe('CSV write', () => {
+	test('include write option', () => {
+		const axes = [];
+
+		axes.push(
+			new Axis(
+				AxisTypes.BATCH_SIZE,
+				2,
+				2,
+				new LinearProgression(1)
+			)
+		);
+
+		const axisSet = new AxisSet(axes);
+
+		const modelStatics = new ModelStatics({
+			epochs: 1
+		});
+
+		const gridOptions = new GridOptions({
+			resultsDirectory: '',
+			writeResultsAsCSV: true
+		});
+
+		const dataSet = new DataSet([[0, 2, 0, 4], [9, 2, 9, 6], [3, 5, 7, 1]],
+									[[1, 0, 0], [0, 1, 0], [0, 0, 1]]);
+
+		const sessionData = new SessionData(
+			0.35,
+			dataSet,
+			false
+		);
+
+		const evaluatePrediction = (_target: number[], _prediction: number[]) => {
+			return new PredictionEvaluation(false);
+		};
+
+		expect(async () => {
+			const grid = new Grid(
+				axisSet,
+				modelStatics,
+				sessionData,
+				evaluatePrediction,
+				gridOptions);
+
+			try {
+				await grid.Run();
+			}
+			catch(e) {
+				console.log('caught', e);
+			}
+		}).not.toThrow();
+	});
+});
+*/

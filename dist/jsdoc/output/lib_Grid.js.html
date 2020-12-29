@@ -255,18 +255,18 @@ class Grid {
             console.log('\n' + '&lt;&lt; GRID SEARCH COMPLETE >>', '\n', '\n' + 'started @ ' + (new Date(this._timeStartGrid)).toLocaleString(), '\n' + '  ended @ ' + (new Date(GRID_TIME_END)).toLocaleString(), '\n' + 'duration: ' + Utils.WriteDurationReport(GRID_DURATION), '\n');
             console.log('Results (sorted by score)');
             console.log(GRID_RUN_STATS.WriteReport(true));
-            const WRITE_RESULTS_OPTION = this._gridOptions.GetOption('writeResultsToDirectory');
-            if (typeof WRITE_RESULTS_OPTION === 'string') {
+            if (this._gridOptions.GetOption('writeResultsAsCSV')) {
+                const RESULTS_DIRECTORY = this._gridOptions.GetOption('resultsDirectory');
                 const FILENAME = FileIO.ProduceResultsFilename();
-                yield FileIO.WriteResultsFile(FILENAME, WRITE_RESULTS_OPTION, GRID_RUN_STATS.WriteCSV());
+                yield FileIO.WriteResultsFile(FILENAME, RESULTS_DIRECTORY, GRID_RUN_STATS.WriteCSV());
                 //TODO: Make these slashes platform-correct (look at FileIO).
                 //		...and on the same pass, lookup and print the root directory.
                 /* istanbul ignore next */ //TODO: Resolve Console coverage.
                 console.log('\n'
                     + 'Results file written as '
-                    + (WRITE_RESULTS_OPTION === ''
+                    + (RESULTS_DIRECTORY === ''
                         ? './'
-                        : WRITE_RESULTS_OPTION + '/')
+                        : RESULTS_DIRECTORY + '/')
                     + FILENAME);
             }
         });
