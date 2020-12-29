@@ -1,6 +1,6 @@
 name: Publish to npm
 
-echo "000"
+echo: "001"
 
 on:
   release:
