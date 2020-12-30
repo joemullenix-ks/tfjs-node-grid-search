@@ -16,7 +16,7 @@ jobs:
         node-version: [14.x]
 
     steps:
-    - run: echo 'script version 00010'
+    - run: echo 'script version 00011'
 
     - name: Checkout code
       uses: actions/checkout@v2
@@ -43,12 +43,15 @@ jobs:
     - name: Set user name
       run: git config user.name "Joe Mullenix"
 
-#NOTE: If this step succeeds, but the next ('publish') fails, the script will
-#      be 'stuck'. You'll need to manually sync w/ the repo's semver.
-    - name: Bump version
-      run: npm version patch
-      env:
-        NODE_AUTH_TOKEN: ${{ secrets.SECRET_PUBLISH_NPM }}
+#NOTE: Previous editions bumped the npm semver here. However, that led to pain,
+#      both pre and post release. Our package.json did _not_ get the changes
+#      made by the script run, so we ended up behind the live version. Also,
+#      that meant we had to remember to bump ourselves up to the future semver
+#      _before_ comitting. Also also, we couldn't use sensible version tags
+#      on draft releases, because it caused conflicts when the script tried to
+#      create the exact same tag mid-run.
+#      It all sucked, for very little gain, so now we bump pre-commit.
+#TODO: ...but find a way to automate it! It's likely worth whatever tradeoffs.
 
     - run: npm publish
       env:
