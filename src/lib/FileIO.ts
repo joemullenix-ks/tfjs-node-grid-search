@@ -24,7 +24,7 @@ const STANDARD_ENCODING = 'utf8';
  * @return {string}
  */
 const ProduceResultsFilename = (): string => {
-//TODO: hard-coder; both the regex and the file name prefix & suffix.
+//TODO: hard-coder; the regex and the file name elements.
 	const TIMESTAMP = (new Date()).toLocaleString();
 	const FILTERED = TIMESTAMP.replace(/[^a-z0-9]/gi, '_');
 	const LOWERED = FILTERED.toLowerCase();

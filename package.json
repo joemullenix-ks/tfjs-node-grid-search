@@ -29,9 +29,9 @@
   "files": [
     "dist"
   ],
-  "XXjest": {
+  "DISABLEDjest": {
     "testMatch": [
-      "C:\\Users\\joeku\\OneDrive\\_junk\\ks\\tfjs-node-grid-search\\unit-tests\\Grid.test.ts"
+      "C:\\Users\\joeku\\OneDrive\\_junk\\ks\\tfjs-node-grid-search\\unit-tests\\DataSetFetcher.test.ts"
     ]
   },
   "scripts": {
