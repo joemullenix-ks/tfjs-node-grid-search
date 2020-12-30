@@ -18,6 +18,7 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
     - run: npm install
-    - run: npm run build-no-doc
+    - run: npm run build-minimal-esm
       env:
         CI: true
+    - run: npm run test
