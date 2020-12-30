@@ -31,10 +31,11 @@ jobs:
 #      caused the next step ('Install dependencies') to overflow the stack (on
 #      the GitHub build VM).
 
-    - name: Install dependencies
-      run: npm install
-
-    - run: npm run build-no-doc
+    #TEMP: Disable the time-consuming work while we sort out the version stuff
+    # - name: Install dependencies
+    #   run: npm install
+    #
+    # - run: npm run build-no-doc
 
     - name: Set user email
       run: git config user.email "joemullenix@hotmail.com"
