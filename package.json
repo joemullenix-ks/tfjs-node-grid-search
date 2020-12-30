@@ -29,10 +29,7 @@
   "files": [
     "dist"
   ],
-  "DISABLEDjest": {
-    "testMatch": [
-      "C:\\Users\\joeku\\OneDrive\\_junk\\ks\\tfjs-node-grid-search\\unit-tests\\DataSetFetcher.test.ts"
-    ]
+  "jest": {
   },
   "scripts": {
     "copy-icon": "copy jsdoc\\favicon.png dist\\jsdoc\\output",
@@ -45,6 +42,7 @@
     "jsdoc-themed": "jsdoc -c jsdoc\\conf.json -t jsdoc\\themes\\docdash --debug",
     "test": "jest --coverage --silent",
     "test-debug": "jest --coverage --debug",
+    "test-no-coverage": "jest --silent",
     "test-verbose": "jest --coverage",
     "tsc": "tsc -p tsconfig.json && tsc -p tsconfig-cjs.json"
   },

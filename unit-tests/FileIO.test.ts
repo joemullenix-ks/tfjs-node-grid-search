@@ -134,6 +134,15 @@ describe('async file read', () => {
 		}).rejects.toThrow();
 	});
 
+	test('throws on bad/missing encoding key', async () => {
+		try {
+			expect(await FS_PROMISES_MOCKUP.readFile('')).toThrow();
+		}
+		catch (e) {
+			console.log('file fetch threw', e);
+		}
+	});
+
 	test('saves data to results package', async () => {
 		const FILE_IO_RESULT = new FileIOResult();
 

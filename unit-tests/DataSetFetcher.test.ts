@@ -4,20 +4,6 @@
 import { DataSet, DataSetFetcher, FileIO } from '../src/main';
 
 
-
-/*WORKING: This is the case in question
-	DataSetFetcher.ts		// lines 67-69 uncovered; catch for a bad read
-
-	// should throw from...
-	FileIO.ts				// line 46		await FS_PROMISES.readFile()
-	DataSetFetcher.ts		// line 85		await FileIO.ReadDataFile()
-	DataSetFetcher.ts		// line 65		await this.ReadDataFiles()
-
-	// ...which we mock right here. This is likely the false-negative (bottom).
-*/
-
-
-
 //vvvv FILESYSTEM MOCKUP (integration tests touch the disk, not unit tests)
 import * as FS_PROMISES_MOCKUP from 'fs/promises';
 
