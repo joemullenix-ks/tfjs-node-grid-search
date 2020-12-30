@@ -122,6 +122,14 @@ describe('async file read', () => {
             yield main_1.FileIO.ReadDataFile(MOCK_READ_PATH_INVALID, FILE_IO_RESULT);
         })).rejects.toThrow();
     });
+    test('throws on bad/missing encoding key', () => __awaiter(void 0, void 0, void 0, function* () {
+        try {
+            expect(yield FS_PROMISES_MOCKUP.readFile('')).toThrow();
+        }
+        catch (e) {
+            console.log('file fetch threw', e);
+        }
+    }));
     test('saves data to results package', () => __awaiter(void 0, void 0, void 0, function* () {
         const FILE_IO_RESULT = new main_1.FileIOResult();
         yield main_1.FileIO.ReadDataFile(MOCK_READ_PATH_VALID, FILE_IO_RESULT);
