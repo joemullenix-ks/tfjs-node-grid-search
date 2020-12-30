@@ -1,11 +1,10 @@
 # tfjs-node-grid-search &middot; [![npm version](https://img.shields.io/npm/v/tfjs-node-grid-search.svg?style=flat)](https://www.npmjs.com/package/tfjs-node-grid-search)
 
-
-![Coverage lines](https://img.shields.io/badge/Coverage:lines-100-green.svg)
-![Coverage functions](https://img.shields.io/badge/Coverage:functions-100-green.svg)
-![Coverage branches](https://img.shields.io/badge/Coverage:branches-100-green.svg)
-![Coverage statements](https://img.shields.io/badge/Coverage:statements-100-green.svg)
-
+| Statements                  | Branches                | Functions                 | Lines                |
+| --------------------------- | ----------------------- | ------------------------- | -------------------- |
+| ![Statements](https://img.shields.io/badge/Coverage-100%25-brightgreen.svg) | ![Branches](https://img.shields.io/badge/Coverage-100%25-brightgreen.svg) | ![Functions](https://img.shields.io/badge/Coverage-100%25-brightgreen.svg) | ![Lines](https://img.shields.io/badge/Coverage-100%25-brightgreen.svg)    |
+<br>
+<br>
 
 **tfjs-node-grid-search (TNGS)** is a grid search utility for TensorFLow.js in Node.js.
 Simply define ranges of hyperparameters. For each combination, TNGS will create a model, train it and test it using your data set. Results are logged and (optionally) written as a CSV file.
@@ -17,15 +16,10 @@ Simply define ranges of hyperparameters. For each combination, TNGS will create 
 npm i tfjs-node-grid-search
 ```
 
-## Examples
-> :warning: tfjs-node v2.7.0 has an installation problem on Windows. [See details](https://github.com/tensorflow/tfjs/issues/4052)
->
->           TLDR, here's the workaround:
->
->              copy tensorflow.dll
->             from: node_modules\@tensorflow\tfjs-node\deps\lib
->               to: node_modules\@tensorflow\tfjs-node\lib\napi-v6
+## Documentation
+https://github.com/joemullenix-ks/tfjs-node-grid-search/wiki
 
+## Full Example
 ```js
 import * as tngs from 'tfjs-node-grid-search';
 
@@ -150,9 +144,22 @@ main().catch(reason => {
 });
 ```
 
-## Documentation
-https://github.com/joemullenix-ks/tfjs-node-grid-search/wiki
+## Step-By-Step
+- Apple
+- Banana
+- Cherry
+- Delicious Pears
 
+## Windows
+>
+> :warning: An older version of tfjs-node (v2.7.0) has an installation problem
+> on Windows. [See details](https://github.com/tensorflow/tfjs/issues/4052)
+>
+>           TLDR, here's the workaround:
+>
+>              copy tensorflow.dll
+>             from: node_modules\@tensorflow\tfjs-node\deps\lib
+>               to: node_modules\@tensorflow\tfjs-node\lib\napi-v6
 
 ## License
 
