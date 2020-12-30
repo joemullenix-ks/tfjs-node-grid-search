@@ -1,6 +1,6 @@
 {
   "name": "tfjs-node-grid-search",
-  "version": "0.6.22",
+  "version": "0.7.1",
   "description": "",
   "main": "./dist/cjs/src/main.js",
   "module": "./dist/esm/src/main.js",
@@ -29,9 +29,9 @@
   "files": [
     "dist"
   ],
-  "XXjest": {
+  "DISABLEDjest": {
     "testMatch": [
-      "C:\\Users\\joeku\\OneDrive\\_junk\\ks\\tfjs-node-grid-search\\unit-tests\\Grid.test.ts"
+      "C:\\Users\\joeku\\OneDrive\\_junk\\ks\\tfjs-node-grid-search\\unit-tests\\DataSetFetcher.test.ts"
     ]
   },
   "scripts": {
