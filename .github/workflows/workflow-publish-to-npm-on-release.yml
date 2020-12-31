@@ -27,7 +27,7 @@ jobs:
         node-version: ${{ matrix.node-version }}
         registry-url: 'https://registry.npmjs.org/'
 #NOTE: This url (^^) unintuitively is not where our package lives. However, do
-#      not update it to "https://www.npmjs.com/package/". I tried that, and it
+#      not change it to "https://www.npmjs.com/package/"! I tried that, and it
 #      caused the next step ('Install dependencies') to overflow the stack (on
 #      the GitHub build VM).
 
@@ -46,7 +46,7 @@ jobs:
 #      both pre and post release. Our package.json did _not_ get the changes
 #      made by the script run, so we ended up behind the live version. Also,
 #      that meant we had to remember to bump ourselves up to the future semver
-#      _before_ comitting. Also also, we couldn't use sensible version tags
+#      _before_ committing. Also also, we couldn't use sensible version tags
 #      on draft releases, because it caused conflicts when the script tried to
 #      create the exact same tag mid-run.
 #      It all sucked, for very little gain, so now we bump pre-commit.
