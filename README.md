@@ -1,13 +1,17 @@
 # tfjs-node-grid-search &middot; [![npm version](https://img.shields.io/npm/v/tfjs-node-grid-search.svg?style=flat)](https://www.npmjs.com/package/tfjs-node-grid-search)
 
-| Statements                  | Branches                | Functions                 | Lines                |
-| --------------------------- | ----------------------- | ------------------------- | -------------------- |
-| ![Statements](https://img.shields.io/badge/Coverage-99.7%25-brightgreen.svg) | ![Branches](https://img.shields.io/badge/Coverage-99.58%25-brightgreen.svg) | ![Functions](https://img.shields.io/badge/Coverage-100%25-brightgreen.svg) | ![Lines](https://img.shields.io/badge/Coverage-99.68%25-brightgreen.svg)    |
-<br>
+| ![Statements](https://img.shields.io/badge/Coverage-99.7%25-brightgreen.svg) | Statements
+|---|---|
+| ![Branches](https://img.shields.io/badge/Coverage-99.58%25-brightgreen.svg) | Branches
+| ![Functions](https://img.shields.io/badge/Coverage-100%25-brightgreen.svg) | Functions
+| ![Lines](https://img.shields.io/badge/Coverage-99.68%25-brightgreen.svg) | Lines
+
 <br>
 
-**tfjs-node-grid-search (TNGS)** is a grid search utility for TensorFLow.js in Node.js.
-Simply define ranges of hyperparameters. For each combination, TNGS will create a model, train it and test it using your data set. Results are logged and (optionally) written as a CSV file.
+**tfjs-node-grid-search (TNGS)** is a grid search utility for TensorFLow.js in
+Node.js. Simply define ranges of hyperparameters. For every combination, TNGS
+will create a model, train it and test it using your data set. Results are
+logged and (optionally) written as a CSV file.
 
 [Learn about running TensorFlow in Node.](https://www.tensorflow.org/js/tutorials/setup#nodejs_setup)
 
@@ -153,7 +157,8 @@ main().catch(reason => {
 ## Windows
 >
 > :warning: An older version of tfjs-node (v2.7.0) has an installation problem
-> on Windows. [See details](https://github.com/tensorflow/tfjs/issues/4052)
+> on Windows.<br>
+> [See details](https://github.com/tensorflow/tfjs/issues/4052)
 >
 >           TLDR, here's the workaround:
 >
@@ -163,4 +168,4 @@ main().catch(reason => {
 
 ## License
 
-React is [MIT licensed](./LICENSE).
+tfjs-node-grid-search is [MIT licensed](./LICENSE).

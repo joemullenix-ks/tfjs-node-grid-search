@@ -23,6 +23,7 @@ Results_*.csv
 tensor validity tool.txt
 new release procedure.txt
 good-sample-readme.txt
+src/all.ts
 
 # These are killing my diffs; releases only.
 coverage
