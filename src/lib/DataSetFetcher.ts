@@ -64,8 +64,10 @@ class DataSetFetcher {
 		try {
 			return await this.ReadDataFiles();
 		} catch (e) {
+			/* istanbul ignore next */ //[FUTURE PROOFING]
 			console.error('Failed to fetch the data set. Please check the file paths.' + '\n', e);
 
+			/* istanbul ignore next */ //[FUTURE PROOFING]
 			throw (e); // re-throw, else TS will get upset about return type
 		}
 	}

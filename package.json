@@ -35,7 +35,9 @@
   ],
   "jest": {
     "coverageReporters": [
-      "json-summary"
+      "html",
+      "json-summary",
+      "text"
     ]
   },
   "scripts": {

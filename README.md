@@ -1,10 +1,10 @@
 # tfjs-node-grid-search &middot; [![npm version](https://img.shields.io/npm/v/tfjs-node-grid-search.svg?style=flat)](https://www.npmjs.com/package/tfjs-node-grid-search)
 
-| ![Statements](https://img.shields.io/badge/Coverage-99.7%25-brightgreen.svg) | Statements
+| ![Statements](https://img.shields.io/badge/Coverage-100%25-brightgreen.svg) | Statements
 |---|---|
-| ![Branches](https://img.shields.io/badge/Coverage-99.58%25-brightgreen.svg) | Branches
+| ![Branches](https://img.shields.io/badge/Coverage-100%25-brightgreen.svg) | Branches
 | ![Functions](https://img.shields.io/badge/Coverage-100%25-brightgreen.svg) | Functions
-| ![Lines](https://img.shields.io/badge/Coverage-99.68%25-brightgreen.svg) | Lines
+| ![Lines](https://img.shields.io/badge/Coverage-100%25-brightgreen.svg) | Lines
 
 <br>
 
