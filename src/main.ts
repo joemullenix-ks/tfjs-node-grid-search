@@ -1,18 +1,16 @@
 'use strict';
 
 
-// console.log(process.version.split('.'));
-// console.log(process.version.split('.')[0].split('v')[1]);
-// console.log(typeof process.version.split('.')[0].split('v')[1]);
-
 const NODE_VERSION_MAJOR = Number(process.version.split('.')[0].split('v')[1]);
 
+/* istanbul ignore next */ //TODO: Resolve Console coverage.
 if (NODE_VERSION_MAJOR < 14) {
-	console.warn('TNGS is designed for Node versions 14+.');
+	console.error('TNGS is designed for Node versions 14+.');
 }
 else {
-	console.warn('Node version looks good: ' + NODE_VERSION_MAJOR);
+	console.log('Node version looks good');
 }
+
 
 /**
  * tfjs-node-grid-search

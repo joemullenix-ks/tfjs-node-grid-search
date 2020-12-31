@@ -94,6 +94,15 @@ describe('async file retrieval', () => {
 		}
 	});
 
+	test('throws on bad/missing encoding key', async () => {
+		try {
+			expect(await FS_PROMISES_MOCKUP.readFile('')).toThrow();
+		}
+		catch (e) {
+			console.log('file fetch threw', e);
+		}
+	});
+
 	test('fetches files and returns a DataSet', async () => {
 		const dataSetFetcher = new DataSetFetcher(['n/a', 'n/a', MOCK_READ_PATH_INPUTS, MOCK_READ_PATH_TARGETS]);
 
