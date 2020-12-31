@@ -1,6 +1,6 @@
 {
   "name": "tfjs-node-grid-search",
-  "version": "0.7.3",
+  "version": "0.7.4",
   "description": "",
   "main": "./dist/cjs/src/main.js",
   "module": "./dist/esm/src/main.js",
