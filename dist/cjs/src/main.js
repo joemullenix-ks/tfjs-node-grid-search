@@ -23,6 +23,16 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Utils = exports.SessionData = exports.LinearProgression = exports.FibonacciProgression = exports.ExponentialProgression = exports.Progression = exports.PredictionEvaluation = exports.ModelTestStats = exports.ModelStatics = exports.ModelParams = exports.IterationResult = exports.GridRunStats = exports.GridOptions = exports.Grid = exports.FileIOResult = exports.FileIO = exports.FailureMessage = exports.EpochStats = exports.DataSetFetcher = exports.DataSet = exports.AxisSetTraverser = exports.AxisSet = exports.AxisTypes = exports.AxisNames = exports.AxisDefaults = exports.Axis = void 0;
+// console.log(process.version.split('.'));
+// console.log(process.version.split('.')[0].split('v')[1]);
+// console.log(typeof process.version.split('.')[0].split('v')[1]);
+const NODE_VERSION_MAJOR = Number(process.version.split('.')[0].split('v')[1]);
+if (NODE_VERSION_MAJOR < 14) {
+    console.warn('TNGS is designed for Node versions 14+.');
+}
+else {
+    console.warn('Node version looks good: ' + NODE_VERSION_MAJOR);
+}
 /**
  * tfjs-node-grid-search
  * @module main
