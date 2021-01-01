@@ -5,7 +5,10 @@ const NODE_VERSION_MAJOR = Number(process.version.split('.')[0].split('v')[1]);
 
 /* istanbul ignore next */ //TODO: Resolve Console coverage.
 if (NODE_VERSION_MAJOR < 14) {
-	console.error('TNGS is designed for Node versions 14+.');
+	console.error('----------------' + '\n'
+				+ 'TNGS is designed for Node versions 14+.'
+				+ '\n'
+				+ '----------------'+ '\n\n');
 }
 else {
 	console.log('Node version looks good');
