@@ -51,6 +51,10 @@ class LinearProgression extends Progression_1.Progression {
      */
     Advance() {
         this._value += this._step;
+        //vvvvvvvvvvvvvvvv
+        // CI TEST - force lint error
+        const NOT_REFERENCED = 'oh no!';
+        //^^^^^^^^^^^^^^^^
     }
 }
 exports.LinearProgression = LinearProgression;

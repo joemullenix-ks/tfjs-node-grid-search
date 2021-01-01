@@ -1,0 +1,958 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="utf-8">
+    <title>SessionData - Documentation</title>
+    <link rel="icon" type="image/png" href="favicon.png"/>
+
+    
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+    <script src="scripts/nav.js" defer></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav >
+    
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Axis.html">Axis</a><ul class='methods'><li data-type='method'><a href="Axis.html#.AttemptValidateParameter">AttemptValidateParameter</a></li><li data-type='method'><a href="Axis.html#.AttemptValidateProgression">AttemptValidateProgression</a></li><li data-type='method'><a href="Axis.html#.LookupTypeName">LookupTypeName</a></li><li data-type='method'><a href="Axis.html#Advance">Advance</a></li><li data-type='method'><a href="Axis.html#CalculatePosition">CalculatePosition</a></li><li data-type='method'><a href="Axis.html#CheckComplete">CheckComplete</a></li><li data-type='method'><a href="Axis.html#Reset">Reset</a></li><li data-type='method'><a href="Axis.html#WriteReport">WriteReport</a></li></ul></li><li><a href="AxisSet.html">AxisSet</a><ul class='methods'><li data-type='method'><a href="AxisSet.html#AdvanceAxis">AdvanceAxis</a></li><li data-type='method'><a href="AxisSet.html#CheckAxisComplete">CheckAxisComplete</a></li><li data-type='method'><a href="AxisSet.html#CreateParams">CreateParams</a></li><li data-type='method'><a href="AxisSet.html#GetTotalAxes">GetTotalAxes</a></li><li data-type='method'><a href="AxisSet.html#ResetAxis">ResetAxis</a></li><li data-type='method'><a href="AxisSet.html#Walk">Walk</a></li><li data-type='method'><a href="AxisSet.html#WriteAxisReport">WriteAxisReport</a></li></ul></li><li><a href="AxisSetTraverser.html">AxisSetTraverser</a><ul class='methods'><li data-type='method'><a href="AxisSetTraverser.html#Advance">Advance</a></li><li data-type='method'><a href="AxisSetTraverser.html#CreateIterationParams">CreateIterationParams</a></li><li data-type='method'><a href="AxisSetTraverser.html#ExamineAxisNames">ExamineAxisNames</a></li><li data-type='method'><a href="AxisSetTraverser.html#LookupIterationDescriptor">LookupIterationDescriptor</a></li><li data-type='method'><a href="AxisSetTraverser.html#WriteReport">WriteReport</a></li></ul></li><li><a href="DataSet.html">DataSet</a></li><li><a href="DataSetFetcher.html">DataSetFetcher</a><ul class='methods'><li data-type='method'><a href="DataSetFetcher.html#Fetch">Fetch</a></li></ul></li><li><a href="EpochStats.html">EpochStats</a><ul class='methods'><li data-type='method'><a href="EpochStats.html#.WriteReportHeader">WriteReportHeader</a></li><li data-type='method'><a href="EpochStats.html#Update">Update</a></li><li data-type='method'><a href="EpochStats.html#WriteReport">WriteReport</a></li></ul></li><li><a href="ExponentialProgression.html">ExponentialProgression</a><ul class='methods'><li data-type='method'><a href="ExponentialProgression.html#Advance">Advance</a></li><li data-type='method'><a href="ExponentialProgression.html#Reset">Reset</a></li></ul></li><li><a href="FailureMessage.html">FailureMessage</a></li><li><a href="FibonacciProgression.html">FibonacciProgression</a><ul class='methods'><li data-type='method'><a href="FibonacciProgression.html#Advance">Advance</a></li><li data-type='method'><a href="FibonacciProgression.html#Reset">Reset</a></li></ul></li><li><a href="FileIOResult.html">FileIOResult</a></li><li><a href="Grid.html">Grid</a><ul class='methods'><li data-type='method'><a href="Grid.html#Run">Run</a></li></ul></li><li><a href="GridOptions.html">GridOptions</a><ul class='methods'><li data-type='method'><a href="GridOptions.html#GetOption">GetOption</a></li></ul></li><li><a href="GridRunStats.html">GridRunStats</a><ul class='methods'><li data-type='method'><a href="GridRunStats.html#AddIterationResult">AddIterationResult</a></li><li data-type='method'><a href="GridRunStats.html#WriteCSV">WriteCSV</a></li><li data-type='method'><a href="GridRunStats.html#WriteReport">WriteReport</a></li></ul></li><li><a href="IterationResult.html">IterationResult</a><ul class='methods'><li data-type='method'><a href="IterationResult.html#WriteEpochStatsHeader">WriteEpochStatsHeader</a></li><li data-type='method'><a href="IterationResult.html#WriteEpochStatsValues">WriteEpochStatsValues</a></li><li data-type='method'><a href="IterationResult.html#WriteModelParamHeader">WriteModelParamHeader</a></li><li data-type='method'><a href="IterationResult.html#WriteModelParamValues">WriteModelParamValues</a></li><li data-type='method'><a href="IterationResult.html#WriteReport">WriteReport</a></li><li data-type='method'><a href="IterationResult.html#WriteTestStatsHeader">WriteTestStatsHeader</a></li><li data-type='method'><a href="IterationResult.html#WriteTestStatsValues">WriteTestStatsValues</a></li></ul></li><li><a href="LinearProgression.html">LinearProgression</a><ul class='methods'><li data-type='method'><a href="LinearProgression.html#Advance">Advance</a></li><li data-type='method'><a href="LinearProgression.html#Reset">Reset</a></li></ul></li><li><a href="ModelParams.html">ModelParams</a><ul class='methods'><li data-type='method'><a href="ModelParams.html#GetBooleanParam">GetBooleanParam</a></li><li data-type='method'><a href="ModelParams.html#GetNumericParam">GetNumericParam</a></li><li data-type='method'><a href="ModelParams.html#GetTextParam">GetTextParam</a></li></ul></li><li><a href="ModelStatics.html">ModelStatics</a><ul class='methods'><li data-type='method'><a href="ModelStatics.html#AttemptStripParam">AttemptStripParam</a></li><li data-type='method'><a href="ModelStatics.html#GenerateInitializerBias">GenerateInitializerBias</a></li><li data-type='method'><a href="ModelStatics.html#GenerateInitializerKernel">GenerateInitializerKernel</a></li><li data-type='method'><a href="ModelStatics.html#GenerateLossFunction">GenerateLossFunction</a></li><li data-type='method'><a href="ModelStatics.html#GenerateOptimizer">GenerateOptimizer</a></li><li data-type='method'><a href="ModelStatics.html#ShallowCloneParams">ShallowCloneParams</a></li></ul></li><li><a href="ModelTestStats.html">ModelTestStats</a><ul class='methods'><li data-type='method'><a href="ModelTestStats.html#CalculateScore">CalculateScore</a></li></ul></li><li><a href="PredictionEvaluation.html">PredictionEvaluation</a></li><li><a href="Progression.html">Progression</a><ul class='methods'><li data-type='method'><a href="Progression.html#Reset">Reset</a></li></ul></li><li><a href="SessionData.html">SessionData</a><ul class='methods'><li data-type='method'><a href="SessionData.html#.CountLeafElements">CountLeafElements</a></li><li data-type='method'><a href="SessionData.html#.FindMean">FindMean</a></li><li data-type='method'><a href="SessionData.html#.FindStandardDeviation">FindStandardDeviation</a></li><li data-type='method'><a href="SessionData.html#.StandardizeInputs">StandardizeInputs</a></li></ul></li></ul><h3>Modules</h3><ul><li><a href="module-FileIO.html">FileIO</a><ul class='methods'><li data-type='method'><a href="module-FileIO.html#~ProduceResultsFilename">ProduceResultsFilename</a></li><li data-type='method'><a href="module-FileIO.html#~ReadDataFile">ReadDataFile</a></li><li data-type='method'><a href="module-FileIO.html#~WriteResultsFile">WriteResultsFile</a></li><li data-type='method'><a href="module-FileIO.html#~WriteSystemPath">WriteSystemPath</a></li></ul></li><li><a href="module-main.html">main</a></li><li><a href="module-Utils.html">Utils</a><ul class='methods'><li data-type='method'><a href="module-Utils.html#~ArrayCalculateAverage">ArrayCalculateAverage</a></li><li data-type='method'><a href="module-Utils.html#~ArrayFindIndexOfHighestValue">ArrayFindIndexOfHighestValue</a></li><li data-type='method'><a href="module-Utils.html#~Assert">Assert</a></li><li data-type='method'><a href="module-Utils.html#~CheckFloat0to1Exclusive">CheckFloat0to1Exclusive</a></li><li data-type='method'><a href="module-Utils.html#~CheckNonNegativeInteger">CheckNonNegativeInteger</a></li><li data-type='method'><a href="module-Utils.html#~CheckPositiveInteger">CheckPositiveInteger</a></li><li data-type='method'><a href="module-Utils.html#~QueueRotate">QueueRotate</a></li><li data-type='method'><a href="module-Utils.html#~ThrowCaughtUnknown">ThrowCaughtUnknown</a></li><li data-type='method'><a href="module-Utils.html#~ValidateTextForCSV">ValidateTextForCSV</a></li><li data-type='method'><a href="module-Utils.html#~WriteDurationReport">WriteDurationReport</a></li></ul></li></ul>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">SessionData</h1>
+    
+
+    
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+        SessionData
+        </h2>
+        
+            <div class="class-description usertext">Manages the data set used to train and test models during the grid search.</div>
+        
+    
+</header>
+
+<article>
+    
+        <div class="container-overview">
+        
+            
+
+    
+    <h2>Constructor</h2>
+    
+
+    <h4 class="name" id="SessionData"><span class="type-signature"></span>new SessionData<span class="signature">(proofPercentage, dataSet, _useDefaultStandardization, _callbackStandardize<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description usertext">
+    Creates an instance of SessionData.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>proofPercentage</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">A value 0-1 exclusive used to determine	the number of cases reserved for generalization testing. These cases	are never seen by the model during training.<br>	A common value is 0.2 (20%).</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>dataSet</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="DataSet.html">DataSet</a></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">The data used to train and test models.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>_useDefaultStandardization</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">If true, the input values	will be modified internally such that each feature has a mean of zero	and a variance of one.<br>	If standardization callbacks are supplied, this argument is ignored.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>_callbackStandardize</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">A function invoked with the	input data prior to the grid search. It provides an opportunity to	preprocess the data internally before it's transformed into tensors.<br> <b>Arguments:</b> unstandardizedInputs: Array<unknown><br> <b>Returns:</b> void</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lib_SessionData.js.html">lib/SessionData.js</a>, <a href="lib_SessionData.js.html#line23">line 23</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+        </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        
+            
+
+    
+
+    <h4 class="name" id=".CountLeafElements"><span class="type-signature">(static) </span>CountLeafElements<span class="signature">(inputData)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description usertext">
+    Returns the length of the most deeply nested array.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>inputData</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">TFNestedArray</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lib_SessionData.js.html">lib/SessionData.js</a>, <a href="lib_SessionData.js.html#line192">line 192</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".FindMean"><span class="type-signature">(static) </span>FindMean<span class="signature">(data)</span><span class="type-signature"> &rarr; {number}</span></h4>
+
+    
+
+
+
+<div class="description usertext">
+    Calculate the average of a set of numbers.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>data</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;number></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">number</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lib_SessionData.js.html">lib/SessionData.js</a>, <a href="lib_SessionData.js.html#line208">line 208</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".FindStandardDeviation"><span class="type-signature">(static) </span>FindStandardDeviation<span class="signature">(data, mean)</span><span class="type-signature"> &rarr; {number}</span></h4>
+
+    
+
+
+
+<div class="description usertext">
+    Calculate the standard deviation of a set of numbers.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>data</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;number></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>mean</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">number</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lib_SessionData.js.html">lib/SessionData.js</a>, <a href="lib_SessionData.js.html#line224">line 224</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".StandardizeInputs"><span class="type-signature">(static) </span>StandardizeInputs<span class="signature">(inputData)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description usertext">
+    Adjusts input data such that each feature has a mean of zero and a varianceof one.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>inputData</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">TFNestedArray</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lib_SessionData.js.html">lib/SessionData.js</a>, <a href="lib_SessionData.js.html#line237">line 237</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+
+    
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.6</a> using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+
+
+</body>
+</html>

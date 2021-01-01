@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="utf-8">
+    <title>lib/ModelStatics.js - Documentation</title>
+    <link rel="icon" type="image/png" href="favicon.png"/>
+
+    
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+    <script src="scripts/nav.js" defer></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav >
+    
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Axis.html">Axis</a><ul class='methods'><li data-type='method'><a href="Axis.html#.AttemptValidateParameter">AttemptValidateParameter</a></li><li data-type='method'><a href="Axis.html#.AttemptValidateProgression">AttemptValidateProgression</a></li><li data-type='method'><a href="Axis.html#.LookupTypeName">LookupTypeName</a></li><li data-type='method'><a href="Axis.html#Advance">Advance</a></li><li data-type='method'><a href="Axis.html#CalculatePosition">CalculatePosition</a></li><li data-type='method'><a href="Axis.html#CheckComplete">CheckComplete</a></li><li data-type='method'><a href="Axis.html#Reset">Reset</a></li><li data-type='method'><a href="Axis.html#WriteReport">WriteReport</a></li></ul></li><li><a href="AxisSet.html">AxisSet</a><ul class='methods'><li data-type='method'><a href="AxisSet.html#AdvanceAxis">AdvanceAxis</a></li><li data-type='method'><a href="AxisSet.html#CheckAxisComplete">CheckAxisComplete</a></li><li data-type='method'><a href="AxisSet.html#CreateParams">CreateParams</a></li><li data-type='method'><a href="AxisSet.html#GetTotalAxes">GetTotalAxes</a></li><li data-type='method'><a href="AxisSet.html#ResetAxis">ResetAxis</a></li><li data-type='method'><a href="AxisSet.html#Walk">Walk</a></li><li data-type='method'><a href="AxisSet.html#WriteAxisReport">WriteAxisReport</a></li></ul></li><li><a href="AxisSetTraverser.html">AxisSetTraverser</a><ul class='methods'><li data-type='method'><a href="AxisSetTraverser.html#Advance">Advance</a></li><li data-type='method'><a href="AxisSetTraverser.html#CreateIterationParams">CreateIterationParams</a></li><li data-type='method'><a href="AxisSetTraverser.html#ExamineAxisNames">ExamineAxisNames</a></li><li data-type='method'><a href="AxisSetTraverser.html#LookupIterationDescriptor">LookupIterationDescriptor</a></li><li data-type='method'><a href="AxisSetTraverser.html#WriteReport">WriteReport</a></li></ul></li><li><a href="DataSet.html">DataSet</a></li><li><a href="DataSetFetcher.html">DataSetFetcher</a><ul class='methods'><li data-type='method'><a href="DataSetFetcher.html#Fetch">Fetch</a></li></ul></li><li><a href="EpochStats.html">EpochStats</a><ul class='methods'><li data-type='method'><a href="EpochStats.html#.WriteReportHeader">WriteReportHeader</a></li><li data-type='method'><a href="EpochStats.html#Update">Update</a></li><li data-type='method'><a href="EpochStats.html#WriteReport">WriteReport</a></li></ul></li><li><a href="ExponentialProgression.html">ExponentialProgression</a><ul class='methods'><li data-type='method'><a href="ExponentialProgression.html#Advance">Advance</a></li><li data-type='method'><a href="ExponentialProgression.html#Reset">Reset</a></li></ul></li><li><a href="FailureMessage.html">FailureMessage</a></li><li><a href="FibonacciProgression.html">FibonacciProgression</a><ul class='methods'><li data-type='method'><a href="FibonacciProgression.html#Advance">Advance</a></li><li data-type='method'><a href="FibonacciProgression.html#Reset">Reset</a></li></ul></li><li><a href="FileIOResult.html">FileIOResult</a></li><li><a href="Grid.html">Grid</a><ul class='methods'><li data-type='method'><a href="Grid.html#Run">Run</a></li></ul></li><li><a href="GridOptions.html">GridOptions</a><ul class='methods'><li data-type='method'><a href="GridOptions.html#GetOption">GetOption</a></li></ul></li><li><a href="GridRunStats.html">GridRunStats</a><ul class='methods'><li data-type='method'><a href="GridRunStats.html#AddIterationResult">AddIterationResult</a></li><li data-type='method'><a href="GridRunStats.html#WriteCSV">WriteCSV</a></li><li data-type='method'><a href="GridRunStats.html#WriteReport">WriteReport</a></li></ul></li><li><a href="IterationResult.html">IterationResult</a><ul class='methods'><li data-type='method'><a href="IterationResult.html#WriteEpochStatsHeader">WriteEpochStatsHeader</a></li><li data-type='method'><a href="IterationResult.html#WriteEpochStatsValues">WriteEpochStatsValues</a></li><li data-type='method'><a href="IterationResult.html#WriteModelParamHeader">WriteModelParamHeader</a></li><li data-type='method'><a href="IterationResult.html#WriteModelParamValues">WriteModelParamValues</a></li><li data-type='method'><a href="IterationResult.html#WriteReport">WriteReport</a></li><li data-type='method'><a href="IterationResult.html#WriteTestStatsHeader">WriteTestStatsHeader</a></li><li data-type='method'><a href="IterationResult.html#WriteTestStatsValues">WriteTestStatsValues</a></li></ul></li><li><a href="LinearProgression.html">LinearProgression</a><ul class='methods'><li data-type='method'><a href="LinearProgression.html#Advance">Advance</a></li><li data-type='method'><a href="LinearProgression.html#Reset">Reset</a></li></ul></li><li><a href="ModelParams.html">ModelParams</a><ul class='methods'><li data-type='method'><a href="ModelParams.html#GetBooleanParam">GetBooleanParam</a></li><li data-type='method'><a href="ModelParams.html#GetNumericParam">GetNumericParam</a></li><li data-type='method'><a href="ModelParams.html#GetTextParam">GetTextParam</a></li></ul></li><li><a href="ModelStatics.html">ModelStatics</a><ul class='methods'><li data-type='method'><a href="ModelStatics.html#AttemptStripParam">AttemptStripParam</a></li><li data-type='method'><a href="ModelStatics.html#GenerateInitializerBias">GenerateInitializerBias</a></li><li data-type='method'><a href="ModelStatics.html#GenerateInitializerKernel">GenerateInitializerKernel</a></li><li data-type='method'><a href="ModelStatics.html#GenerateLossFunction">GenerateLossFunction</a></li><li data-type='method'><a href="ModelStatics.html#GenerateOptimizer">GenerateOptimizer</a></li><li data-type='method'><a href="ModelStatics.html#ShallowCloneParams">ShallowCloneParams</a></li></ul></li><li><a href="ModelTestStats.html">ModelTestStats</a><ul class='methods'><li data-type='method'><a href="ModelTestStats.html#CalculateScore">CalculateScore</a></li></ul></li><li><a href="PredictionEvaluation.html">PredictionEvaluation</a></li><li><a href="Progression.html">Progression</a><ul class='methods'><li data-type='method'><a href="Progression.html#Reset">Reset</a></li></ul></li><li><a href="SessionData.html">SessionData</a><ul class='methods'><li data-type='method'><a href="SessionData.html#.CountLeafElements">CountLeafElements</a></li><li data-type='method'><a href="SessionData.html#.FindMean">FindMean</a></li><li data-type='method'><a href="SessionData.html#.FindStandardDeviation">FindStandardDeviation</a></li><li data-type='method'><a href="SessionData.html#.StandardizeInputs">StandardizeInputs</a></li></ul></li></ul><h3>Modules</h3><ul><li><a href="module-FileIO.html">FileIO</a><ul class='methods'><li data-type='method'><a href="module-FileIO.html#~ProduceResultsFilename">ProduceResultsFilename</a></li><li data-type='method'><a href="module-FileIO.html#~ReadDataFile">ReadDataFile</a></li><li data-type='method'><a href="module-FileIO.html#~WriteResultsFile">WriteResultsFile</a></li><li data-type='method'><a href="module-FileIO.html#~WriteSystemPath">WriteSystemPath</a></li></ul></li><li><a href="module-main.html">main</a></li><li><a href="module-Utils.html">Utils</a><ul class='methods'><li data-type='method'><a href="module-Utils.html#~ArrayCalculateAverage">ArrayCalculateAverage</a></li><li data-type='method'><a href="module-Utils.html#~ArrayFindIndexOfHighestValue">ArrayFindIndexOfHighestValue</a></li><li data-type='method'><a href="module-Utils.html#~Assert">Assert</a></li><li data-type='method'><a href="module-Utils.html#~CheckFloat0to1Exclusive">CheckFloat0to1Exclusive</a></li><li data-type='method'><a href="module-Utils.html#~CheckNonNegativeInteger">CheckNonNegativeInteger</a></li><li data-type='method'><a href="module-Utils.html#~CheckPositiveInteger">CheckPositiveInteger</a></li><li data-type='method'><a href="module-Utils.html#~QueueRotate">QueueRotate</a></li><li data-type='method'><a href="module-Utils.html#~ThrowCaughtUnknown">ThrowCaughtUnknown</a></li><li data-type='method'><a href="module-Utils.html#~ValidateTextForCSV">ValidateTextForCSV</a></li><li data-type='method'><a href="module-Utils.html#~WriteDurationReport">WriteDurationReport</a></li></ul></li></ul>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">lib/ModelStatics.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>'use strict';
+import * as TENSOR_FLOW from '@tensorflow/tfjs-node';
+import * as Axis from './Axis';
+//TODO: Sub these ^^ in: export { Axis, AxisDefaults, AxisNames, AxisTypes };
+import { FailureMessage } from './FailureMessage';
+import * as Utils from './Utils';
+/**
+ * Manages the hyperparameters that do &lt;i>not&lt;/i> change over the course of
+ * the grid search (i.e. those not governed by an {@link Axis}).
+ */
+class ModelStatics {
+    /**
+     * Creates an instance of ModelStatics.&lt;br>
+     * - See {@link Axis.AxisTypes} for the available fields.&lt;br>
+     * - See {@link Axis.AxisDefaults} for defaults.&lt;br>
+     * All fields are optional. Any field used here that also has an axis will
+     * be ignored (the dynamic axis values will be used instead).
+     * @param {Types.StringKeyedNumbersObject} _userStatics
+     * @example
+     * new tngs.ModelStatics({
+     *   batchSize: 10,
+     *   epochs: 50,
+     *   hiddenLayers: 2,
+     *   learnRate: 0.001,
+     *   neuronsPerHiddenLayer: 16,
+     *   validationSplit: 0.2
+     * });
+     */
+    constructor(_userStatics) {
+        // validate the user-supplied static model params, i.e. those params that never change during grid search
+        this._userStatics = _userStatics;
+        this._staticParams = {};
+        const FAILURE_MESSAGE = new FailureMessage();
+        for (const k in this._userStatics) {
+            if (!Axis.Axis.AttemptValidateParameter(k, this._userStatics[k], FAILURE_MESSAGE)) {
+                // fatal, so that users don't kick off a (potentially very long) grid search with a bad model config
+                throw new Error('There was a problem with the static model params. ' + FAILURE_MESSAGE.text);
+            }
+        }
+        // params are valid; write the working set, backfilling w/ defaults for any the user left out
+        this.WriteStaticParams();
+    }
+    /**
+     * Check whether the received parameter key is also part in our set. If so,
+     * delete the entry, after printing an informative warning to the log.
+     * @param {string} paramKey
+     */
+    AttemptStripParam(paramKey) {
+        Utils.Assert(paramKey !== '');
+        if (this._staticParams[paramKey] === undefined) {
+            // nothing to strip
+            return;
+        }
+        // this static param will be dropped
+        // if the user sent this (as opposed to it being a default), warn them that it won't be used
+        if (this._userStatics[paramKey] !== undefined) {
+            console.warn('The static model param "' + paramKey + '" will be ignored. (It\'s likely overridden by a dynamic grid axis.)');
+        }
+        delete this._staticParams[paramKey];
+    }
+    //TODO: Each of these four 'Generate' calls will be overridable via user callback.
+    /**
+     * Produces a TensorFlow initializer for bias nodes.&lt;br>
+     * Currently set to constant(0.1)
+     * @return {TF_INITIALIZERS.Initializer}
+     */
+    GenerateInitializerBias() {
+        //NOTE: See https://js.tensorflow.org/api/2.7.0/#class:initializers.Initializer
+        return TENSOR_FLOW.initializers.constant({ value: 0.1 });
+    }
+    /**
+     * Produces a TensorFlow initializer for kernel nodes.&lt;br>
+     * Currently set to heNormal()
+     * @return {TF_INITIALIZERS.Initializer}
+     */
+    GenerateInitializerKernel() {
+        //NOTE: See https://js.tensorflow.org/api/2.7.0/#class:initializers.Initializer
+        return TENSOR_FLOW.initializers.heNormal({ seed: Math.random() });
+    }
+    /**
+     * Produces a TensorFlow loss function identifier.&lt;br>
+     * Currently set to "categoricalCrossentropy"
+     * @return {string}
+     */
+    GenerateLossFunction() {
+        //TODO: This will have a more complex type. It can take a string or string[], or a LossOrMetricFn or LossOrMetricFn[].
+        //NOTE: See https://js.tensorflow.org/api/2.7.0/#tf.LayersModel.compile
+        return 'categoricalCrossentropy';
+    }
+    /**
+     * Produces a TensorFlow optimizer.&lt;br>
+     * Currently set to adam(learnRate)
+     * @param {number} learnRate The learning rate. See {@link https://en.wikipedia.org/wiki/Stochastic_gradient_descent#Adam}
+     * @return {TENSOR_FLOW.Optimizer}
+     */
+    GenerateOptimizer(learnRate) {
+        //NOTE: See https://js.tensorflow.org/api/2.7.0/#tf.LayersModel.compile
+        Utils.Assert(learnRate > 0.0);
+        Utils.Assert(learnRate &lt; 1.0);
+        return TENSOR_FLOW.train.adam(learnRate);
+    }
+    /**
+     * Produce a shallow clone of the remaining parameters as a simple object.
+     * @return {Types.StringKeyedSimpleObject}
+     */
+    ShallowCloneParams() {
+        return Object.assign({}, this._staticParams);
+    }
+    /**
+     * Build an object with all available axes (hyperparams), taking the user's
+     * value if available, otherwise taking the system default.
+     * @private
+     */
+    WriteStaticParams() {
+        // set the user's value, or take the program default (these are optional from the user's point-of-view)
+        this._staticParams[Axis.AxisNames.BATCH_SIZE] =
+            this._userStatics[Axis.AxisNames.BATCH_SIZE] !== undefined
+                ? this._userStatics[Axis.AxisNames.BATCH_SIZE]
+                : Axis.AxisDefaults.BATCH_SIZE;
+        this._staticParams[Axis.AxisNames.EPOCHS] =
+            this._userStatics[Axis.AxisNames.EPOCHS] !== undefined
+                ? this._userStatics[Axis.AxisNames.EPOCHS]
+                : Axis.AxisDefaults.EPOCHS;
+        this._staticParams[Axis.AxisNames.LAYERS] =
+            this._userStatics[Axis.AxisNames.LAYERS] !== undefined
+                ? this._userStatics[Axis.AxisNames.LAYERS]
+                : Axis.AxisDefaults.LAYERS;
+        this._staticParams[Axis.AxisNames.LEARN_RATE] =
+            this._userStatics[Axis.AxisNames.LEARN_RATE] !== undefined
+                ? this._userStatics[Axis.AxisNames.LEARN_RATE]
+                : Axis.AxisDefaults.LEARN_RATE;
+        this._staticParams[Axis.AxisNames.NEURONS] =
+            this._userStatics[Axis.AxisNames.NEURONS] !== undefined
+                ? this._userStatics[Axis.AxisNames.NEURONS]
+                : Axis.AxisDefaults.NEURONS;
+        this._staticParams[Axis.AxisNames.VALIDATION_SPLIT] =
+            this._userStatics[Axis.AxisNames.VALIDATION_SPLIT] !== undefined
+                ? this._userStatics[Axis.AxisNames.VALIDATION_SPLIT]
+                : Axis.AxisDefaults.VALIDATION_SPLIT;
+        // now we tack on the parameters that can't be axes (or rather not-yet-supported-as-axes)
+        //TODO: The primary goal of this project is to support as many of these in as many ways as possible (progressions,
+        //		custom schedules, randomizers, smart systems, ... ?).
+        this._staticParams.activationHidden = 'relu';
+        this._staticParams.activationInput = 'relu';
+        this._staticParams.activationOutput = 'softmax';
+    }
+}
+Object.freeze(ModelStatics);
+export { ModelStatics };
+//# sourceMappingURL=ModelStatics.js.map</code></pre>
+        </article>
+    </section>
+
+
+
+
+
+    
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.6</a> using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+
+
+</body>
+</html>
