@@ -160,9 +160,9 @@ main().catch(reason => {
 > on Windows.<br>
 > [See details](https://github.com/tensorflow/tfjs/issues/4052)
 >
->           TLDR, here's the workaround:
+>         TLDR, here's the workaround:
 >
->              copy tensorflow.dll
+>         Copy tensorflow.dll
 >             from: node_modules\@tensorflow\tfjs-node\deps\lib
 >               to: node_modules\@tensorflow\tfjs-node\lib\napi-v6
 
