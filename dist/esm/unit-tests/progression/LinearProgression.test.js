@@ -16,5 +16,9 @@ test('instantiation; advance and reset', () => {
     expect(linearProgression.value).toBe(2 * VALID_STEP);
     linearProgression.Reset();
     expect(linearProgression.value).toBe(0);
+    //vvvvvvvvvvvvvvvv
+    // CI TEST - force failed unit test
+    expect(false).toBe(true);
+    //^^^^^^^^^^^^^^^^
 });
 //# sourceMappingURL=LinearProgression.test.js.map

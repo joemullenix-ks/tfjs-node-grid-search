@@ -31,4 +31,13 @@ test('instantiation; advance and reset', () => {
 	linearProgression.Reset();
 
 	expect(linearProgression.value).toBe(0);
+
+
+
+//vvvvvvvvvvvvvvvv
+// CI TEST - force failed unit test
+expect(false).toBe(true);
+
+//^^^^^^^^^^^^^^^^
+
 });

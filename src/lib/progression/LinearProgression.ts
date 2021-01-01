@@ -33,16 +33,6 @@ class LinearProgression extends Progression {
 		Utils.Assert(step > 0);
 
 		this._step = step;
-
-
-//vvvvvvvvvvvvvvvv
-// CI TEST - force bad TypeScript  [CONFIRMED]
-const FAILS:number = 'text';
-
-console.log(FAILS);
-//^^^^^^^^^^^^^^^^
-
-
 	}
 
 	/**
