@@ -35,7 +35,6 @@ class LinearProgression extends Progression {
 		this._step = step;
 
 
-
 //vvvvvvvvvvvvvvvv
 // CI TEST - force bad TypeScript
 const FAILS:number = 'text';
