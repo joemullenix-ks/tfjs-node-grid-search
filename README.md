@@ -195,7 +195,7 @@ Example:
 ```
 
 ### 3. Define the static model parameters
-Set values for the model parameters will *not* change throughout the search.
+Set values for model parameters that will *not* change throughout the search.
 Instantiate a ModelStatics{{LINK TO DOCS}} with these values.
 ```js
   const modelStatics = new tngs.ModelStatics({
