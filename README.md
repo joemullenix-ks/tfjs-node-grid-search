@@ -149,10 +149,158 @@ main().catch(reason => {
 ```
 
 ## Step-By-Step
-- Apple
-- Banana
-- Cherry
-- Delicious Pears
+### 1. Include the library
+Include TNGS via ES Modules (import)
+```
+import * as tngs from 'tfjs-node-grid-search';
+```
+
+Include TNGS via CommonJS (require)
+```
+const tngs = require('tfjs-node-grid-search');
+```
+
+> NOTE: It's important the grid search be done in an async context, because the
+> filesystem reads and the model training process are asynchronous.
+
+### 2. Define the grid's axes (the dynamic parameters)
+Decide which hyperparameters will have a range of values. For each, create an
+Axis{{LINK TO DOCS}}. Use an array of axes to instatiate an AxisSet{{LINK TO DOCS}}.
+Example:
+```js
+  const axes = [];
+
+  // test batch sizes from 8 to 16 inclusive, in linear steps of 4 (8, 12, 16)
+  axes.push(
+    new tngs.Axis(
+      tngs.AxisTypes.BATCH_SIZE,
+      8,
+      16,
+      new tngs.LinearProgression(4)
+    )
+  );
+
+  // test learning rates from 0.01 to 0.001 inclusive, in linear steps of 0.003
+  // (0.01, 0.007, 0.004, 0.001)
+  axes.push(
+    new tngs.Axis(
+      tngs.AxisTypes.LEARN_RATE,
+      0.01,
+      0.001,
+      new tngs.LinearProgression(0.003)
+    )
+  );
+
+  const axisSet = new tngs.AxisSet(axes);
+```
+
+### 3. Define the static model parameters
+Set values for the model parameters will *not* change throughout the search.
+Instantiate a ModelStatics{{LINK TO DOCS}} with these values.
+```js
+  const modelStatics = new tngs.ModelStatics({
+    epochs: 5,
+    hiddenLayers: 1,
+    validationSplit: 0.25
+  });
+```
+
+### 4. (OPTIONAL) Define search parameters
+There are optional settings that do not affect your neural network. If you wish
+to modify these, instantiate a GridOptions{{LINK TO DOCS}}. Otherwise defaults
+will be used.
+```js
+  const gridOptions = new tngs.GridOptions({
+    epochStatsDepth: 3,
+    repetitions: 2,
+    resultsDirectory: '',
+    validationSetSizeMin: 1000,
+    writeResultsAsCSV: true
+  });
+```
+
+### 5. Fetch the data set
+Fetch your training/testing data by passing the filepaths to an instance of
+DataSetFetcher{{LINK TO DOCS}}, and fetching an instance of DataSet{{LINK TO DOCS}}.
+> NOTE: DataSetFetcher is designed to take the Node launch-args vector (see
+> example), although it will accepth any array. It expects the third item in the
+> array to be the path to your inputs file, and the fourth to be the path to your
+> targets file.
+Intantiate a SessionData{{LINK TO DOCS}} with the DataSet and your standardization preferences.
+
+```
+If passing process.argv, consider launching your app like this:
+
+Example command line:
+  node my-tngs-app.js data_inputs.txt data_targets.txt
+
+Example VSCode launch.json config:
+  "args": ["data_inputs.txt", "data_targets.txt"]
+```
+
+```js
+  const dataSetFetcher = new tngs.DataSetFetcher(process.argv);
+
+  const dataSet = await dataSetFetcher.Fetch();
+
+  // set aside 10% of these cases for post-training generalization tests
+  const TEST_DATA_FRACTION = 0.1;
+
+  const sessionData = new tngs.SessionData(
+    TEST_DATA_FRACTION,
+    dataSet,
+    true
+  );
+```
+
+### 6. Define the evaluation callback
+One callback must be supplied to the search, so that predictions can be scored.
+Define a function that takes two arrays (target and preditioncs), and returns
+an instance of PredictionEvaluation{{LINK TO DOCS}}.
+The search process will gather your scores, and create a report telling you how
+every combination of hyperparameters performed.
+```js
+  const evaluatePrediction = (target: number[], prediction: number[]) => {
+    const targettedIndex = tngs.Utils.ArrayFindIndexOfHighestValue(target);
+
+    const predictedIndex = tngs.Utils.ArrayFindIndexOfHighestValue(prediction);
+
+    return new tngs.PredictionEvaluation(targettedIndex === predictedIndex);
+  };
+```
+
+### 7. (OPTIONAL) Define reporting callbacks
+By default, the system will report results and test stats to the log at the end
+of every epoch. If you wish to do your own analysis, you may provide callbacks
+for end-of-batch, end-of-epoch, and end-of-iteration (where "iteration" is a
+single model run).
+These optional functions have the following signatures:
+
+callbackReportIteration(duration: number, predictions: number[][], proofInputs: Array, proofTargets: number[][])
+
+callbackReportEpoch(duration: number, epoch: number, logs: tf.Logs, epochStats: EpochStats)
+
+callbackReportBatch(duration: number, predictions: number[][], proofInputs: Array, proofTargets: number[][])
+
+Pass these to Grid{{LINK TO DOCS}}. No return value(s) are expected.
+
+### 8. Run the grid search
+You're all set! Instantiate a Grid{{LINK TO DOCS}}, and call Run(). Again, this
+should be run in an async function, as TensorFlow's model.fit is asynchronous.
+```js
+  const grid = new tngs.Grid(
+    axisSet,
+    modelStatics,
+    sessionData,
+    evaluatePrediction,
+    gridOptions
+  );
+
+  await grid.Run();
+```
+
+## Roadmap
+Coming soon
 
 ## Windows
 >
