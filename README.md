@@ -223,18 +223,19 @@ will be used.
 Fetch your training/testing data by passing the filepaths to an instance of
 DataSetFetcher{{LINK TO DOCS}}, and fetching an instance of DataSet{{LINK TO DOCS}}.
 > NOTE: DataSetFetcher is designed to take the Node launch-args vector (see
-> example), but any array of strings is fine. It expects the third item in the
+> example), but any array of strings will work. It expects the third item in the
 > array to be the path to your inputs file, and the fourth to be the path to your
 > targets file.
+
 Intantiate a SessionData{{LINK TO DOCS}} with the DataSet and your standardization preferences.
 
 ```
-If passing process.argv, consider launching your app like this:
+If you use process.argv as designed, consider launching your app like this:
 
-Example command line:
-  node my-tngs-app.js data_inputs.txt data_targets.txt
+Example command line
+  > node my-tngs-app.js data_inputs.txt data_targets.txt
 
-Example VSCode launch.json config:
+Example VSCode configuration property (in launch.json)
   "args": ["data_inputs.txt", "data_targets.txt"]
 ```
 
@@ -255,10 +256,10 @@ Example VSCode launch.json config:
 
 ### 6. Define the evaluation callback
 One callback must be supplied to the search, so that predictions can be scored.
-Define a function that takes two arrays (target and preditioncs), and returns
-an instance of PredictionEvaluation{{LINK TO DOCS}}.
+Define a function that takes two arrays ("target" and "prediction"), and
+returns an instance of PredictionEvaluation{{LINK TO DOCS}}.
 The search process will gather your scores, and create a report telling you how
-every combination of hyperparameters performed.
+each combination of hyperparameters performed.
 ```js
   const evaluatePrediction = (target: number[], prediction: number[]) => {
     const targettedIndex = tngs.Utils.ArrayFindIndexOfHighestValue(target);
@@ -272,17 +273,19 @@ every combination of hyperparameters performed.
 ### 7. (OPTIONAL) Define reporting callbacks
 By default, the system will report results and test stats to the log at the end
 of every epoch. If you wish to do your own analysis, you may provide callbacks
-for end-of-batch, end-of-epoch, and end-of-iteration (where "iteration" is a
+for end-of-batch, end-of-epoch, and end-of-iteration (where 'iteration' is a
 single model run).
 These optional functions have the following signatures:
 
+```js
 callbackReportIteration(duration: number, predictions: number[][], proofInputs: Array, proofTargets: number[][])
 
 callbackReportEpoch(duration: number, epoch: number, logs: tf.Logs, epochStats: EpochStats)
 
 callbackReportBatch(duration: number, predictions: number[][], proofInputs: Array, proofTargets: number[][])
+```
 
-Pass these to Grid{{LINK TO DOCS}}. No return value(s) are expected.
+Pass them to Grid{{LINK TO DOCS}}. No return value(s) are expected.
 
 ### 8. Run the grid search
 You're all set! Instantiate a Grid{{LINK TO DOCS}}, and call Run(). Again, this
