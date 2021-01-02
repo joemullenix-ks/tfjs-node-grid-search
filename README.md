@@ -1,11 +1,11 @@
-# tfjs-node-grid-search &middot; [![npm version](https://img.shields.io/npm/v/tfjs-node-grid-search.svg?style=flat)](https://www.npmjs.com/package/tfjs-node-grid-search)
+# tfjs-node-grid-search &middot; [![npm version](https://img.shields.io/npm/v/tfjs-node-grid-search.svg?style=flat)](https://www.npmjs.com/package/tfjs-node-grid-search) [![MIT License](https://img.shields.io/apm/l/atomic-design-ui.svg?)](https://github.com/joemullenix-ks/tfjs-node-grid-search/blob/main/LICENSE)
 
-| ![Statements](https://img.shields.io/badge/Coverage-100%25-brightgreen.svg) | Statements
-|---|---|
-| ![Branches](https://img.shields.io/badge/Coverage-100%25-brightgreen.svg) | Branches
-| ![Functions](https://img.shields.io/badge/Coverage-100%25-brightgreen.svg) | Functions
-| ![Lines](https://img.shields.io/badge/Coverage-100%25-brightgreen.svg) | Lines
+<span style="font-size:0.85em">
 
+| Statements                  | Branches                | Functions                 | Lines                |
+| --------------------------- | ----------------------- | ------------------------- | -------------------- |
+| ![Statements](https://img.shields.io/badge/Coverage-100%25-brightgreen.svg) | ![Branches](https://img.shields.io/badge/Coverage-100%25-brightgreen.svg) | ![Functions](https://img.shields.io/badge/Coverage-100%25-brightgreen.svg) | ![Lines](https://img.shields.io/badge/Coverage-100%25-brightgreen.svg)    |
+</span>
 <br>
 
 **tfjs-node-grid-search (TNGS)** is a grid search utility for TensorFLow.js in
