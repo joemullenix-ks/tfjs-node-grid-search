@@ -19,14 +19,7 @@ jobs:
         node-version: ${{ matrix.node-version }}
     - run: npm install
 
-    - name: Run linters
-      run: npx eslint src
-    # - name: Run linters
-    #   uses: wearerequired/lint-action@v1
-    #   with:
-    #     github_token: ${{ secrets.GITHUB_TOKEN }}
-    #     # Enable linters
-    #     eslint: true
+    - run: npx eslint --max-warnings 0 src
 
     - run: npm run build-minimal-esm
       env:
