@@ -223,7 +223,7 @@ will be used.
 Fetch your training/testing data by passing the filepaths to an instance of
 DataSetFetcher{{LINK TO DOCS}}, and fetching an instance of DataSet{{LINK TO DOCS}}.
 > NOTE: DataSetFetcher is designed to take the Node launch-args vector (see
-> example), although it will accepth any array. It expects the third item in the
+> example), but any array of strings is fine. It expects the third item in the
 > array to be the path to your inputs file, and the fourth to be the path to your
 > targets file.
 Intantiate a SessionData{{LINK TO DOCS}} with the DataSet and your standardization preferences.
