@@ -300,7 +300,20 @@ should be run in an async function, as TensorFlow's model.fit is asynchronous.
 ```
 
 ## Roadmap
-Coming soon
+- Rewrite DataSetFetcher as a utility, rather than a class to be instantiated.
+- Support data fetch via URL.
+- Offer custom schedules (as opposed to progressions) of grid-axis steps.
+- Optional callback for create-model.
+- Optional callback for compile-model (and/or more initializers, optimizers,
+  loss functions and metrics).
+- Support additional hyperparams (e.g. bias, dropouts).
+- Detection and intervention/early-exit on overfit/stuck.
+- Support other network types (e.g. regression).
+- Support other network types (e.g. regression)
+- Write the model & weight files. // UNBLOCKED by the node bug as of 2.8.0!
+- Smart-start method for skipping poor/unlucky initial weights.
+- Node FORK/SPAWN for parallel runs.
+- Localization, as desired (very few external strings).
 
 ## Windows
 >
