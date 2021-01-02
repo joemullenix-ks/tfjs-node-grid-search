@@ -40,15 +40,6 @@ class LinearProgression extends Progression {
 	 */
 	Advance(): void {
 		this._value += this._step;
-
-
-//vvvvvvvvvvvvvvvv
-// CI TEST - force lint error
-const NOT_REFERENCED = 'oh no!';
-
-//^^^^^^^^^^^^^^^^
-
-
 	}
 }
 
