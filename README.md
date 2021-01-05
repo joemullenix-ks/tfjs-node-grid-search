@@ -150,12 +150,14 @@ main().catch(reason => {
 
 ## Step-By-Step
 ### 1. Include the library
-Include TNGS via ES Modules (import)
+There are two supported methods for including the TNGS library:
+
+Via ES Modules (import)
 ```
 import * as tngs from 'tfjs-node-grid-search';
 ```
 
-Include TNGS via CommonJS (require)
+Via CommonJS (require)
 ```
 const tngs = require('tfjs-node-grid-search');
 ```
