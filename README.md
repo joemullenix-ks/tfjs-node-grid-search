@@ -167,7 +167,7 @@ const tngs = require('tfjs-node-grid-search');
 
 ### 2. Define the grid's axes (the dynamic parameters)
 Decide which hyperparameters will have a range of values. For each, create an
-[Axis](Axis.html). Use an array of axes to instatiate an AxisSet{{LINK TO DOCS}}.
+[Axis](Axis.html). Use an array of axes to instatiate an [AxisSet](https://joemullenix-ks.github.io/tfjs-node-grid-search/AxisSet.html).
 Example:
 ```js
   const axes = [];
