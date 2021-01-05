@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="utf-8">
+    <title>lib/AxisSet.js - Documentation</title>
+    <link rel="icon" type="image/png" href="favicon.png"/>
+
+    
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+    <script src="scripts/nav.js" defer></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav >
+    
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Axis.html">Axis</a><ul class='methods'><li data-type='method'><a href="Axis.html#.AttemptValidateParameter">AttemptValidateParameter</a></li><li data-type='method'><a href="Axis.html#.AttemptValidateProgression">AttemptValidateProgression</a></li><li data-type='method'><a href="Axis.html#.LookupTypeName">LookupTypeName</a></li><li data-type='method'><a href="Axis.html#Advance">Advance</a></li><li data-type='method'><a href="Axis.html#CalculatePosition">CalculatePosition</a></li><li data-type='method'><a href="Axis.html#CheckComplete">CheckComplete</a></li><li data-type='method'><a href="Axis.html#Reset">Reset</a></li><li data-type='method'><a href="Axis.html#WriteReport">WriteReport</a></li></ul></li><li><a href="AxisSet.html">AxisSet</a><ul class='methods'><li data-type='method'><a href="AxisSet.html#AdvanceAxis">AdvanceAxis</a></li><li data-type='method'><a href="AxisSet.html#CheckAxisComplete">CheckAxisComplete</a></li><li data-type='method'><a href="AxisSet.html#CreateParams">CreateParams</a></li><li data-type='method'><a href="AxisSet.html#GetTotalAxes">GetTotalAxes</a></li><li data-type='method'><a href="AxisSet.html#ResetAxis">ResetAxis</a></li><li data-type='method'><a href="AxisSet.html#Walk">Walk</a></li><li data-type='method'><a href="AxisSet.html#WriteAxisReport">WriteAxisReport</a></li></ul></li><li><a href="AxisSetTraverser.html">AxisSetTraverser</a><ul class='methods'><li data-type='method'><a href="AxisSetTraverser.html#Advance">Advance</a></li><li data-type='method'><a href="AxisSetTraverser.html#CreateIterationParams">CreateIterationParams</a></li><li data-type='method'><a href="AxisSetTraverser.html#ExamineAxisNames">ExamineAxisNames</a></li><li data-type='method'><a href="AxisSetTraverser.html#LookupIterationDescriptor">LookupIterationDescriptor</a></li><li data-type='method'><a href="AxisSetTraverser.html#WriteReport">WriteReport</a></li></ul></li><li><a href="DataSet.html">DataSet</a></li><li><a href="DataSetFetcher.html">DataSetFetcher</a><ul class='methods'><li data-type='method'><a href="DataSetFetcher.html#Fetch">Fetch</a></li></ul></li><li><a href="EpochStats.html">EpochStats</a><ul class='methods'><li data-type='method'><a href="EpochStats.html#.WriteReportHeader">WriteReportHeader</a></li><li data-type='method'><a href="EpochStats.html#Update">Update</a></li><li data-type='method'><a href="EpochStats.html#WriteReport">WriteReport</a></li></ul></li><li><a href="ExponentialProgression.html">ExponentialProgression</a><ul class='methods'><li data-type='method'><a href="ExponentialProgression.html#Advance">Advance</a></li><li data-type='method'><a href="ExponentialProgression.html#Reset">Reset</a></li></ul></li><li><a href="FailureMessage.html">FailureMessage</a></li><li><a href="FibonacciProgression.html">FibonacciProgression</a><ul class='methods'><li data-type='method'><a href="FibonacciProgression.html#Advance">Advance</a></li><li data-type='method'><a href="FibonacciProgression.html#Reset">Reset</a></li></ul></li><li><a href="FileIOResult.html">FileIOResult</a></li><li><a href="Grid.html">Grid</a><ul class='methods'><li data-type='method'><a href="Grid.html#Run">Run</a></li></ul></li><li><a href="GridOptions.html">GridOptions</a><ul class='methods'><li data-type='method'><a href="GridOptions.html#GetOption">GetOption</a></li></ul></li><li><a href="GridRunStats.html">GridRunStats</a><ul class='methods'><li data-type='method'><a href="GridRunStats.html#AddIterationResult">AddIterationResult</a></li><li data-type='method'><a href="GridRunStats.html#WriteCSV">WriteCSV</a></li><li data-type='method'><a href="GridRunStats.html#WriteReport">WriteReport</a></li></ul></li><li><a href="IterationResult.html">IterationResult</a><ul class='methods'><li data-type='method'><a href="IterationResult.html#WriteEpochStatsHeader">WriteEpochStatsHeader</a></li><li data-type='method'><a href="IterationResult.html#WriteEpochStatsValues">WriteEpochStatsValues</a></li><li data-type='method'><a href="IterationResult.html#WriteModelParamHeader">WriteModelParamHeader</a></li><li data-type='method'><a href="IterationResult.html#WriteModelParamValues">WriteModelParamValues</a></li><li data-type='method'><a href="IterationResult.html#WriteReport">WriteReport</a></li><li data-type='method'><a href="IterationResult.html#WriteTestStatsHeader">WriteTestStatsHeader</a></li><li data-type='method'><a href="IterationResult.html#WriteTestStatsValues">WriteTestStatsValues</a></li></ul></li><li><a href="LinearProgression.html">LinearProgression</a><ul class='methods'><li data-type='method'><a href="LinearProgression.html#Advance">Advance</a></li><li data-type='method'><a href="LinearProgression.html#Reset">Reset</a></li></ul></li><li><a href="ModelParams.html">ModelParams</a><ul class='methods'><li data-type='method'><a href="ModelParams.html#GetBooleanParam">GetBooleanParam</a></li><li data-type='method'><a href="ModelParams.html#GetNumericParam">GetNumericParam</a></li><li data-type='method'><a href="ModelParams.html#GetTextParam">GetTextParam</a></li></ul></li><li><a href="ModelStatics.html">ModelStatics</a><ul class='methods'><li data-type='method'><a href="ModelStatics.html#AttemptStripParam">AttemptStripParam</a></li><li data-type='method'><a href="ModelStatics.html#GenerateInitializerBias">GenerateInitializerBias</a></li><li data-type='method'><a href="ModelStatics.html#GenerateInitializerKernel">GenerateInitializerKernel</a></li><li data-type='method'><a href="ModelStatics.html#GenerateLossFunction">GenerateLossFunction</a></li><li data-type='method'><a href="ModelStatics.html#GenerateOptimizer">GenerateOptimizer</a></li><li data-type='method'><a href="ModelStatics.html#ShallowCloneParams">ShallowCloneParams</a></li></ul></li><li><a href="ModelTestStats.html">ModelTestStats</a><ul class='methods'><li data-type='method'><a href="ModelTestStats.html#CalculateScore">CalculateScore</a></li></ul></li><li><a href="PredictionEvaluation.html">PredictionEvaluation</a></li><li><a href="Progression.html">Progression</a><ul class='methods'><li data-type='method'><a href="Progression.html#Reset">Reset</a></li></ul></li><li><a href="SessionData.html">SessionData</a><ul class='methods'><li data-type='method'><a href="SessionData.html#.CountLeafElements">CountLeafElements</a></li><li data-type='method'><a href="SessionData.html#.FindMean">FindMean</a></li><li data-type='method'><a href="SessionData.html#.FindStandardDeviation">FindStandardDeviation</a></li><li data-type='method'><a href="SessionData.html#.StandardizeInputs">StandardizeInputs</a></li></ul></li></ul><h3>Modules</h3><ul><li><a href="module-FileIO.html">FileIO</a><ul class='methods'><li data-type='method'><a href="module-FileIO.html#~ProduceResultsFilename">ProduceResultsFilename</a></li><li data-type='method'><a href="module-FileIO.html#~ReadDataFile">ReadDataFile</a></li><li data-type='method'><a href="module-FileIO.html#~WriteResultsFile">WriteResultsFile</a></li><li data-type='method'><a href="module-FileIO.html#~WriteSystemPath">WriteSystemPath</a></li></ul></li><li><a href="module-main.html">main</a></li><li><a href="module-Utils.html">Utils</a><ul class='methods'><li data-type='method'><a href="module-Utils.html#~ArrayCalculateAverage">ArrayCalculateAverage</a></li><li data-type='method'><a href="module-Utils.html#~ArrayFindIndexOfHighestValue">ArrayFindIndexOfHighestValue</a></li><li data-type='method'><a href="module-Utils.html#~Assert">Assert</a></li><li data-type='method'><a href="module-Utils.html#~CheckFloat0to1Exclusive">CheckFloat0to1Exclusive</a></li><li data-type='method'><a href="module-Utils.html#~CheckNonNegativeInteger">CheckNonNegativeInteger</a></li><li data-type='method'><a href="module-Utils.html#~CheckPositiveInteger">CheckPositiveInteger</a></li><li data-type='method'><a href="module-Utils.html#~QueueRotate">QueueRotate</a></li><li data-type='method'><a href="module-Utils.html#~ThrowCaughtUnknown">ThrowCaughtUnknown</a></li><li data-type='method'><a href="module-Utils.html#~ValidateTextForCSV">ValidateTextForCSV</a></li><li data-type='method'><a href="module-Utils.html#~WriteDurationReport">WriteDurationReport</a></li></ul></li></ul>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">lib/AxisSet.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>'use strict';
+import * as Utils from './Utils';
+/**
+ * Manages a collection of {@link Axis}.
+ */
+class AxisSet {
+    /**
+     * Creates an instance of AxisSet.
+     * @param {Array&lt;Axis>} _axes An array of {@link Axis}. Each axis must have a unique hyperparameter.
+     */
+    constructor(_axes) {
+        // validate the incoming axes
+        this._axes = _axes;
+        const AXES_BY_TYPE = {};
+        this._axes.forEach((axis) => {
+            // no duplicates
+            if (AXES_BY_TYPE[axis.type] !== undefined) {
+                throw new Error('Duplicate axis found: ' + axis.typeName);
+            }
+            AXES_BY_TYPE[axis.type] = null;
+        });
+    }
+    /**
+     * Pass-through to advance an axis.
+     * @param {number} index The axis to advance.
+     */
+    AdvanceAxis(index) {
+        this.ValidateIndex(index);
+        this._axes[index].Advance();
+    }
+    /**
+     * Pass-through to check completion.
+     * @param {number} index The axis to check.
+     * @return {boolean}
+     */
+    CheckAxisComplete(index) {
+        this.ValidateIndex(index);
+        return this._axes[index].CheckComplete();
+    }
+    /**
+     * Builds a simple map in the format "{ axis0-name: axis0-value, ... }"
+     * @return {StringKeyedNumbersObject}
+     */
+    CreateParams() {
+        const PARAMS = {};
+        for (let i = 0; i &lt; this._axes.length; ++i) {
+            const AXIS = this._axes[i];
+            PARAMS[AXIS.typeName] = AXIS.CalculatePosition();
+        }
+        return PARAMS;
+    }
+    /**
+     * Gets the collection size.
+     * @return {number}
+     */
+    GetTotalAxes() {
+        return this._axes.length;
+    }
+    /**
+     * Pass-through to reset an axis.
+     * @param {number} index The axis to reset.
+     */
+    ResetAxis(index) {
+        this.ValidateIndex(index);
+        this._axes[index].Reset();
+    }
+    /**
+     * Fails if an axis index is out-of-bounds.
+     * @private
+     * @param {number} index The axis index to validate.
+     */
+    ValidateIndex(index) {
+        Utils.Assert(index >= 0);
+        Utils.Assert(index &lt; this._axes.length);
+    }
+    /**
+     * Traverses the axis collection, invoking a callback for each.
+     * @param {function(Axis): void} callback The function to be invoked with an instance of {@link Axis}.
+     */
+    Walk(callback) {
+        this._axes.forEach(callback);
+    }
+    /**
+     * Pass-through to get axis reports.
+     * @param {number} index The axis to report.
+     * @param {boolean} compact Whether to get a detailed report.
+     * @return {string}
+     */
+    WriteAxisReport(index, compact) {
+        this.ValidateIndex(index);
+        return this._axes[index].WriteReport(compact);
+    }
+}
+Object.freeze(AxisSet);
+export { AxisSet };
+//# sourceMappingURL=AxisSet.js.map</code></pre>
+        </article>
+    </section>
+
+
+
+
+
+    
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.6</a> using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+
+
+</body>
+</html>

@@ -46,7 +46,7 @@
     "build-minimal-esm": "tsc -p tsconfig.json",
     "build-no-doc": "npm run tsc && npm run test",
     "build-no-test": "npm run tsc && npm run jsdoc-themed",
-    "copy-icon": "copy jsdoc\\favicon.png dist\\jsdoc\\output",
+    "copy-icon": "copy jsdoc\\favicon.png docs",
     "jsdoc": "jsdoc -c jsdoc\\conf.json --debug",
     "jsdoc-themed": "jsdoc -c jsdoc\\conf.json -t jsdoc\\themes\\docdash --debug -R README.md",
     "make-badges": "istanbul-badges-readme",
