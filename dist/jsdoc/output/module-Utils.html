@@ -1,41 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    
     <meta charset="utf-8">
-    <title>Utils - Documentation</title>
-    <link rel="icon" type="image/png" href="favicon.png"/>
+    <title>JSDoc: Module: Utils</title>
 
-    
-    
-    <script src="scripts/prettify/prettify.js"></script>
-    <script src="scripts/prettify/lang-css.js"></script>
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
     <!--[if lt IE 9]>
       <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
-    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
-    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
-    <script src="scripts/nav.js" defer></script>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
 </head>
+
 <body>
 
-<input type="checkbox" id="nav-trigger" class="nav-trigger" />
-<label for="nav-trigger" class="navicon-button x">
-  <div class="navicon"></div>
-</label>
-
-<label for="nav-trigger" class="overlay"></label>
-
-<nav >
-    
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Axis.html">Axis</a><ul class='methods'><li data-type='method'><a href="Axis.html#.AttemptValidateParameter">AttemptValidateParameter</a></li><li data-type='method'><a href="Axis.html#.AttemptValidateProgression">AttemptValidateProgression</a></li><li data-type='method'><a href="Axis.html#.LookupTypeName">LookupTypeName</a></li><li data-type='method'><a href="Axis.html#Advance">Advance</a></li><li data-type='method'><a href="Axis.html#CalculatePosition">CalculatePosition</a></li><li data-type='method'><a href="Axis.html#CheckComplete">CheckComplete</a></li><li data-type='method'><a href="Axis.html#Reset">Reset</a></li><li data-type='method'><a href="Axis.html#WriteReport">WriteReport</a></li></ul></li><li><a href="AxisSet.html">AxisSet</a><ul class='methods'><li data-type='method'><a href="AxisSet.html#AdvanceAxis">AdvanceAxis</a></li><li data-type='method'><a href="AxisSet.html#CheckAxisComplete">CheckAxisComplete</a></li><li data-type='method'><a href="AxisSet.html#CreateParams">CreateParams</a></li><li data-type='method'><a href="AxisSet.html#GetTotalAxes">GetTotalAxes</a></li><li data-type='method'><a href="AxisSet.html#ResetAxis">ResetAxis</a></li><li data-type='method'><a href="AxisSet.html#Walk">Walk</a></li><li data-type='method'><a href="AxisSet.html#WriteAxisReport">WriteAxisReport</a></li></ul></li><li><a href="AxisSetTraverser.html">AxisSetTraverser</a><ul class='methods'><li data-type='method'><a href="AxisSetTraverser.html#Advance">Advance</a></li><li data-type='method'><a href="AxisSetTraverser.html#CreateIterationParams">CreateIterationParams</a></li><li data-type='method'><a href="AxisSetTraverser.html#ExamineAxisNames">ExamineAxisNames</a></li><li data-type='method'><a href="AxisSetTraverser.html#LookupIterationDescriptor">LookupIterationDescriptor</a></li><li data-type='method'><a href="AxisSetTraverser.html#WriteReport">WriteReport</a></li></ul></li><li><a href="DataSet.html">DataSet</a></li><li><a href="DataSetFetcher.html">DataSetFetcher</a><ul class='methods'><li data-type='method'><a href="DataSetFetcher.html#Fetch">Fetch</a></li></ul></li><li><a href="EpochStats.html">EpochStats</a><ul class='methods'><li data-type='method'><a href="EpochStats.html#.WriteReportHeader">WriteReportHeader</a></li><li data-type='method'><a href="EpochStats.html#Update">Update</a></li><li data-type='method'><a href="EpochStats.html#WriteReport">WriteReport</a></li></ul></li><li><a href="ExponentialProgression.html">ExponentialProgression</a><ul class='methods'><li data-type='method'><a href="ExponentialProgression.html#Advance">Advance</a></li><li data-type='method'><a href="ExponentialProgression.html#Reset">Reset</a></li></ul></li><li><a href="FailureMessage.html">FailureMessage</a></li><li><a href="FibonacciProgression.html">FibonacciProgression</a><ul class='methods'><li data-type='method'><a href="FibonacciProgression.html#Advance">Advance</a></li><li data-type='method'><a href="FibonacciProgression.html#Reset">Reset</a></li></ul></li><li><a href="FileIOResult.html">FileIOResult</a></li><li><a href="Grid.html">Grid</a><ul class='methods'><li data-type='method'><a href="Grid.html#Run">Run</a></li></ul></li><li><a href="GridOptions.html">GridOptions</a><ul class='methods'><li data-type='method'><a href="GridOptions.html#GetOption">GetOption</a></li></ul></li><li><a href="GridRunStats.html">GridRunStats</a><ul class='methods'><li data-type='method'><a href="GridRunStats.html#AddIterationResult">AddIterationResult</a></li><li data-type='method'><a href="GridRunStats.html#WriteCSV">WriteCSV</a></li><li data-type='method'><a href="GridRunStats.html#WriteReport">WriteReport</a></li></ul></li><li><a href="IterationResult.html">IterationResult</a><ul class='methods'><li data-type='method'><a href="IterationResult.html#WriteEpochStatsHeader">WriteEpochStatsHeader</a></li><li data-type='method'><a href="IterationResult.html#WriteEpochStatsValues">WriteEpochStatsValues</a></li><li data-type='method'><a href="IterationResult.html#WriteModelParamHeader">WriteModelParamHeader</a></li><li data-type='method'><a href="IterationResult.html#WriteModelParamValues">WriteModelParamValues</a></li><li data-type='method'><a href="IterationResult.html#WriteReport">WriteReport</a></li><li data-type='method'><a href="IterationResult.html#WriteTestStatsHeader">WriteTestStatsHeader</a></li><li data-type='method'><a href="IterationResult.html#WriteTestStatsValues">WriteTestStatsValues</a></li></ul></li><li><a href="LinearProgression.html">LinearProgression</a><ul class='methods'><li data-type='method'><a href="LinearProgression.html#Advance">Advance</a></li><li data-type='method'><a href="LinearProgression.html#Reset">Reset</a></li></ul></li><li><a href="ModelParams.html">ModelParams</a><ul class='methods'><li data-type='method'><a href="ModelParams.html#GetBooleanParam">GetBooleanParam</a></li><li data-type='method'><a href="ModelParams.html#GetNumericParam">GetNumericParam</a></li><li data-type='method'><a href="ModelParams.html#GetTextParam">GetTextParam</a></li></ul></li><li><a href="ModelStatics.html">ModelStatics</a><ul class='methods'><li data-type='method'><a href="ModelStatics.html#AttemptStripParam">AttemptStripParam</a></li><li data-type='method'><a href="ModelStatics.html#GenerateInitializerBias">GenerateInitializerBias</a></li><li data-type='method'><a href="ModelStatics.html#GenerateInitializerKernel">GenerateInitializerKernel</a></li><li data-type='method'><a href="ModelStatics.html#GenerateLossFunction">GenerateLossFunction</a></li><li data-type='method'><a href="ModelStatics.html#GenerateOptimizer">GenerateOptimizer</a></li><li data-type='method'><a href="ModelStatics.html#ShallowCloneParams">ShallowCloneParams</a></li></ul></li><li><a href="ModelTestStats.html">ModelTestStats</a><ul class='methods'><li data-type='method'><a href="ModelTestStats.html#CalculateScore">CalculateScore</a></li></ul></li><li><a href="PredictionEvaluation.html">PredictionEvaluation</a></li><li><a href="Progression.html">Progression</a><ul class='methods'><li data-type='method'><a href="Progression.html#Reset">Reset</a></li></ul></li><li><a href="SessionData.html">SessionData</a><ul class='methods'><li data-type='method'><a href="SessionData.html#.CountLeafElements">CountLeafElements</a></li><li data-type='method'><a href="SessionData.html#.FindMean">FindMean</a></li><li data-type='method'><a href="SessionData.html#.FindStandardDeviation">FindStandardDeviation</a></li><li data-type='method'><a href="SessionData.html#.StandardizeInputs">StandardizeInputs</a></li></ul></li></ul><h3>Modules</h3><ul><li><a href="module-FileIO.html">FileIO</a><ul class='methods'><li data-type='method'><a href="module-FileIO.html#~ProduceResultsFilename">ProduceResultsFilename</a></li><li data-type='method'><a href="module-FileIO.html#~ReadDataFile">ReadDataFile</a></li><li data-type='method'><a href="module-FileIO.html#~WriteResultsFile">WriteResultsFile</a></li><li data-type='method'><a href="module-FileIO.html#~WriteSystemPath">WriteSystemPath</a></li></ul></li><li><a href="module-main.html">main</a></li><li><a href="module-Utils.html">Utils</a><ul class='methods'><li data-type='method'><a href="module-Utils.html#~ArrayCalculateAverage">ArrayCalculateAverage</a></li><li data-type='method'><a href="module-Utils.html#~ArrayFindIndexOfHighestValue">ArrayFindIndexOfHighestValue</a></li><li data-type='method'><a href="module-Utils.html#~Assert">Assert</a></li><li data-type='method'><a href="module-Utils.html#~CheckFloat0to1Exclusive">CheckFloat0to1Exclusive</a></li><li data-type='method'><a href="module-Utils.html#~CheckNonNegativeInteger">CheckNonNegativeInteger</a></li><li data-type='method'><a href="module-Utils.html#~CheckPositiveInteger">CheckPositiveInteger</a></li><li data-type='method'><a href="module-Utils.html#~QueueRotate">QueueRotate</a></li><li data-type='method'><a href="module-Utils.html#~ThrowCaughtUnknown">ThrowCaughtUnknown</a></li><li data-type='method'><a href="module-Utils.html#~ValidateTextForCSV">ValidateTextForCSV</a></li><li data-type='method'><a href="module-Utils.html#~WriteDurationReport">WriteDurationReport</a></li></ul></li></ul>
-</nav>
-
 <div id="main">
-    
-    <h1 class="page-title">Utils</h1>
-    
+
+    <h1 class="page-title">Module: Utils</h1>
 
     
 
@@ -51,15 +33,13 @@
 </header>
 
 <article>
+    <div class="container-overview">
     
-        <div class="container-overview">
         
-            
 
-            
         
-        </div>
     
+    </div>
 
     
 
@@ -69,7 +49,7 @@
 
     
 
-     
+    
 
     
 
@@ -83,17 +63,17 @@
 
     
 
+    
     <h4 class="name" id="~ArrayCalculateAverage"><span class="type-signature">(inner) </span>ArrayCalculateAverage<span class="signature">(array)</span><span class="type-signature"> &rarr; {number}</span></h4>
+    
 
     
 
 
 
-<div class="description usertext">
+<div class="description">
     Finds the mean of a set of numbers. Array must not be empty.
 </div>
-
-
 
 
 
@@ -156,6 +136,50 @@
 
 
 
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lib_Utils.js.html">lib/Utils.js</a>, <a href="lib_Utils.js.html#line11">line 11</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
 
 
 
@@ -171,7 +195,7 @@
         
 
 
-<dl class="param-type">
+<dl>
     <dt>
         Type
     </dt>
@@ -189,65 +213,22 @@
 
 
 
-
-
-<dl class="details">
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="lib_Utils.js.html">lib/Utils.js</a>, <a href="lib_Utils.js.html#line11">line 11</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
         
             
 
     
 
+    
     <h4 class="name" id="~ArrayFindIndexOfHighestValue"><span class="type-signature">(inner) </span>ArrayFindIndexOfHighestValue<span class="signature">(values)</span><span class="type-signature"> &rarr; {number}</span></h4>
+    
 
     
 
 
 
-<div class="description usertext">
+<div class="description">
     Finds the largest value in an array of numbers, and returns the index of thatvalue. Array must not be empty.
 </div>
-
-
 
 
 
@@ -310,6 +291,50 @@
 
 
 
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lib_Utils.js.html">lib/Utils.js</a>, <a href="lib_Utils.js.html#line28">line 28</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
 
 
 
@@ -325,7 +350,7 @@
         
 
 
-<dl class="param-type">
+<dl>
     <dt>
         Type
     </dt>
@@ -343,65 +368,22 @@
 
 
 
-
-
-<dl class="details">
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="lib_Utils.js.html">lib/Utils.js</a>, <a href="lib_Utils.js.html#line28">line 28</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
         
             
 
     
 
+    
     <h4 class="name" id="~Assert"><span class="type-signature">(inner) </span>Assert<span class="signature">(condition)</span><span class="type-signature"> &rarr; {void}</span></h4>
+    
 
     
 
 
 
-<div class="description usertext">
+<div class="description">
     Standard assertion. Throws if condition is false.<br>Note: Todo: To better merge w/ Jest, I'll propagate this throughout, andbuild in a preprocessor switch, driven by Node launch arg.
 </div>
-
-
 
 
 
@@ -464,6 +446,50 @@
 
 
 
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lib_Utils.js.html">lib/Utils.js</a>, <a href="lib_Utils.js.html#line50">line 50</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
 
 
 
@@ -479,7 +505,7 @@
         
 
 
-<dl class="param-type">
+<dl>
     <dt>
         Type
     </dt>
@@ -497,65 +523,22 @@
 
 
 
-
-
-<dl class="details">
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="lib_Utils.js.html">lib/Utils.js</a>, <a href="lib_Utils.js.html#line50">line 50</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
         
             
 
     
 
+    
     <h4 class="name" id="~CheckFloat0to1Exclusive"><span class="type-signature">(inner) </span>CheckFloat0to1Exclusive<span class="signature">(x)</span><span class="type-signature"> &rarr; {boolean}</span></h4>
+    
 
     
 
 
 
-<div class="description usertext">
+<div class="description">
     Returns true if x is in the range { 0 < x < 1 }.
 </div>
-
-
 
 
 
@@ -618,42 +601,31 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
-
-
-<dl class="param-type">
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">boolean</span>
-
-
-    </dd>
-</dl>
+<dl class="details">
 
     
 
+    
 
+    
 
+    
 
+    
 
+    
 
+    
 
-<dl class="details">
+    
+
+    
+
+    
+
+    
+
+    
 
     
     <dt class="tag-source">Source:</dt>
@@ -667,31 +639,43 @@
     
 
     
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
 </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">boolean</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
 
 
         
@@ -699,17 +683,17 @@
 
     
 
+    
     <h4 class="name" id="~CheckNonNegativeInteger"><span class="type-signature">(inner) </span>CheckNonNegativeInteger<span class="signature">(x)</span><span class="type-signature"> &rarr; {boolean}</span></h4>
+    
 
     
 
 
 
-<div class="description usertext">
+<div class="description">
     Returns true if x is a positive integer or zero.
 </div>
-
-
 
 
 
@@ -772,42 +756,31 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
-
-
-<dl class="param-type">
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">boolean</span>
-
-
-    </dd>
-</dl>
+<dl class="details">
 
     
 
+    
 
+    
 
+    
 
+    
 
+    
 
+    
 
-<dl class="details">
+    
+
+    
+
+    
+
+    
+
+    
 
     
     <dt class="tag-source">Source:</dt>
@@ -821,31 +794,43 @@
     
 
     
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
 </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">boolean</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
 
 
         
@@ -853,17 +838,17 @@
 
     
 
+    
     <h4 class="name" id="~CheckPositiveInteger"><span class="type-signature">(inner) </span>CheckPositiveInteger<span class="signature">(x)</span><span class="type-signature"> &rarr; {boolean}</span></h4>
+    
 
     
 
 
 
-<div class="description usertext">
+<div class="description">
     Returns true if x is an integer greater than zero.
 </div>
-
-
 
 
 
@@ -926,6 +911,50 @@
 
 
 
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lib_Utils.js.html">lib/Utils.js</a>, <a href="lib_Utils.js.html#line89">line 89</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
 
 
 
@@ -941,7 +970,7 @@
         
 
 
-<dl class="param-type">
+<dl>
     <dt>
         Type
     </dt>
@@ -959,65 +988,22 @@
 
 
 
-
-
-<dl class="details">
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="lib_Utils.js.html">lib/Utils.js</a>, <a href="lib_Utils.js.html#line89">line 89</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
         
             
 
     
 
+    
     <h4 class="name" id="~QueueRotate"><span class="type-signature">(inner) </span>QueueRotate<span class="signature">(queue, newSample, count)</span><span class="type-signature"></span></h4>
+    
 
     
 
 
 
-<div class="description usertext">
+<div class="description">
     Fills a queue with numbers up to a length limit. Once that limit has beenreached, it drops the oldest first (does a dequeue before the enqueue).
 </div>
-
-
 
 
 
@@ -1126,24 +1112,31 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
 
     
     <dt class="tag-source">Source:</dt>
@@ -1157,31 +1150,25 @@
     
 
     
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
 </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
         
@@ -1189,17 +1176,17 @@
 
     
 
+    
     <h4 class="name" id="~ThrowCaughtUnknown"><span class="type-signature">(inner) </span>ThrowCaughtUnknown<span class="signature">(messagePrefix, errorOrException)</span><span class="type-signature"></span></h4>
+    
 
     
 
 
 
-<div class="description usertext">
+<div class="description">
     Throws a relayed exception, with logic that checks the type of thecaught object in order produce a cleaner error message.<br>Note: This is done because TypeScript does not yet have typed catch().
 </div>
-
-
 
 
 
@@ -1285,24 +1272,31 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
 
     
     <dt class="tag-source">Source:</dt>
@@ -1316,31 +1310,25 @@
     
 
     
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
 </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
         
@@ -1348,17 +1336,17 @@
 
     
 
+    
     <h4 class="name" id="~ValidateTextForCSV"><span class="type-signature">(inner) </span>ValidateTextForCSV<span class="signature">(x)</span><span class="type-signature"></span></h4>
+    
 
     
 
 
 
-<div class="description usertext">
+<div class="description">
     Takes arguments in a variety of types, converts them to strings, and checkswhether those string representations will break CSV formatting. Specifically,it throws in the event it finds a comma or newline. Otherwise it returnssilently.
 </div>
-
-
 
 
 
@@ -1427,24 +1415,31 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
 
     
     <dt class="tag-source">Source:</dt>
@@ -1458,31 +1453,25 @@
     
 
     
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
 </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
         
@@ -1490,17 +1479,17 @@
 
     
 
+    
     <h4 class="name" id="~WriteDurationReport"><span class="type-signature">(inner) </span>WriteDurationReport<span class="signature">(durationMS)</span><span class="type-signature"> &rarr; {string}</span></h4>
+    
 
     
 
 
 
-<div class="description usertext">
+<div class="description">
     Creates a string that represents a duration in milliseconds, and variationsof the same in seconds, minutes and hours.
 </div>
-
-
 
 
 
@@ -1563,6 +1552,50 @@
 
 
 
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lib_Utils.js.html">lib/Utils.js</a>, <a href="lib_Utils.js.html#line157">line 157</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
 
 
 
@@ -1582,7 +1615,7 @@
 
 
 
-<dl class="param-type">
+<dl>
     <dt>
         Type
     </dt>
@@ -1600,49 +1633,6 @@
 
 
 
-
-
-<dl class="details">
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="lib_Utils.js.html">lib/Utils.js</a>, <a href="lib_Utils.js.html#line157">line 157</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
         
     
 
@@ -1656,21 +1646,19 @@
 
 
 
-
-    
 </div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-FileIO.html">FileIO</a></li><li><a href="module-main.html">main</a></li><li><a href="module-Utils.html">Utils</a></li></ul><h3>Classes</h3><ul><li><a href="Axis.html">Axis</a></li><li><a href="AxisSet.html">AxisSet</a></li><li><a href="AxisSetTraverser.html">AxisSetTraverser</a></li><li><a href="DataSet.html">DataSet</a></li><li><a href="DataSetFetcher.html">DataSetFetcher</a></li><li><a href="EpochStats.html">EpochStats</a></li><li><a href="ExponentialProgression.html">ExponentialProgression</a></li><li><a href="FailureMessage.html">FailureMessage</a></li><li><a href="FibonacciProgression.html">FibonacciProgression</a></li><li><a href="FileIOResult.html">FileIOResult</a></li><li><a href="Grid.html">Grid</a></li><li><a href="GridOptions.html">GridOptions</a></li><li><a href="GridRunStats.html">GridRunStats</a></li><li><a href="IterationResult.html">IterationResult</a></li><li><a href="LinearProgression.html">LinearProgression</a></li><li><a href="ModelParams.html">ModelParams</a></li><li><a href="ModelStatics.html">ModelStatics</a></li><li><a href="ModelTestStats.html">ModelTestStats</a></li><li><a href="PredictionEvaluation.html">PredictionEvaluation</a></li><li><a href="Progression.html">Progression</a></li><li><a href="SessionData.html">SessionData</a></li></ul>
+</nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.6</a> using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.6</a>
 </footer>
 
-<script>prettyPrint();</script>
-<script src="scripts/polyfill.js"></script>
-<script src="scripts/linenumber.js"></script>
-
-
-
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
 </body>
 </html>
