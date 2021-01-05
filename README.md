@@ -150,12 +150,14 @@ main().catch(reason => {
 
 ## Step-By-Step
 ### 1. Include the library
-Include TNGS via ES Modules (import)
+There are two supported methods for including the TNGS library:
+
+Via ES Modules (import)
 ```
 import * as tngs from 'tfjs-node-grid-search';
 ```
 
-Include TNGS via CommonJS (require)
+Via CommonJS (require)
 ```
 const tngs = require('tfjs-node-grid-search');
 ```
@@ -311,8 +313,8 @@ should be run in an async function, as TensorFlow's model.fit is asynchronous.
   loss functions and metrics).
 - Support additional hyperparams (e.g. bias, dropouts).
 - Detection and intervention/early-exit on overfit/stuck.
-- Support other network types (e.g. regression).
-- Support other network types (e.g. regression)
+- Support other network types (e.g. regression) w/ templates.
+- Support more complex networks (e.g. multi in/out, convolutions).
 - Write the model & weight files. // UNBLOCKED by the node bug as of 2.8.0!
 - Smart-start method for skipping poor/unlucky initial weights.
 - Node FORK/SPAWN for parallel runs.
