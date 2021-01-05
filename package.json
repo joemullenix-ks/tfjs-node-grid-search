@@ -48,7 +48,7 @@
     "build-no-test": "npm run tsc && npm run jsdoc-themed",
     "copy-icon": "copy jsdoc\\favicon.png dist\\jsdoc\\output",
     "jsdoc": "jsdoc -c jsdoc\\conf.json --debug",
-    "jsdoc-themed": "jsdoc -c jsdoc\\conf.json -t jsdoc\\themes\\docdash --debug",
+    "jsdoc-themed": "jsdoc -c jsdoc\\conf.json -t jsdoc\\themes\\docdash --debug -R README.md",
     "make-badges": "istanbul-badges-readme",
     "test": "jest --coverage --silent",
     "test-debug": "jest --coverage --debug",
