@@ -2,6 +2,11 @@
   box-sizing: border-box
 }
 
+/** My overrides for the readme markdown (on the landing). [JM 2020 01 05] */
+.jm_homepage {
+  max-width: 1200px;
+}
+
 html, body {
   height: 100%;
   width: 100%;
@@ -173,7 +178,7 @@ tt, code, kbd, samp {
   line-height: 140%;
   margin-bottom: 1em;
   margin-top: 1em;
-  max-width: 1000px;
+  max-width: 1200px;  /** My addition. [JM 2020 11 20] */
 }
 
 .class-description:empty {

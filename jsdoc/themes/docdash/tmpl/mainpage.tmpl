@@ -5,11 +5,11 @@ var self = this;
 
 <?js if (data.kind === 'package') { ?>
     <section class="package">
-        <h3><?js= data.name ?> <?js= data.version ?></h3>		
+        <h3><?js= data.name ?> <?js= data.version ?></h3>
     </section>
 <?js } ?>
 <?js if (data.readme) { ?>
-    <section class="readme usertext">
+    <section class="readme usertext jm_homepage">
         <article><?js= data.readme ?></article>
     </section>
 <?js } ?>

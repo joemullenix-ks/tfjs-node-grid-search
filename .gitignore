@@ -27,4 +27,4 @@ src/all.ts
 jsdoc/favicon.psd
 
 # These are killing my diffs; releases only.
-# coverage
+coverage
