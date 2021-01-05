@@ -167,7 +167,7 @@ const tngs = require('tfjs-node-grid-search');
 
 ### 2. Define the grid's axes (the dynamic parameters)
 Decide which hyperparameters will have a range of values. For each, create an
-[Axis](Axis.html). Use an array of axes to instatiate an [AxisSet](https://joemullenix-ks.github.io/tfjs-node-grid-search/AxisSet.html).
+[Axis](https://joemullenix-ks.github.io/tfjs-node-grid-search/Axis.html). Use an array of axes to instatiate an [AxisSet](https://joemullenix-ks.github.io/tfjs-node-grid-search/AxisSet.html).
 Example:
 ```js
   const axes = [];
@@ -198,7 +198,7 @@ Example:
 
 ### 3. Define the static model parameters
 Set values for model parameters that will *not* change throughout the search.
-Instantiate a ModelStatics{{LINK TO DOCS}} with these values.
+Instantiate a [ModelStatics](https://joemullenix-ks.github.io/tfjs-node-grid-search/ModelStatics.html) with these values.
 ```js
   const modelStatics = new tngs.ModelStatics({
     epochs: 5,
@@ -209,7 +209,7 @@ Instantiate a ModelStatics{{LINK TO DOCS}} with these values.
 
 ### 4. (OPTIONAL) Define search parameters
 There are optional settings that do not affect your neural network. If you wish
-to modify these, instantiate a GridOptions{{LINK TO DOCS}}. Otherwise defaults
+to modify these, instantiate a [GridOptions](https://joemullenix-ks.github.io/tfjs-node-grid-search/GridOptions.html). Otherwise defaults
 will be used.
 ```js
   const gridOptions = new tngs.GridOptions({
@@ -223,13 +223,13 @@ will be used.
 
 ### 5. Fetch the data set
 Fetch your training/testing data by passing the filepaths to an instance of
-DataSetFetcher{{LINK TO DOCS}}, and fetching an instance of DataSet{{LINK TO DOCS}}.
+[DataSetFetcher](https://joemullenix-ks.github.io/tfjs-node-grid-search/DataSetFetcher.html), and fetching an instance of [DataSet](https://joemullenix-ks.github.io/tfjs-node-grid-search/DataSet.html).
 > NOTE: DataSetFetcher is designed to take the Node launch-args vector (see
 > example), but any array of strings will work. It expects the third item in the
 > array to be the path to your inputs file, and the fourth to be the path to your
 > targets file.
 
-Intantiate a SessionData{{LINK TO DOCS}} with the DataSet and your standardization preferences.
+Intantiate a [SessionData](https://joemullenix-ks.github.io/tfjs-node-grid-search/SessionData.html) with the DataSet and your standardization preferences.
 
 ```
 If you use process.argv as designed, consider launching your app like this:
@@ -259,7 +259,7 @@ Example VSCode configuration property (in launch.json)
 ### 6. Define the evaluation callback
 One callback must be supplied to the search, so that predictions can be scored.
 Define a function that takes two arrays ("target" and "prediction"), and
-returns an instance of PredictionEvaluation{{LINK TO DOCS}}.
+returns an instance of [PredictionEvaluation](https://joemullenix-ks.github.io/tfjs-node-grid-search/PredictionEvaluation.html).
 The search process will gather your scores, and create a report telling you how
 each combination of hyperparameters performed.
 ```js
@@ -287,10 +287,10 @@ callbackReportEpoch(duration: number, epoch: number, logs: tf.Logs, epochStats: 
 callbackReportBatch(duration: number, predictions: number[][], proofInputs: Array, proofTargets: number[][])
 ```
 
-Pass them to Grid{{LINK TO DOCS}}. No return value(s) are expected.
+Pass them to [Grid](https://joemullenix-ks.github.io/tfjs-node-grid-search/Grid.html). No return value(s) are expected.
 
 ### 8. Run the grid search
-You're all set! Instantiate a Grid{{LINK TO DOCS}}, and call Run(). Again, this
+You're all set! Instantiate a [Grid](https://joemullenix-ks.github.io/tfjs-node-grid-search/Grid.html), and call Run(). Again, this
 should be run in an async function, as TensorFlow's model.fit is asynchronous.
 ```js
   const grid = new tngs.Grid(
