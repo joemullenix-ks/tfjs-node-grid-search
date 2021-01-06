@@ -21,7 +21,7 @@ npm i tfjs-node-grid-search
 ```
 
 ## Documentation
-https://github.com/joemullenix-ks/tfjs-node-grid-search/wiki
+[joemullenix-ks.github.io/tfjs-node-grid-search](https://joemullenix-ks.github.io/tfjs-node-grid-search/index.html)
 
 ## Full Example
 ```js
