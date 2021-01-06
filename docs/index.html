@@ -90,7 +90,7 @@ logged and (optionally) written as a CSV file.</p>
 <pre class="prettyprint source"><code>npm i tfjs-node-grid-search
 </code></pre>
 <h2>Documentation</h2>
-<p>https://github.com/joemullenix-ks/tfjs-node-grid-search/wiki</p>
+<p><a href="https://joemullenix-ks.github.io/tfjs-node-grid-search/index.html">joemullenix-ks.github.io/tfjs-node-grid-search</a></p>
 <h2>Full Example</h2>
 <pre class="prettyprint source lang-js"><code>import * as tngs from 'tfjs-node-grid-search';
 
@@ -229,7 +229,7 @@ filesystem reads and the model training process are asynchronous.</p>
 </blockquote>
 <h3>2. Define the grid's axes (the dynamic parameters)</h3>
 <p>Decide which hyperparameters will have a range of values. For each, create an
-<a href="Axis.html">Axis</a>. Use an array of axes to instatiate an <a href="https://joemullenix-ks.github.io/tfjs-node-grid-search/AxisSet.html">AxisSet</a>.
+<a href="https://joemullenix-ks.github.io/tfjs-node-grid-search/Axis.html">Axis</a>. Use an array of axes to instatiate an <a href="https://joemullenix-ks.github.io/tfjs-node-grid-search/AxisSet.html">AxisSet</a>.
 Example:</p>
 <pre class="prettyprint source lang-js"><code>  const axes = [];
 
@@ -258,35 +258,23 @@ Example:</p>
 </code></pre>
 <h3>3. Define the static model parameters</h3>
 <p>Set values for model parameters that will <em>not</em> change throughout the search.
-Instantiate a ModelStatics{{LINK TO DOCS}} with these values.</p>
+Instantiate a <a href="https://joemullenix-ks.github.io/tfjs-node-grid-search/ModelStatics.html">ModelStatics</a> with these values.</p>
 <pre class="prettyprint source lang-js"><code>  const modelStatics = new tngs.ModelStatics({
     epochs: 5,
     hiddenLayers: 1,
     validationSplit: 0.25
   });
 </code></pre>
-<h3>4. (OPTIONAL) Define search parameters</h3>
-<p>There are optional settings that do not affect your neural network. If you wish
-to modify these, instantiate a GridOptions{{LINK TO DOCS}}. Otherwise defaults
-will be used.</p>
-<pre class="prettyprint source lang-js"><code>  const gridOptions = new tngs.GridOptions({
-    epochStatsDepth: 3,
-    repetitions: 2,
-    resultsDirectory: '',
-    validationSetSizeMin: 1000,
-    writeResultsAsCSV: true
-  });
-</code></pre>
-<h3>5. Fetch the data set</h3>
+<h3>4. Fetch the data set</h3>
 <p>Fetch your training/testing data by passing the filepaths to an instance of
-DataSetFetcher{{LINK TO DOCS}}, and fetching an instance of DataSet{{LINK TO DOCS}}.</p>
+<a href="https://joemullenix-ks.github.io/tfjs-node-grid-search/DataSetFetcher.html">DataSetFetcher</a>, and fetching an instance of <a href="https://joemullenix-ks.github.io/tfjs-node-grid-search/DataSet.html">DataSet</a>.</p>
 <blockquote>
 <p>NOTE: DataSetFetcher is designed to take the Node launch-args vector (see
 example), but any array of strings will work. It expects the third item in the
 array to be the path to your inputs file, and the fourth to be the path to your
 targets file.</p>
 </blockquote>
-<p>Intantiate a SessionData{{LINK TO DOCS}} with the DataSet and your standardization preferences.</p>
+<p>Intantiate a <a href="https://joemullenix-ks.github.io/tfjs-node-grid-search/SessionData.html">SessionData</a> with the DataSet and your standardization preferences.</p>
 <pre class="prettyprint source"><code>If you use process.argv as designed, consider launching your app like this:
 
 Example command line
@@ -308,10 +296,10 @@ Example VSCode configuration property (in launch.json)
     true
   );
 </code></pre>
-<h3>6. Define the evaluation callback</h3>
+<h3>5. Define the evaluation callback</h3>
 <p>One callback must be supplied to the search, so that predictions can be scored.
 Define a function that takes two arrays (&quot;target&quot; and &quot;prediction&quot;), and
-returns an instance of PredictionEvaluation{{LINK TO DOCS}}.
+returns an instance of <a href="https://joemullenix-ks.github.io/tfjs-node-grid-search/PredictionEvaluation.html">PredictionEvaluation</a>.
 The search process will gather your scores, and create a report telling you how
 each combination of hyperparameters performed.</p>
 <pre class="prettyprint source lang-js"><code>  const evaluatePrediction = (target: number[], prediction: number[]) => {
@@ -322,31 +310,63 @@ each combination of hyperparameters performed.</p>
     return new tngs.PredictionEvaluation(targettedIndex === predictedIndex);
   };
 </code></pre>
-<h3>7. (OPTIONAL) Define reporting callbacks</h3>
-<p>By default, the system will report results and test stats to the log at the end
-of every epoch. If you wish to do your own analysis, you may provide callbacks
-for end-of-batch, end-of-epoch, and end-of-iteration (where 'iteration' is a
-single model run).
-These optional functions have the following signatures:</p>
-<pre class="prettyprint source lang-js"><code>callbackReportIteration(duration: number, predictions: number[][], proofInputs: Array, proofTargets: number[][])
-
-callbackReportEpoch(duration: number, epoch: number, logs: tf.Logs, epochStats: EpochStats)
-
-callbackReportBatch(duration: number, predictions: number[][], proofInputs: Array, proofTargets: number[][])
-</code></pre>
-<p>Pass them to Grid{{LINK TO DOCS}}. No return value(s) are expected.</p>
-<h3>8. Run the grid search</h3>
-<p>You're all set! Instantiate a Grid{{LINK TO DOCS}}, and call Run(). Again, this
-should be run in an async function, as TensorFlow's model.fit is asynchronous.</p>
+<h3>6. Run the grid search</h3>
+<p>You're all set! Instantiate a <a href="https://joemullenix-ks.github.io/tfjs-node-grid-search/Grid.html">Grid</a>, and call Run(). Again, this
+should be done in an async function, as TensorFlow's model.fit is asynchronous.</p>
 <pre class="prettyprint source lang-js"><code>  const grid = new tngs.Grid(
+    axisSet,
+    modelStatics,
+    sessionData,
+    evaluatePrediction
+  );
+
+  await grid.Run();
+</code></pre>
+<h3>7. (OPTIONAL) Define search parameters</h3>
+<p>There are optional settings that do not affect your neural network. If you wish
+to modify these, instantiate a <a href="https://joemullenix-ks.github.io/tfjs-node-grid-search/GridOptions.html">GridOptions</a>. Otherwise defaults
+will be used.</p>
+<pre class="prettyprint source lang-js"><code>  const gridOptions = new tngs.GridOptions({
+    epochStatsDepth: 3,
+    repetitions: 2,
+    resultsDirectory: '',
+    validationSetSizeMin: 1000,
+    writeResultsAsCSV: true
+  });
+
+  // create a grid with customized options
+  const grid = new tngs.Grid(
     axisSet,
     modelStatics,
     sessionData,
     evaluatePrediction,
     gridOptions
   );
+</code></pre>
+<h3>8. (OPTIONAL) Define reporting callbacks</h3>
+<p>By default, the system reports results and stats to the log at the end of every
+epoch. If you wish to do your own analysis, you may provide callbacks for
+end-of-batch, end-of-epoch and end-of-iteration (where 'iteration' is a single
+model's run).
+These optional functions have the following signatures:</p>
+<pre class="prettyprint source lang-js"><code>callbackReportIteration(duration: number, predictions: number[][], proofInputs: Array, proofTargets: number[][])
 
-  await grid.Run();
+callbackReportEpoch(duration: number, epoch: number, logs: tf.Logs, epochStats: EpochStats)
+
+callbackReportBatch(duration: number, batch: number, logs: tf.Logs | undefined)
+</code></pre>
+<p>Pass them to <a href="https://joemullenix-ks.github.io/tfjs-node-grid-search/Grid.html">Grid</a>. No return value(s) are expected.</p>
+<pre class="prettyprint source lang-js"><code>  // create a grid with customized options
+  const grid = new tngs.Grid(
+    axisSet,
+    modelStatics,
+    sessionData,
+    evaluatePrediction,
+    null, // null for default settings, otherwise an instance of GridOptions
+    callbackReportIteration,
+    callbackReportEpoch,
+    callbackReportBatch
+  );
 </code></pre>
 <h2>Roadmap</h2>
 <ul>
