@@ -207,21 +207,7 @@ Instantiate a [ModelStatics](https://joemullenix-ks.github.io/tfjs-node-grid-sea
   });
 ```
 
-### 4. (OPTIONAL) Define search parameters
-There are optional settings that do not affect your neural network. If you wish
-to modify these, instantiate a [GridOptions](https://joemullenix-ks.github.io/tfjs-node-grid-search/GridOptions.html). Otherwise defaults
-will be used.
-```js
-  const gridOptions = new tngs.GridOptions({
-    epochStatsDepth: 3,
-    repetitions: 2,
-    resultsDirectory: '',
-    validationSetSizeMin: 1000,
-    writeResultsAsCSV: true
-  });
-```
-
-### 5. Fetch the data set
+### 4. Fetch the data set
 Fetch your training/testing data by passing the filepaths to an instance of
 [DataSetFetcher](https://joemullenix-ks.github.io/tfjs-node-grid-search/DataSetFetcher.html), and fetching an instance of [DataSet](https://joemullenix-ks.github.io/tfjs-node-grid-search/DataSet.html).
 > NOTE: DataSetFetcher is designed to take the Node launch-args vector (see
@@ -256,7 +242,7 @@ Example VSCode configuration property (in launch.json)
   );
 ```
 
-### 6. Define the evaluation callback
+### 5. Define the evaluation callback
 One callback must be supplied to the search, so that predictions can be scored.
 Define a function that takes two arrays ("target" and "prediction"), and
 returns an instance of [PredictionEvaluation](https://joemullenix-ks.github.io/tfjs-node-grid-search/PredictionEvaluation.html).
@@ -272,27 +258,34 @@ each combination of hyperparameters performed.
   };
 ```
 
-### 7. (OPTIONAL) Define reporting callbacks
-By default, the system will report results and test stats to the log at the end
-of every epoch. If you wish to do your own analysis, you may provide callbacks
-for end-of-batch, end-of-epoch, and end-of-iteration (where 'iteration' is a
-single model run).
-These optional functions have the following signatures:
-
+### 6. Run the grid search
+You're all set! Instantiate a [Grid](https://joemullenix-ks.github.io/tfjs-node-grid-search/Grid.html), and call Run(). Again, this
+should be done in an async function, as TensorFlow's model.fit is asynchronous.
 ```js
-callbackReportIteration(duration: number, predictions: number[][], proofInputs: Array, proofTargets: number[][])
+  const grid = new tngs.Grid(
+    axisSet,
+    modelStatics,
+    sessionData,
+    evaluatePrediction
+  );
 
-callbackReportEpoch(duration: number, epoch: number, logs: tf.Logs, epochStats: EpochStats)
-
-callbackReportBatch(duration: number, predictions: number[][], proofInputs: Array, proofTargets: number[][])
+  await grid.Run();
 ```
 
-Pass them to [Grid](https://joemullenix-ks.github.io/tfjs-node-grid-search/Grid.html). No return value(s) are expected.
-
-### 8. Run the grid search
-You're all set! Instantiate a [Grid](https://joemullenix-ks.github.io/tfjs-node-grid-search/Grid.html), and call Run(). Again, this
-should be run in an async function, as TensorFlow's model.fit is asynchronous.
+### 7. (OPTIONAL) Define search parameters
+There are optional settings that do not affect your neural network. If you wish
+to modify these, instantiate a [GridOptions](https://joemullenix-ks.github.io/tfjs-node-grid-search/GridOptions.html). Otherwise defaults
+will be used.
 ```js
+  const gridOptions = new tngs.GridOptions({
+    epochStatsDepth: 3,
+    repetitions: 2,
+    resultsDirectory: '',
+    validationSetSizeMin: 1000,
+    writeResultsAsCSV: true
+  });
+
+  // create a grid with customized options
   const grid = new tngs.Grid(
     axisSet,
     modelStatics,
@@ -300,8 +293,37 @@ should be run in an async function, as TensorFlow's model.fit is asynchronous.
     evaluatePrediction,
     gridOptions
   );
+```
 
-  await grid.Run();
+### 8. (OPTIONAL) Define reporting callbacks
+By default, the system reports results and stats to the log at the end of every
+epoch. If you wish to do your own analysis, you may provide callbacks for
+end-of-batch, end-of-epoch and end-of-iteration (where 'iteration' is a single
+model's run).
+These optional functions have the following signatures:
+
+```js
+callbackReportIteration(duration: number, predictions: number[][], proofInputs: Array, proofTargets: number[][])
+
+callbackReportEpoch(duration: number, epoch: number, logs: tf.Logs, epochStats: EpochStats)
+
+callbackReportBatch(duration: number, batch: number, logs: tf.Logs | undefined)
+```
+
+Pass them to [Grid](https://joemullenix-ks.github.io/tfjs-node-grid-search/Grid.html). No return value(s) are expected.
+
+```js
+  // create a grid with customized options
+  const grid = new tngs.Grid(
+    axisSet,
+    modelStatics,
+    sessionData,
+    evaluatePrediction,
+    null, // null for default settings, otherwise an instance of GridOptions
+    callbackReportIteration,
+    callbackReportEpoch,
+    callbackReportBatch
+  );
 ```
 
 ## Roadmap

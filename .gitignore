@@ -25,6 +25,7 @@ new release procedure.txt
 good-sample-readme.txt
 src/all.ts
 jsdoc/favicon.psd
+npm version history.txt
 
 # These are killing my diffs; releases only.
 coverage
