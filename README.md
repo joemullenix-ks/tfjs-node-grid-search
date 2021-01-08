@@ -15,13 +15,27 @@ logged and (optionally) written as a CSV file.
 
 [Learn about running TensorFlow in Node.](https://www.tensorflow.org/js/tutorials/setup#nodejs_setup)
 
+## Documentation
+[joemullenix-ks.github.io/tfjs-node-grid-search](https://joemullenix-ks.github.io/tfjs-node-grid-search/index.html)
+
 ## Installation
 ```
 npm i tfjs-node-grid-search
 ```
 
-## Documentation
-[joemullenix-ks.github.io/tfjs-node-grid-search](https://joemullenix-ks.github.io/tfjs-node-grid-search/index.html)
+### Linux/macOS
+After installing the library, you may need to compile the bindins locally. If
+you see this error, simply follow the NPM instructions:
+
+> Uncaught Error: The Node.js native addon module (tfjs_binding.node) can not be
+> found at path: /Users/<project>/node_modules/@tensorflow/tfjs-node/lib/
+> napi-v7/tfjs_binding.node.
+>
+> Please run command 'npm rebuild @tensorflow/tfjs-node build-addon-from-source'
+> to rebuild the native addon module.
+
+Note: If the rebuild fails, you may need C++ tools. That's outside the scope of
+this package, but fairly easy to correct. Please search "g++" for more info.
 
 ## Full Example
 ```js
@@ -342,7 +356,7 @@ Pass them to [Grid](https://joemullenix-ks.github.io/tfjs-node-grid-search/Grid.
 - Node FORK/SPAWN for parallel runs.
 - Localization, as desired (very few external strings).
 
-## Windows
+## Legacy TF versions on Windows
 >
 > :warning: An older version of tfjs-node (v2.7.0) has an installation problem
 > on Windows.<br>
