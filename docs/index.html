@@ -86,11 +86,22 @@ Node.js. Simply define ranges of hyperparameters. For every combination, TNGS
 will create a model, train it and test it using your data set. Results are
 logged and (optionally) written as a CSV file.</p>
 <p><a href="https://www.tensorflow.org/js/tutorials/setup#nodejs_setup">Learn about running TensorFlow in Node.</a></p>
+<h2>Documentation</h2>
+<p><a href="https://joemullenix-ks.github.io/tfjs-node-grid-search/index.html">joemullenix-ks.github.io/tfjs-node-grid-search</a></p>
 <h2>Installation</h2>
 <pre class="prettyprint source"><code>npm i tfjs-node-grid-search
 </code></pre>
-<h2>Documentation</h2>
-<p><a href="https://joemullenix-ks.github.io/tfjs-node-grid-search/index.html">joemullenix-ks.github.io/tfjs-node-grid-search</a></p>
+<h3>Linux/macOS</h3>
+<p>After installing, you may need to compile bindings locally. If
+you see this error, simply follow the &quot;npm rebuild&quot; instructions:</p>
+<blockquote>
+<p>Uncaught Error: The Node.js native addon module (tfjs_binding.node) can not be
+found at path: /Users/PROJECT/node_modules/@tensorflow/tfjs-node/lib/napi-v7/tfjs_binding.node.</p>
+<p>Please run command 'npm rebuild @tensorflow/tfjs-node build-addon-from-source'
+to rebuild the native addon module.</p>
+</blockquote>
+<p>Note: If the rebuild fails, you may need C++ tools. That's outside the scope of
+this package, but fairly easy to solve. Please search &quot;g++&quot; for more info.</p>
 <h2>Full Example</h2>
 <pre class="prettyprint source lang-js"><code>import * as tngs from 'tfjs-node-grid-search';
 
@@ -385,7 +396,7 @@ loss functions and metrics).</li>
 <li>Node FORK/SPAWN for parallel runs.</li>
 <li>Localization, as desired (very few external strings).</li>
 </ul>
-<h2>Windows</h2>
+<h2>Legacy TF versions on Windows</h2>
 <blockquote>
 <p>:warning: An older version of tfjs-node (v2.7.0) has an installation problem
 on Windows.<br>

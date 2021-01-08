@@ -24,18 +24,17 @@ npm i tfjs-node-grid-search
 ```
 
 ### Linux/macOS
-After installing the library, you may need to compile the bindins locally. If
-you see this error, simply follow the NPM instructions:
+After installing, you may need to compile bindings locally. If
+you see this error, simply follow the "npm rebuild" instructions:
 
 > Uncaught Error: The Node.js native addon module (tfjs_binding.node) can not be
-> found at path: /Users/<project>/node_modules/@tensorflow/tfjs-node/lib/
-> napi-v7/tfjs_binding.node.
+> found at path: /Users/PROJECT/node_modules/@tensorflow/tfjs-node/lib/napi-v7/tfjs_binding.node.
 >
 > Please run command 'npm rebuild @tensorflow/tfjs-node build-addon-from-source'
 > to rebuild the native addon module.
 
 Note: If the rebuild fails, you may need C++ tools. That's outside the scope of
-this package, but fairly easy to correct. Please search "g++" for more info.
+this package, but fairly easy to solve. Please search "g++" for more info.
 
 ## Full Example
 ```js
