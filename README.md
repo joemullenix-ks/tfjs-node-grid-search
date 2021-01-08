@@ -42,6 +42,9 @@ import * as tngs from 'tfjs-node-grid-search';
 
 console.log('Welcome to TNGS!');
 
+//NOTE: This example demonstrates a very simple XOR problem. It tests two
+//      network models: zero hidden layers (SLP) and one hidden layer (MLP).
+
 //NOTE: We wrap the example in an async function, because tfjs's model fit
 //      is asynchronous.
 const main = async () => {
@@ -53,24 +56,13 @@ const main = async () => {
 
   const axes = [];
 
-  // test batch sizes from 8 to 16 inclusive, in linear steps of 4 (8, 12, 16)
+  // test first with zero hidden layers, then one hidden layer
   axes.push(
-    new tngs.Axis(
-      tngs.AxisTypes.BATCH_SIZE,
-      8,
-      16,
-      new tngs.LinearProgression(4)
-    )
-  );
-
-  // test nuerons-per-hidden-layer from 10 to 18 inclusive, using the beginning
-  // of the Fibonacci sequence (10, 11, 12, 13, 15, 18)
-  axes.push(
-    new tngs.Axis(
-      tngs.AxisTypes.NEURONS,
-      10,
-      18,
-      new tngs.FibonacciProgression(0)
+    new Axis(
+      AxisTypes.LAYERS,
+      0,
+      1,
+      new LinearProgression(1)
     )
   );
 
@@ -80,19 +72,17 @@ const main = async () => {
   // change during our grid search.
 
   const modelStatics = new tngs.ModelStatics({
-    epochs: 5,
-    hiddenLayers: 1,
-    validationSplit: 0.25
+    epochs: 200,
+    validationSplit: 0.5
   });
 
   // Next, we setup options that will govern the Grid itself, as well as the
   // search process.
 
   const gridOptions = new tngs.GridOptions({
-    epochStatsDepth: 3,
-    repetitions: 2,
+    repetitions: 3,
     resultsDirectory: '',
-    validationSetSizeMin: 1000,
+    validationSetSizeMin: 10,
     writeResultsAsCSV: true
   });
 
@@ -100,18 +90,29 @@ const main = async () => {
   // used to train and test each 'iteration' of the grid search (i.e. each
   // unique combination of dynamic params).
 
-  const dataSetFetcher = new tngs.DataSetFetcher(process.argv);
+//NOTE: This hard-coded data is used for demonstration purposes only. The more
+//      common usage is to load data from disk or url, via DataSetFetcher.
+//      Please see #4 in the step-by-step guide (below).
 
-  const dataSet = await dataSetFetcher.Fetch();
+  // load 50 XOR data cases; the output labels are ["true", "false"]
+  const dataSet = new DataSet(
+    [
+      [0,0],[1,1],[1,0],[1,1],[1,0],[0,1],[0,1],[1,0],[0,1],[0,0],
+      [1,1],[1,1],[0,1],[1,1],[0,0],[1,1],[1,0],[1,1],[0,1],[0,0],
+      [1,1],[0,1],[1,0],[1,1],[1,1],[1,0],[1,1],[1,1],[1,0],[0,1],
+      [1,0],[0,0],[1,1],[0,1],[0,0],[0,0],[0,0],[0,1],[1,0],[1,1],
+      [1,1],[1,1],[0,1],[1,1],[1,0],[0,0],[0,1],[1,0],[0,0],[1,1]
+    ],
+    [
+      [1,0],[1,0],[0,1],[1,0],[0,1],[0,1],[0,1],[0,1],[0,1],[1,0],
+      [1,0],[1,0],[0,1],[1,0],[1,0],[1,0],[0,1],[1,0],[0,1],[1,0],
+      [1,0],[0,1],[0,1],[1,0],[1,0],[0,1],[1,0],[1,0],[0,1],[0,1],
+      [0,1],[1,0],[1,0],[0,1],[1,0],[1,0],[1,0],[0,1],[0,1],[1,0],
+      [1,0],[1,0],[0,1],[1,0],[0,1],[1,0],[0,1],[0,1],[1,0],[1,0]
+    ]);
 
-  // set aside 10% of these cases for post-training generalization tests
-  const TEST_DATA_FRACTION = 0.1;
-
-  const sessionData = new tngs.SessionData(
-    TEST_DATA_FRACTION,
-    dataSet,
-    true
-  );
+  // set aside 25% of these cases for post-training generalization tests
+  const TEST_DATA_FRACTION = 0.25;
 
   // This callback is used by the Grid during generalization testing. At the end
   // of each epoch (after) the network is trained, the Grid makes predictions
@@ -162,6 +163,9 @@ main().catch(reason => {
 ```
 
 ## Step-By-Step
+These steps demonstrate more advanced techniques, and some of the options left
+out of the full example (above).
+
 ### 1. Include the library
 There are two supported methods for including the TNGS library:
 
