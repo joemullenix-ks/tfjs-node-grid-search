@@ -199,11 +199,13 @@ const WriteDurationReport = (durationMS: number): string => {
 //TODO: (low-pri) Bring in time-reporting from the f lib, which has smart duration-category picking.
 	return durationMS + ' ms'
 			+ ' / '
-			+ (durationMS / 1000).toFixed(2) + ' sec'
+			+ (durationMS / 1000).toFixed(1) + ' sec'
 			+ ' / '
 			+ (durationMS / 60 / 1000).toFixed(2) + ' min'
 			+ ' / '
-			+ (durationMS / 60 / 60 / 1000).toFixed(1) + ' hr';
+			+ (durationMS / 60 / 60 / 1000).toFixed(3) + ' hr'
+			+ ' / '
+			+ (durationMS / 24 / 60 / 60 / 1000).toFixed(4) + ' dy';
 };
 
 

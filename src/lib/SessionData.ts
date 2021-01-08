@@ -76,8 +76,8 @@ class SessionData {
 		this._totalInputNeurons = CountLeafElements(rawInputs);
 		this._totalOutputNeurons = CountLeafElements(rawTargets);
 
-		console.log('input neurons: ' + this._totalInputNeurons);
-		console.log('output neurons: ' + this._totalOutputNeurons);
+		console.log('inputs: ' + this._totalInputNeurons);
+		console.log('outputs: ' + this._totalOutputNeurons);
 
 		// create a clone of these inputs pre-standardization, to be used (potentially) for human-friendly reporting
 		this._rawInputsTraining = JSON.parse(JSON.stringify(rawInputs)) as TFNestedArray;

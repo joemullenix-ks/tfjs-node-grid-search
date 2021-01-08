@@ -3,7 +3,7 @@
 <head>
     
     <meta charset="utf-8">
-    <title>lib/ModelTestStats.js - Documentation</title>
+    <title>Global - Documentation</title>
     <link rel="icon" type="image/png" href="favicon.png"/>
 
     
@@ -34,65 +34,211 @@
 
 <div id="main">
     
-    <h1 class="page-title">lib/ModelTestStats.js</h1>
+    <h1 class="page-title">Global</h1>
     
 
     
 
 
 
+
+<section>
+
+<header>
     
-    <section>
-        <article>
-            <pre class="prettyprint source linenums"><code>'use strict';
-import * as Utils from './Utils';
-/**
- * Gathers the scores (right/wrong and accuracy delta) for a model run. These
- * are determined via callback, during the search iteration's testing phase.
- */
-class ModelTestStats {
-    /**
-     * Creates an instance of ModelTestStats.
-     * @param {number} _deltaCorrect Aggregate accuracy deltas for the cases
-     *	with 'correct' predictions.
-     * @param {number} _deltaIncorrect Aggregate accuracy deltas for the cases
-     *	with 'incorrect' predictions.
-     * @param {number} _totalCorrect Sum of cases with 'correct' predictions.
-     * @param {number} _totalCases Sum of cases used to test (aka proof cases).
-     */
-    constructor(_deltaCorrect, _deltaIncorrect, _totalCorrect, _totalCases) {
-        this._deltaCorrect = _deltaCorrect;
-        this._deltaIncorrect = _deltaIncorrect;
-        this._totalCorrect = _totalCorrect;
-        this._totalCases = _totalCases;
-        Utils.Assert(Math.floor(this._totalCorrect) === this._totalCorrect);
-        Utils.Assert(this._totalCases >= this._totalCorrect);
-        Utils.Assert(Math.floor(this._totalCases) === this._totalCases);
-        Utils.Assert(this._totalCases > 0);
-    }
-    /**
-     * Gets correct / total.
-     * @return {number}
-     */
-    CalculateScore() {
-        return this._totalCorrect / this._totalCases;
-    }
-    //vv TODO: These move into a CSVSource interface
-    WriteCSVLineKeys() {
-        return 'deltaCorrect,deltaIncorrect,totalCorrect,totalCases';
-    }
-    WriteCSVLineValues() {
-        return this._deltaCorrect
-            + ',' + this._deltaIncorrect
-            + ',' + this._totalCorrect
-            + ',' + this._totalCases;
-    }
+        <h2>
+        
+        </h2>
+        
+    
+</header>
+
+<article>
+    
+        <div class="container-overview">
+        
+            
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+            
+
+            
+        
+        </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        
+            
+
+    
+
+    <h4 class="name" id="MAIN"><span class="type-signature"></span>MAIN<span class="signature">()</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description usertext">
+    KEEP: XOR data gen
+const NUM_SETS = 50;
+const NUM_PER_SET = 2;
+const D_INPUTS = [];
+const D_TARGETS = [];
+for (let i = 0; i < NUM_SETS; ++i) {
+    const num_a = Math.round(Math.random());
+    const num_b = Math.round(Math.random());
+
+    D_INPUTS.push([num_a, num_b]);
+
+    const equal = num_a === num_b;
+    D_TARGETS.push([equal ? 1 : 0, !equal ? 1 : 0]);
 }
-Object.freeze(ModelTestStats);
-export { ModelTestStats };
-//# sourceMappingURL=ModelTestStats.js.map</code></pre>
-        </article>
-    </section>
+
+console.log('D_INPUTS');
+console.log(JSON.stringify(D_INPUTS));
+
+console.log('D_TARGETS');
+console.log(JSON.stringify(D_TARGETS));
+
+process.exit(-7);
+/
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="jestbox.js.html">jestbox.js</a>, <a href="jestbox.js.html#line76">line 76</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+    
+
+    
+
+    
+</article>
+
+</section>
 
 
 
