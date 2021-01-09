@@ -114,6 +114,12 @@ const main = async () => {
   // set aside 25% of these cases for post-training generalization tests
   const TEST_DATA_FRACTION = 0.25;
 
+  const sessionData = new tngs.SessionData(
+    TEST_DATA_FRACTION,
+    dataSet,
+    false
+  );
+
   // This callback is used by the Grid during generalization testing. At the end
   // of each epoch (after) the network is trained, the Grid makes predictions
   // using the test data. For each prediction, it calls this function, passing
