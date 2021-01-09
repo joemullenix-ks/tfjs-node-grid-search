@@ -41,7 +41,7 @@ This is written for TypeScript.
 To run it as plain JS, do the following:
 - Add "type": "module" to your package.json, or use CommonJS to require the
   library. See #1 of the step-by-step guide (below).
-- Remove types from the scoring callback's signature (line ~94), like so:
+- Remove types from the scoring callback's signature (line ~95), like so:
 ```js
   // For plain JS, change this...
   const evaluatePrediction = (target: number[], prediction: number[])...
@@ -57,6 +57,7 @@ console.log('Welcome to TNGS!');
 
 //NOTE: This example demonstrates a very simple XOR problem. It tests two
 //      network models: zero hidden layers (SLP) and one hidden layer (MLP).
+//      The grid search should take no more than 45 seconds.
 
 //NOTE: We wrap the example in an async function, because tfjs's model fit
 //      is asynchronous.
