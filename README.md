@@ -37,7 +37,7 @@ Note: If the rebuild fails, you may need C++ tools. That's outside the scope of
 this package, but fairly easy to solve. Please search "g++" for more info.
 
 ## Full Example
-This example is written for TypeScript.
+This is written for TypeScript.
 To run it as plain JS, do the following:
 - Add "type": "module" to your package.json, or use CommonJS to require the
   library. See #1 of the step-by-step guide (below).
@@ -49,7 +49,7 @@ To run it as plain JS, do the following:
   // ...to this...
   const evaluatePrediction = (target, prediction) ...
 ```
-
+Example:
 ```js
 import * as tngs from 'tfjs-node-grid-search';
 
