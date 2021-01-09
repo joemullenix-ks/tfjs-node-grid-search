@@ -123,11 +123,11 @@ const main = async () => {
 
   // test first with zero hidden layers, then one hidden layer
   axes.push(
-    new Axis(
-      AxisTypes.LAYERS,
+    new tngs.Axis(
+      tngs.AxisTypes.LAYERS,
       0,
       1,
-      new LinearProgression(1)
+      new tngs.LinearProgression(1)
     )
   );
 
@@ -160,7 +160,7 @@ const main = async () => {
 //      Please see #4 in the step-by-step guide (below).
 
   // load 50 XOR data cases; the output labels are [&quot;true&quot;, &quot;false&quot;]
-  const dataSet = new DataSet(
+  const dataSet = new tngs.DataSet(
     [
       [0,0],[1,1],[1,0],[1,1],[1,0],[0,1],[0,1],[1,0],[0,1],[0,0],
       [1,1],[1,1],[0,1],[1,1],[0,0],[1,1],[1,0],[1,1],[0,1],[0,0],
