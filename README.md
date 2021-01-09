@@ -41,7 +41,7 @@ This is written for TypeScript.
 To run it as plain JS, do the following:
 - Add "type": "module" to your package.json, or use CommonJS to require the
   library. See #1 of the step-by-step guide (below).
-- Remove types from the scoring callback's signature, like so:
+- Remove types from the scoring callback's signature (line ~94), like so:
 ```js
   // For plain JS, change this...
   const evaluatePrediction = (target: number[], prediction: number[])...
