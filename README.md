@@ -55,9 +55,10 @@ import * as tngs from 'tfjs-node-grid-search';
 
 console.log('Welcome to TNGS!');
 
-//NOTE: This example demonstrates a very simple XOR problem. It tests two
-//      network models: zero hidden layers (SLP) and one hidden layer (MLP).
-//      The grid search should take no more than 45 seconds.
+//NOTE: This example demonstrates a very simple XOR problem. It runs these two
+//      network models:
+//      - zero hidden layers (SLP), which cannot learn XOR
+//      - one hidden layer (MLP), which learns XOR
 
 //NOTE: We wrap the example in an async function, because tfjs's model fit
 //      is asynchronous.
@@ -86,7 +87,7 @@ const main = async () => {
   // change during our grid search.
 
   const modelStatics = new tngs.ModelStatics({
-    epochs: 500,
+    epochs: 200,
     validationSplit: 0.5
   });
 
@@ -94,9 +95,9 @@ const main = async () => {
   // search process.
 
   const gridOptions = new tngs.GridOptions({
-    repetitions: 3,
+    repetitions: 2,
     resultsDirectory: '',
-    validationSetSizeMin: 10,
+    validationSetSizeMin: 1,
     writeResultsAsCSV: true
   });
 
@@ -104,29 +105,30 @@ const main = async () => {
   // used to train and test each 'iteration' of the grid search (i.e. each
   // unique combination of dynamic params).
 
-//NOTE: This hard-coded data is used for demonstration purposes only. The more
+  // set aside one third of the cases for post-training generalization tests
+  const TEST_DATA_FRACTION = 1/3;
+
+//NOTE: We load each XOR case three times, for 12 total cases.
+//      - Four are reserved for generalization (see TEST_DATA_FRACTION, above).
+//      - With a 'validationSplit' of 0.5, the remaining eight are divided into
+//      four each for testing and validation.
+//
+//      The output labels are ["false", "true"].
+
+//NOTE: We use hard-coded data for demonstration purposes, only. The more
 //      common usage is to load data from disk or url, via DataSetFetcher.
 //      Please see #4 in the step-by-step guide (below).
-
-  // load 50 XOR data cases; the output labels are ["false", "true"]
   const dataSet = new tngs.DataSet(
     [
-      [0,0],[1,1],[1,0],[1,1],[1,0],[0,1],[0,1],[1,0],[0,1],[0,0],
-      [1,1],[1,1],[0,1],[1,1],[0,0],[1,1],[1,0],[1,1],[0,1],[0,0],
-      [1,1],[0,1],[1,0],[1,1],[1,1],[1,0],[1,1],[1,1],[1,0],[0,1],
-      [1,0],[0,0],[1,1],[0,1],[0,0],[0,0],[0,0],[0,1],[1,0],[1,1],
-      [1,1],[1,1],[0,1],[1,1],[1,0],[0,0],[0,1],[1,0],[0,0],[1,1]
+      [0,0],[0,1],[1,0],[1,1],
+      [0,0],[0,1],[1,0],[1,1],
+      [0,0],[0,1],[1,0],[1,1]
     ],
     [
-      [1,0],[1,0],[0,1],[1,0],[0,1],[0,1],[0,1],[0,1],[0,1],[1,0],
-      [1,0],[1,0],[0,1],[1,0],[1,0],[1,0],[0,1],[1,0],[0,1],[1,0],
-      [1,0],[0,1],[0,1],[1,0],[1,0],[0,1],[1,0],[1,0],[0,1],[0,1],
-      [0,1],[1,0],[1,0],[0,1],[1,0],[1,0],[1,0],[0,1],[0,1],[1,0],
-      [1,0],[1,0],[0,1],[1,0],[0,1],[1,0],[0,1],[0,1],[1,0],[1,0]
+      [1,0],[0,1],[0,1],[1,0],
+      [1,0],[0,1],[0,1],[1,0],
+      [1,0],[0,1],[0,1],[1,0]
     ]);
-
-  // set aside 25% of these cases for post-training generalization tests
-  const TEST_DATA_FRACTION = 0.25;
 
   const sessionData = new tngs.SessionData(
     TEST_DATA_FRACTION,
