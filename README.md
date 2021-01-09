@@ -108,7 +108,7 @@ const main = async () => {
 //      common usage is to load data from disk or url, via DataSetFetcher.
 //      Please see #4 in the step-by-step guide (below).
 
-  // load 50 XOR data cases; the output labels are ["true", "false"]
+  // load 50 XOR data cases; the output labels are ["false", "true"]
   const dataSet = new tngs.DataSet(
     [
       [0,0],[1,1],[1,0],[1,1],[1,0],[0,1],[0,1],[1,0],[0,1],[0,0],
@@ -252,9 +252,7 @@ Fetch your training/testing data by passing the filepaths to an instance of
 > array to be the path to your inputs file, and the fourth to be the path to your
 > targets file.
 
-Use the DataSet to instantiate a [SessionData](https://joemullenix-ks.github.io/tfjs-node-grid-search/SessionData.html), which also takes your input-data
-standardization preference (true in this example, meaning 'use default', but a
-callback is also supported).
+Use the DataSet to instantiate a [SessionData](https://joemullenix-ks.github.io/tfjs-node-grid-search/SessionData.html), which also takes your input-standardization preference (true in this example, meaning 'use default algorithm').
 
 ```
 If you use process.argv as designed, consider launching your app like this:
