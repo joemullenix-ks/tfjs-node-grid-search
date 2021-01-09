@@ -37,6 +37,19 @@ Note: If the rebuild fails, you may need C++ tools. That's outside the scope of
 this package, but fairly easy to solve. Please search "g++" for more info.
 
 ## Full Example
+This is example is written for TypeScript.
+To run it as plain JS, do the following:
+- Add "type": "module" to your package.json, or use CommonJS to require the
+  library. See #1 of the step-by-step guide (below).
+- Remove types from the scoring callback's signature, like so:
+```js
+  // change this...
+  const evaluatePrediction = (target: number[], prediction: number[]) ...
+
+  // ...to this...
+  const evaluatePrediction = (target, prediction) ...
+```
+
 ```js
 import * as tngs from 'tfjs-node-grid-search';
 
@@ -72,7 +85,7 @@ const main = async () => {
   // change during our grid search.
 
   const modelStatics = new tngs.ModelStatics({
-    epochs: 200,
+    epochs: 500,
     validationSplit: 0.5
   });
 
@@ -238,7 +251,9 @@ Fetch your training/testing data by passing the filepaths to an instance of
 > array to be the path to your inputs file, and the fourth to be the path to your
 > targets file.
 
-Intantiate a [SessionData](https://joemullenix-ks.github.io/tfjs-node-grid-search/SessionData.html) with the DataSet and your standardization preferences.
+Use the DataSet to instantiate a [SessionData](https://joemullenix-ks.github.io/tfjs-node-grid-search/SessionData.html), which also takes your input-data
+standardization preference (true in this example, meaning 'use default', but a
+callback is also supported).
 
 ```
 If you use process.argv as designed, consider launching your app like this:
