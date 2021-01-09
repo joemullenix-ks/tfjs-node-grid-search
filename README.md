@@ -44,10 +44,10 @@ To run it as plain JS, do the following:
 - Remove types from the scoring callback's signature, like so:
 ```js
   // For plain JS, change this...
-  const evaluatePrediction = (target: number[], prediction: number[]) => {};
+  const evaluatePrediction = (target: number[], prediction: number[])...
 
   // ...to this.
-  const evaluatePrediction = (target, prediction) => {};
+  const evaluatePrediction = (target, prediction)...
 ```
 Example:
 ```js
