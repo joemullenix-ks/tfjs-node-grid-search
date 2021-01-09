@@ -37,7 +37,7 @@ Note: If the rebuild fails, you may need C++ tools. That's outside the scope of
 this package, but fairly easy to solve. Please search "g++" for more info.
 
 ## Full Example
-This is example is written for TypeScript.
+This example is written for TypeScript.
 To run it as plain JS, do the following:
 - Add "type": "module" to your package.json, or use CommonJS to require the
   library. See #1 of the step-by-step guide (below).
