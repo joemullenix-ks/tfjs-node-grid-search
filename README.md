@@ -25,7 +25,7 @@ npm i tfjs-node-grid-search
 
 ### Linux/macOS
 After installing, you may need to compile bindings locally. If
-you see this error, simply follow the "npm rebuild" instructions:
+you see this error message, follow its "npm rebuild" instructions:
 
 > Uncaught Error: The Node.js native addon module (tfjs_binding.node) can not be
 > found at path: /Users/PROJECT/node_modules/@tensorflow/tfjs-node/lib/napi-v7/tfjs_binding.node.
@@ -41,7 +41,7 @@ This is written for TypeScript.
 To run it as plain JS, do the following:
 - Add "type": "module" to your package.json, or use CommonJS to require the
   library. See #1 of the step-by-step guide (below).
-- Remove types from the scoring callback's signature (line ~97), like so:
+- Remove types from the scoring callback's signature (line ~98), like so:
 ```js
   // For plain JS, change this...
   const evaluatePrediction = (target: number[], prediction: number[])...
@@ -88,7 +88,7 @@ const main = async () => {
 
   const modelStatics = new tngs.ModelStatics({
     epochs: 200,
-    learnRate: 0.01,
+    learnRate: 0.005,
     validationSplit: 0.5
   });
 

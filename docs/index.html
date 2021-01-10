@@ -93,7 +93,7 @@ logged and (optionally) written as a CSV file.</p>
 </code></pre>
 <h3>Linux/macOS</h3>
 <p>After installing, you may need to compile bindings locally. If
-you see this error, simply follow the &quot;npm rebuild&quot; instructions:</p>
+you see this error message, follow its &quot;npm rebuild&quot; instructions:</p>
 <blockquote>
 <p>Uncaught Error: The Node.js native addon module (tfjs_binding.node) can not be
 found at path: /Users/PROJECT/node_modules/@tensorflow/tfjs-node/lib/napi-v7/tfjs_binding.node.</p>
@@ -108,7 +108,7 @@ To run it as plain JS, do the following:</p>
 <ul>
 <li>Add &quot;type&quot;: &quot;module&quot; to your package.json, or use CommonJS to require the
 library. See #1 of the step-by-step guide (below).</li>
-<li>Remove types from the scoring callback's signature (line ~97), like so:</li>
+<li>Remove types from the scoring callback's signature (line ~98), like so:</li>
 </ul>
 <pre class="prettyprint source lang-js"><code>  // For plain JS, change this...
   const evaluatePrediction = (target: number[], prediction: number[])...
@@ -154,7 +154,7 @@ const main = async () => {
 
   const modelStatics = new tngs.ModelStatics({
     epochs: 200,
-    learnRate: 0.01,
+    learnRate: 0.005,
     validationSplit: 0.5
   });
 
