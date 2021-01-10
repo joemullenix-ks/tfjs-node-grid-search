@@ -173,28 +173,28 @@ const main = async () => {
   // unique combination of dynamic params).
 
   // set aside one third of the cases for post-training generalization tests
-  const TEST_DATA_FRACTION = 1/3;
+  const TEST_DATA_FRACTION = 1 / 3;
 
-//NOTE: We load each XOR case three times, for 12 total cases.
-//      - Four are reserved for generalization (see TEST_DATA_FRACTION, above).
-//      - With a 'validationSplit' of 0.5, the remaining eight are divided into
-//      four each for testing and validation.
-//
-//      The output labels are [&quot;false&quot;, &quot;true&quot;].
+  //NOTE: We load each XOR case three times, for 12 total cases.
+  //      - Four are reserved for generalization (TEST_DATA_FRACTION, above).
+  //      - With a 'validationSplit' of 0.5, the remaining eight are divided
+  //        into four each for testing and validation.
+  //
+  //      The output labels are [&quot;false&quot;, &quot;true&quot;].
 
-//NOTE: We use hard-coded data for demonstration purposes, only. The more
-//      common usage is to load data from disk or url, via DataSetFetcher.
-//      Please see #4 in the step-by-step guide (below).
+  //NOTE: We use hard-coded data for demonstration purposes, only. The more
+  //      common usage is to load data from disk or url, via DataSetFetcher.
+  //      Please see #4 in the step-by-step guide (below).
   const dataSet = new tngs.DataSet(
     [
-      [0,0],[0,1],[1,0],[1,1],
-      [0,0],[0,1],[1,0],[1,1],
-      [0,0],[0,1],[1,0],[1,1]
+      [0, 0], [0, 1], [1, 0], [1, 1],
+      [0, 0], [0, 1], [1, 0], [1, 1],
+      [0, 0], [0, 1], [1, 0], [1, 1]
     ],
     [
-      [1,0],[0,1],[0,1],[1,0],
-      [1,0],[0,1],[0,1],[1,0],
-      [1,0],[0,1],[0,1],[1,0]
+      [1, 0], [0, 1], [0, 1], [1, 0],
+      [1, 0], [0, 1], [0, 1], [1, 0],
+      [1, 0], [0, 1], [0, 1], [1, 0]
     ]);
 
   const sessionData = new tngs.SessionData(
@@ -204,23 +204,23 @@ const main = async () => {
   );
 
   // This callback is used by the Grid during generalization testing. At the end
-  // of each epoch (after) the network is trained, the Grid makes predictions
-  // using the test data. For each prediction, it calls this function, passing
-  // the known targets and its prediction.
-  // We evaluate each prediction, and return a PredictionEvaluation, which lets
-  // Grid score the network.
+  // of each iteration, after the network is trained, the Grid makes predictions
+  // using the test data. For each case, it calls this function, passing the
+  // known targets and its prediction.
+  // We evaluate each prediction, and return a PredictionEvaluation. This lets
+  // the system calculate the network's score.
   //	- If the prediction is acceptable, set the first argument (&quot;correct&quot;)
   //    to true.
-  //	- The second argument (which is optional) is &quot;delta&quot;, or an arbitrary
-  //    value for the prediction.
+  //	- The second argument (which is optional) is &quot;delta&quot;. This lets you give
+  //    each prediction a more detailed score, in arbitrary units.
 
   const evaluatePrediction = (target: number[], prediction: number[]) => {
     const targettedIndex = tngs.Utils.ArrayFindIndexOfHighestValue(target);
 
     const predictedIndex = tngs.Utils.ArrayFindIndexOfHighestValue(prediction);
 
-//NOTE: This example is written for a multi-class classification network
-//      (one-hot targets).
+    //NOTE: This example is written for a multi-class classification network
+    //      (one-hot targets).
 
     // if the network chose the correct index, we pass true
     const correct = targettedIndex === predictedIndex;
@@ -245,7 +245,7 @@ const main = async () => {
   await grid.Run();
 };
 
-// run the example (with a top-level exception handler)
+// run the example, with a top-level exception handler
 main().catch(reason => {
   console.log('There was a problem.', reason);
 });
