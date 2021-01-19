@@ -24,7 +24,7 @@ npm i tfjs-node-grid-search
 ```
 
 ### Linux/macOS
-After installing, you may need to compile bindings locally. If
+After installing, you may need to compile the TF bindings locally. If
 you see this error message, follow its "npm rebuild" instructions:
 
 > Uncaught Error: The Node.js native addon module (tfjs_binding.node) can not be
@@ -37,10 +37,18 @@ Note: If the rebuild fails, you may need C++ tools. That's outside the scope of
 this package, but fairly easy to solve. Please search "g++" for more info.
 
 ## Full Example
-This is written for TypeScript.
+The example code below is written for TypeScript.
 To run it as plain JS, do the following:
 - Add "type": "module" to your package.json, or use CommonJS to require the
   library. See #1 of the step-by-step guide (below).
+```js
+  // For plain JS without ES modules, change this...
+  import * as tngs from 'tfjs-node-grid-search';
+
+  // ...to this.
+  const tngs = require('tfjs-node-grid-search');
+```
+
 - Remove types from the scoring callback's signature (line ~98), like so:
 ```js
   // For plain JS, change this...
@@ -49,7 +57,7 @@ To run it as plain JS, do the following:
   // ...to this.
   const evaluatePrediction = (target, prediction)...
 ```
-Example:
+Full Example:
 ```js
 import * as tngs from 'tfjs-node-grid-search';
 
