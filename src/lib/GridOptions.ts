@@ -214,7 +214,7 @@ class GridOptions {
     }
 }
 
-const ALL_AVAILABLE_OPTIONS: Types.StringKeyedNullsObject =	{
+const ALL_AVAILABLE_OPTIONS: Types.StringKeyedNullsObject = {
                                                                 epochStatsDepth: null,
                                                                 repetitions: null,
                                                                 resultsDirectory: null,

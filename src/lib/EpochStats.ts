@@ -73,20 +73,20 @@ class EpochStats {
         Utils.QueueRotate(this._samplesValidationAccuracy, logs.val_acc, this._trailDepth);
         Utils.QueueRotate(this._samplesValidationLoss, logs.val_loss, this._trailDepth);
 
-        this._averageAccuracy			= Utils.ArrayCalculateAverage(this._samplesAccuracy);
-        this._averageLoss				= Utils.ArrayCalculateAverage(this._samplesLoss);
-        this._averageValidationAccuracy	= Utils.ArrayCalculateAverage(this._samplesValidationAccuracy);
-        this._averageValidationLoss		= Utils.ArrayCalculateAverage(this._samplesValidationLoss);
+        this._averageAccuracy           = Utils.ArrayCalculateAverage(this._samplesAccuracy);
+        this._averageLoss               = Utils.ArrayCalculateAverage(this._samplesLoss);
+        this._averageValidationAccuracy = Utils.ArrayCalculateAverage(this._samplesValidationAccuracy);
+        this._averageValidationLoss     = Utils.ArrayCalculateAverage(this._samplesValidationLoss);
 
-        const TRAILING_ACC_AS_XY		= this._samplesAccuracy.map((value, index) => {return [index, value];});
-        const TRAILING_LOSS_AS_XY		= this._samplesLoss.map((value, index) => {return [index, value];});
-        const TRAILING_VAL_ACC_AS_XY	= this._samplesValidationAccuracy.map((value, index) => {return [index, value];});
-        const TRAILING_VAL_LOSS_AS_XY	= this._samplesValidationLoss.map((value, index) => {return [index, value];});
+        const TRAILING_ACC_AS_XY        = this._samplesAccuracy.map((value, index) => {return [index, value];});
+        const TRAILING_LOSS_AS_XY       = this._samplesLoss.map((value, index) => {return [index, value];});
+        const TRAILING_VAL_ACC_AS_XY    = this._samplesValidationAccuracy.map((value, index) => {return [index, value];});
+        const TRAILING_VAL_LOSS_AS_XY   = this._samplesValidationLoss.map((value, index) => {return [index, value];});
 
-        this._lineAccuracy				= linearRegression(TRAILING_ACC_AS_XY);
-        this._lineLoss					= linearRegression(TRAILING_LOSS_AS_XY);
-        this._lineValidationAccuracy	= linearRegression(TRAILING_VAL_ACC_AS_XY);
-        this._lineValidationLoss		= linearRegression(TRAILING_VAL_LOSS_AS_XY);
+        this._lineAccuracy              = linearRegression(TRAILING_ACC_AS_XY);
+        this._lineLoss                  = linearRegression(TRAILING_LOSS_AS_XY);
+        this._lineValidationAccuracy    = linearRegression(TRAILING_VAL_ACC_AS_XY);
+        this._lineValidationLoss        = linearRegression(TRAILING_VAL_LOSS_AS_XY);
 
         this._averageLossDelta = this._averageLoss - this._averageValidationLoss;
     }

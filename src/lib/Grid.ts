@@ -17,20 +17,20 @@ import { ActivationIdentifier } from '@tensorflow/tfjs-layers/dist/keras_format/
 import * as Types from './types';
 
 
-import * as Axis				from './Axis';
-import { AxisSet }				from './AxisSet';
-import { AxisSetTraverser }		from './AxisSetTraverser';
-import { EpochStats }			from './EpochStats';
-import * as FileIO				from './FileIO';
-import { GridOptions }			from './GridOptions';
-import { GridRunStats }			from './GridRunStats';
-import { IterationResult }		from './IterationResult';
-import { ModelParams }			from './ModelParams';
-import { ModelStatics }			from './ModelStatics';
-import { ModelTestStats }		from './ModelTestStats';
+import * as Axis                from './Axis';
+import { AxisSet }              from './AxisSet';
+import { AxisSetTraverser }     from './AxisSetTraverser';
+import { EpochStats }           from './EpochStats';
+import * as FileIO              from './FileIO';
+import { GridOptions }          from './GridOptions';
+import { GridRunStats }         from './GridRunStats';
+import { IterationResult }      from './IterationResult';
+import { ModelParams }          from './ModelParams';
+import { ModelStatics }         from './ModelStatics';
+import { ModelTestStats }       from './ModelTestStats';
 import { PredictionEvaluation } from './PredictionEvaluation';
-import { SessionData }			from './SessionData';
-import * as Utils				from './Utils';
+import { SessionData }          from './SessionData';
+import * as Utils               from './Utils';
 
 
 /**
@@ -178,7 +178,7 @@ class Grid {
         const LEARNING_RATE = modelParams.GetNumericParam(Axis.AxisNames.LEARN_RATE);
 
         // compile the model, which prepares it for training
-        TF_MODEL.compile(	{
+        TF_MODEL.compile(   {
                                 optimizer: this._modelStatics.GenerateOptimizer(LEARNING_RATE),
                                 loss: this._modelStatics.GenerateLossFunction(),
                                 metrics: 'accuracy'
@@ -474,13 +474,13 @@ class Grid {
                             callbacks:
                             {
 //NOTE: These events are available, as of TF 2.7.0:
-// 								onTrainBegin: (logs) => { console.log('onTrainBegin', logs); },
-// 								onTrainEnd: (logs) => { console.log('onTrainEnd', logs); },
-// 								onEpochBegin: (epoch, logs) => { console.log('onEpochBegin', epoch, logs); },
-// 								onEpochEnd: (epoch, logs) => { console.log('onEpochEnd', epoch, logs); },
-// 								onBatchBegin: (batch, logs) => { console.log('onBatchBegin', batch, logs); },
-// 								onBatchEnd: (batch, logs) => { console.log('onBatchEnd', batch, logs); },
-// 								onYield: (epoch, batch, logs) => { console.log('onYield', epoch, batch, logs); }
+//                              onTrainBegin: (logs) => { console.log('onTrainBegin', logs); },
+//                              onTrainEnd: (logs) => { console.log('onTrainEnd', logs); },
+//                              onEpochBegin: (epoch, logs) => { console.log('onEpochBegin', epoch, logs); },
+//                              onEpochEnd: (epoch, logs) => { console.log('onEpochEnd', epoch, logs); },
+//                              onBatchBegin: (batch, logs) => { console.log('onBatchBegin', batch, logs); },
+//                              onBatchEnd: (batch, logs) => { console.log('onBatchEnd', batch, logs); },
+//                              onYield: (epoch, batch, logs) => { console.log('onYield', epoch, batch, logs); }
 
                                 onBatchEnd: (batch, logs) => {
                                     if (!this._callbackReportBatch) {
@@ -524,7 +524,7 @@ class Grid {
 }
 
 
-type CallbackEvaluatePrediction = (	target: Types.ArrayOrder1,
+type CallbackEvaluatePrediction = ( target: Types.ArrayOrder1,
                                     prediction: Types.ArrayOrder1) => PredictionEvaluation;
 
 type CallbackReportBatch = (duration: number,
