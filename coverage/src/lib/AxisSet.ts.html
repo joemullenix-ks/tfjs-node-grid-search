@@ -339,14 +339,14 @@
 &nbsp;
 &nbsp;
 //NOTE: TODO: Due to a redesign, this level isn't needed. We can simply pass an
-//			  into Grid's constructor.
-//			  The pass-throughs are dropped, and the helpers become methods of
-//			  AxisSetTraverser.
-//			  Good effort, though.
+//            into Grid's constructor.
+//            The pass-throughs are dropped, and the helpers become methods of
+//            AxisSetTraverser.
+//            Good effort, though.
 //
 //    UPDATE: This is pending the implementation of Schedules/Recipes, which
-//			  are alternate methods of defining the grid. This may play a role
-//			  after all.
+//            are alternate methods of defining the grid. This may play a role
+//            after all.
 &nbsp;
 &nbsp;
 import { StringKeyedNullsObject, StringKeyedNumbersObject } from './types';
@@ -360,114 +360,114 @@ import * as Utils from './Utils';
  * Manages a collection of {@link Axis}.
  */
 class AxisSet {
-	/**
-	 * Creates an instance of AxisSet.
-	 * @param {Array&lt;Axis&gt;} _axes An array of {@link Axis}. Each axis must have a unique hyperparameter.
-	 */
-	constructor(private _axes: Array&lt;Axis&gt;) {
-		// validate the incoming axes
+    /**
+     * Creates an instance of AxisSet.
+     * @param {Array&lt;Axis&gt;} _axes An array of {@link Axis}. Each axis must have a unique hyperparameter.
+     */
+    constructor(private _axes: Array&lt;Axis&gt;) {
+        // validate the incoming axes
 &nbsp;
-		const AXES_BY_TYPE: StringKeyedNullsObject = {};
+        const AXES_BY_TYPE: StringKeyedNullsObject = {};
 &nbsp;
-		this._axes.forEach((axis) =&gt; {
-			// no duplicates
-			if (AXES_BY_TYPE[axis.type] !== undefined) {
-				throw new Error('Duplicate axis found: ' + axis.typeName);
-			}
+        this._axes.forEach((axis) =&gt; {
+            // no duplicates
+            if (AXES_BY_TYPE[axis.type] !== undefined) {
+                throw new Error('Duplicate axis found: ' + axis.typeName);
+            }
 &nbsp;
-			AXES_BY_TYPE[axis.type] = null;
-		});
-	}
+            AXES_BY_TYPE[axis.type] = null;
+        });
+    }
 &nbsp;
-	/**
-	 * Pass-through to advance an axis.
-	 * @param {number} index The axis to advance.
-	 */
-	AdvanceAxis(index: number): void {
-		this.ValidateIndex(index);
+    /**
+     * Pass-through to advance an axis.
+     * @param {number} index The axis to advance.
+     */
+    AdvanceAxis(index: number): void {
+        this.ValidateIndex(index);
 &nbsp;
-		this._axes[index].Advance();
-	}
+        this._axes[index].Advance();
+    }
 &nbsp;
-	/**
-	 * Pass-through to check completion.
-	 * @param {number} index The axis to check.
-	 * @return {boolean}
-	 */
-	CheckAxisComplete(index: number): boolean {
-		this.ValidateIndex(index);
+    /**
+     * Pass-through to check completion.
+     * @param {number} index The axis to check.
+     * @return {boolean}
+     */
+    CheckAxisComplete(index: number): boolean {
+        this.ValidateIndex(index);
 &nbsp;
-		return this._axes[index].CheckComplete();
-	}
+        return this._axes[index].CheckComplete();
+    }
 &nbsp;
-	/**
-	 * Builds a simple map in the format "{ axis0-name: axis0-value, ... }"
-	 * @return {StringKeyedNumbersObject}
-	 */
-	CreateParams(): StringKeyedNumbersObject {
-		const PARAMS: StringKeyedNumbersObject = {};
+    /**
+     * Builds a simple map in the format "{ axis0-name: axis0-value, ... }"
+     * @return {StringKeyedNumbersObject}
+     */
+    CreateParams(): StringKeyedNumbersObject {
+        const PARAMS: StringKeyedNumbersObject = {};
 &nbsp;
-		for (let i = 0; i &lt; this._axes.length; ++i) {
-			const AXIS = this._axes[i];
+        for (let i = 0; i &lt; this._axes.length; ++i) {
+            const AXIS = this._axes[i];
 &nbsp;
-			PARAMS[AXIS.typeName] = AXIS.CalculatePosition();
-		}
+            PARAMS[AXIS.typeName] = AXIS.CalculatePosition();
+        }
 &nbsp;
-		return PARAMS;
-	}
+        return PARAMS;
+    }
 &nbsp;
-	/**
-	 * Gets the collection size.
-	 * @return {number}
-	 */
-	GetTotalAxes(): number {
-		return this._axes.length;
-	}
+    /**
+     * Gets the collection size.
+     * @return {number}
+     */
+    GetTotalAxes(): number {
+        return this._axes.length;
+    }
 &nbsp;
-	/**
-	 * Pass-through to reset an axis.
-	 * @param {number} index The axis to reset.
-	 */
-	ResetAxis(index: number): void {
-		this.ValidateIndex(index);
+    /**
+     * Pass-through to reset an axis.
+     * @param {number} index The axis to reset.
+     */
+    ResetAxis(index: number): void {
+        this.ValidateIndex(index);
 &nbsp;
-		this._axes[index].Reset();
-	}
+        this._axes[index].Reset();
+    }
 &nbsp;
-	/**
-	 * Fails if an axis index is out-of-bounds.
-	 * @private
-	 * @param {number} index The axis index to validate.
-	 */
-	private ValidateIndex(index: number): void {
-		Utils.Assert(index &gt;= 0);
-		Utils.Assert(index &lt; this._axes.length);
-	}
+    /**
+     * Fails if an axis index is out-of-bounds.
+     * @private
+     * @param {number} index The axis index to validate.
+     */
+    private ValidateIndex(index: number): void {
+        Utils.Assert(index &gt;= 0);
+        Utils.Assert(index &lt; this._axes.length);
+    }
 &nbsp;
-	/**
-	 * Traverses the axis collection, invoking a callback for each.
-	 * @param {function(Axis): void} callback The function to be invoked with an instance of {@link Axis}.
-	 */
-	Walk(callback: CallbackDoSomethingWithAxis): void {
-		this._axes.forEach(callback);
-	}
+    /**
+     * Traverses the axis collection, invoking a callback for each.
+     * @param {function(Axis): void} callback The function to be invoked with an instance of {@link Axis}.
+     */
+    Walk(callback: CallbackDoSomethingWithAxis): void {
+        this._axes.forEach(callback);
+    }
 &nbsp;
-	/**
-	 * Pass-through to get axis reports.
-	 * @param {number} index The axis to report.
-	 * @param {boolean} compact Whether to get a detailed report.
-	 * @return {string}
-	 */
-	WriteAxisReport(index: number, compact: boolean): string {
-		this.ValidateIndex(index);
+    /**
+     * Pass-through to get axis reports.
+     * @param {number} index The axis to report.
+     * @param {boolean} compact Whether to get a detailed report.
+     * @return {string}
+     */
+    WriteAxisReport(index: number, compact: boolean): string {
+        this.ValidateIndex(index);
 &nbsp;
-		return this._axes[index].WriteReport(compact);
-	}
+        return this._axes[index].WriteReport(compact);
+    }
 }
 &nbsp;
 &nbsp;
 //NOTE: This is only here for JSDoc, which has a hard time parsing the
-//		signature. It's not hurting anyone. Yet.
+//      signature. It's not hurting anyone. Yet.
 type CallbackDoSomethingWithAxis = (axis: Axis) =&gt; void;
 &nbsp;
 &nbsp;
@@ -481,7 +481,7 @@ export { AxisSet };
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Sat Jan 09 2021 15:53:37 GMT-1000 (Hawaii-Aleutian Standard Time)
+                at Tue Feb 16 2021 10:38:29 GMT-1000 (Hawaii-Aleutian Standard Time)
             </div>
         </div>
         <script src="../../prettify.js"></script>

@@ -30,12 +30,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Grid = void 0;
 //NOTE: This variant of the lib (tfjs-node) is not yet part of a proper release (as of 2.7.0)!
-//		See https://github.com/tensorflow/tfjs/issues/4052 for the issue and a _workaround_ (not a proper
-//		solution yet), which involves manually copying this file:
+//      See https://github.com/tensorflow/tfjs/issues/4052 for the issue and a _workaround_ (not a proper
+//      solution yet), which involves manually copying this file:
 //
-//			copy tensorflow.dll
-//			from: node_modules\@tensorflow\tfjs-node\deps\lib
-//			  to: node_modules\@tensorflow\tfjs-node\lib\napi-v6
+//          copy tensorflow.dll
+//          from: node_modules\@tensorflow\tfjs-node\deps\lib
+//            to: node_modules\@tensorflow\tfjs-node\lib\napi-v6
 const TENSOR_FLOW = __importStar(require("@tensorflow/tfjs-node"));
 const Axis = __importStar(require("./Axis"));
 const AxisSetTraverser_1 = require("./AxisSetTraverser");
@@ -168,7 +168,7 @@ class Grid {
             }));
         }
         //TODO: Print these, but only under a verbocity setting (way too spammy)
-        //		TF_MODEL.summary();
+        //      TF_MODEL.summary();
         const LEARNING_RATE = modelParams.GetNumericParam(Axis.AxisNames.LEARN_RATE);
         // compile the model, which prepares it for training
         TF_MODEL.compile({
@@ -184,8 +184,9 @@ class Grid {
      */
     ResetEpochStats() {
         Utils.Assert(this._gridOptions.GetOption('epochStatsDepth') !== undefined);
-        //NOTE: This is currently only used by the reporting callback. It's contents, however, will be critical to tracking
-        //		overfit and stuck situations, as well as things like Smart Start(tm) (restarting unlucky iterations).
+        //NOTE: This is currently only used by the reporting callback. It's contents,
+        //      however, will be critical to tracking overfit and stuck situations, as
+        //      well as things like Smart Start(tm) (restarting unlucky iterations).
         const EPOCH_STATS_DEPTH = Number(this._gridOptions.GetOption('epochStatsDepth'));
         this._epochStats = new EpochStats_1.EpochStats(EPOCH_STATS_DEPTH);
     }
@@ -254,11 +255,15 @@ class Grid {
      * @private
      */
     ResolveModelDefinition() {
-        //NOTE: TODO: I'm not entirely happy with this. It feels like access breaking, to reach in via callback.
-        //			  It would be better to just produce a list of axis keys. That's all we want, anyway.
-        //			  ...will leave this on hold, pending the completion of the supported axes. There may be more
-        //			  to consider when it comes to complex axes like activator-schedules.
-        // ensure the static and dynamic model parameters have no overlap, by stripping any dupes from the statics
+        //NOTE: TODO: I'm not entirely happy with this. It feels like access breaking,
+        //            to reach in via callback.
+        //            It would be better to just produce a list of axis keys. That's all
+        //            we want, anyway.
+        //			  ...will leave this on hold, pending the completion of the
+        //            supported axes. There may be more to consider when it comes to
+        //            complex axes like activator-schedules.
+        // ensure the static and dynamic model parameters have no overlap, by
+        // stripping any dupes from the statics
         this._axisSetTraverser.ExamineAxisNames((axisKey) => {
             this._modelStatics.AttemptStripParam(axisKey);
         });
@@ -276,39 +281,48 @@ class Grid {
      * @return {ModelTestStats}
      */
     TestModel(model, modelParams, duration) {
-        //TODO: This model type might be too strict. Consider the lower-level TF LayersModel.
+        //TODO: This model type might be too strict. Consider the lower-level TF
+        //      LayersModel.
         Utils.Assert(model.built);
         Utils.Assert(duration >= 0);
         console.log('Testing...');
-        //NOTE: This rule (limitation) is for the arraySync() done on PREDICTIONS_TENSOR.
-        //		"model.predict()" is dual mode. It outputs an array of Tensors when given an array of Tensors
-        //		as input. Our evaluate-and-score logic is not yet ready to support multiple ins/outs.
+        //NOTE: This rule (limitation) is for the arraySync() done on
+        //      PREDICTIONS_TENSOR.
+        //		"model.predict()" is dual mode. It outputs an array of Tensors when
+        //      given an array of Tensors as input. Our evaluate-and-score logic is not
+        //      yet ready to support multiple ins/outs.
         //TODO: ...but it will! Until then, ignoring the path vis-a-vis unit coverage.
         /* istanbul ignore next */ //[FUTURE PROOFING]
         if (!(this._sessionData.proofInputsTensor instanceof TENSOR_FLOW.Tensor)) {
-            throw new Error('Invalid proof inputs; multi-input models are not yet supported.');
+            throw new Error('Invalid proof inputs; multi-input models are not '
+                + 'yet supported.');
         }
         // run the unseen data through this trained model
         const PREDICTIONS_TENSOR = model.predict(this._sessionData.proofInputsTensor, {
             batchSize: modelParams.GetNumericParam(Axis.AxisNames.BATCH_SIZE),
-            //NOTE: 'verbose' is not implemented as of TF 2.7.0. The documentation is wrong, but it's noted in the lib (see model.ts).
+            //NOTE: 'verbose' is not implemented as of TF 2.7.0. The documentation is wrong,
+            //      but it's noted in the lib (see model.ts).
             verbose: false
         });
         // convert this TF Tensor into array form, for human-friendly analysis
         const PREDICTIONS = PREDICTIONS_TENSOR.arraySync();
-        // pull the unstandardized proof cases (again, for the human-friendly report)
+        // pull the unstandardized proof cases (again, for the human-friendly
+        // report)
         const PROOF_INPUTS = this._sessionData.rawInputsProof;
         const PROOF_TARGETS = this._sessionData.proofTargets;
-        Utils.Assert(PROOF_TARGETS.length === PREDICTIONS.length); // sanity-check
+        // sanity-check
+        Utils.Assert(PROOF_TARGETS.length === PREDICTIONS.length);
         if (this._callbackReportIteration) {
             this._callbackReportIteration(duration, PREDICTIONS, PROOF_INPUTS, PROOF_TARGETS);
         }
-        // we now 'score' the predictions by tallying the responses from the user's callback
+        // we now 'score' the predictions by tallying the responses from the
+        // user's callback
         let aggregateDeltaCorrect = 0.0;
         let aggregateDeltaIncorrect = 0.0;
         let totalCorrect = 0;
         for (let i = 0; i < PREDICTIONS.length; ++i) {
-            // send each targets-prediction pair to the user, for their scoring logic
+            // send each targets-prediction pair to the user, for their scoring
+            // logic
             const EVALUATION = this._callbackEvaluatePrediction(PROOF_TARGETS[i], PREDICTIONS[i]);
             if (EVALUATION.correct) {
                 ++totalCorrect;
@@ -332,20 +346,24 @@ class Grid {
      */
     TrainModel(model, modelParams) {
         return __awaiter(this, void 0, void 0, function* () {
-            //TODO: This model type might be too strict. Consider the lower-level TF LayersModel.
+            //TODO: This model type might be too strict. Consider the lower-level TF
+            //      LayersModel.
             Utils.Assert(model.built);
             this.ResetEpochStats();
             const TOTAL_CASES = this._sessionData.totalTrainingCases;
             //NOTE: ceil() is how TF performs this same split, as of v2.7.0.
             const TOTAL_VALIDATION_CASES = Math.ceil(TOTAL_CASES * modelParams.GetNumericParam(Axis.AxisNames.VALIDATION_SPLIT));
             const TOTAL_TRAINING_CASES = TOTAL_CASES - TOTAL_VALIDATION_CASES;
-            //NOTE: Cast this one. We know it exists, because we backfill any missing params. (TODO: Rewrite GridOptions vis-a-vis TS.)
+            //NOTE: Cast this one. We know it exists, because we backfill any missing
+            //      params. (TODO: Rewrite GridOptions vis-a-vis TS.)
             const USER_VALIDATION_SET_SIZE_MIN = this._gridOptions.GetOption('validationSetSizeMin');
             if (TOTAL_VALIDATION_CASES <= USER_VALIDATION_SET_SIZE_MIN) {
-                console.warn('Validation split is extremely low, and may not produce useful results.');
+                console.warn('Validation split is extremely low, and may not '
+                    + 'produce useful results.');
             }
             if (TOTAL_TRAINING_CASES <= USER_VALIDATION_SET_SIZE_MIN) {
-                console.warn('Validation split is extremely high, and may not produce useful results.');
+                console.warn('Validation split is extremely high, and may not '
+                    + 'produce useful results.');
             }
             const TOTAL_EPOCHS = modelParams.GetNumericParam(Axis.AxisNames.EPOCHS);
             console.log('Training with ' + TOTAL_CASES + ' cases ('
@@ -356,10 +374,12 @@ class Grid {
                 batchSize: modelParams.GetNumericParam(Axis.AxisNames.BATCH_SIZE),
                 epochs: TOTAL_EPOCHS,
                 shuffle: true,
-                //NOTE: As of 2020 11 23, tfjs-node logs an extra line per-epoch w/ verbosity 1+. It's redundant with our
-                //		default per-epoch line, thus the "0". However, it's worth keeping an eye on this for debugging.
+                //NOTE: As of 2020 11 23, tfjs-node logs an extra line per-epoch w/ a setting of
+                //      verbosity 1+. It's redundant with our default per-epoch line, thus the
+                //      "0". However, it's worth keeping an eye on this for debugging.
                 verbose: 0,
-                //NOTE: Validation is only performed if we provide this "validationSplit" arg. It's necessary to track overfit and stuck.
+                //NOTE: Validation is only performed if we provide this "validationSplit" arg.
+                //      It's necessary to track overfit and stuck.
                 validationSplit: modelParams.GetNumericParam(Axis.AxisNames.VALIDATION_SPLIT),
                 callbacks: {
                     //NOTE: These events are available, as of TF 2.7.0:

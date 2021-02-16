@@ -222,7 +222,12 @@
 <a name='L163'></a><a href='#L163'>163</a>
 <a name='L164'></a><a href='#L164'>164</a>
 <a name='L165'></a><a href='#L165'>165</a>
-<a name='L166'></a><a href='#L166'>166</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L166'></a><a href='#L166'>166</a>
+<a name='L167'></a><a href='#L167'>167</a>
+<a name='L168'></a><a href='#L168'>168</a>
+<a name='L169'></a><a href='#L169'>169</a>
+<a name='L170'></a><a href='#L170'>170</a>
+<a name='L171'></a><a href='#L171'>171</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -256,6 +261,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">21x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">21x</span>
@@ -269,6 +275,8 @@
 <span class="cline-any cline-yes">186x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">186x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -304,6 +312,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">211x</span>
 <span class="cline-any cline-yes">99x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -354,6 +363,7 @@
 <span class="cline-any cline-yes">10x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">80x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -402,150 +412,155 @@ import * as Utils from './Utils';
  * Performs the selection of hyperparameter values during the grid search.
  */
 class AxisSetTraverser {
-	private _totalAxes = 0;
-	private _traversed = false;
-	private _iterationDescriptorsByIndex: NumberKeyedStringsObject = {};
-	private _totalIterations = 0;
+    private _totalAxes = 0;
+    private _traversed = false;
+    private _iterationDescriptorsByIndex: NumberKeyedStringsObject = {};
+    private _totalIterations = 0;
 &nbsp;
-	/**
-	 * Creates an instance of AxisSetTraverser.
-	 * @param {AxisSet} _axisSet The collection of {@link Axis} that define the
-	 *							 grid (parameter space) to be searched. Each
-	 *							 axis is associated with one hyperparameter.
-	 */
-	constructor(private _axisSet: AxisSet) {
-		// save off our axis count, which never changes
-		this._totalAxes = this._axisSet.GetTotalAxes();
+    /**
+     * Creates an instance of AxisSetTraverser.
+     * @param {AxisSet} _axisSet The collection of {@link Axis} that define the
+     *                           grid (parameter space) to be searched. Each
+     *                           axis is associated with one hyperparameter.
+     */
+    constructor(private _axisSet: AxisSet) {
+        // save off our axis count, which never changes
+        this._totalAxes = this._axisSet.GetTotalAxes();
 &nbsp;
-		this._traversed = false;
+        this._traversed = false;
 &nbsp;
-//NOTE: This function is buried in the c'tor because it actually runs the traversal (advances the axes).
+//NOTE: This function is buried in the c'tor because it actually runs the
+//      traversal (advances the axes).
 //		It cleans up after itself, resetting to a pristine state on the way out.
-		this._iterationDescriptorsByIndex = {};
+        this._iterationDescriptorsByIndex = {};
 &nbsp;
-		this._totalIterations = 0;
+        this._totalIterations = 0;
 &nbsp;
-		const BUILD_SCHEDULE = () =&gt; {
-			let reportText = '';
+        const BUILD_SCHEDULE = () =&gt; {
+            let reportText = '';
 &nbsp;
-			for (let i = 0; !this._traversed; ++i) {
-				++this._totalIterations;
+            for (let i = 0; !this._traversed; ++i) {
+                ++this._totalIterations;
 &nbsp;
-				const DESCRIPTOR = this.WriteReport(true); // compact report
+                const DESCRIPTOR = this.WriteReport(true); // compact report
 &nbsp;
-				this._iterationDescriptorsByIndex[i] = DESCRIPTOR;
+                this._iterationDescriptorsByIndex[i] = DESCRIPTOR;
 &nbsp;
-//TODO: (maybe) add a "x3" suffix to this printout; needs 'repetitions' from the owner.
-//		...could make more sense to factor this out of the constructor. The protection of the 'running' state seems misplaced.
-				reportText += DESCRIPTOR + '\n';
+//TODO: (maybe) add a "x3" suffix to this printout; needs 'repetitions' from the
+//      owner.
+//      It could make more sense to factor this out of the constructor. The urge
+//      to protect the 'running' state seems misplaced.
+                reportText += DESCRIPTOR + '\n';
 &nbsp;
-				this.Advance();
-			}
+                this.Advance();
+            }
 &nbsp;
-			console.log('iteration schedule:' + '\n' + reportText);
+            console.log('iteration schedule:' + '\n' + reportText);
 &nbsp;
-			// reset for traversals managed by the owner
-			this._traversed = false;
-		}
+            // reset for traversals managed by the owner
+            this._traversed = false;
+        }
 &nbsp;
-		BUILD_SCHEDULE();
-	}
+        BUILD_SCHEDULE();
+    }
 &nbsp;
-	get	totalIterations(): number { return this._totalIterations; }
-	get traversed(): boolean { return this._traversed; }
+    get	totalIterations(): number { return this._totalIterations; }
+    get traversed(): boolean { return this._traversed; }
 &nbsp;
-	/**
-	 * Iterates the grid. Called after each 'cell' (i.e. unique
-	 * combination of hyperparameters) is trained and tested. Once all axes
-	 * are complete, we mark ourselves as traversed (or done).
-	 */
-	Advance(): void {
-		Utils.Assert(!this._traversed);
+    /**
+     * Iterates the grid. Called after each 'cell' (i.e. unique
+     * combination of hyperparameters) is trained and tested. Once all axes
+     * are complete, we mark ourselves as traversed (or done).
+     */
+    Advance(): void {
+        Utils.Assert(!this._traversed);
 &nbsp;
-		let resetCounter = 0;
+        let resetCounter = 0;
 &nbsp;
-		for (let i = 0; i &lt; this._totalAxes; ++i) {
-			this._axisSet.AdvanceAxis(i);
+        for (let i = 0; i &lt; this._totalAxes; ++i) {
+            this._axisSet.AdvanceAxis(i);
 &nbsp;
-			if (this._axisSet.CheckAxisComplete(i)) {
-				this._axisSet.ResetAxis(i);
+            if (this._axisSet.CheckAxisComplete(i)) {
+                this._axisSet.ResetAxis(i);
 &nbsp;
-//KEEP: This is useful, but currently too spammy (without digging out the axis name, it's also too vague).
-//		There's a decent chance this comes back after the first round of user feedback.
-//				console.log('Axis ' + i + ' reset');
+//KEEP: This is useful, but currently too spammy (without digging out the axis
+//      name, it's also too vague). There's a decent chance this comes back
+//      after the first round of user feedback.
+//              console.log('Axis ' + i + ' reset');
 &nbsp;
-				++resetCounter;
+                ++resetCounter;
 &nbsp;
-				continue;
-			}
+                continue;
+            }
 &nbsp;
-			return;
-		}
+            return;
+        }
 &nbsp;
-		Utils.Assert(resetCounter === this._totalAxes);
+        Utils.Assert(resetCounter === this._totalAxes);
 &nbsp;
-		// this advance completed the traversal; reset
+        // this advance completed the traversal; reset
 &nbsp;
-		this._traversed = true;
-	}
+        this._traversed = true;
+    }
 &nbsp;
-	/**
-	 * Produces a simple key: value mapping of the axes current positions,
-	 * keyed by their names.
-	 * @return {StringKeyedNumbersObject}
-	 */
-	CreateIterationParams(): StringKeyedNumbersObject {
-		return this._axisSet.CreateParams();
-	}
+    /**
+     * Produces a simple key: value mapping of the axes current positions,
+     * keyed by their names.
+     * @return {StringKeyedNumbersObject}
+     */
+    CreateIterationParams(): StringKeyedNumbersObject {
+        return this._axisSet.CreateParams();
+    }
 &nbsp;
-	/**
-	 * Traverses the axis set, invoking a callback with the name of each axis.
-	 * @param {function(string): void} callback The function to be invoked.
-	 */
-	ExamineAxisNames(callback: CallbackDoSomethingWithAxisName): void {
-		this._axisSet.Walk((axis) =&gt; {
-			callback(axis.typeName);
-		});
-	}
+    /**
+     * Traverses the axis set, invoking a callback with the name of each axis.
+     * @param {function(string): void} callback The function to be invoked.
+     */
+    ExamineAxisNames(callback: CallbackDoSomethingWithAxisName): void {
+        this._axisSet.Walk((axis) =&gt; {
+            callback(axis.typeName);
+        });
+    }
 &nbsp;
-	/**
-	 * Gets the descriptor for a requested axis. We build these simple strings
-	 * in the constructor.
-	 * @param {number} index The axis to be described.
-	 * @return {string}
-	 */
-	LookupIterationDescriptor(index: number): string {
-		if (this._iterationDescriptorsByIndex[index] === undefined) {
-			throw new Error('Attempted to lookup descriptor for unknown iteration: ' + index);
-		}
+    /**
+     * Gets the descriptor for a requested axis. We build these simple strings
+     * in the constructor.
+     * @param {number} index The axis to be described.
+     * @return {string}
+     */
+    LookupIterationDescriptor(index: number): string {
+        if (this._iterationDescriptorsByIndex[index] === undefined) {
+            throw new Error('Attempted to lookup descriptor for unknown '
+                            + 'iteration: ' + index);
+        }
 &nbsp;
-		return this._iterationDescriptorsByIndex[index];
-	}
+        return this._iterationDescriptorsByIndex[index];
+    }
 &nbsp;
-	/**
-	 * Gets a combined report of every axis' status.
-	 * @param {boolean} compact Whether to get a detailed report.
-	 * @return {string}
-	 */
-	WriteReport(compact: boolean): string {
-		let reportText = '';
+    /**
+     * Gets a combined report of every axis' status.
+     * @param {boolean} compact Whether to get a detailed report.
+     * @return {string}
+     */
+    WriteReport(compact: boolean): string {
+        let reportText = '';
 &nbsp;
-		for (let i = 0; i &lt; this._totalAxes; ++i) {
-			reportText += (compact ? '' : '• ')
-							+ this._axisSet.WriteAxisReport(i, compact)
-							+ (compact ? ', ' : '\n');
-		}
+        for (let i = 0; i &lt; this._totalAxes; ++i) {
+            reportText += (compact ? '' : '• ')
+                            + this._axisSet.WriteAxisReport(i, compact)
+                            + (compact ? ', ' : '\n');
+        }
 &nbsp;
-		// remove the trailing newline or comma-and-space
-		reportText = reportText.slice(0, (compact ? -2 : -1));
+        // remove the trailing newline or comma-and-space
+        reportText = reportText.slice(0, (compact ? -2 : -1));
 &nbsp;
-		return reportText;
-	}
+        return reportText;
+    }
 }
 &nbsp;
 &nbsp;
 //NOTE: This is only here for JSDoc, which has a hard time parsing the
-//		signature. It's not hurting anyone. Yet.
+//      signature. It's not hurting anyone. Yet.
 type CallbackDoSomethingWithAxisName = (axisKey: string) =&gt; void;
 &nbsp;
 &nbsp;
@@ -559,7 +574,7 @@ export { AxisSetTraverser };
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Sat Jan 09 2021 15:53:37 GMT-1000 (Hawaii-Aleutian Standard Time)
+                at Tue Feb 16 2021 10:38:29 GMT-1000 (Hawaii-Aleutian Standard Time)
             </div>
         </div>
         <script src="../../prettify.js"></script>

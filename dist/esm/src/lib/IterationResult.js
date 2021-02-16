@@ -43,8 +43,8 @@ class IterationResult {
     get runDuration() { return this._runDuration; }
     get score() { return this._score; }
     //TODO: These WriteHeader/Values methods have duplicate structure and usage.
-    //		Enforce them with a CSVSource interface.
-    //		...or maybe abstract into a base type.
+    //      Enforce them with a CSVSource interface.
+    //      ...or maybe abstract into a base type.
     /**
      * Gets the header for the {@link EpochStats} section of the CSV table.
      * @return {string}

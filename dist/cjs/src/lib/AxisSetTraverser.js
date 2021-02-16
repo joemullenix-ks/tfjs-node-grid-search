@@ -29,8 +29,8 @@ class AxisSetTraverser {
     /**
      * Creates an instance of AxisSetTraverser.
      * @param {AxisSet} _axisSet The collection of {@link Axis} that define the
-     *							 grid (parameter space) to be searched. Each
-     *							 axis is associated with one hyperparameter.
+     *                           grid (parameter space) to be searched. Each
+     *                           axis is associated with one hyperparameter.
      */
     constructor(_axisSet) {
         this._axisSet = _axisSet;
@@ -41,7 +41,8 @@ class AxisSetTraverser {
         // save off our axis count, which never changes
         this._totalAxes = this._axisSet.GetTotalAxes();
         this._traversed = false;
-        //NOTE: This function is buried in the c'tor because it actually runs the traversal (advances the axes).
+        //NOTE: This function is buried in the c'tor because it actually runs the
+        //      traversal (advances the axes).
         //		It cleans up after itself, resetting to a pristine state on the way out.
         this._iterationDescriptorsByIndex = {};
         this._totalIterations = 0;
@@ -51,8 +52,10 @@ class AxisSetTraverser {
                 ++this._totalIterations;
                 const DESCRIPTOR = this.WriteReport(true); // compact report
                 this._iterationDescriptorsByIndex[i] = DESCRIPTOR;
-                //TODO: (maybe) add a "x3" suffix to this printout; needs 'repetitions' from the owner.
-                //		...could make more sense to factor this out of the constructor. The protection of the 'running' state seems misplaced.
+                //TODO: (maybe) add a "x3" suffix to this printout; needs 'repetitions' from the
+                //      owner.
+                //      It could make more sense to factor this out of the constructor. The urge
+                //      to protect the 'running' state seems misplaced.
                 reportText += DESCRIPTOR + '\n';
                 this.Advance();
             }
@@ -76,9 +79,10 @@ class AxisSetTraverser {
             this._axisSet.AdvanceAxis(i);
             if (this._axisSet.CheckAxisComplete(i)) {
                 this._axisSet.ResetAxis(i);
-                //KEEP: This is useful, but currently too spammy (without digging out the axis name, it's also too vague).
-                //		There's a decent chance this comes back after the first round of user feedback.
-                //				console.log('Axis ' + i + ' reset');
+                //KEEP: This is useful, but currently too spammy (without digging out the axis
+                //      name, it's also too vague). There's a decent chance this comes back
+                //      after the first round of user feedback.
+                //              console.log('Axis ' + i + ' reset');
                 ++resetCounter;
                 continue;
             }
@@ -113,7 +117,8 @@ class AxisSetTraverser {
      */
     LookupIterationDescriptor(index) {
         if (this._iterationDescriptorsByIndex[index] === undefined) {
-            throw new Error('Attempted to lookup descriptor for unknown iteration: ' + index);
+            throw new Error('Attempted to lookup descriptor for unknown '
+                + 'iteration: ' + index);
         }
         return this._iterationDescriptorsByIndex[index];
     }

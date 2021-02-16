@@ -65,8 +65,8 @@ class EpochStats {
      * and slopes.
      * @param {number} epoch Iteration count from model fit; currently unused.
      * @param {Logs} logs A TensorFlow object with the latest values for
-     *					  accuracy, loss, validation-accuracy and
-     *					  validation-loss.
+     *                    accuracy, loss, validation-accuracy and
+     *                    validation-loss.
      */
     Update(epoch, logs) {
         Utils.Assert(epoch >= 0);
@@ -91,7 +91,9 @@ class EpochStats {
     }
     //vv TODO: These move into a CSVSource interface
     WriteCSVLineKeys() {
-        return 'averageAccuracy,averageLoss,averageValidationAccuracy,averageValidationLoss,slopeAccuracy,slopeLoss,slopeValidationAccuracy,slopeValidationLoss';
+        return 'averageAccuracy,averageLoss,averageValidationAccuracy,'
+            + 'averageValidationLoss,slopeAccuracy,slopeLoss,'
+            + 'slopeValidationAccuracy,slopeValidationLoss';
     }
     WriteCSVLineValues() {
         return this._averageAccuracy
@@ -108,7 +110,8 @@ class EpochStats {
      * Generates a one-line text report with the following:
      * <ul>
      *   <li>all of the trailing averages</li>
-     *   <li>the slope of each average (accuracy, loss, validation-accuracy and validation-loss)</li>
+     *   <li>the slope of each average (accuracy, loss, validation-accuracy and
+     *       validation-loss)</li>
      *   <li>relevant deltas between the training and validation values</li>
      * <ul>
      * @return {string}

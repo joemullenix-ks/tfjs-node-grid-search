@@ -9,100 +9,102 @@ import { IterationResult } from './IterationResult';
  * report to the log and/or CSV.
  */
 class GridRunStats {
-	private _iterationResults: Array<IterationResult> = [];
+    private _iterationResults: Array<IterationResult> = [];
 
-	static readonly _noData = 'no data';
+    static readonly _noData = 'no data';
 
-	/**
-	 * Creates an instance of GridRunStats.
-	 */
-	constructor() {
-		// Lint gripes about empty constructors. Apperently this is good enough. Party on.
-	}
+    /**
+     * Creates an instance of GridRunStats.
+     */
+    constructor() {
+        // Lint gripes about empty constructors. Apperently this is good enough. Party on.
+    }
 
-	/**
-	 * Stores all information about a single model, both config and results.
-	 * @param {IterationResult} iterationResult The info package.
-	 */
-	AddIterationResult(iterationResult: IterationResult): void {
-		this._iterationResults.push(iterationResult);
-	}
+    /**
+     * Stores all information about a single model, both config and results.
+     * @param {IterationResult} iterationResult The info package.
+     */
+    AddIterationResult(iterationResult: IterationResult): void {
+        this._iterationResults.push(iterationResult);
+    }
 
-	/**
-	 * Creates a table of text in Comma Separated Value format, ideal for
-	 * import via spreadsheet software.
-	 * @return {string}
-	 */
-	WriteCSV(): string {
-		if (this._iterationResults.length === 0) {
-			return GridRunStats._noData;
-		}
+    /**
+     * Creates a table of text in Comma Separated Value format, ideal for
+     * import via spreadsheet software.
+     * @return {string}
+     */
+    WriteCSV(): string {
+        if (this._iterationResults.length === 0) {
+            return GridRunStats._noData;
+        }
 
-		// write the header of the CSV table
-		const HEADER_TEXT = 'pass,iteration,repetition,score,duration,'
-							+ this._iterationResults[0].WriteModelParamHeader()
-							+ ','
-							+ this._iterationResults[0].WriteEpochStatsHeader()
-							+ ','
-							+ this._iterationResults[0].WriteTestStatsHeader();
+        // write the header of the CSV table
+        const HEADER_TEXT = 'pass,iteration,repetition,score,duration,'
+                            + this._iterationResults[0].WriteModelParamHeader()
+                            + ','
+                            + this._iterationResults[0].WriteEpochStatsHeader()
+                            + ','
+                            + this._iterationResults[0].WriteTestStatsHeader();
 
-		// write the body of the CSV table
+        // write the body of the CSV table
 
-		let iterationsTableText = '';
+        let iterationsTableText = '';
 
-		this._iterationResults.forEach((value, index) => {
-			iterationsTableText += index + ',' + value.iteration + ',' + value.repetition + ',' + value.score + ',' + value.runDuration + ',';
+        this._iterationResults.forEach((value, index) => {
+            iterationsTableText += index + ',' + value.iteration + ','
+                                    + value.repetition + ',' + value.score + ','
+                                    + value.runDuration + ',';
 
-			// first the model params...
-			iterationsTableText += value.WriteModelParamValues();
+            // first the model params...
+            iterationsTableText += value.WriteModelParamValues();
 
-			iterationsTableText += ',';
+            iterationsTableText += ',';
 
-			// ...then the epoch (loss and accuracy) stats
-			iterationsTableText += value.WriteEpochStatsValues();
+            // ...then the epoch (loss and accuracy) stats
+            iterationsTableText += value.WriteEpochStatsValues();
 
-			iterationsTableText += ',';
+            iterationsTableText += ',';
 
-			// ...then the generalization test stats
-			iterationsTableText += value.WriteTestStatsValues();
+            // ...then the generalization test stats
+            iterationsTableText += value.WriteTestStatsValues();
 
-			iterationsTableText += '\n';
-		});
+            iterationsTableText += '\n';
+        });
 
-		// drop the trailing newline
-		iterationsTableText = iterationsTableText.slice(0, -1);
+        // drop the trailing newline
+        iterationsTableText = iterationsTableText.slice(0, -1);
 
-		return HEADER_TEXT + '\n' + iterationsTableText;
-	}
+        return HEADER_TEXT + '\n' + iterationsTableText;
+    }
 
-	/**
-	 * Creates a block of text intended for the console. The performance and
-	 * config of each model is listed, optionally sorted by score.
-	 * @param {boolean} sortByScore List models with the highest scores first.
-	 * @return {string}
-	 */
-	WriteReport(sortByScore: boolean): string {
-		let iterations = this._iterationResults;
+    /**
+     * Creates a block of text intended for the console. The performance and
+     * config of each model is listed, optionally sorted by score.
+     * @param {boolean} sortByScore List models with the highest scores first.
+     * @return {string}
+     */
+    WriteReport(sortByScore: boolean): string {
+        let iterations = this._iterationResults;
 
-		if (sortByScore) {
-			// create a shallow clone...
-			iterations = this._iterationResults.slice();
+        if (sortByScore) {
+            // create a shallow clone...
+            iterations = this._iterationResults.slice();
 
-			// ...then sort it by score, descending (i.e. best score first)
-			iterations.sort((a, b) => {return b.score - a.score;});
-		}
+            // ...then sort it by score, descending (i.e. best score first)
+            iterations.sort((a, b) => {return b.score - a.score;});
+        }
 
-		let outgoingText = '';
+        let outgoingText = '';
 
-		iterations.forEach((value) => {
-			outgoingText += value.WriteReport() + '\n';
-		});
+        iterations.forEach((value) => {
+            outgoingText += value.WriteReport() + '\n';
+        });
 
-		// drop the trailing newline
-		outgoingText = outgoingText.slice(0, -1);
+        // drop the trailing newline
+        outgoingText = outgoingText.slice(0, -1);
 
-		return outgoingText;
-	}
+        return outgoingText;
+    }
 }
 
 

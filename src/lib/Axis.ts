@@ -225,7 +225,6 @@ class Axis {
      * @param {string} key Must match an entry in the [AxisNames]{@link Axis.AxisNames} enum.
      * @param {Progression} progression A concrete instance derived from Progression.
      * @param {FailureMessage} failureMessage Explanatory faliure text is written to this object.
-
      * @return {boolean}
      */
     static AttemptValidateProgression(key: string, progression: Progression, failureMessage: FailureMessage): boolean {

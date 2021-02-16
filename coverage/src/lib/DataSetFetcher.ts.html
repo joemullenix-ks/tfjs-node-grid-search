@@ -161,7 +161,12 @@
 <a name='L102'></a><a href='#L102'>102</a>
 <a name='L103'></a><a href='#L103'>103</a>
 <a name='L104'></a><a href='#L104'>104</a>
-<a name='L105'></a><a href='#L105'>105</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L105'></a><a href='#L105'>105</a>
+<a name='L106'></a><a href='#L106'>106</a>
+<a name='L107'></a><a href='#L107'>107</a>
+<a name='L108'></a><a href='#L108'>108</a>
+<a name='L109'></a><a href='#L109'>109</a>
+<a name='L110'></a><a href='#L110'>110</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -170,6 +175,7 @@
 <span class="cline-any cline-yes">22x</span>
 <span class="cline-any cline-yes">22x</span>
 <span class="cline-any cline-yes">22x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -203,6 +209,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">21x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">6x</span>
@@ -211,7 +218,10 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">15x</span>
@@ -276,14 +286,15 @@ import * as FileIO from './FileIO';
 import { FileIOResult } from './FileIOResult';
 &nbsp;
 &nbsp;
-//TODO: Add more techniques, e.g. fetch via url (example below). When we make that pass, refactor this into an abstract
-//		base, then implement dedicated fetchers e.g. URLDataSetFetcher, LocalFilesDataSetFetcher, etc...
+//TODO: Add more techniques, e.g. fetch via url (example below). When we make
+//      that pass, refactor this into an abstract base, then implement dedicated
+//      fetchers e.g. URLDataSetFetcher, LocalFilesDataSetFetcher, etc...
 //
-// 	async function getData() {
-// 		const dataResponse = await fetch('https:// ...');
-// 		const data = await dataResponse.json();
-// 		return data;
-// 	}
+//  async function getData() {
+//      const dataResponse = await fetch('https:// ...');
+//      const data = await dataResponse.json();
+//      return data;
+//  }
 &nbsp;
 &nbsp;
 /**
@@ -293,76 +304,80 @@ import { FileIOResult } from './FileIOResult';
  * Note: Fetching via URL is coming soon!
  */
 class DataSetFetcher {
-	private _pathInputs = '';
-	private _pathTargets = '';
+    private _pathInputs = '';
+    private _pathTargets = '';
 &nbsp;
-	/**
-	 * Creates an instance of DataSetFetcher.
-	 * @param {Array&lt;string&gt;} nodeLaunchArguments An array of strings, in which
-	 *											  the 3rd and 4th are the input
-	 *											  and target file paths,
-	 *											  respectively. This is written
-	 *											  specifically to take the Node
-	 *											  launch params (process.argv).
-	 */
-	constructor(nodeLaunchArguments: Array&lt;string&gt;) {
-		if (nodeLaunchArguments.length &lt; 4
-			|| nodeLaunchArguments[2] === nodeLaunchArguments[3]) {
-			// show the user a template in 'warning' color, since this is a potential barrier to entry
-			console.warn('Missing launch param(s)!' + '\n'
-							+ 'Example command line:' + '\n'
-							+ '  node my-tngs-app.js data_inputs.txt data_targets.txt' + '\n'
-							+ 'Example launch.json config:' + '\n'
-							+ '  "args": ["data_inputs.txt", "data_targets.txt"]' + '\n');
+    /**
+     * Creates an instance of DataSetFetcher.
+     * @param {Array&lt;string&gt;} nodeLaunchArguments An array of strings, in which
+     *                                            the 3rd and 4th are the input
+     *                                            and target file paths,
+     *                                            respectively. This is written
+     *                                            specifically to take the Node
+     *                                            launch params (process.argv).
+     */
+    constructor(nodeLaunchArguments: Array&lt;string&gt;) {
+        if (nodeLaunchArguments.length &lt; 4
+            || nodeLaunchArguments[2] === nodeLaunchArguments[3]) {
+            // show the user a template in 'warning' color, since this is a
+            // potential barrier to entry
+            console.warn('Missing launch param(s)!' + '\n'
+                            + 'Example command line:' + '\n'
+                            + '  node my-tngs-app.js data_inputs.txt '
+                            + 'data_targets.txt' + '\n'
+                            + 'Example launch.json config:' + '\n'
+                            + '  "args": ["data_inputs.txt", '
+                            + '"data_targets.txt"]' + '\n');
 &nbsp;
-			throw new Error('Expecting two paths, the first to the input data, the second to the targets.');
-		}
+            throw new Error('Expecting two paths, the first to the input data, '
+                          + 'the second to the targets.');
+        }
 &nbsp;
-		this._pathInputs = nodeLaunchArguments[2];
+        this._pathInputs = nodeLaunchArguments[2];
 &nbsp;
-		this._pathTargets = nodeLaunchArguments[3];
-	}
+        this._pathTargets = nodeLaunchArguments[3];
+    }
 &nbsp;
-	/**
-	 * Loads the data asynchronously. Throws if a file path is missing/invalid.
-	 * @return {Promise&lt;DataSet&gt;}
-	 */
-	async Fetch(): Promise&lt;DataSet&gt; {
-		try {
-			return await this.ReadDataFiles();
-		} catch (e) {
-			/* istanbul ignore next */ //[FUTURE PROOFING]
-			console.error('Failed to fetch the data set. Please check the file paths.' + '\n', e);
+    /**
+     * Loads the data asynchronously. Throws if a file path is missing/invalid.
+     * @return {Promise&lt;DataSet&gt;}
+     */
+    async Fetch(): Promise&lt;DataSet&gt; {
+        try {
+            return await this.ReadDataFiles();
+        } catch (e) {
+            /* istanbul ignore next */ //[FUTURE PROOFING]
+            console.error('Failed to fetch the data set. Please check the file paths.' + '\n', e);
 &nbsp;
-			/* istanbul ignore next */ //[FUTURE PROOFING]
-			throw (e); // re-throw, else TS will get upset about return type
-		}
-	}
+            /* istanbul ignore next */ //[FUTURE PROOFING]
+            throw (e); // re-throw, else TS will get upset about return type
+        }
+    }
 &nbsp;
-	/**
-	 * Handles the file reads, and returns a {@link DataSet} with the results.
-	 * @private
-	 * @return {Promise&lt;DataSet&gt;}
-	 */
-	private async ReadDataFiles(): Promise&lt;DataSet&gt; {
-		console.log('Attempting to read data from the following files:' + '\n'
-			+ '   Inputs: ' + this._pathInputs + '\n'
-			+ '  Targets: ' + this._pathTargets);
+    /**
+     * Handles the file reads, and returns a {@link DataSet} with the results.
+     * @private
+     * @return {Promise&lt;DataSet&gt;}
+     */
+    private async ReadDataFiles(): Promise&lt;DataSet&gt; {
+        console.log('Attempting to read data from the following files:' + '\n'
+            + '   Inputs: ' + this._pathInputs + '\n'
+            + '  Targets: ' + this._pathTargets);
 &nbsp;
-		const FILE_IO_RESULT = new FileIOResult();
+        const FILE_IO_RESULT = new FileIOResult();
 &nbsp;
-		await FileIO.ReadDataFile(this._pathInputs, FILE_IO_RESULT);
+        await FileIO.ReadDataFile(this._pathInputs, FILE_IO_RESULT);
 &nbsp;
-		const INPUTS_FILE_DATA = JSON.parse(FILE_IO_RESULT.data) as TFNestedArray;
+        const INPUTS_FILE_DATA = JSON.parse(FILE_IO_RESULT.data) as TFNestedArray;
 &nbsp;
-		await FileIO.ReadDataFile(this._pathTargets, FILE_IO_RESULT);
+        await FileIO.ReadDataFile(this._pathTargets, FILE_IO_RESULT);
 &nbsp;
-		const TARGETS_FILE_DATA = JSON.parse(FILE_IO_RESULT.data) as ArrayOrder2;
+        const TARGETS_FILE_DATA = JSON.parse(FILE_IO_RESULT.data) as ArrayOrder2;
 &nbsp;
-		const DATA_SET = new DataSet(INPUTS_FILE_DATA, TARGETS_FILE_DATA);
+        const DATA_SET = new DataSet(INPUTS_FILE_DATA, TARGETS_FILE_DATA);
 &nbsp;
-		return DATA_SET;
-	}
+        return DATA_SET;
+    }
 }
 &nbsp;
 &nbsp;
@@ -376,7 +391,7 @@ export { DataSetFetcher };
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Sat Jan 09 2021 15:53:37 GMT-1000 (Hawaii-Aleutian Standard Time)
+                at Tue Feb 16 2021 10:38:29 GMT-1000 (Hawaii-Aleutian Standard Time)
             </div>
         </div>
         <script src="../../prettify.js"></script>

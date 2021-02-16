@@ -139,7 +139,7 @@ class ModelStatics {
                 : Axis.AxisDefaults.VALIDATION_SPLIT;
         // now we tack on the parameters that can't be axes (or rather not-yet-supported-as-axes)
         //TODO: The primary goal of this project is to support as many of these in as many ways as possible (progressions,
-        //		custom schedules, randomizers, smart systems, ... ?).
+        //      custom schedules, randomizers, smart systems, ... ?).
         this._staticParams.activationHidden = 'relu';
         this._staticParams.activationInput = 'relu';
         this._staticParams.activationOutput = 'softmax';

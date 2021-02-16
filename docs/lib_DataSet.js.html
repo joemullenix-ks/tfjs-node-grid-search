@@ -53,15 +53,15 @@ class DataSet {
     /**
      * Creates an instance of DataSet.
      * @param {TFNestedArray} _inputs The cases that will be sent to TF's model
-     * 								  fit(). The values must be nested arrays,
-     *								  because they will become TF tensors. See
-     *								  {@link https://js.tensorflow.org/api/latest/#tensor}
-     *								  for details. Note that the flat-array
-     *								  option is not yet supported.
+     *                                fit(). The values must be nested arrays,
+     *                                because they will become TF tensors. See
+     *                                {@link https://js.tensorflow.org/api/latest/#tensor}
+     *                                for details. Note that the flat-array
+     *                                option is not yet supported.
      * @param {ArrayOrder2} _targets The output values associated with the
-     *								 input data. Must be a two-dimensional
-     *								 nested array. Note: Proper format
-     *								 flexibility is coming soon!
+     *                               input data. Must be a two-dimensional
+     *                               nested array. Note: Proper format
+     *                               flexibility is coming soon!
      * @example
      * // create a data set with inputs and targets for three cases
      * new tngs.DataSet([[ 0, 2, 0, 4 ], [ 9, 2, 9, 6 ], [ 3, 5, 7, 1 ]],
