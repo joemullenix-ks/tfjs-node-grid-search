@@ -6,12 +6,12 @@
 	],
 	"settings": {
 		"workbench.colorCustomizations": {
-			"editorRuler.foreground": "#FFF4",
 			"minimap.background": "#666"
 		},
 	    "editor.rulers": [80, 120],
 		"docthis.includeMemberOfOnClassMembers": false,
-		"typescript.tsdk": "node_modules\\typescript\\lib"
+		"typescript.tsdk": "node_modules\\typescript\\lib",
+		"editor.insertSpaces": true
 
 /*REF
 "docthis.includeTypes": true, // When enabled, type information is added to comment tags.
