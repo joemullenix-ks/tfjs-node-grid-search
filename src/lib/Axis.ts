@@ -276,12 +276,12 @@ class Axis {
      */
     static LookupTypeName(type: number): string {
         switch (type) {
-            case AxisTypes.BATCH_SIZE:			return AxisNames.BATCH_SIZE;
-            case AxisTypes.EPOCHS:				return AxisNames.EPOCHS;
-            case AxisTypes.LAYERS:				return AxisNames.LAYERS;
-            case AxisTypes.LEARN_RATE:			return AxisNames.LEARN_RATE;
-            case AxisTypes.NEURONS:				return AxisNames.NEURONS;
-            case AxisTypes.VALIDATION_SPLIT:	return AxisNames.VALIDATION_SPLIT;
+            case AxisTypes.BATCH_SIZE:          return AxisNames.BATCH_SIZE;
+            case AxisTypes.EPOCHS:              return AxisNames.EPOCHS;
+            case AxisTypes.LAYERS:              return AxisNames.LAYERS;
+            case AxisTypes.LEARN_RATE:          return AxisNames.LEARN_RATE;
+            case AxisTypes.NEURONS:             return AxisNames.NEURONS;
+            case AxisTypes.VALIDATION_SPLIT:    return AxisNames.VALIDATION_SPLIT;
 
             default: {
                 throw new Error('invalid enum index: ' + type + '/' + AxisTypes._TOTAL);
