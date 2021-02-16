@@ -312,108 +312,108 @@ import * as Utils from './Utils';
  * "iteration" or "grid cell").
  */
 class IterationResult {
-	private _score = 0;
+    private _score = 0;
 &nbsp;
-	/**
-	 * Creates an instance of IterationResult.
-	 * @param {number} _iteration The grid's current iteration counter.
-	 * @param {string} _descriptor A small, one-line bit of text with the
-	 *	dynamic axes (and their bounds) that define this iteration.
-	 * @param {EpochStats} _epochStats Stats from the iteration's training
-	 *	epochs.
-	 * @param {ModelParams} _modelParams The config used to create the
-	 *	iteration's model.
-	 * @param {ModelTestStats} _modelTestStats The right/wrong totals and
-	 *	accuracy/quality deltas from the iteration's testing phase.
-	 * @param {number} _repetition This grid's current repeat count for this
-	 *	iteration.
-	 * @param {number} _runDuration Execution time in milliseconds.
-	 */
-	constructor(private _iteration: number,
-				private _descriptor: string,
-				private _epochStats: EpochStats,
-				private _modelParams: ModelParams,
-				private _modelTestStats: ModelTestStats,
-				private _repetition: number,
-				private _runDuration: number) {
-		Utils.Assert(this._iteration &gt;= 0);
-		Utils.Assert(Math.floor(this._iteration) === this._iteration);
-		Utils.Assert(this._descriptor !== '');
-		Utils.Assert(this._repetition &gt;= 0);
-		Utils.Assert(this._repetition === Math.floor(this._repetition));
-		Utils.Assert(this._runDuration &gt;= 0);
-		Utils.Assert(this._runDuration === Math.floor(this._runDuration));
+    /**
+     * Creates an instance of IterationResult.
+     * @param {number} _iteration The grid's current iteration counter.
+     * @param {string} _descriptor A small, one-line bit of text with the
+     *	dynamic axes (and their bounds) that define this iteration.
+     * @param {EpochStats} _epochStats Stats from the iteration's training
+     *	epochs.
+     * @param {ModelParams} _modelParams The config used to create the
+     *	iteration's model.
+     * @param {ModelTestStats} _modelTestStats The right/wrong totals and
+     *	accuracy/quality deltas from the iteration's testing phase.
+     * @param {number} _repetition This grid's current repeat count for this
+     *	iteration.
+     * @param {number} _runDuration Execution time in milliseconds.
+     */
+    constructor(private _iteration: number,
+                private _descriptor: string,
+                private _epochStats: EpochStats,
+                private _modelParams: ModelParams,
+                private _modelTestStats: ModelTestStats,
+                private _repetition: number,
+                private _runDuration: number) {
+        Utils.Assert(this._iteration &gt;= 0);
+        Utils.Assert(Math.floor(this._iteration) === this._iteration);
+        Utils.Assert(this._descriptor !== '');
+        Utils.Assert(this._repetition &gt;= 0);
+        Utils.Assert(this._repetition === Math.floor(this._repetition));
+        Utils.Assert(this._runDuration &gt;= 0);
+        Utils.Assert(this._runDuration === Math.floor(this._runDuration));
 &nbsp;
-		this._score = this._modelTestStats.CalculateScore();
-	}
+        this._score = this._modelTestStats.CalculateScore();
+    }
 &nbsp;
-	get iteration(): number { return this._iteration; }
-	get repetition(): number { return this._repetition; }
-	get runDuration(): number { return this._runDuration; }
-	get score(): number { return this._score; }
+    get iteration(): number { return this._iteration; }
+    get repetition(): number { return this._repetition; }
+    get runDuration(): number { return this._runDuration; }
+    get score(): number { return this._score; }
 &nbsp;
 //TODO: These WriteHeader/Values methods have duplicate structure and usage.
-//		Enforce them with a CSVSource interface.
-//		...or maybe abstract into a base type.
+//      Enforce them with a CSVSource interface.
+//      ...or maybe abstract into a base type.
 &nbsp;
-	/**
-	 * Gets the header for the {@link EpochStats} section of the CSV table.
-	 * @return {string}
-	 */
-	WriteEpochStatsHeader(): string {
-		return this._epochStats.WriteCSVLineKeys();
-	}
+    /**
+     * Gets the header for the {@link EpochStats} section of the CSV table.
+     * @return {string}
+     */
+    WriteEpochStatsHeader(): string {
+        return this._epochStats.WriteCSVLineKeys();
+    }
 &nbsp;
-	/**
-	 * Gets the body for the {@link EpochStats} section of the CSV table.
-	 * @return {string}
-	 */
-	WriteEpochStatsValues(): string {
-		return this._epochStats.WriteCSVLineValues();
-	}
+    /**
+     * Gets the body for the {@link EpochStats} section of the CSV table.
+     * @return {string}
+     */
+    WriteEpochStatsValues(): string {
+        return this._epochStats.WriteCSVLineValues();
+    }
 &nbsp;
-	/**
-	 * Gets the header for the {@link ModelParams} section of the CSV table.
-	 * @return {string}
-	 */
-	WriteModelParamHeader(): string {
-		return this._modelParams.WriteCSVLineKeys();
-	}
+    /**
+     * Gets the header for the {@link ModelParams} section of the CSV table.
+     * @return {string}
+     */
+    WriteModelParamHeader(): string {
+        return this._modelParams.WriteCSVLineKeys();
+    }
 &nbsp;
-	/**
-	 * Gets the body for the {@link ModelParams} section of the CSV table.
-	 * @return {string}
-	 */
-	WriteModelParamValues(): string {
-		return this._modelParams.WriteCSVLineValues();
-	}
+    /**
+     * Gets the body for the {@link ModelParams} section of the CSV table.
+     * @return {string}
+     */
+    WriteModelParamValues(): string {
+        return this._modelParams.WriteCSVLineValues();
+    }
 &nbsp;
-	/**
-	 * Gets the header for the {@link ModelTestStats} section of the CSV table.
-	 * @return {string}
-	 */
-	WriteTestStatsHeader(): string {
-		return this._modelTestStats.WriteCSVLineKeys();
-	}
+    /**
+     * Gets the header for the {@link ModelTestStats} section of the CSV table.
+     * @return {string}
+     */
+    WriteTestStatsHeader(): string {
+        return this._modelTestStats.WriteCSVLineKeys();
+    }
 &nbsp;
-	/**
-	 * Gets the body for the {@link ModelTestStats} section of the CSV table.
-	 * @return {string}
-	 */
-	WriteTestStatsValues(): string {
-		return this._modelTestStats.WriteCSVLineValues();
-	}
+    /**
+     * Gets the body for the {@link ModelTestStats} section of the CSV table.
+     * @return {string}
+     */
+    WriteTestStatsValues(): string {
+        return this._modelTestStats.WriteCSVLineValues();
+    }
 &nbsp;
-	/**
-	 * Gets the console logging report for this model run.
-	 * @return {string}
-	 */
-	WriteReport(): string {
-		return 'Iteration: ' + this._iteration + ', '
-				+ 'Repetition: ' + this._repetition + ', '
-				+ 'Score: ' + (100 * this._score).toFixed(1) + '%, '
-				+ 'Dynamics: ' + this._descriptor;
-	}
+    /**
+     * Gets the console logging report for this model run.
+     * @return {string}
+     */
+    WriteReport(): string {
+        return 'Iteration: ' + this._iteration + ', '
+                + 'Repetition: ' + this._repetition + ', '
+                + 'Score: ' + (100 * this._score).toFixed(1) + '%, '
+                + 'Dynamics: ' + this._descriptor;
+    }
 }
 &nbsp;
 &nbsp;
@@ -427,7 +427,7 @@ export { IterationResult };
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Sat Jan 09 2021 15:53:37 GMT-1000 (Hawaii-Aleutian Standard Time)
+                at Tue Feb 16 2021 10:38:29 GMT-1000 (Hawaii-Aleutian Standard Time)
             </div>
         </div>
         <script src="../../prettify.js"></script>

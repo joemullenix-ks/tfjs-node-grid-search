@@ -9,8 +9,8 @@ declare abstract class Progression {
     /**
      * Creates an instance of Progression.
      * @param {boolean} _integerBased Send 'true' if this progression uses
-     *								  integer steps exclusively (as opposed to
-     *								  floating-point).
+     *                                integer steps exclusively (as opposed to
+     *                                floating-point).
      * @param {string} _typeName A simple label for logging.
      */
     constructor(_integerBased: boolean, // "integerBased" as opposed to floating point

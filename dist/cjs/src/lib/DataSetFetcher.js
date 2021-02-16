@@ -32,14 +32,15 @@ exports.DataSetFetcher = void 0;
 const DataSet_1 = require("./DataSet");
 const FileIO = __importStar(require("./FileIO"));
 const FileIOResult_1 = require("./FileIOResult");
-//TODO: Add more techniques, e.g. fetch via url (example below). When we make that pass, refactor this into an abstract
-//		base, then implement dedicated fetchers e.g. URLDataSetFetcher, LocalFilesDataSetFetcher, etc...
+//TODO: Add more techniques, e.g. fetch via url (example below). When we make
+//      that pass, refactor this into an abstract base, then implement dedicated
+//      fetchers e.g. URLDataSetFetcher, LocalFilesDataSetFetcher, etc...
 //
-// 	async function getData() {
-// 		const dataResponse = await fetch('https:// ...');
-// 		const data = await dataResponse.json();
-// 		return data;
-// 	}
+//  async function getData() {
+//      const dataResponse = await fetch('https:// ...');
+//      const data = await dataResponse.json();
+//      return data;
+//  }
 /**
  * Retrieves the data to be used for training and testing, and uses that data to
  * create an instance of {@link DataSet}. Currently limited to fetching from
@@ -50,24 +51,28 @@ class DataSetFetcher {
     /**
      * Creates an instance of DataSetFetcher.
      * @param {Array<string>} nodeLaunchArguments An array of strings, in which
-     *											  the 3rd and 4th are the input
-     *											  and target file paths,
-     *											  respectively. This is written
-     *											  specifically to take the Node
-     *											  launch params (process.argv).
+     *                                            the 3rd and 4th are the input
+     *                                            and target file paths,
+     *                                            respectively. This is written
+     *                                            specifically to take the Node
+     *                                            launch params (process.argv).
      */
     constructor(nodeLaunchArguments) {
         this._pathInputs = '';
         this._pathTargets = '';
         if (nodeLaunchArguments.length < 4
             || nodeLaunchArguments[2] === nodeLaunchArguments[3]) {
-            // show the user a template in 'warning' color, since this is a potential barrier to entry
+            // show the user a template in 'warning' color, since this is a
+            // potential barrier to entry
             console.warn('Missing launch param(s)!' + '\n'
                 + 'Example command line:' + '\n'
-                + '  node my-tngs-app.js data_inputs.txt data_targets.txt' + '\n'
+                + '  node my-tngs-app.js data_inputs.txt '
+                + 'data_targets.txt' + '\n'
                 + 'Example launch.json config:' + '\n'
-                + '  "args": ["data_inputs.txt", "data_targets.txt"]' + '\n');
-            throw new Error('Expecting two paths, the first to the input data, the second to the targets.');
+                + '  "args": ["data_inputs.txt", '
+                + '"data_targets.txt"]' + '\n');
+            throw new Error('Expecting two paths, the first to the input data, '
+                + 'the second to the targets.');
         }
         this._pathInputs = nodeLaunchArguments[2];
         this._pathTargets = nodeLaunchArguments[3];

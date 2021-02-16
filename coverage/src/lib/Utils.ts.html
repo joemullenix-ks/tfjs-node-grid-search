@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>69/69</span>
+                <span class='fraction'>70/70</span>
             </div>
         
             
@@ -280,7 +280,16 @@
 <a name='L221'></a><a href='#L221'>221</a>
 <a name='L222'></a><a href='#L222'>222</a>
 <a name='L223'></a><a href='#L223'>223</a>
-<a name='L224'></a><a href='#L224'>224</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L224'></a><a href='#L224'>224</a>
+<a name='L225'></a><a href='#L225'>225</a>
+<a name='L226'></a><a href='#L226'>226</a>
+<a name='L227'></a><a href='#L227'>227</a>
+<a name='L228'></a><a href='#L228'>228</a>
+<a name='L229'></a><a href='#L229'>229</a>
+<a name='L230'></a><a href='#L230'>230</a>
+<a name='L231'></a><a href='#L231'>231</a>
+<a name='L232'></a><a href='#L232'>232</a>
+<a name='L233'></a><a href='#L233'>233</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -306,7 +315,10 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">123x</span>
 <span class="cline-any cline-yes">186x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">123x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -412,6 +424,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">69x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">129x</span>
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -434,6 +448,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">69x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">15x</span>
 <span class="cline-any cline-yes">9x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -460,6 +475,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">42x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">42x</span>
@@ -475,8 +491,10 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">69x</span>
 <span class="cline-any cline-yes">18x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">15x</span>
@@ -520,45 +538,48 @@
  * @return {number}
  */
 const ArrayCalculateAverage = (array: Array&lt;number&gt;): number =&gt; {
-	if (array.length === 0) {
-		throw new Error('Cannot calculate average. Array is empty.');
-	}
+    if (array.length === 0) {
+        throw new Error('Cannot calculate average. Array is empty.');
+    }
 &nbsp;
 //TODO: Move into EpochStats, where these can be done more efficiently.
 //PERF: Don't walk the whole set. Instead, discount a running average (which
-//		we'll keep separately and pass in), by (droppedSample / total), then
-//		add (addedSample / total).
+//      we'll keep separately and pass in), by (droppedSample / total), then
+//      add (addedSample / total).
 &nbsp;
-	const SUM = array.reduce((previous, current) =&gt; {return previous + current}, 0);
+    const SUM = array.reduce((previous, current) =&gt; {
+            return previous + current;
+        },
+        0);
 &nbsp;
-	return SUM / array.length;
+    return SUM / array.length;
 };
 &nbsp;
 /**
  * Finds the largest value in an array of numbers, and returns the index of that
- * value. Array must not be empty.
+ * value, e.g. [1, 3, 2] returns 1. Array must not be empty.
  * @param {Array&lt;number&gt;} values
  * @return {number}
  */
 const ArrayFindIndexOfHighestValue = (values: Array&lt;number&gt;): number =&gt; {
-	if (values.length === 0) {
-		throw new Error('Cannot find highest. Array is empty.');
-	}
+    if (values.length === 0) {
+        throw new Error('Cannot find highest. Array is empty.');
+    }
 &nbsp;
-	let indexOfHighest = 0;
-	let highestValue = Number.MIN_VALUE;
+    let indexOfHighest = 0;
+    let highestValue = Number.MIN_VALUE;
 &nbsp;
-	for (let p = 0; p &lt; values.length; ++p) {
-		if (values[p] &lt; highestValue) {
-			continue;
-		}
+    for (let p = 0; p &lt; values.length; ++p) {
+        if (values[p] &lt; highestValue) {
+            continue;
+        }
 &nbsp;
-		indexOfHighest = p;
+        indexOfHighest = p;
 &nbsp;
-		highestValue = values[p];
-	}
+        highestValue = values[p];
+    }
 &nbsp;
-	return indexOfHighest;
+    return indexOfHighest;
 };
 &nbsp;
 /**
@@ -569,11 +590,11 @@ const ArrayFindIndexOfHighestValue = (values: Array&lt;number&gt;): number =&gt;
  * @return {void}
  */
 const Assert = (condition: boolean): void =&gt; {
-	if (condition) {
-		return;
-	}
+    if (condition) {
+        return;
+    }
 &nbsp;
-	throw new Error('assertion failed');
+    throw new Error('assertion failed');
 };
 &nbsp;
 /**
@@ -582,15 +603,15 @@ const Assert = (condition: boolean): void =&gt; {
  * @return {boolean}
  */
 const CheckFloat0to1Exclusive = (x: number): boolean =&gt; {
-	if (x &lt;= 0) {
-		return false;
-	}
+    if (x &lt;= 0) {
+        return false;
+    }
 &nbsp;
-	if (x &gt;= 1) {
-		return false;
-	}
+    if (x &gt;= 1) {
+        return false;
+    }
 &nbsp;
-	return true;
+    return true;
 };
 &nbsp;
 /**
@@ -599,15 +620,15 @@ const CheckFloat0to1Exclusive = (x: number): boolean =&gt; {
  * @return {boolean}
  */
 const CheckNonNegativeInteger = (x: number): boolean =&gt; {
-	if (x &lt; 0) {
-		return false;
-	}
+    if (x &lt; 0) {
+        return false;
+    }
 &nbsp;
-	if (x !== Math.floor(x)) {
-		return false;
-	}
+    if (x !== Math.floor(x)) {
+        return false;
+    }
 &nbsp;
-	return true;
+    return true;
 }
 &nbsp;
 /**
@@ -616,15 +637,15 @@ const CheckNonNegativeInteger = (x: number): boolean =&gt; {
  * @return {boolean}
  */
 const CheckPositiveInteger = (x: number): boolean =&gt; {
-	if (!CheckNonNegativeInteger(x)) {
-		return false;
-	}
+    if (!CheckNonNegativeInteger(x)) {
+        return false;
+    }
 &nbsp;
-	if (x &lt; 1) {
-		return false;
-	}
+    if (x &lt; 1) {
+        return false;
+    }
 &nbsp;
-	return true;
+    return true;
 };
 &nbsp;
 /**
@@ -634,18 +655,20 @@ const CheckPositiveInteger = (x: number): boolean =&gt; {
  * @param {number} newSample The number to add.
  * @param {number} count The queue max-size limit.
  */
-const QueueRotate = (queue: Array&lt;number&gt;, newSample: number, count: number): void =&gt; {
-	if (count &lt; 1) {
-		throw new Error('queue length limit must be &gt;= 1 :'  + count);
-	}
+const QueueRotate = (   queue: Array&lt;number&gt;,
+                        newSample: number,
+                        count: number): void =&gt; {
+    if (count &lt; 1) {
+        throw new Error('queue length limit must be &gt;= 1 :'  + count);
+    }
 &nbsp;
-	queue.push(newSample);
+    queue.push(newSample);
 &nbsp;
-	if (queue.length &lt;= count) {
-		return;
-	}
+    if (queue.length &lt;= count) {
+        return;
+    }
 &nbsp;
-	queue.shift();
+    queue.shift();
 };
 &nbsp;
 &nbsp;
@@ -656,16 +679,17 @@ const QueueRotate = (queue: Array&lt;number&gt;, newSample: number, count: numbe
  * @param {string} messagePrefix A short message to prepend to the thrown error.
  * @param {unknown} errorOrException The object originally caught.
  */
-const ThrowCaughtUnknown = (messagePrefix: string, errorOrException: unknown): void =&gt; {
-	if (typeof errorOrException === 'string') {
-		throw new Error(messagePrefix + errorOrException);
-	}
+const ThrowCaughtUnknown = (messagePrefix: string,
+                            errorOrException: unknown): void =&gt; {
+    if (typeof errorOrException === 'string') {
+        throw new Error(messagePrefix + errorOrException);
+    }
 &nbsp;
-	if (errorOrException instanceof Error) {
-		throw new Error(messagePrefix + errorOrException.message);
-	}
+    if (errorOrException instanceof Error) {
+        throw new Error(messagePrefix + errorOrException.message);
+    }
 &nbsp;
-	throw new Error(messagePrefix + 'unknown exception type');
+    throw new Error(messagePrefix + 'unknown exception type');
 };
 &nbsp;
 /**
@@ -676,20 +700,22 @@ const ThrowCaughtUnknown = (messagePrefix: string, errorOrException: unknown): v
  * @param {(string | number | boolean)} x
  */
 const ValidateTextForCSV = (x: string | number | boolean): void =&gt; {
-//NOTE: Add whichever (just not TS any) input type. That's the point, here. We're looking at the argument
-//		after it's been cast to string, to ensure we have cleanly CSV-able information for file write().
+//NOTE: Add whichever (just not TS any) input type. That's the point, here.
+//      We're looking at the argument after it's been cast to string, to ensure
+//      we have cleanly CSV-able information for file write().
 //
 //UPDATE: Now that this takes primitives only, it should likely be string-only.
-//		  There is a growing case to toss it entirely. Stay tuned for the
-//		  complex axes (e.g. activation functions, etc...).
+//        There is a growing case to toss it entirely. Stay tuned for the
+//        complex axes (e.g. activation functions, etc...).
 &nbsp;
-	const AS_STRING = x.toString();
+    const AS_STRING = x.toString();
 &nbsp;
-	if (AS_STRING.indexOf(',') === -1 &amp;&amp; AS_STRING.indexOf('\n') === -1) {
-		return;
-	}
+    if (AS_STRING.indexOf(',') === -1 &amp;&amp; AS_STRING.indexOf('\n') === -1) {
+        return;
+    }
 &nbsp;
-	throw new Error('Value contains comma or newline (which interferes with CSV): ' + x + ', ' + AS_STRING);
+    throw new Error('Value contains comma or newline (which interferes with '
+                    + 'CSV): ' + x + ', ' + AS_STRING);
 };
 &nbsp;
 /**
@@ -699,32 +725,33 @@ const ValidateTextForCSV = (x: string | number | boolean): void =&gt; {
  * @return {string} Example: "15000 ms / 15.00 sec / 0.25 min / 0.0 hr"
  */
 const WriteDurationReport = (durationMS: number): string =&gt; {
-	Assert(durationMS &gt;= 0);
+    Assert(durationMS &gt;= 0);
 &nbsp;
-//TODO: (low-pri) Bring in time-reporting from the f lib, which has smart duration-category picking.
-	return durationMS + ' ms'
-			+ ' / '
-			+ (durationMS / 1000).toFixed(1) + ' sec'
-			+ ' / '
-			+ (durationMS / 60 / 1000).toFixed(2) + ' min'
-			+ ' / '
-			+ (durationMS / 60 / 60 / 1000).toFixed(3) + ' hr'
-			+ ' / '
-			+ (durationMS / 24 / 60 / 60 / 1000).toFixed(4) + ' dy';
+//TODO: (low-pri) Bring in time-reporting from the f lib, which has smart
+//      duration-category picking.
+    return durationMS + ' ms'
+            + ' / '
+            + (durationMS / 1000).toFixed(1) + ' sec'
+            + ' / '
+            + (durationMS / 60 / 1000).toFixed(2) + ' min'
+            + ' / '
+            + (durationMS / 60 / 60 / 1000).toFixed(3) + ' hr'
+            + ' / '
+            + (durationMS / 24 / 60 / 60 / 1000).toFixed(4) + ' dy';
 };
 &nbsp;
 &nbsp;
 export {
-	ArrayCalculateAverage,
-	ArrayFindIndexOfHighestValue,
-	Assert,
-	CheckNonNegativeInteger,
-	CheckFloat0to1Exclusive,
-	CheckPositiveInteger,
-	QueueRotate,
-	ThrowCaughtUnknown,
-	ValidateTextForCSV,
-	WriteDurationReport
+    ArrayCalculateAverage,
+    ArrayFindIndexOfHighestValue,
+    Assert,
+    CheckNonNegativeInteger,
+    CheckFloat0to1Exclusive,
+    CheckPositiveInteger,
+    QueueRotate,
+    ThrowCaughtUnknown,
+    ValidateTextForCSV,
+    WriteDurationReport
 };
 &nbsp;</pre></td></tr></table></pre>
 
@@ -733,7 +760,7 @@ export {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Sat Jan 09 2021 15:53:37 GMT-1000 (Hawaii-Aleutian Standard Time)
+                at Tue Feb 16 2021 10:38:29 GMT-1000 (Hawaii-Aleutian Standard Time)
             </div>
         </div>
         <script src="../../prettify.js"></script>

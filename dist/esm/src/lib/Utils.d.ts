@@ -9,7 +9,7 @@
 declare const ArrayCalculateAverage: (array: Array<number>) => number;
 /**
  * Finds the largest value in an array of numbers, and returns the index of that
- * value. Array must not be empty.
+ * value, e.g. [1, 3, 2] returns 1. Array must not be empty.
  * @param {Array<number>} values
  * @return {number}
  */

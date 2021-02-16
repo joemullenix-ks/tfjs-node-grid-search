@@ -16,15 +16,17 @@ const ArrayCalculateAverage = (array) => {
     }
     //TODO: Move into EpochStats, where these can be done more efficiently.
     //PERF: Don't walk the whole set. Instead, discount a running average (which
-    //		we'll keep separately and pass in), by (droppedSample / total), then
-    //		add (addedSample / total).
-    const SUM = array.reduce((previous, current) => { return previous + current; }, 0);
+    //      we'll keep separately and pass in), by (droppedSample / total), then
+    //      add (addedSample / total).
+    const SUM = array.reduce((previous, current) => {
+        return previous + current;
+    }, 0);
     return SUM / array.length;
 };
 exports.ArrayCalculateAverage = ArrayCalculateAverage;
 /**
  * Finds the largest value in an array of numbers, and returns the index of that
- * value. Array must not be empty.
+ * value, e.g. [1, 3, 2] returns 1. Array must not be empty.
  * @param {Array<number>} values
  * @return {number}
  */
@@ -146,17 +148,19 @@ exports.ThrowCaughtUnknown = ThrowCaughtUnknown;
  * @param {(string | number | boolean)} x
  */
 const ValidateTextForCSV = (x) => {
-    //NOTE: Add whichever (just not TS any) input type. That's the point, here. We're looking at the argument
-    //		after it's been cast to string, to ensure we have cleanly CSV-able information for file write().
+    //NOTE: Add whichever (just not TS any) input type. That's the point, here.
+    //      We're looking at the argument after it's been cast to string, to ensure
+    //      we have cleanly CSV-able information for file write().
     //
     //UPDATE: Now that this takes primitives only, it should likely be string-only.
-    //		  There is a growing case to toss it entirely. Stay tuned for the
-    //		  complex axes (e.g. activation functions, etc...).
+    //        There is a growing case to toss it entirely. Stay tuned for the
+    //        complex axes (e.g. activation functions, etc...).
     const AS_STRING = x.toString();
     if (AS_STRING.indexOf(',') === -1 && AS_STRING.indexOf('\n') === -1) {
         return;
     }
-    throw new Error('Value contains comma or newline (which interferes with CSV): ' + x + ', ' + AS_STRING);
+    throw new Error('Value contains comma or newline (which interferes with '
+        + 'CSV): ' + x + ', ' + AS_STRING);
 };
 exports.ValidateTextForCSV = ValidateTextForCSV;
 /**
@@ -167,7 +171,8 @@ exports.ValidateTextForCSV = ValidateTextForCSV;
  */
 const WriteDurationReport = (durationMS) => {
     Assert(durationMS >= 0);
-    //TODO: (low-pri) Bring in time-reporting from the f lib, which has smart duration-category picking.
+    //TODO: (low-pri) Bring in time-reporting from the f lib, which has smart
+    //      duration-category picking.
     return durationMS + ' ms'
         + ' / '
         + (durationMS / 1000).toFixed(1) + ' sec'

@@ -13,8 +13,8 @@ declare class AxisSetTraverser {
     /**
      * Creates an instance of AxisSetTraverser.
      * @param {AxisSet} _axisSet The collection of {@link Axis} that define the
-     *							 grid (parameter space) to be searched. Each
-     *							 axis is associated with one hyperparameter.
+     *                           grid (parameter space) to be searched. Each
+     *                           axis is associated with one hyperparameter.
      */
     constructor(_axisSet: AxisSet);
     get totalIterations(): number;

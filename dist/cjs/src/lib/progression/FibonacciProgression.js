@@ -43,12 +43,12 @@ class FibonacciProgression extends Progression_1.Progression {
     */
     constructor(_initiator) {
         //NOTE: It might seem useful to offer two arbitrary params, e.g. (1.5, 4), and let the user define their own
-        //		Fibonacci-ish sequence. I actually tried that, and lo and behold, it basically finds its way back
-        //		to the actual Fibonaccis. It doesn't merge, exactly, but it produces the same curve, just slightly
-        //		offset.
-        //		Makes sense in retrospect. The algorithm only cares about two inputs on the first step. After that,
-        //		it exclusively uses one (the sum).
-        //		Nature FTW.
+        //      Fibonacci-ish sequence. I actually tried that, and lo and behold, it basically finds its way back
+        //      to the actual Fibonaccis. It doesn't merge, exactly, but it produces the same curve, just slightly
+        //      offset.
+        //      Makes sense in retrospect. The algorithm only cares about two inputs on the first step. After that,
+        //      it exclusively uses one (the sum).
+        //      Nature FTW.
         super(true, // always integer based (no need to overcomplicate)
         PROGRESSION_TYPENAME);
         this._initiator = _initiator;
@@ -100,14 +100,14 @@ class FibonacciProgression extends Progression_1.Progression {
 exports.FibonacciProgression = FibonacciProgression;
 //NOTE: Hilarious: https://codegolf.stackexchange.com/questions/133365/find-the-closest-fibonacci-number
 //
-//		f=(n,x=0,y=1)=>y<n?f(n,y,x+y):y-n>n-x?x:y
+//      f=(n,x=0,y=1)=>y<n?f(n,y,x+y):y-n>n-x?x:y
 //
-//		answered Jul 19 '17 at 16:27 by Neil
+//      answered Jul 19 '17 at 16:27 by Neil
 const FIND_NEAREST_FIBONACCI_NUMBER = (n, x = 0, y = 1) => {
     //PERF: This is not fast! Any high-frequency usage should instead use a cache.
     //NOTE: Although this looks dangerously unbounded, I've tested it up to max-integers, and it only goes ~80 calls deep.
-    //		The limits in browsers are all 20k plus, and VSCode 64k; not in the realm of reasonable worry.
-    //		...just ensure non-negative!
+    //      The limits in browsers are all 20k plus, and VSCode 64k; not in the realm of reasonable worry.
+    //      ...just ensure non-negative!
     Utils.Assert(n >= 0);
     return y < n
         ? FIND_NEAREST_FIBONACCI_NUMBER(n, y, x + y)

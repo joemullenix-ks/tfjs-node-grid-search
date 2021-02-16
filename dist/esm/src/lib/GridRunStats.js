@@ -37,7 +37,9 @@ class GridRunStats {
         // write the body of the CSV table
         let iterationsTableText = '';
         this._iterationResults.forEach((value, index) => {
-            iterationsTableText += index + ',' + value.iteration + ',' + value.repetition + ',' + value.score + ',' + value.runDuration + ',';
+            iterationsTableText += index + ',' + value.iteration + ','
+                + value.repetition + ',' + value.score + ','
+                + value.runDuration + ',';
             // first the model params...
             iterationsTableText += value.WriteModelParamValues();
             iterationsTableText += ',';

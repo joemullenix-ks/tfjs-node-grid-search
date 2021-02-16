@@ -19,11 +19,11 @@ class Axis {
     /**
     * Creates an instance of Axis.
     * @param {number} _typeEnum The hyperparameter associated with this axis.
-    *							Must be a member of the [AxisTypes]{@link Axis.AxisTypes} enum.
+    *                           Must be a member of the [AxisTypes]{@link Axis.AxisTypes} enum.
     * @param {number} _boundBegin The start of the search range, inclusive.
     * @param {number} _boundEnd The end of the search range, inclusive.
     * @param {Progression} _progression Provides a set of offsets used to
-    *									determine the steps in the range.
+    *                                   determine the steps in the range.
     */
     constructor(_typeEnum, _boundBegin, _boundEnd, _progression) {
         this._typeEnum = _typeEnum;
@@ -38,19 +38,19 @@ class Axis {
         Utils.Assert(_boundBegin >= 0);
         this._typeName = Axis.LookupTypeName(this._typeEnum);
         //NOTE: We strictly validate these bounds. Invalid input is fatal, so that users don't kick off (potentially
-        //		very long) grid searches with a doomed model config. It may not fail until the end.
-        //		Imagine this case:
-        //			- batchSize 100 >> 0, stepped by 2, for a range of {100, 98, 96, ..., 0}
-        //			- a second axis with 10 values, producing 1,010 combinations
-        //			- three repetitions per combination, producing 3,030 unique models
+        //      very long) grid searches with a doomed model config. It may not fail until the end.
+        //      Imagine this case:
+        //          - batchSize 100 >> 0, stepped by 2, for a range of {100, 98, 96, ..., 0}
+        //          - a second axis with 10 values, producing 1,010 combinations
+        //          - three repetitions per combination, producing 3,030 unique models
         //
-        //		Batch size zero is invalid, and will crash TF. However, the user would NOT find out until the grid
-        //		search was near its end, after hours (or days!).
-        //		This will nip that in the bud.
+        //      Batch size zero is invalid, and will crash TF. However, the user would NOT find out until the grid
+        //      search was near its end, after hours (or days!).
+        //      This will nip that in the bud.
         //
-        //		That said - we only enforce basic rules, e.g. no negative epoch counts, integer neuron counts, etc...
-        //		We're not attempting to do TF's job, here.
-        //		Nor do we project memory usage or battery life (yet).
+        //      That said - we only enforce basic rules, e.g. no negative epoch counts, integer neuron counts, etc...
+        //      We're not attempting to do TF's job, here.
+        //      Nor do we project memory usage or battery life (yet).
         const FAILURE_MESSAGE = new FailureMessage();
         if (!Axis.AttemptValidateParameter(this._typeName, this._boundBegin, FAILURE_MESSAGE)) {
             throw new Error('There was a problem with an axis-begin value. ' + FAILURE_MESSAGE.text);
@@ -178,12 +178,11 @@ class Axis {
      * @param {string} key Must match an entry in the [AxisNames]{@link Axis.AxisNames} enum.
      * @param {Progression} progression A concrete instance derived from Progression.
      * @param {FailureMessage} failureMessage Explanatory faliure text is written to this object.
-
      * @return {boolean}
      */
     static AttemptValidateProgression(key, progression, failureMessage) {
         //NOTE: It's important to gracefully handle bad inputs here, with explanations and recommendations in the failure text.
-        //		This has the potential to be a point-of-failure for new users as they ramp up on model config.
+        //      This has the potential to be a point-of-failure for new users as they ramp up on model config.
         let errorSuffix = '';
         switch (key) {
             // integer progressions, only
@@ -236,25 +235,25 @@ class Axis {
     }
 }
 //NOTE: TODO: These enums are wrong, and will be reconstructed after the current project-upgrades pass.
-//			  Obviously we should NOT have three separate enums that represent one class of information.
-//  		  Either we'll have an interface that each instance of Axis takes as a constructor param,
-//			  or, and I think more likely, we'll treat Axis as a base (probably abstract), then derive
-//			  concrete subs (e.g. BatchSizeAxis, EpochsAxis, etc...).
+//            Obviously we should NOT have three separate enums that represent one class of information.
+//            Either we'll have an interface that each instance of Axis takes as a constructor param,
+//            or, and I think more likely, we'll treat Axis as a base (probably abstract), then derive
+//            concrete subs (e.g. BatchSizeAxis, EpochsAxis, etc...).
 //
-//			  Something like this:
-//	 			interface AxisDef {
-// 					default: number; << or bool|number|string? ...and callbacks? Look through TF::Model's types.
-// 					name: number;
-// 					type: number;
-// 				}
+//            Something like this:
+//              interface AxisDef {
+//                  default: number; << or bool|number|string? ...and callbacks? Look through TF::Model's types.
+//                  name: number;
+//                  type: number;
+//              }
 //
-//			  ...more to come!
+//              ...more to come!
 //NOTE: These can (and should!) be "const enum", but that causes a failure when packaging for npm. Further, the
-//		TypeScript enum doesn't get exported (in any useful way) by JSDoc, thus this hodgepodge workaround.
-//		The const issue is a limitation of TypeScript. Enums are preprocessor'd, like #define in C. They're
-//		implemented pre-transpile, and have no run time aliases, ergo they can't be exported.
-//		When they're _not_ const, apparently they have aliases. Why anyone would want an enum that isn't
-//		constant is beyond me ... but there we are.
+//      TypeScript enum doesn't get exported (in any useful way) by JSDoc, thus this hodgepodge workaround.
+//      The const issue is a limitation of TypeScript. Enums are preprocessor'd, like #define in C. They're
+//      implemented pre-transpile, and have no run time aliases, ergo they can't be exported.
+//      When they're _not_ const, apparently they have aliases. Why anyone would want an enum that isn't
+//      constant is beyond me ... but there we are.
 /**
  * Enumeration of the hyperparameter default values.<br>
  * See [AxisTypes]{@link Axis.AxisTypes} for details on each hyperparameter.

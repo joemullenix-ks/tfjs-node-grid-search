@@ -193,7 +193,14 @@
 <a name='L134'></a><a href='#L134'>134</a>
 <a name='L135'></a><a href='#L135'>135</a>
 <a name='L136'></a><a href='#L136'>136</a>
-<a name='L137'></a><a href='#L137'>137</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L137'></a><a href='#L137'>137</a>
+<a name='L138'></a><a href='#L138'>138</a>
+<a name='L139'></a><a href='#L139'>139</a>
+<a name='L140'></a><a href='#L140'>140</a>
+<a name='L141'></a><a href='#L141'>141</a>
+<a name='L142'></a><a href='#L142'>142</a>
+<a name='L143'></a><a href='#L143'>143</a>
+<a name='L144'></a><a href='#L144'>144</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -225,6 +232,8 @@
 <span class="cline-any cline-yes">6x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">26x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -239,6 +248,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">10x</span>
 <span class="cline-any cline-yes">42x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">42x</span>
@@ -256,6 +266,7 @@
 <span class="cline-any cline-yes">19x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">86x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -269,6 +280,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">40x</span>
 <span class="cline-any cline-yes">61x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">81x</span>
@@ -312,6 +324,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">23x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">23x</span>
@@ -343,121 +357,128 @@ import * as Utils from './Utils';
  * a network model.
  */
 class ModelParams {
-	private _mergedParams: Types.StringKeyedSimpleObject = {};
+    private _mergedParams: Types.StringKeyedSimpleObject = {};
 &nbsp;
-	/**
-	 * Creates an instance of ModelParams.
-	 * @param {Types.StringKeyedSimpleObject} _dynamicParams
-	 * @param {Types.StringKeyedSimpleObject} _staticParams
-	 */
-	constructor(private _dynamicParams: Types.StringKeyedSimpleObject,
-				private _staticParams: Types.StringKeyedSimpleObject) {
-		// start off with a (shallow) clone of the statics...
-		this._mergedParams = Object.assign({}, this._staticParams);
+    /**
+     * Creates an instance of ModelParams.
+     * @param {Types.StringKeyedSimpleObject} _dynamicParams
+     * @param {Types.StringKeyedSimpleObject} _staticParams
+     */
+    constructor(private _dynamicParams: Types.StringKeyedSimpleObject,
+                private _staticParams: Types.StringKeyedSimpleObject) {
+        // start off with a (shallow) clone of the statics...
+        this._mergedParams = Object.assign({}, this._staticParams);
 &nbsp;
-		// ...then merge in the dynamics, throwing in the event of a collision
-		for (const k in this._dynamicParams) {
-			if (this._mergedParams[k] !== undefined) {
-				throw new Error('Merging model params with a dynamic-static collision (these are mutually exclusive); key: ' + k);
-			}
+        // ...then merge in the dynamics, throwing in the event of a collision
+        for (const k in this._dynamicParams) {
+            if (this._mergedParams[k] !== undefined) {
+                throw new Error('Merging model params with a dynamic-static '
+                                + 'collision (these are mutually exclusive); '
+                                + 'key: ' + k);
+            }
 &nbsp;
-			this._mergedParams[k] = this._dynamicParams[k];
-		}
-	}
+            this._mergedParams[k] = this._dynamicParams[k];
+        }
+    }
 &nbsp;
-	/**
-	 * Retrieve a Boolean param's value.
-	 * @param {string} key
-	 * @return {boolean}
-	 */
-	GetBooleanParam(key: string): boolean {
-		this.ValidateParamKey(key);
+    /**
+     * Retrieve a Boolean param's value.
+     * @param {string} key
+     * @return {boolean}
+     */
+    GetBooleanParam(key: string): boolean {
+        this.ValidateParamKey(key);
 &nbsp;
-		if (typeof this._mergedParams[key] !== 'boolean') {
-			throw new Error('param ' + key + ' is not Boolean: ' + this._mergedParams[key]);
-		}
+        if (typeof this._mergedParams[key] !== 'boolean') {
+            throw new Error('param ' + key + ' is not Boolean: '
+                            + this._mergedParams[key]);
+        }
 &nbsp;
-		return Boolean(this._mergedParams[key]);
-	}
+        return Boolean(this._mergedParams[key]);
+    }
 &nbsp;
-	/**
-	 * Retrieve a number param's value.
-	 * @param {string} key
-	 * @return {number}
-	 */
-	GetNumericParam(key: string): number {
-		this.ValidateParamKey(key);
+    /**
+     * Retrieve a number param's value.
+     * @param {string} key
+     * @return {number}
+     */
+    GetNumericParam(key: string): number {
+        this.ValidateParamKey(key);
 &nbsp;
-		if (typeof this._mergedParams[key] !== 'number') {
-			throw new Error('param ' + key + ' is not a number: ' + this._mergedParams[key]);
-		}
+        if (typeof this._mergedParams[key] !== 'number') {
+            throw new Error('param ' + key + ' is not a number: '
+                            + this._mergedParams[key]);
+        }
 &nbsp;
-		return Number(this._mergedParams[key]);
-	}
+        return Number(this._mergedParams[key]);
+    }
 &nbsp;
-	/**
-	 * Retrieve a string param's value.
-	 * @param {string} key
-	 * @return {string}
-	 */
-	GetTextParam(key: string): string {
-		this.ValidateParamKey(key);
+    /**
+     * Retrieve a string param's value.
+     * @param {string} key
+     * @return {string}
+     */
+    GetTextParam(key: string): string {
+        this.ValidateParamKey(key);
 &nbsp;
-		if (typeof this._mergedParams[key] !== 'string') {
-			throw new Error('param ' + key + ' is not a string: ' + this._mergedParams[key]);
-		}
+        if (typeof this._mergedParams[key] !== 'string') {
+            throw new Error('param ' + key + ' is not a string: '
+                            + this._mergedParams[key]);
+        }
 &nbsp;
-		return String(this._mergedParams[key]);
-	}
+        return String(this._mergedParams[key]);
+    }
 &nbsp;
-	/**
-	 * Throws if a param key is not supported. This is exceptional because the
-	 * objects our constructor takes are not user input. They've been processed.
-	 * @private
-	 * @param {string} key
-	 */
-	private ValidateParamKey(key: string): void {
-		Utils.Assert(key !== '');
+    /**
+     * Throws if a param key is not supported. This is exceptional because the
+     * objects our constructor takes are not user input. They've been processed.
+     * @private
+     * @param {string} key
+     */
+    private ValidateParamKey(key: string): void {
+        Utils.Assert(key !== '');
 &nbsp;
-		if (this._mergedParams[key] === undefined) {
-			throw new Error('ModelParams key not found: ' + key);
-		}
-	}
+        if (this._mergedParams[key] === undefined) {
+            throw new Error('ModelParams key not found: ' + key);
+        }
+    }
 &nbsp;
 //vv TODO: These move into a CSVSource interface
-	WriteCSVLineKeys(): string {
-		let textOut = '';
+    WriteCSVLineKeys(): string {
+        let textOut = '';
 &nbsp;
-		for (const k in this._mergedParams) {
-			textOut += k + ',';
-		}
+        for (const k in this._mergedParams) {
+            textOut += k + ',';
+        }
 &nbsp;
-		// drop the trailing comma
-		textOut = textOut.slice(0, -1);
+        // drop the trailing comma
+        textOut = textOut.slice(0, -1);
 &nbsp;
-		return textOut;
-	}
+        return textOut;
+    }
 &nbsp;
-	WriteCSVLineValues(): string {
-		let textOut = '';
+    WriteCSVLineValues(): string {
+        let textOut = '';
 &nbsp;
-		for (const k in this._mergedParams) {
-			// check every string for file-breakers, while we're here
+        for (const k in this._mergedParams) {
+            // check every string for file-breakers, while we're here
 &nbsp;
-//PERF: This is potentially overkill (we validate these early on in their lifecycle).
-//		I'm keeping it because that initial validation is not done w/ CSV writes in mind. It's much more focused
-//		on proper uint/bool/string.
-//		Redundancy is good, but if our file writes become perceptibly slower, this can go.
-			Utils.ValidateTextForCSV(this._mergedParams[k]);
+//PERF: This is potentially overkill (we validate these early on in their
+//      lifecycle).
+//		I'm keeping it because that initial validation is not done w/ CSV writes
+//      in mind. It's much more focused on proper uint/bool/string.
+//		Redundancy is good, but if our file writes become perceptibly slower,
+//      this can go.
+            Utils.ValidateTextForCSV(this._mergedParams[k]);
 &nbsp;
-			textOut += this._mergedParams[k] + ',';
-		}
+            textOut += this._mergedParams[k] + ',';
+        }
 &nbsp;
-		// drop the trailing comma
-		textOut = textOut.slice(0, -1);
+        // drop the trailing comma
+        textOut = textOut.slice(0, -1);
 &nbsp;
-		return textOut;
-	}
+        return textOut;
+    }
 //^^
 }
 &nbsp;
@@ -472,7 +493,7 @@ export { ModelParams };
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Sat Jan 09 2021 15:53:37 GMT-1000 (Hawaii-Aleutian Standard Time)
+                at Tue Feb 16 2021 10:38:29 GMT-1000 (Hawaii-Aleutian Standard Time)
             </div>
         </div>
         <script src="../../prettify.js"></script>

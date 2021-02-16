@@ -25,11 +25,11 @@ const STANDARD_ENCODING = 'utf8';
  */
 const ProduceResultsFilename = (): string => {
 //TODO: hard-coder; the regex and the file name elements.
-	const TIMESTAMP = (new Date()).toLocaleString();
-	const FILTERED = TIMESTAMP.replace(/[^a-z0-9]/gi, '_');
-	const LOWERED = FILTERED.toLowerCase();
+    const TIMESTAMP = (new Date()).toLocaleString();
+    const FILTERED = TIMESTAMP.replace(/[^a-z0-9]/gi, '_');
+    const LOWERED = FILTERED.toLowerCase();
 
-	return 'Results_' + LOWERED + '.csv';
+    return 'Results_' + LOWERED + '.csv';
 };
 
 /**
@@ -40,15 +40,15 @@ const ProduceResultsFilename = (): string => {
  * @return {Promise<void>}
  */
 const ReadDataFile = async (path: string, result: FileIOResult): Promise<void> => {
-	Utils.Assert(path !== '');
+    Utils.Assert(path !== '');
 
-	try {
-		result.data = await FS_PROMISES.readFile(path, STANDARD_ENCODING);
-		return;
-	}
-	catch (e) {
-		Utils.ThrowCaughtUnknown('Failed to read file: ' + path + '\n', e);
-	}
+    try {
+        result.data = await FS_PROMISES.readFile(path, STANDARD_ENCODING);
+        return;
+    }
+    catch (e) {
+        Utils.ThrowCaughtUnknown('Failed to read file: ' + path + '\n', e);
+    }
 };
 
 /**
@@ -61,26 +61,26 @@ const ReadDataFile = async (path: string, result: FileIOResult): Promise<void> =
  * @return {Promise<void>}
  */
 const WriteResultsFile = async (fileName: string,
-								directory: string,
-								dataToWrite: string): Promise<void> => {
-	Utils.Assert(fileName !== '');
+                                directory: string,
+                                dataToWrite: string): Promise<void> => {
+    Utils.Assert(fileName !== '');
 
-	const WRITE_PATH = WriteSystemPath(directory, fileName);
+    const WRITE_PATH = WriteSystemPath(directory, fileName);
 
-	if (dataToWrite === '') {
-		console.warn('Writing empty file: ' + WRITE_PATH);
-	}
+    if (dataToWrite === '') {
+        console.warn('Writing empty file: ' + WRITE_PATH);
+    }
 
-	try {
-		await FS_PROMISES.writeFile(WRITE_PATH,
-									dataToWrite,
-									STANDARD_ENCODING);
+    try {
+        await FS_PROMISES.writeFile(WRITE_PATH,
+                                    dataToWrite,
+                                    STANDARD_ENCODING);
 
-		return;
-	}
-	catch (e) {
-		Utils.ThrowCaughtUnknown('Failed to write file: ' + WRITE_PATH, e);
-	}
+        return;
+    }
+    catch (e) {
+        Utils.ThrowCaughtUnknown('Failed to write file: ' + WRITE_PATH, e);
+    }
 };
 
 /**
@@ -90,19 +90,19 @@ const WriteResultsFile = async (fileName: string,
  * @return {string}
  */
 const WriteSystemPath = (directory: string, fileName: string): string => {
-	const SYSTEM_PATH = PATH_LIB.join(directory, fileName);
+    const SYSTEM_PATH = PATH_LIB.join(directory, fileName);
 
-	// correct for Unix/Windows path format
-	SLASH(SYSTEM_PATH);
+    // correct for Unix/Windows path format
+    SLASH(SYSTEM_PATH);
 
-	return SYSTEM_PATH;
+    return SYSTEM_PATH;
 };
 
 
 export	{
-			ProduceResultsFilename,
-			ReadDataFile,
-			WriteResultsFile,
-			WriteSystemPath,
-			STANDARD_ENCODING
-		};
+            ProduceResultsFilename,
+            ReadDataFile,
+            WriteResultsFile,
+            WriteSystemPath,
+            STANDARD_ENCODING
+        };

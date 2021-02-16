@@ -11,11 +11,11 @@ declare class DataSetFetcher {
     /**
      * Creates an instance of DataSetFetcher.
      * @param {Array<string>} nodeLaunchArguments An array of strings, in which
-     *											  the 3rd and 4th are the input
-     *											  and target file paths,
-     *											  respectively. This is written
-     *											  specifically to take the Node
-     *											  launch params (process.argv).
+     *                                            the 3rd and 4th are the input
+     *                                            and target file paths,
+     *                                            respectively. This is written
+     *                                            specifically to take the Node
+     *                                            launch params (process.argv).
      */
     constructor(nodeLaunchArguments: Array<string>);
     /**

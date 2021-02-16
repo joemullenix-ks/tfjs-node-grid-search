@@ -28,11 +28,11 @@ declare class Axis {
     /**
     * Creates an instance of Axis.
     * @param {number} _typeEnum The hyperparameter associated with this axis.
-    *							Must be a member of the [AxisTypes]{@link Axis.AxisTypes} enum.
+    *                           Must be a member of the [AxisTypes]{@link Axis.AxisTypes} enum.
     * @param {number} _boundBegin The start of the search range, inclusive.
     * @param {number} _boundEnd The end of the search range, inclusive.
     * @param {Progression} _progression Provides a set of offsets used to
-    *									determine the steps in the range.
+    *                                   determine the steps in the range.
     */
     constructor(_typeEnum: number, _boundBegin: number, _boundEnd: number, _progression: Progression);
     get type(): number;
@@ -80,7 +80,6 @@ declare class Axis {
      * @param {string} key Must match an entry in the [AxisNames]{@link Axis.AxisNames} enum.
      * @param {Progression} progression A concrete instance derived from Progression.
      * @param {FailureMessage} failureMessage Explanatory faliure text is written to this object.
-
      * @return {boolean}
      */
     static AttemptValidateProgression(key: string, progression: Progression, failureMessage: FailureMessage): boolean;
