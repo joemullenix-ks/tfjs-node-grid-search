@@ -6,4 +6,4 @@ REM but TFJS is on version 8, so right away it's fragile.
 REM Keep an eye on this action, which should fail on 'unknown folder' if/when.
 
 copy .\node_modules\@tensorflow\tfjs-node\deps\lib\tensorflow.dll .\node_modules\@tensorflow\tfjs-node\lib\napi-v7\
-            ...what about this sister file? "tensorflow.lib"
+copy .\node_modules\@tensorflow\tfjs-node\deps\lib\tensorflow.lib .\node_modules\@tensorflow\tfjs-node\lib\napi-v7\
