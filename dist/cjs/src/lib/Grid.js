@@ -383,13 +383,13 @@ class Grid {
                 validationSplit: modelParams.GetNumericParam(Axis.AxisNames.VALIDATION_SPLIT),
                 callbacks: {
                     //NOTE: These events are available, as of TF 2.7.0:
-                    // 								onTrainBegin: (logs) => { console.log('onTrainBegin', logs); },
-                    // 								onTrainEnd: (logs) => { console.log('onTrainEnd', logs); },
-                    // 								onEpochBegin: (epoch, logs) => { console.log('onEpochBegin', epoch, logs); },
-                    // 								onEpochEnd: (epoch, logs) => { console.log('onEpochEnd', epoch, logs); },
-                    // 								onBatchBegin: (batch, logs) => { console.log('onBatchBegin', batch, logs); },
-                    // 								onBatchEnd: (batch, logs) => { console.log('onBatchEnd', batch, logs); },
-                    // 								onYield: (epoch, batch, logs) => { console.log('onYield', epoch, batch, logs); }
+                    //                              onTrainBegin: (logs) => { console.log('onTrainBegin', logs); },
+                    //                              onTrainEnd: (logs) => { console.log('onTrainEnd', logs); },
+                    //                              onEpochBegin: (epoch, logs) => { console.log('onEpochBegin', epoch, logs); },
+                    //                              onEpochEnd: (epoch, logs) => { console.log('onEpochEnd', epoch, logs); },
+                    //                              onBatchBegin: (batch, logs) => { console.log('onBatchBegin', batch, logs); },
+                    //                              onBatchEnd: (batch, logs) => { console.log('onBatchEnd', batch, logs); },
+                    //                              onYield: (epoch, batch, logs) => { console.log('onYield', epoch, batch, logs); }
                     onBatchEnd: (batch, logs) => {
                         if (!this._callbackReportBatch) {
                             return;

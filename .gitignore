@@ -26,6 +26,7 @@ good-sample-readme.txt
 src/all.ts
 jsdoc/favicon.psd
 npm version history.txt
+n_NODE_MODULES CLEARED FOR SPACE
 
 # These are killing my diffs; releases only.
 coverage
