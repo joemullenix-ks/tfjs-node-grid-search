@@ -22,7 +22,7 @@ jobs:
         node-version: ${{ matrix.node-version }}
     - run: npm install
 
-    - name: Copy Node bindinds dll
+    - name: Copy Node bindings dll
       run: ./copy_tfjs_bindings.bat
 
     - run: npx eslint --max-warnings 0 src
